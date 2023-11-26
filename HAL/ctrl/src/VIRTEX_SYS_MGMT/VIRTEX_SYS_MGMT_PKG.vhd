@@ -27,7 +27,7 @@ package VIRTEX_SYS_MGMT_CTRL is
       VCCAUX_MIN : std_logic_vector(10 - 1 downto 0);
       VCCBRAM_MIN : std_logic_vector(10 - 1 downto 0);
    end record VIRTEX_SYS_MGMT_MON_t;
-   attribute w of VIRTEX_SYS_MGMT_MON_t : type is 120;
+   attribute w of VIRTEX_SYS_MGMT_MON_t : type is 10+10+10+10+10+10+10+10+10+10+10+10;
    function width(x: VIRTEX_SYS_MGMT_MON_t) return natural;
    function convert(x: VIRTEX_SYS_MGMT_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: VIRTEX_SYS_MGMT_MON_t) return VIRTEX_SYS_MGMT_MON_t;

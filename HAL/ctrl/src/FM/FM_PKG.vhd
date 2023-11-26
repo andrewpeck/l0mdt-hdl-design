@@ -20,7 +20,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB0_SB_MEM_MOSI_t;
-   attribute w of FM_SB0_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB0_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB0_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB0_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB0_SB_MEM_MOSI_t) return FM_SB0_SB_MEM_MOSI_t;
@@ -30,7 +30,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB0_SB_MEM_MISO_t;
-   attribute w of FM_SB0_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB0_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB0_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB0_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB0_SB_MEM_MISO_t) return FM_SB0_SB_MEM_MISO_t;
@@ -39,7 +39,7 @@ package FM_CTRL is
    type FM_SB0_MON_t is record
       SB_MEM : FM_SB0_SB_MEM_MISO_t;
    end record FM_SB0_MON_t;
-   attribute w of FM_SB0_MON_t : type is 33;
+   attribute w of FM_SB0_MON_t : type is FM_SB0_SB_MEM_MISO_t'w;
    function width(x: FM_SB0_MON_t) return natural;
    function convert(x: FM_SB0_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB0_MON_t) return FM_SB0_MON_t;
@@ -48,7 +48,7 @@ package FM_CTRL is
    type FM_SB0_CTRL_t is record
       SB_MEM : FM_SB0_SB_MEM_MOSI_t;
    end record FM_SB0_CTRL_t;
-   attribute w of FM_SB0_CTRL_t : type is 44;
+   attribute w of FM_SB0_CTRL_t : type is FM_SB0_SB_MEM_MOSI_t'w;
    function width(x: FM_SB0_CTRL_t) return natural;
    function convert(x: FM_SB0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB0_CTRL_t) return FM_SB0_CTRL_t;
@@ -61,7 +61,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB1_SB_MEM_MOSI_t;
-   attribute w of FM_SB1_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB1_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB1_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB1_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB1_SB_MEM_MOSI_t) return FM_SB1_SB_MEM_MOSI_t;
@@ -71,7 +71,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB1_SB_MEM_MISO_t;
-   attribute w of FM_SB1_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB1_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB1_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB1_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB1_SB_MEM_MISO_t) return FM_SB1_SB_MEM_MISO_t;
@@ -80,7 +80,7 @@ package FM_CTRL is
    type FM_SB1_MON_t is record
       SB_MEM : FM_SB1_SB_MEM_MISO_t;
    end record FM_SB1_MON_t;
-   attribute w of FM_SB1_MON_t : type is 33;
+   attribute w of FM_SB1_MON_t : type is FM_SB1_SB_MEM_MISO_t'w;
    function width(x: FM_SB1_MON_t) return natural;
    function convert(x: FM_SB1_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB1_MON_t) return FM_SB1_MON_t;
@@ -89,7 +89,7 @@ package FM_CTRL is
    type FM_SB1_CTRL_t is record
       SB_MEM : FM_SB1_SB_MEM_MOSI_t;
    end record FM_SB1_CTRL_t;
-   attribute w of FM_SB1_CTRL_t : type is 44;
+   attribute w of FM_SB1_CTRL_t : type is FM_SB1_SB_MEM_MOSI_t'w;
    function width(x: FM_SB1_CTRL_t) return natural;
    function convert(x: FM_SB1_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB1_CTRL_t) return FM_SB1_CTRL_t;
@@ -102,7 +102,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB2_SB_MEM_MOSI_t;
-   attribute w of FM_SB2_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB2_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB2_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB2_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB2_SB_MEM_MOSI_t) return FM_SB2_SB_MEM_MOSI_t;
@@ -112,7 +112,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB2_SB_MEM_MISO_t;
-   attribute w of FM_SB2_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB2_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB2_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB2_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB2_SB_MEM_MISO_t) return FM_SB2_SB_MEM_MISO_t;
@@ -121,7 +121,7 @@ package FM_CTRL is
    type FM_SB2_MON_t is record
       SB_MEM : FM_SB2_SB_MEM_MISO_t;
    end record FM_SB2_MON_t;
-   attribute w of FM_SB2_MON_t : type is 33;
+   attribute w of FM_SB2_MON_t : type is FM_SB2_SB_MEM_MISO_t'w;
    function width(x: FM_SB2_MON_t) return natural;
    function convert(x: FM_SB2_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB2_MON_t) return FM_SB2_MON_t;
@@ -130,7 +130,7 @@ package FM_CTRL is
    type FM_SB2_CTRL_t is record
       SB_MEM : FM_SB2_SB_MEM_MOSI_t;
    end record FM_SB2_CTRL_t;
-   attribute w of FM_SB2_CTRL_t : type is 44;
+   attribute w of FM_SB2_CTRL_t : type is FM_SB2_SB_MEM_MOSI_t'w;
    function width(x: FM_SB2_CTRL_t) return natural;
    function convert(x: FM_SB2_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB2_CTRL_t) return FM_SB2_CTRL_t;
@@ -143,7 +143,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB3_SB_MEM_MOSI_t;
-   attribute w of FM_SB3_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB3_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB3_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB3_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB3_SB_MEM_MOSI_t) return FM_SB3_SB_MEM_MOSI_t;
@@ -153,7 +153,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB3_SB_MEM_MISO_t;
-   attribute w of FM_SB3_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB3_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB3_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB3_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB3_SB_MEM_MISO_t) return FM_SB3_SB_MEM_MISO_t;
@@ -162,7 +162,7 @@ package FM_CTRL is
    type FM_SB3_MON_t is record
       SB_MEM : FM_SB3_SB_MEM_MISO_t;
    end record FM_SB3_MON_t;
-   attribute w of FM_SB3_MON_t : type is 33;
+   attribute w of FM_SB3_MON_t : type is FM_SB3_SB_MEM_MISO_t'w;
    function width(x: FM_SB3_MON_t) return natural;
    function convert(x: FM_SB3_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB3_MON_t) return FM_SB3_MON_t;
@@ -171,7 +171,7 @@ package FM_CTRL is
    type FM_SB3_CTRL_t is record
       SB_MEM : FM_SB3_SB_MEM_MOSI_t;
    end record FM_SB3_CTRL_t;
-   attribute w of FM_SB3_CTRL_t : type is 44;
+   attribute w of FM_SB3_CTRL_t : type is FM_SB3_SB_MEM_MOSI_t'w;
    function width(x: FM_SB3_CTRL_t) return natural;
    function convert(x: FM_SB3_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB3_CTRL_t) return FM_SB3_CTRL_t;
@@ -184,7 +184,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB4_SB_MEM_MOSI_t;
-   attribute w of FM_SB4_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB4_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB4_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB4_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB4_SB_MEM_MOSI_t) return FM_SB4_SB_MEM_MOSI_t;
@@ -194,7 +194,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB4_SB_MEM_MISO_t;
-   attribute w of FM_SB4_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB4_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB4_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB4_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB4_SB_MEM_MISO_t) return FM_SB4_SB_MEM_MISO_t;
@@ -203,7 +203,7 @@ package FM_CTRL is
    type FM_SB4_MON_t is record
       SB_MEM : FM_SB4_SB_MEM_MISO_t;
    end record FM_SB4_MON_t;
-   attribute w of FM_SB4_MON_t : type is 33;
+   attribute w of FM_SB4_MON_t : type is FM_SB4_SB_MEM_MISO_t'w;
    function width(x: FM_SB4_MON_t) return natural;
    function convert(x: FM_SB4_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB4_MON_t) return FM_SB4_MON_t;
@@ -212,7 +212,7 @@ package FM_CTRL is
    type FM_SB4_CTRL_t is record
       SB_MEM : FM_SB4_SB_MEM_MOSI_t;
    end record FM_SB4_CTRL_t;
-   attribute w of FM_SB4_CTRL_t : type is 44;
+   attribute w of FM_SB4_CTRL_t : type is FM_SB4_SB_MEM_MOSI_t'w;
    function width(x: FM_SB4_CTRL_t) return natural;
    function convert(x: FM_SB4_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB4_CTRL_t) return FM_SB4_CTRL_t;
@@ -225,7 +225,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB5_SB_MEM_MOSI_t;
-   attribute w of FM_SB5_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB5_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB5_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB5_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB5_SB_MEM_MOSI_t) return FM_SB5_SB_MEM_MOSI_t;
@@ -235,7 +235,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB5_SB_MEM_MISO_t;
-   attribute w of FM_SB5_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB5_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB5_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB5_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB5_SB_MEM_MISO_t) return FM_SB5_SB_MEM_MISO_t;
@@ -244,7 +244,7 @@ package FM_CTRL is
    type FM_SB5_MON_t is record
       SB_MEM : FM_SB5_SB_MEM_MISO_t;
    end record FM_SB5_MON_t;
-   attribute w of FM_SB5_MON_t : type is 33;
+   attribute w of FM_SB5_MON_t : type is FM_SB5_SB_MEM_MISO_t'w;
    function width(x: FM_SB5_MON_t) return natural;
    function convert(x: FM_SB5_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB5_MON_t) return FM_SB5_MON_t;
@@ -253,7 +253,7 @@ package FM_CTRL is
    type FM_SB5_CTRL_t is record
       SB_MEM : FM_SB5_SB_MEM_MOSI_t;
    end record FM_SB5_CTRL_t;
-   attribute w of FM_SB5_CTRL_t : type is 44;
+   attribute w of FM_SB5_CTRL_t : type is FM_SB5_SB_MEM_MOSI_t'w;
    function width(x: FM_SB5_CTRL_t) return natural;
    function convert(x: FM_SB5_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB5_CTRL_t) return FM_SB5_CTRL_t;
@@ -266,7 +266,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB6_SB_MEM_MOSI_t;
-   attribute w of FM_SB6_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB6_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB6_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB6_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB6_SB_MEM_MOSI_t) return FM_SB6_SB_MEM_MOSI_t;
@@ -276,7 +276,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB6_SB_MEM_MISO_t;
-   attribute w of FM_SB6_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB6_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB6_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB6_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB6_SB_MEM_MISO_t) return FM_SB6_SB_MEM_MISO_t;
@@ -285,7 +285,7 @@ package FM_CTRL is
    type FM_SB6_MON_t is record
       SB_MEM : FM_SB6_SB_MEM_MISO_t;
    end record FM_SB6_MON_t;
-   attribute w of FM_SB6_MON_t : type is 33;
+   attribute w of FM_SB6_MON_t : type is FM_SB6_SB_MEM_MISO_t'w;
    function width(x: FM_SB6_MON_t) return natural;
    function convert(x: FM_SB6_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB6_MON_t) return FM_SB6_MON_t;
@@ -294,7 +294,7 @@ package FM_CTRL is
    type FM_SB6_CTRL_t is record
       SB_MEM : FM_SB6_SB_MEM_MOSI_t;
    end record FM_SB6_CTRL_t;
-   attribute w of FM_SB6_CTRL_t : type is 44;
+   attribute w of FM_SB6_CTRL_t : type is FM_SB6_SB_MEM_MOSI_t'w;
    function width(x: FM_SB6_CTRL_t) return natural;
    function convert(x: FM_SB6_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB6_CTRL_t) return FM_SB6_CTRL_t;
@@ -307,7 +307,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB7_SB_MEM_MOSI_t;
-   attribute w of FM_SB7_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB7_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB7_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB7_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB7_SB_MEM_MOSI_t) return FM_SB7_SB_MEM_MOSI_t;
@@ -317,7 +317,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB7_SB_MEM_MISO_t;
-   attribute w of FM_SB7_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB7_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB7_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB7_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB7_SB_MEM_MISO_t) return FM_SB7_SB_MEM_MISO_t;
@@ -326,7 +326,7 @@ package FM_CTRL is
    type FM_SB7_MON_t is record
       SB_MEM : FM_SB7_SB_MEM_MISO_t;
    end record FM_SB7_MON_t;
-   attribute w of FM_SB7_MON_t : type is 33;
+   attribute w of FM_SB7_MON_t : type is FM_SB7_SB_MEM_MISO_t'w;
    function width(x: FM_SB7_MON_t) return natural;
    function convert(x: FM_SB7_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB7_MON_t) return FM_SB7_MON_t;
@@ -335,7 +335,7 @@ package FM_CTRL is
    type FM_SB7_CTRL_t is record
       SB_MEM : FM_SB7_SB_MEM_MOSI_t;
    end record FM_SB7_CTRL_t;
-   attribute w of FM_SB7_CTRL_t : type is 44;
+   attribute w of FM_SB7_CTRL_t : type is FM_SB7_SB_MEM_MOSI_t'w;
    function width(x: FM_SB7_CTRL_t) return natural;
    function convert(x: FM_SB7_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB7_CTRL_t) return FM_SB7_CTRL_t;
@@ -348,7 +348,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB8_SB_MEM_MOSI_t;
-   attribute w of FM_SB8_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB8_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB8_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB8_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB8_SB_MEM_MOSI_t) return FM_SB8_SB_MEM_MOSI_t;
@@ -358,7 +358,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB8_SB_MEM_MISO_t;
-   attribute w of FM_SB8_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB8_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB8_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB8_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB8_SB_MEM_MISO_t) return FM_SB8_SB_MEM_MISO_t;
@@ -367,7 +367,7 @@ package FM_CTRL is
    type FM_SB8_MON_t is record
       SB_MEM : FM_SB8_SB_MEM_MISO_t;
    end record FM_SB8_MON_t;
-   attribute w of FM_SB8_MON_t : type is 33;
+   attribute w of FM_SB8_MON_t : type is FM_SB8_SB_MEM_MISO_t'w;
    function width(x: FM_SB8_MON_t) return natural;
    function convert(x: FM_SB8_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB8_MON_t) return FM_SB8_MON_t;
@@ -376,7 +376,7 @@ package FM_CTRL is
    type FM_SB8_CTRL_t is record
       SB_MEM : FM_SB8_SB_MEM_MOSI_t;
    end record FM_SB8_CTRL_t;
-   attribute w of FM_SB8_CTRL_t : type is 44;
+   attribute w of FM_SB8_CTRL_t : type is FM_SB8_SB_MEM_MOSI_t'w;
    function width(x: FM_SB8_CTRL_t) return natural;
    function convert(x: FM_SB8_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB8_CTRL_t) return FM_SB8_CTRL_t;
@@ -389,7 +389,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB9_SB_MEM_MOSI_t;
-   attribute w of FM_SB9_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB9_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB9_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB9_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB9_SB_MEM_MOSI_t) return FM_SB9_SB_MEM_MOSI_t;
@@ -399,7 +399,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB9_SB_MEM_MISO_t;
-   attribute w of FM_SB9_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB9_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB9_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB9_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB9_SB_MEM_MISO_t) return FM_SB9_SB_MEM_MISO_t;
@@ -408,7 +408,7 @@ package FM_CTRL is
    type FM_SB9_MON_t is record
       SB_MEM : FM_SB9_SB_MEM_MISO_t;
    end record FM_SB9_MON_t;
-   attribute w of FM_SB9_MON_t : type is 33;
+   attribute w of FM_SB9_MON_t : type is FM_SB9_SB_MEM_MISO_t'w;
    function width(x: FM_SB9_MON_t) return natural;
    function convert(x: FM_SB9_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB9_MON_t) return FM_SB9_MON_t;
@@ -417,7 +417,7 @@ package FM_CTRL is
    type FM_SB9_CTRL_t is record
       SB_MEM : FM_SB9_SB_MEM_MOSI_t;
    end record FM_SB9_CTRL_t;
-   attribute w of FM_SB9_CTRL_t : type is 44;
+   attribute w of FM_SB9_CTRL_t : type is FM_SB9_SB_MEM_MOSI_t'w;
    function width(x: FM_SB9_CTRL_t) return natural;
    function convert(x: FM_SB9_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB9_CTRL_t) return FM_SB9_CTRL_t;
@@ -430,7 +430,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB10_SB_MEM_MOSI_t;
-   attribute w of FM_SB10_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB10_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB10_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB10_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB10_SB_MEM_MOSI_t) return FM_SB10_SB_MEM_MOSI_t;
@@ -440,7 +440,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB10_SB_MEM_MISO_t;
-   attribute w of FM_SB10_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB10_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB10_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB10_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB10_SB_MEM_MISO_t) return FM_SB10_SB_MEM_MISO_t;
@@ -449,7 +449,7 @@ package FM_CTRL is
    type FM_SB10_MON_t is record
       SB_MEM : FM_SB10_SB_MEM_MISO_t;
    end record FM_SB10_MON_t;
-   attribute w of FM_SB10_MON_t : type is 33;
+   attribute w of FM_SB10_MON_t : type is FM_SB10_SB_MEM_MISO_t'w;
    function width(x: FM_SB10_MON_t) return natural;
    function convert(x: FM_SB10_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB10_MON_t) return FM_SB10_MON_t;
@@ -458,7 +458,7 @@ package FM_CTRL is
    type FM_SB10_CTRL_t is record
       SB_MEM : FM_SB10_SB_MEM_MOSI_t;
    end record FM_SB10_CTRL_t;
-   attribute w of FM_SB10_CTRL_t : type is 44;
+   attribute w of FM_SB10_CTRL_t : type is FM_SB10_SB_MEM_MOSI_t'w;
    function width(x: FM_SB10_CTRL_t) return natural;
    function convert(x: FM_SB10_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB10_CTRL_t) return FM_SB10_CTRL_t;
@@ -471,7 +471,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB11_SB_MEM_MOSI_t;
-   attribute w of FM_SB11_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB11_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB11_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB11_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB11_SB_MEM_MOSI_t) return FM_SB11_SB_MEM_MOSI_t;
@@ -481,7 +481,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB11_SB_MEM_MISO_t;
-   attribute w of FM_SB11_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB11_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB11_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB11_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB11_SB_MEM_MISO_t) return FM_SB11_SB_MEM_MISO_t;
@@ -490,7 +490,7 @@ package FM_CTRL is
    type FM_SB11_MON_t is record
       SB_MEM : FM_SB11_SB_MEM_MISO_t;
    end record FM_SB11_MON_t;
-   attribute w of FM_SB11_MON_t : type is 33;
+   attribute w of FM_SB11_MON_t : type is FM_SB11_SB_MEM_MISO_t'w;
    function width(x: FM_SB11_MON_t) return natural;
    function convert(x: FM_SB11_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB11_MON_t) return FM_SB11_MON_t;
@@ -499,7 +499,7 @@ package FM_CTRL is
    type FM_SB11_CTRL_t is record
       SB_MEM : FM_SB11_SB_MEM_MOSI_t;
    end record FM_SB11_CTRL_t;
-   attribute w of FM_SB11_CTRL_t : type is 44;
+   attribute w of FM_SB11_CTRL_t : type is FM_SB11_SB_MEM_MOSI_t'w;
    function width(x: FM_SB11_CTRL_t) return natural;
    function convert(x: FM_SB11_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB11_CTRL_t) return FM_SB11_CTRL_t;
@@ -512,7 +512,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB12_SB_MEM_MOSI_t;
-   attribute w of FM_SB12_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB12_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB12_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB12_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB12_SB_MEM_MOSI_t) return FM_SB12_SB_MEM_MOSI_t;
@@ -522,7 +522,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB12_SB_MEM_MISO_t;
-   attribute w of FM_SB12_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB12_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB12_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB12_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB12_SB_MEM_MISO_t) return FM_SB12_SB_MEM_MISO_t;
@@ -531,7 +531,7 @@ package FM_CTRL is
    type FM_SB12_MON_t is record
       SB_MEM : FM_SB12_SB_MEM_MISO_t;
    end record FM_SB12_MON_t;
-   attribute w of FM_SB12_MON_t : type is 33;
+   attribute w of FM_SB12_MON_t : type is FM_SB12_SB_MEM_MISO_t'w;
    function width(x: FM_SB12_MON_t) return natural;
    function convert(x: FM_SB12_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB12_MON_t) return FM_SB12_MON_t;
@@ -540,7 +540,7 @@ package FM_CTRL is
    type FM_SB12_CTRL_t is record
       SB_MEM : FM_SB12_SB_MEM_MOSI_t;
    end record FM_SB12_CTRL_t;
-   attribute w of FM_SB12_CTRL_t : type is 44;
+   attribute w of FM_SB12_CTRL_t : type is FM_SB12_SB_MEM_MOSI_t'w;
    function width(x: FM_SB12_CTRL_t) return natural;
    function convert(x: FM_SB12_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB12_CTRL_t) return FM_SB12_CTRL_t;
@@ -553,7 +553,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB13_SB_MEM_MOSI_t;
-   attribute w of FM_SB13_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB13_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB13_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB13_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB13_SB_MEM_MOSI_t) return FM_SB13_SB_MEM_MOSI_t;
@@ -563,7 +563,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB13_SB_MEM_MISO_t;
-   attribute w of FM_SB13_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB13_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB13_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB13_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB13_SB_MEM_MISO_t) return FM_SB13_SB_MEM_MISO_t;
@@ -572,7 +572,7 @@ package FM_CTRL is
    type FM_SB13_MON_t is record
       SB_MEM : FM_SB13_SB_MEM_MISO_t;
    end record FM_SB13_MON_t;
-   attribute w of FM_SB13_MON_t : type is 33;
+   attribute w of FM_SB13_MON_t : type is FM_SB13_SB_MEM_MISO_t'w;
    function width(x: FM_SB13_MON_t) return natural;
    function convert(x: FM_SB13_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB13_MON_t) return FM_SB13_MON_t;
@@ -581,7 +581,7 @@ package FM_CTRL is
    type FM_SB13_CTRL_t is record
       SB_MEM : FM_SB13_SB_MEM_MOSI_t;
    end record FM_SB13_CTRL_t;
-   attribute w of FM_SB13_CTRL_t : type is 44;
+   attribute w of FM_SB13_CTRL_t : type is FM_SB13_SB_MEM_MOSI_t'w;
    function width(x: FM_SB13_CTRL_t) return natural;
    function convert(x: FM_SB13_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB13_CTRL_t) return FM_SB13_CTRL_t;
@@ -594,7 +594,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB14_SB_MEM_MOSI_t;
-   attribute w of FM_SB14_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB14_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB14_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB14_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB14_SB_MEM_MOSI_t) return FM_SB14_SB_MEM_MOSI_t;
@@ -604,7 +604,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB14_SB_MEM_MISO_t;
-   attribute w of FM_SB14_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB14_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB14_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB14_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB14_SB_MEM_MISO_t) return FM_SB14_SB_MEM_MISO_t;
@@ -613,7 +613,7 @@ package FM_CTRL is
    type FM_SB14_MON_t is record
       SB_MEM : FM_SB14_SB_MEM_MISO_t;
    end record FM_SB14_MON_t;
-   attribute w of FM_SB14_MON_t : type is 33;
+   attribute w of FM_SB14_MON_t : type is FM_SB14_SB_MEM_MISO_t'w;
    function width(x: FM_SB14_MON_t) return natural;
    function convert(x: FM_SB14_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB14_MON_t) return FM_SB14_MON_t;
@@ -622,7 +622,7 @@ package FM_CTRL is
    type FM_SB14_CTRL_t is record
       SB_MEM : FM_SB14_SB_MEM_MOSI_t;
    end record FM_SB14_CTRL_t;
-   attribute w of FM_SB14_CTRL_t : type is 44;
+   attribute w of FM_SB14_CTRL_t : type is FM_SB14_SB_MEM_MOSI_t'w;
    function width(x: FM_SB14_CTRL_t) return natural;
    function convert(x: FM_SB14_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB14_CTRL_t) return FM_SB14_CTRL_t;
@@ -635,7 +635,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB15_SB_MEM_MOSI_t;
-   attribute w of FM_SB15_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB15_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB15_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB15_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB15_SB_MEM_MOSI_t) return FM_SB15_SB_MEM_MOSI_t;
@@ -645,7 +645,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB15_SB_MEM_MISO_t;
-   attribute w of FM_SB15_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB15_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB15_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB15_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB15_SB_MEM_MISO_t) return FM_SB15_SB_MEM_MISO_t;
@@ -654,7 +654,7 @@ package FM_CTRL is
    type FM_SB15_MON_t is record
       SB_MEM : FM_SB15_SB_MEM_MISO_t;
    end record FM_SB15_MON_t;
-   attribute w of FM_SB15_MON_t : type is 33;
+   attribute w of FM_SB15_MON_t : type is FM_SB15_SB_MEM_MISO_t'w;
    function width(x: FM_SB15_MON_t) return natural;
    function convert(x: FM_SB15_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB15_MON_t) return FM_SB15_MON_t;
@@ -663,7 +663,7 @@ package FM_CTRL is
    type FM_SB15_CTRL_t is record
       SB_MEM : FM_SB15_SB_MEM_MOSI_t;
    end record FM_SB15_CTRL_t;
-   attribute w of FM_SB15_CTRL_t : type is 44;
+   attribute w of FM_SB15_CTRL_t : type is FM_SB15_SB_MEM_MOSI_t'w;
    function width(x: FM_SB15_CTRL_t) return natural;
    function convert(x: FM_SB15_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB15_CTRL_t) return FM_SB15_CTRL_t;
@@ -676,7 +676,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB16_SB_MEM_MOSI_t;
-   attribute w of FM_SB16_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB16_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB16_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB16_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB16_SB_MEM_MOSI_t) return FM_SB16_SB_MEM_MOSI_t;
@@ -686,7 +686,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB16_SB_MEM_MISO_t;
-   attribute w of FM_SB16_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB16_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB16_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB16_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB16_SB_MEM_MISO_t) return FM_SB16_SB_MEM_MISO_t;
@@ -695,7 +695,7 @@ package FM_CTRL is
    type FM_SB16_MON_t is record
       SB_MEM : FM_SB16_SB_MEM_MISO_t;
    end record FM_SB16_MON_t;
-   attribute w of FM_SB16_MON_t : type is 33;
+   attribute w of FM_SB16_MON_t : type is FM_SB16_SB_MEM_MISO_t'w;
    function width(x: FM_SB16_MON_t) return natural;
    function convert(x: FM_SB16_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB16_MON_t) return FM_SB16_MON_t;
@@ -704,7 +704,7 @@ package FM_CTRL is
    type FM_SB16_CTRL_t is record
       SB_MEM : FM_SB16_SB_MEM_MOSI_t;
    end record FM_SB16_CTRL_t;
-   attribute w of FM_SB16_CTRL_t : type is 44;
+   attribute w of FM_SB16_CTRL_t : type is FM_SB16_SB_MEM_MOSI_t'w;
    function width(x: FM_SB16_CTRL_t) return natural;
    function convert(x: FM_SB16_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB16_CTRL_t) return FM_SB16_CTRL_t;
@@ -717,7 +717,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB17_SB_MEM_MOSI_t;
-   attribute w of FM_SB17_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB17_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB17_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB17_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB17_SB_MEM_MOSI_t) return FM_SB17_SB_MEM_MOSI_t;
@@ -727,7 +727,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB17_SB_MEM_MISO_t;
-   attribute w of FM_SB17_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB17_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB17_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB17_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB17_SB_MEM_MISO_t) return FM_SB17_SB_MEM_MISO_t;
@@ -736,7 +736,7 @@ package FM_CTRL is
    type FM_SB17_MON_t is record
       SB_MEM : FM_SB17_SB_MEM_MISO_t;
    end record FM_SB17_MON_t;
-   attribute w of FM_SB17_MON_t : type is 33;
+   attribute w of FM_SB17_MON_t : type is FM_SB17_SB_MEM_MISO_t'w;
    function width(x: FM_SB17_MON_t) return natural;
    function convert(x: FM_SB17_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB17_MON_t) return FM_SB17_MON_t;
@@ -745,7 +745,7 @@ package FM_CTRL is
    type FM_SB17_CTRL_t is record
       SB_MEM : FM_SB17_SB_MEM_MOSI_t;
    end record FM_SB17_CTRL_t;
-   attribute w of FM_SB17_CTRL_t : type is 44;
+   attribute w of FM_SB17_CTRL_t : type is FM_SB17_SB_MEM_MOSI_t'w;
    function width(x: FM_SB17_CTRL_t) return natural;
    function convert(x: FM_SB17_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB17_CTRL_t) return FM_SB17_CTRL_t;
@@ -758,7 +758,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB18_SB_MEM_MOSI_t;
-   attribute w of FM_SB18_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB18_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB18_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB18_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB18_SB_MEM_MOSI_t) return FM_SB18_SB_MEM_MOSI_t;
@@ -768,7 +768,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB18_SB_MEM_MISO_t;
-   attribute w of FM_SB18_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB18_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB18_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB18_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB18_SB_MEM_MISO_t) return FM_SB18_SB_MEM_MISO_t;
@@ -777,7 +777,7 @@ package FM_CTRL is
    type FM_SB18_MON_t is record
       SB_MEM : FM_SB18_SB_MEM_MISO_t;
    end record FM_SB18_MON_t;
-   attribute w of FM_SB18_MON_t : type is 33;
+   attribute w of FM_SB18_MON_t : type is FM_SB18_SB_MEM_MISO_t'w;
    function width(x: FM_SB18_MON_t) return natural;
    function convert(x: FM_SB18_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB18_MON_t) return FM_SB18_MON_t;
@@ -786,7 +786,7 @@ package FM_CTRL is
    type FM_SB18_CTRL_t is record
       SB_MEM : FM_SB18_SB_MEM_MOSI_t;
    end record FM_SB18_CTRL_t;
-   attribute w of FM_SB18_CTRL_t : type is 44;
+   attribute w of FM_SB18_CTRL_t : type is FM_SB18_SB_MEM_MOSI_t'w;
    function width(x: FM_SB18_CTRL_t) return natural;
    function convert(x: FM_SB18_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB18_CTRL_t) return FM_SB18_CTRL_t;
@@ -799,7 +799,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB19_SB_MEM_MOSI_t;
-   attribute w of FM_SB19_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB19_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB19_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB19_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB19_SB_MEM_MOSI_t) return FM_SB19_SB_MEM_MOSI_t;
@@ -809,7 +809,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB19_SB_MEM_MISO_t;
-   attribute w of FM_SB19_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB19_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB19_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB19_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB19_SB_MEM_MISO_t) return FM_SB19_SB_MEM_MISO_t;
@@ -818,7 +818,7 @@ package FM_CTRL is
    type FM_SB19_MON_t is record
       SB_MEM : FM_SB19_SB_MEM_MISO_t;
    end record FM_SB19_MON_t;
-   attribute w of FM_SB19_MON_t : type is 33;
+   attribute w of FM_SB19_MON_t : type is FM_SB19_SB_MEM_MISO_t'w;
    function width(x: FM_SB19_MON_t) return natural;
    function convert(x: FM_SB19_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB19_MON_t) return FM_SB19_MON_t;
@@ -827,7 +827,7 @@ package FM_CTRL is
    type FM_SB19_CTRL_t is record
       SB_MEM : FM_SB19_SB_MEM_MOSI_t;
    end record FM_SB19_CTRL_t;
-   attribute w of FM_SB19_CTRL_t : type is 44;
+   attribute w of FM_SB19_CTRL_t : type is FM_SB19_SB_MEM_MOSI_t'w;
    function width(x: FM_SB19_CTRL_t) return natural;
    function convert(x: FM_SB19_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB19_CTRL_t) return FM_SB19_CTRL_t;
@@ -840,7 +840,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB20_SB_MEM_MOSI_t;
-   attribute w of FM_SB20_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB20_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB20_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB20_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB20_SB_MEM_MOSI_t) return FM_SB20_SB_MEM_MOSI_t;
@@ -850,7 +850,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB20_SB_MEM_MISO_t;
-   attribute w of FM_SB20_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB20_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB20_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB20_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB20_SB_MEM_MISO_t) return FM_SB20_SB_MEM_MISO_t;
@@ -859,7 +859,7 @@ package FM_CTRL is
    type FM_SB20_MON_t is record
       SB_MEM : FM_SB20_SB_MEM_MISO_t;
    end record FM_SB20_MON_t;
-   attribute w of FM_SB20_MON_t : type is 33;
+   attribute w of FM_SB20_MON_t : type is FM_SB20_SB_MEM_MISO_t'w;
    function width(x: FM_SB20_MON_t) return natural;
    function convert(x: FM_SB20_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB20_MON_t) return FM_SB20_MON_t;
@@ -868,7 +868,7 @@ package FM_CTRL is
    type FM_SB20_CTRL_t is record
       SB_MEM : FM_SB20_SB_MEM_MOSI_t;
    end record FM_SB20_CTRL_t;
-   attribute w of FM_SB20_CTRL_t : type is 44;
+   attribute w of FM_SB20_CTRL_t : type is FM_SB20_SB_MEM_MOSI_t'w;
    function width(x: FM_SB20_CTRL_t) return natural;
    function convert(x: FM_SB20_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB20_CTRL_t) return FM_SB20_CTRL_t;
@@ -881,7 +881,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB21_SB_MEM_MOSI_t;
-   attribute w of FM_SB21_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB21_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB21_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB21_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB21_SB_MEM_MOSI_t) return FM_SB21_SB_MEM_MOSI_t;
@@ -891,7 +891,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB21_SB_MEM_MISO_t;
-   attribute w of FM_SB21_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB21_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB21_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB21_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB21_SB_MEM_MISO_t) return FM_SB21_SB_MEM_MISO_t;
@@ -900,7 +900,7 @@ package FM_CTRL is
    type FM_SB21_MON_t is record
       SB_MEM : FM_SB21_SB_MEM_MISO_t;
    end record FM_SB21_MON_t;
-   attribute w of FM_SB21_MON_t : type is 33;
+   attribute w of FM_SB21_MON_t : type is FM_SB21_SB_MEM_MISO_t'w;
    function width(x: FM_SB21_MON_t) return natural;
    function convert(x: FM_SB21_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB21_MON_t) return FM_SB21_MON_t;
@@ -909,7 +909,7 @@ package FM_CTRL is
    type FM_SB21_CTRL_t is record
       SB_MEM : FM_SB21_SB_MEM_MOSI_t;
    end record FM_SB21_CTRL_t;
-   attribute w of FM_SB21_CTRL_t : type is 44;
+   attribute w of FM_SB21_CTRL_t : type is FM_SB21_SB_MEM_MOSI_t'w;
    function width(x: FM_SB21_CTRL_t) return natural;
    function convert(x: FM_SB21_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB21_CTRL_t) return FM_SB21_CTRL_t;
@@ -922,7 +922,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB22_SB_MEM_MOSI_t;
-   attribute w of FM_SB22_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB22_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB22_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB22_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB22_SB_MEM_MOSI_t) return FM_SB22_SB_MEM_MOSI_t;
@@ -932,7 +932,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB22_SB_MEM_MISO_t;
-   attribute w of FM_SB22_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB22_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB22_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB22_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB22_SB_MEM_MISO_t) return FM_SB22_SB_MEM_MISO_t;
@@ -941,7 +941,7 @@ package FM_CTRL is
    type FM_SB22_MON_t is record
       SB_MEM : FM_SB22_SB_MEM_MISO_t;
    end record FM_SB22_MON_t;
-   attribute w of FM_SB22_MON_t : type is 33;
+   attribute w of FM_SB22_MON_t : type is FM_SB22_SB_MEM_MISO_t'w;
    function width(x: FM_SB22_MON_t) return natural;
    function convert(x: FM_SB22_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB22_MON_t) return FM_SB22_MON_t;
@@ -950,7 +950,7 @@ package FM_CTRL is
    type FM_SB22_CTRL_t is record
       SB_MEM : FM_SB22_SB_MEM_MOSI_t;
    end record FM_SB22_CTRL_t;
-   attribute w of FM_SB22_CTRL_t : type is 44;
+   attribute w of FM_SB22_CTRL_t : type is FM_SB22_SB_MEM_MOSI_t'w;
    function width(x: FM_SB22_CTRL_t) return natural;
    function convert(x: FM_SB22_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB22_CTRL_t) return FM_SB22_CTRL_t;
@@ -963,7 +963,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB23_SB_MEM_MOSI_t;
-   attribute w of FM_SB23_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB23_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB23_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB23_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB23_SB_MEM_MOSI_t) return FM_SB23_SB_MEM_MOSI_t;
@@ -973,7 +973,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB23_SB_MEM_MISO_t;
-   attribute w of FM_SB23_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB23_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB23_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB23_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB23_SB_MEM_MISO_t) return FM_SB23_SB_MEM_MISO_t;
@@ -982,7 +982,7 @@ package FM_CTRL is
    type FM_SB23_MON_t is record
       SB_MEM : FM_SB23_SB_MEM_MISO_t;
    end record FM_SB23_MON_t;
-   attribute w of FM_SB23_MON_t : type is 33;
+   attribute w of FM_SB23_MON_t : type is FM_SB23_SB_MEM_MISO_t'w;
    function width(x: FM_SB23_MON_t) return natural;
    function convert(x: FM_SB23_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB23_MON_t) return FM_SB23_MON_t;
@@ -991,7 +991,7 @@ package FM_CTRL is
    type FM_SB23_CTRL_t is record
       SB_MEM : FM_SB23_SB_MEM_MOSI_t;
    end record FM_SB23_CTRL_t;
-   attribute w of FM_SB23_CTRL_t : type is 44;
+   attribute w of FM_SB23_CTRL_t : type is FM_SB23_SB_MEM_MOSI_t'w;
    function width(x: FM_SB23_CTRL_t) return natural;
    function convert(x: FM_SB23_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB23_CTRL_t) return FM_SB23_CTRL_t;
@@ -1004,7 +1004,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB24_SB_MEM_MOSI_t;
-   attribute w of FM_SB24_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB24_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB24_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB24_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB24_SB_MEM_MOSI_t) return FM_SB24_SB_MEM_MOSI_t;
@@ -1014,7 +1014,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB24_SB_MEM_MISO_t;
-   attribute w of FM_SB24_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB24_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB24_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB24_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB24_SB_MEM_MISO_t) return FM_SB24_SB_MEM_MISO_t;
@@ -1023,7 +1023,7 @@ package FM_CTRL is
    type FM_SB24_MON_t is record
       SB_MEM : FM_SB24_SB_MEM_MISO_t;
    end record FM_SB24_MON_t;
-   attribute w of FM_SB24_MON_t : type is 33;
+   attribute w of FM_SB24_MON_t : type is FM_SB24_SB_MEM_MISO_t'w;
    function width(x: FM_SB24_MON_t) return natural;
    function convert(x: FM_SB24_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB24_MON_t) return FM_SB24_MON_t;
@@ -1032,7 +1032,7 @@ package FM_CTRL is
    type FM_SB24_CTRL_t is record
       SB_MEM : FM_SB24_SB_MEM_MOSI_t;
    end record FM_SB24_CTRL_t;
-   attribute w of FM_SB24_CTRL_t : type is 44;
+   attribute w of FM_SB24_CTRL_t : type is FM_SB24_SB_MEM_MOSI_t'w;
    function width(x: FM_SB24_CTRL_t) return natural;
    function convert(x: FM_SB24_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB24_CTRL_t) return FM_SB24_CTRL_t;
@@ -1045,7 +1045,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB25_SB_MEM_MOSI_t;
-   attribute w of FM_SB25_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB25_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB25_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB25_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB25_SB_MEM_MOSI_t) return FM_SB25_SB_MEM_MOSI_t;
@@ -1055,7 +1055,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB25_SB_MEM_MISO_t;
-   attribute w of FM_SB25_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB25_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB25_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB25_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB25_SB_MEM_MISO_t) return FM_SB25_SB_MEM_MISO_t;
@@ -1064,7 +1064,7 @@ package FM_CTRL is
    type FM_SB25_MON_t is record
       SB_MEM : FM_SB25_SB_MEM_MISO_t;
    end record FM_SB25_MON_t;
-   attribute w of FM_SB25_MON_t : type is 33;
+   attribute w of FM_SB25_MON_t : type is FM_SB25_SB_MEM_MISO_t'w;
    function width(x: FM_SB25_MON_t) return natural;
    function convert(x: FM_SB25_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB25_MON_t) return FM_SB25_MON_t;
@@ -1073,7 +1073,7 @@ package FM_CTRL is
    type FM_SB25_CTRL_t is record
       SB_MEM : FM_SB25_SB_MEM_MOSI_t;
    end record FM_SB25_CTRL_t;
-   attribute w of FM_SB25_CTRL_t : type is 44;
+   attribute w of FM_SB25_CTRL_t : type is FM_SB25_SB_MEM_MOSI_t'w;
    function width(x: FM_SB25_CTRL_t) return natural;
    function convert(x: FM_SB25_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB25_CTRL_t) return FM_SB25_CTRL_t;
@@ -1086,7 +1086,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB26_SB_MEM_MOSI_t;
-   attribute w of FM_SB26_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB26_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB26_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB26_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB26_SB_MEM_MOSI_t) return FM_SB26_SB_MEM_MOSI_t;
@@ -1096,7 +1096,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB26_SB_MEM_MISO_t;
-   attribute w of FM_SB26_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB26_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB26_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB26_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB26_SB_MEM_MISO_t) return FM_SB26_SB_MEM_MISO_t;
@@ -1105,7 +1105,7 @@ package FM_CTRL is
    type FM_SB26_MON_t is record
       SB_MEM : FM_SB26_SB_MEM_MISO_t;
    end record FM_SB26_MON_t;
-   attribute w of FM_SB26_MON_t : type is 33;
+   attribute w of FM_SB26_MON_t : type is FM_SB26_SB_MEM_MISO_t'w;
    function width(x: FM_SB26_MON_t) return natural;
    function convert(x: FM_SB26_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB26_MON_t) return FM_SB26_MON_t;
@@ -1114,7 +1114,7 @@ package FM_CTRL is
    type FM_SB26_CTRL_t is record
       SB_MEM : FM_SB26_SB_MEM_MOSI_t;
    end record FM_SB26_CTRL_t;
-   attribute w of FM_SB26_CTRL_t : type is 44;
+   attribute w of FM_SB26_CTRL_t : type is FM_SB26_SB_MEM_MOSI_t'w;
    function width(x: FM_SB26_CTRL_t) return natural;
    function convert(x: FM_SB26_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB26_CTRL_t) return FM_SB26_CTRL_t;
@@ -1127,7 +1127,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB27_SB_MEM_MOSI_t;
-   attribute w of FM_SB27_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB27_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB27_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB27_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB27_SB_MEM_MOSI_t) return FM_SB27_SB_MEM_MOSI_t;
@@ -1137,7 +1137,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB27_SB_MEM_MISO_t;
-   attribute w of FM_SB27_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB27_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB27_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB27_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB27_SB_MEM_MISO_t) return FM_SB27_SB_MEM_MISO_t;
@@ -1146,7 +1146,7 @@ package FM_CTRL is
    type FM_SB27_MON_t is record
       SB_MEM : FM_SB27_SB_MEM_MISO_t;
    end record FM_SB27_MON_t;
-   attribute w of FM_SB27_MON_t : type is 33;
+   attribute w of FM_SB27_MON_t : type is FM_SB27_SB_MEM_MISO_t'w;
    function width(x: FM_SB27_MON_t) return natural;
    function convert(x: FM_SB27_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB27_MON_t) return FM_SB27_MON_t;
@@ -1155,7 +1155,7 @@ package FM_CTRL is
    type FM_SB27_CTRL_t is record
       SB_MEM : FM_SB27_SB_MEM_MOSI_t;
    end record FM_SB27_CTRL_t;
-   attribute w of FM_SB27_CTRL_t : type is 44;
+   attribute w of FM_SB27_CTRL_t : type is FM_SB27_SB_MEM_MOSI_t'w;
    function width(x: FM_SB27_CTRL_t) return natural;
    function convert(x: FM_SB27_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB27_CTRL_t) return FM_SB27_CTRL_t;
@@ -1168,7 +1168,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB28_SB_MEM_MOSI_t;
-   attribute w of FM_SB28_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB28_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB28_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB28_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB28_SB_MEM_MOSI_t) return FM_SB28_SB_MEM_MOSI_t;
@@ -1178,7 +1178,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB28_SB_MEM_MISO_t;
-   attribute w of FM_SB28_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB28_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB28_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB28_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB28_SB_MEM_MISO_t) return FM_SB28_SB_MEM_MISO_t;
@@ -1187,7 +1187,7 @@ package FM_CTRL is
    type FM_SB28_MON_t is record
       SB_MEM : FM_SB28_SB_MEM_MISO_t;
    end record FM_SB28_MON_t;
-   attribute w of FM_SB28_MON_t : type is 33;
+   attribute w of FM_SB28_MON_t : type is FM_SB28_SB_MEM_MISO_t'w;
    function width(x: FM_SB28_MON_t) return natural;
    function convert(x: FM_SB28_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB28_MON_t) return FM_SB28_MON_t;
@@ -1196,7 +1196,7 @@ package FM_CTRL is
    type FM_SB28_CTRL_t is record
       SB_MEM : FM_SB28_SB_MEM_MOSI_t;
    end record FM_SB28_CTRL_t;
-   attribute w of FM_SB28_CTRL_t : type is 44;
+   attribute w of FM_SB28_CTRL_t : type is FM_SB28_SB_MEM_MOSI_t'w;
    function width(x: FM_SB28_CTRL_t) return natural;
    function convert(x: FM_SB28_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB28_CTRL_t) return FM_SB28_CTRL_t;
@@ -1209,7 +1209,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB29_SB_MEM_MOSI_t;
-   attribute w of FM_SB29_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB29_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB29_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB29_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB29_SB_MEM_MOSI_t) return FM_SB29_SB_MEM_MOSI_t;
@@ -1219,7 +1219,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB29_SB_MEM_MISO_t;
-   attribute w of FM_SB29_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB29_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB29_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB29_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB29_SB_MEM_MISO_t) return FM_SB29_SB_MEM_MISO_t;
@@ -1228,7 +1228,7 @@ package FM_CTRL is
    type FM_SB29_MON_t is record
       SB_MEM : FM_SB29_SB_MEM_MISO_t;
    end record FM_SB29_MON_t;
-   attribute w of FM_SB29_MON_t : type is 33;
+   attribute w of FM_SB29_MON_t : type is FM_SB29_SB_MEM_MISO_t'w;
    function width(x: FM_SB29_MON_t) return natural;
    function convert(x: FM_SB29_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB29_MON_t) return FM_SB29_MON_t;
@@ -1237,7 +1237,7 @@ package FM_CTRL is
    type FM_SB29_CTRL_t is record
       SB_MEM : FM_SB29_SB_MEM_MOSI_t;
    end record FM_SB29_CTRL_t;
-   attribute w of FM_SB29_CTRL_t : type is 44;
+   attribute w of FM_SB29_CTRL_t : type is FM_SB29_SB_MEM_MOSI_t'w;
    function width(x: FM_SB29_CTRL_t) return natural;
    function convert(x: FM_SB29_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB29_CTRL_t) return FM_SB29_CTRL_t;
@@ -1250,7 +1250,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB30_SB_MEM_MOSI_t;
-   attribute w of FM_SB30_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB30_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB30_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB30_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB30_SB_MEM_MOSI_t) return FM_SB30_SB_MEM_MOSI_t;
@@ -1260,7 +1260,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB30_SB_MEM_MISO_t;
-   attribute w of FM_SB30_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB30_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB30_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB30_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB30_SB_MEM_MISO_t) return FM_SB30_SB_MEM_MISO_t;
@@ -1269,7 +1269,7 @@ package FM_CTRL is
    type FM_SB30_MON_t is record
       SB_MEM : FM_SB30_SB_MEM_MISO_t;
    end record FM_SB30_MON_t;
-   attribute w of FM_SB30_MON_t : type is 33;
+   attribute w of FM_SB30_MON_t : type is FM_SB30_SB_MEM_MISO_t'w;
    function width(x: FM_SB30_MON_t) return natural;
    function convert(x: FM_SB30_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB30_MON_t) return FM_SB30_MON_t;
@@ -1278,7 +1278,7 @@ package FM_CTRL is
    type FM_SB30_CTRL_t is record
       SB_MEM : FM_SB30_SB_MEM_MOSI_t;
    end record FM_SB30_CTRL_t;
-   attribute w of FM_SB30_CTRL_t : type is 44;
+   attribute w of FM_SB30_CTRL_t : type is FM_SB30_SB_MEM_MOSI_t'w;
    function width(x: FM_SB30_CTRL_t) return natural;
    function convert(x: FM_SB30_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB30_CTRL_t) return FM_SB30_CTRL_t;
@@ -1291,7 +1291,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB31_SB_MEM_MOSI_t;
-   attribute w of FM_SB31_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB31_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB31_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB31_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB31_SB_MEM_MOSI_t) return FM_SB31_SB_MEM_MOSI_t;
@@ -1301,7 +1301,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB31_SB_MEM_MISO_t;
-   attribute w of FM_SB31_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB31_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB31_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB31_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB31_SB_MEM_MISO_t) return FM_SB31_SB_MEM_MISO_t;
@@ -1310,7 +1310,7 @@ package FM_CTRL is
    type FM_SB31_MON_t is record
       SB_MEM : FM_SB31_SB_MEM_MISO_t;
    end record FM_SB31_MON_t;
-   attribute w of FM_SB31_MON_t : type is 33;
+   attribute w of FM_SB31_MON_t : type is FM_SB31_SB_MEM_MISO_t'w;
    function width(x: FM_SB31_MON_t) return natural;
    function convert(x: FM_SB31_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB31_MON_t) return FM_SB31_MON_t;
@@ -1319,7 +1319,7 @@ package FM_CTRL is
    type FM_SB31_CTRL_t is record
       SB_MEM : FM_SB31_SB_MEM_MOSI_t;
    end record FM_SB31_CTRL_t;
-   attribute w of FM_SB31_CTRL_t : type is 44;
+   attribute w of FM_SB31_CTRL_t : type is FM_SB31_SB_MEM_MOSI_t'w;
    function width(x: FM_SB31_CTRL_t) return natural;
    function convert(x: FM_SB31_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB31_CTRL_t) return FM_SB31_CTRL_t;
@@ -1332,7 +1332,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB32_SB_MEM_MOSI_t;
-   attribute w of FM_SB32_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB32_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB32_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB32_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB32_SB_MEM_MOSI_t) return FM_SB32_SB_MEM_MOSI_t;
@@ -1342,7 +1342,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB32_SB_MEM_MISO_t;
-   attribute w of FM_SB32_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB32_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB32_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB32_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB32_SB_MEM_MISO_t) return FM_SB32_SB_MEM_MISO_t;
@@ -1351,7 +1351,7 @@ package FM_CTRL is
    type FM_SB32_MON_t is record
       SB_MEM : FM_SB32_SB_MEM_MISO_t;
    end record FM_SB32_MON_t;
-   attribute w of FM_SB32_MON_t : type is 33;
+   attribute w of FM_SB32_MON_t : type is FM_SB32_SB_MEM_MISO_t'w;
    function width(x: FM_SB32_MON_t) return natural;
    function convert(x: FM_SB32_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB32_MON_t) return FM_SB32_MON_t;
@@ -1360,7 +1360,7 @@ package FM_CTRL is
    type FM_SB32_CTRL_t is record
       SB_MEM : FM_SB32_SB_MEM_MOSI_t;
    end record FM_SB32_CTRL_t;
-   attribute w of FM_SB32_CTRL_t : type is 44;
+   attribute w of FM_SB32_CTRL_t : type is FM_SB32_SB_MEM_MOSI_t'w;
    function width(x: FM_SB32_CTRL_t) return natural;
    function convert(x: FM_SB32_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB32_CTRL_t) return FM_SB32_CTRL_t;
@@ -1373,7 +1373,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB33_SB_MEM_MOSI_t;
-   attribute w of FM_SB33_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB33_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB33_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB33_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB33_SB_MEM_MOSI_t) return FM_SB33_SB_MEM_MOSI_t;
@@ -1383,7 +1383,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB33_SB_MEM_MISO_t;
-   attribute w of FM_SB33_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB33_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB33_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB33_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB33_SB_MEM_MISO_t) return FM_SB33_SB_MEM_MISO_t;
@@ -1392,7 +1392,7 @@ package FM_CTRL is
    type FM_SB33_MON_t is record
       SB_MEM : FM_SB33_SB_MEM_MISO_t;
    end record FM_SB33_MON_t;
-   attribute w of FM_SB33_MON_t : type is 33;
+   attribute w of FM_SB33_MON_t : type is FM_SB33_SB_MEM_MISO_t'w;
    function width(x: FM_SB33_MON_t) return natural;
    function convert(x: FM_SB33_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB33_MON_t) return FM_SB33_MON_t;
@@ -1401,7 +1401,7 @@ package FM_CTRL is
    type FM_SB33_CTRL_t is record
       SB_MEM : FM_SB33_SB_MEM_MOSI_t;
    end record FM_SB33_CTRL_t;
-   attribute w of FM_SB33_CTRL_t : type is 44;
+   attribute w of FM_SB33_CTRL_t : type is FM_SB33_SB_MEM_MOSI_t'w;
    function width(x: FM_SB33_CTRL_t) return natural;
    function convert(x: FM_SB33_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB33_CTRL_t) return FM_SB33_CTRL_t;
@@ -1414,7 +1414,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB34_SB_MEM_MOSI_t;
-   attribute w of FM_SB34_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB34_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB34_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB34_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB34_SB_MEM_MOSI_t) return FM_SB34_SB_MEM_MOSI_t;
@@ -1424,7 +1424,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB34_SB_MEM_MISO_t;
-   attribute w of FM_SB34_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB34_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB34_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB34_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB34_SB_MEM_MISO_t) return FM_SB34_SB_MEM_MISO_t;
@@ -1433,7 +1433,7 @@ package FM_CTRL is
    type FM_SB34_MON_t is record
       SB_MEM : FM_SB34_SB_MEM_MISO_t;
    end record FM_SB34_MON_t;
-   attribute w of FM_SB34_MON_t : type is 33;
+   attribute w of FM_SB34_MON_t : type is FM_SB34_SB_MEM_MISO_t'w;
    function width(x: FM_SB34_MON_t) return natural;
    function convert(x: FM_SB34_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB34_MON_t) return FM_SB34_MON_t;
@@ -1442,7 +1442,7 @@ package FM_CTRL is
    type FM_SB34_CTRL_t is record
       SB_MEM : FM_SB34_SB_MEM_MOSI_t;
    end record FM_SB34_CTRL_t;
-   attribute w of FM_SB34_CTRL_t : type is 44;
+   attribute w of FM_SB34_CTRL_t : type is FM_SB34_SB_MEM_MOSI_t'w;
    function width(x: FM_SB34_CTRL_t) return natural;
    function convert(x: FM_SB34_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB34_CTRL_t) return FM_SB34_CTRL_t;
@@ -1455,7 +1455,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB35_SB_MEM_MOSI_t;
-   attribute w of FM_SB35_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB35_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB35_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB35_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB35_SB_MEM_MOSI_t) return FM_SB35_SB_MEM_MOSI_t;
@@ -1465,7 +1465,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB35_SB_MEM_MISO_t;
-   attribute w of FM_SB35_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB35_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB35_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB35_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB35_SB_MEM_MISO_t) return FM_SB35_SB_MEM_MISO_t;
@@ -1474,7 +1474,7 @@ package FM_CTRL is
    type FM_SB35_MON_t is record
       SB_MEM : FM_SB35_SB_MEM_MISO_t;
    end record FM_SB35_MON_t;
-   attribute w of FM_SB35_MON_t : type is 33;
+   attribute w of FM_SB35_MON_t : type is FM_SB35_SB_MEM_MISO_t'w;
    function width(x: FM_SB35_MON_t) return natural;
    function convert(x: FM_SB35_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB35_MON_t) return FM_SB35_MON_t;
@@ -1483,7 +1483,7 @@ package FM_CTRL is
    type FM_SB35_CTRL_t is record
       SB_MEM : FM_SB35_SB_MEM_MOSI_t;
    end record FM_SB35_CTRL_t;
-   attribute w of FM_SB35_CTRL_t : type is 44;
+   attribute w of FM_SB35_CTRL_t : type is FM_SB35_SB_MEM_MOSI_t'w;
    function width(x: FM_SB35_CTRL_t) return natural;
    function convert(x: FM_SB35_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB35_CTRL_t) return FM_SB35_CTRL_t;
@@ -1496,7 +1496,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB36_SB_MEM_MOSI_t;
-   attribute w of FM_SB36_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB36_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB36_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB36_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB36_SB_MEM_MOSI_t) return FM_SB36_SB_MEM_MOSI_t;
@@ -1506,7 +1506,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB36_SB_MEM_MISO_t;
-   attribute w of FM_SB36_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB36_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB36_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB36_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB36_SB_MEM_MISO_t) return FM_SB36_SB_MEM_MISO_t;
@@ -1515,7 +1515,7 @@ package FM_CTRL is
    type FM_SB36_MON_t is record
       SB_MEM : FM_SB36_SB_MEM_MISO_t;
    end record FM_SB36_MON_t;
-   attribute w of FM_SB36_MON_t : type is 33;
+   attribute w of FM_SB36_MON_t : type is FM_SB36_SB_MEM_MISO_t'w;
    function width(x: FM_SB36_MON_t) return natural;
    function convert(x: FM_SB36_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB36_MON_t) return FM_SB36_MON_t;
@@ -1524,7 +1524,7 @@ package FM_CTRL is
    type FM_SB36_CTRL_t is record
       SB_MEM : FM_SB36_SB_MEM_MOSI_t;
    end record FM_SB36_CTRL_t;
-   attribute w of FM_SB36_CTRL_t : type is 44;
+   attribute w of FM_SB36_CTRL_t : type is FM_SB36_SB_MEM_MOSI_t'w;
    function width(x: FM_SB36_CTRL_t) return natural;
    function convert(x: FM_SB36_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB36_CTRL_t) return FM_SB36_CTRL_t;
@@ -1537,7 +1537,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB37_SB_MEM_MOSI_t;
-   attribute w of FM_SB37_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB37_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB37_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB37_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB37_SB_MEM_MOSI_t) return FM_SB37_SB_MEM_MOSI_t;
@@ -1547,7 +1547,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB37_SB_MEM_MISO_t;
-   attribute w of FM_SB37_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB37_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB37_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB37_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB37_SB_MEM_MISO_t) return FM_SB37_SB_MEM_MISO_t;
@@ -1556,7 +1556,7 @@ package FM_CTRL is
    type FM_SB37_MON_t is record
       SB_MEM : FM_SB37_SB_MEM_MISO_t;
    end record FM_SB37_MON_t;
-   attribute w of FM_SB37_MON_t : type is 33;
+   attribute w of FM_SB37_MON_t : type is FM_SB37_SB_MEM_MISO_t'w;
    function width(x: FM_SB37_MON_t) return natural;
    function convert(x: FM_SB37_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB37_MON_t) return FM_SB37_MON_t;
@@ -1565,7 +1565,7 @@ package FM_CTRL is
    type FM_SB37_CTRL_t is record
       SB_MEM : FM_SB37_SB_MEM_MOSI_t;
    end record FM_SB37_CTRL_t;
-   attribute w of FM_SB37_CTRL_t : type is 44;
+   attribute w of FM_SB37_CTRL_t : type is FM_SB37_SB_MEM_MOSI_t'w;
    function width(x: FM_SB37_CTRL_t) return natural;
    function convert(x: FM_SB37_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB37_CTRL_t) return FM_SB37_CTRL_t;
@@ -1578,7 +1578,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB38_SB_MEM_MOSI_t;
-   attribute w of FM_SB38_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB38_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB38_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB38_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB38_SB_MEM_MOSI_t) return FM_SB38_SB_MEM_MOSI_t;
@@ -1588,7 +1588,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB38_SB_MEM_MISO_t;
-   attribute w of FM_SB38_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB38_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB38_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB38_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB38_SB_MEM_MISO_t) return FM_SB38_SB_MEM_MISO_t;
@@ -1597,7 +1597,7 @@ package FM_CTRL is
    type FM_SB38_MON_t is record
       SB_MEM : FM_SB38_SB_MEM_MISO_t;
    end record FM_SB38_MON_t;
-   attribute w of FM_SB38_MON_t : type is 33;
+   attribute w of FM_SB38_MON_t : type is FM_SB38_SB_MEM_MISO_t'w;
    function width(x: FM_SB38_MON_t) return natural;
    function convert(x: FM_SB38_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB38_MON_t) return FM_SB38_MON_t;
@@ -1606,7 +1606,7 @@ package FM_CTRL is
    type FM_SB38_CTRL_t is record
       SB_MEM : FM_SB38_SB_MEM_MOSI_t;
    end record FM_SB38_CTRL_t;
-   attribute w of FM_SB38_CTRL_t : type is 44;
+   attribute w of FM_SB38_CTRL_t : type is FM_SB38_SB_MEM_MOSI_t'w;
    function width(x: FM_SB38_CTRL_t) return natural;
    function convert(x: FM_SB38_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB38_CTRL_t) return FM_SB38_CTRL_t;
@@ -1619,7 +1619,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB39_SB_MEM_MOSI_t;
-   attribute w of FM_SB39_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB39_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB39_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB39_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB39_SB_MEM_MOSI_t) return FM_SB39_SB_MEM_MOSI_t;
@@ -1629,7 +1629,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB39_SB_MEM_MISO_t;
-   attribute w of FM_SB39_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB39_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB39_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB39_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB39_SB_MEM_MISO_t) return FM_SB39_SB_MEM_MISO_t;
@@ -1638,7 +1638,7 @@ package FM_CTRL is
    type FM_SB39_MON_t is record
       SB_MEM : FM_SB39_SB_MEM_MISO_t;
    end record FM_SB39_MON_t;
-   attribute w of FM_SB39_MON_t : type is 33;
+   attribute w of FM_SB39_MON_t : type is FM_SB39_SB_MEM_MISO_t'w;
    function width(x: FM_SB39_MON_t) return natural;
    function convert(x: FM_SB39_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB39_MON_t) return FM_SB39_MON_t;
@@ -1647,7 +1647,7 @@ package FM_CTRL is
    type FM_SB39_CTRL_t is record
       SB_MEM : FM_SB39_SB_MEM_MOSI_t;
    end record FM_SB39_CTRL_t;
-   attribute w of FM_SB39_CTRL_t : type is 44;
+   attribute w of FM_SB39_CTRL_t : type is FM_SB39_SB_MEM_MOSI_t'w;
    function width(x: FM_SB39_CTRL_t) return natural;
    function convert(x: FM_SB39_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB39_CTRL_t) return FM_SB39_CTRL_t;
@@ -1660,7 +1660,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB40_SB_MEM_MOSI_t;
-   attribute w of FM_SB40_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB40_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB40_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB40_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB40_SB_MEM_MOSI_t) return FM_SB40_SB_MEM_MOSI_t;
@@ -1670,7 +1670,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB40_SB_MEM_MISO_t;
-   attribute w of FM_SB40_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB40_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB40_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB40_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB40_SB_MEM_MISO_t) return FM_SB40_SB_MEM_MISO_t;
@@ -1679,7 +1679,7 @@ package FM_CTRL is
    type FM_SB40_MON_t is record
       SB_MEM : FM_SB40_SB_MEM_MISO_t;
    end record FM_SB40_MON_t;
-   attribute w of FM_SB40_MON_t : type is 33;
+   attribute w of FM_SB40_MON_t : type is FM_SB40_SB_MEM_MISO_t'w;
    function width(x: FM_SB40_MON_t) return natural;
    function convert(x: FM_SB40_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB40_MON_t) return FM_SB40_MON_t;
@@ -1688,7 +1688,7 @@ package FM_CTRL is
    type FM_SB40_CTRL_t is record
       SB_MEM : FM_SB40_SB_MEM_MOSI_t;
    end record FM_SB40_CTRL_t;
-   attribute w of FM_SB40_CTRL_t : type is 44;
+   attribute w of FM_SB40_CTRL_t : type is FM_SB40_SB_MEM_MOSI_t'w;
    function width(x: FM_SB40_CTRL_t) return natural;
    function convert(x: FM_SB40_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB40_CTRL_t) return FM_SB40_CTRL_t;
@@ -1701,7 +1701,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB41_SB_MEM_MOSI_t;
-   attribute w of FM_SB41_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB41_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB41_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB41_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB41_SB_MEM_MOSI_t) return FM_SB41_SB_MEM_MOSI_t;
@@ -1711,7 +1711,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB41_SB_MEM_MISO_t;
-   attribute w of FM_SB41_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB41_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB41_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB41_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB41_SB_MEM_MISO_t) return FM_SB41_SB_MEM_MISO_t;
@@ -1720,7 +1720,7 @@ package FM_CTRL is
    type FM_SB41_MON_t is record
       SB_MEM : FM_SB41_SB_MEM_MISO_t;
    end record FM_SB41_MON_t;
-   attribute w of FM_SB41_MON_t : type is 33;
+   attribute w of FM_SB41_MON_t : type is FM_SB41_SB_MEM_MISO_t'w;
    function width(x: FM_SB41_MON_t) return natural;
    function convert(x: FM_SB41_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB41_MON_t) return FM_SB41_MON_t;
@@ -1729,7 +1729,7 @@ package FM_CTRL is
    type FM_SB41_CTRL_t is record
       SB_MEM : FM_SB41_SB_MEM_MOSI_t;
    end record FM_SB41_CTRL_t;
-   attribute w of FM_SB41_CTRL_t : type is 44;
+   attribute w of FM_SB41_CTRL_t : type is FM_SB41_SB_MEM_MOSI_t'w;
    function width(x: FM_SB41_CTRL_t) return natural;
    function convert(x: FM_SB41_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB41_CTRL_t) return FM_SB41_CTRL_t;
@@ -1742,7 +1742,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB42_SB_MEM_MOSI_t;
-   attribute w of FM_SB42_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB42_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB42_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB42_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB42_SB_MEM_MOSI_t) return FM_SB42_SB_MEM_MOSI_t;
@@ -1752,7 +1752,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB42_SB_MEM_MISO_t;
-   attribute w of FM_SB42_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB42_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB42_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB42_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB42_SB_MEM_MISO_t) return FM_SB42_SB_MEM_MISO_t;
@@ -1761,7 +1761,7 @@ package FM_CTRL is
    type FM_SB42_MON_t is record
       SB_MEM : FM_SB42_SB_MEM_MISO_t;
    end record FM_SB42_MON_t;
-   attribute w of FM_SB42_MON_t : type is 33;
+   attribute w of FM_SB42_MON_t : type is FM_SB42_SB_MEM_MISO_t'w;
    function width(x: FM_SB42_MON_t) return natural;
    function convert(x: FM_SB42_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB42_MON_t) return FM_SB42_MON_t;
@@ -1770,7 +1770,7 @@ package FM_CTRL is
    type FM_SB42_CTRL_t is record
       SB_MEM : FM_SB42_SB_MEM_MOSI_t;
    end record FM_SB42_CTRL_t;
-   attribute w of FM_SB42_CTRL_t : type is 44;
+   attribute w of FM_SB42_CTRL_t : type is FM_SB42_SB_MEM_MOSI_t'w;
    function width(x: FM_SB42_CTRL_t) return natural;
    function convert(x: FM_SB42_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB42_CTRL_t) return FM_SB42_CTRL_t;
@@ -1783,7 +1783,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB43_SB_MEM_MOSI_t;
-   attribute w of FM_SB43_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB43_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB43_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB43_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB43_SB_MEM_MOSI_t) return FM_SB43_SB_MEM_MOSI_t;
@@ -1793,7 +1793,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB43_SB_MEM_MISO_t;
-   attribute w of FM_SB43_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB43_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB43_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB43_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB43_SB_MEM_MISO_t) return FM_SB43_SB_MEM_MISO_t;
@@ -1802,7 +1802,7 @@ package FM_CTRL is
    type FM_SB43_MON_t is record
       SB_MEM : FM_SB43_SB_MEM_MISO_t;
    end record FM_SB43_MON_t;
-   attribute w of FM_SB43_MON_t : type is 33;
+   attribute w of FM_SB43_MON_t : type is FM_SB43_SB_MEM_MISO_t'w;
    function width(x: FM_SB43_MON_t) return natural;
    function convert(x: FM_SB43_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB43_MON_t) return FM_SB43_MON_t;
@@ -1811,7 +1811,7 @@ package FM_CTRL is
    type FM_SB43_CTRL_t is record
       SB_MEM : FM_SB43_SB_MEM_MOSI_t;
    end record FM_SB43_CTRL_t;
-   attribute w of FM_SB43_CTRL_t : type is 44;
+   attribute w of FM_SB43_CTRL_t : type is FM_SB43_SB_MEM_MOSI_t'w;
    function width(x: FM_SB43_CTRL_t) return natural;
    function convert(x: FM_SB43_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB43_CTRL_t) return FM_SB43_CTRL_t;
@@ -1824,7 +1824,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB44_SB_MEM_MOSI_t;
-   attribute w of FM_SB44_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB44_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB44_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB44_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB44_SB_MEM_MOSI_t) return FM_SB44_SB_MEM_MOSI_t;
@@ -1834,7 +1834,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB44_SB_MEM_MISO_t;
-   attribute w of FM_SB44_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB44_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB44_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB44_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB44_SB_MEM_MISO_t) return FM_SB44_SB_MEM_MISO_t;
@@ -1843,7 +1843,7 @@ package FM_CTRL is
    type FM_SB44_MON_t is record
       SB_MEM : FM_SB44_SB_MEM_MISO_t;
    end record FM_SB44_MON_t;
-   attribute w of FM_SB44_MON_t : type is 33;
+   attribute w of FM_SB44_MON_t : type is FM_SB44_SB_MEM_MISO_t'w;
    function width(x: FM_SB44_MON_t) return natural;
    function convert(x: FM_SB44_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB44_MON_t) return FM_SB44_MON_t;
@@ -1852,7 +1852,7 @@ package FM_CTRL is
    type FM_SB44_CTRL_t is record
       SB_MEM : FM_SB44_SB_MEM_MOSI_t;
    end record FM_SB44_CTRL_t;
-   attribute w of FM_SB44_CTRL_t : type is 44;
+   attribute w of FM_SB44_CTRL_t : type is FM_SB44_SB_MEM_MOSI_t'w;
    function width(x: FM_SB44_CTRL_t) return natural;
    function convert(x: FM_SB44_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB44_CTRL_t) return FM_SB44_CTRL_t;
@@ -1865,7 +1865,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB45_SB_MEM_MOSI_t;
-   attribute w of FM_SB45_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB45_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB45_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB45_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB45_SB_MEM_MOSI_t) return FM_SB45_SB_MEM_MOSI_t;
@@ -1875,7 +1875,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB45_SB_MEM_MISO_t;
-   attribute w of FM_SB45_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB45_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB45_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB45_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB45_SB_MEM_MISO_t) return FM_SB45_SB_MEM_MISO_t;
@@ -1884,7 +1884,7 @@ package FM_CTRL is
    type FM_SB45_MON_t is record
       SB_MEM : FM_SB45_SB_MEM_MISO_t;
    end record FM_SB45_MON_t;
-   attribute w of FM_SB45_MON_t : type is 33;
+   attribute w of FM_SB45_MON_t : type is FM_SB45_SB_MEM_MISO_t'w;
    function width(x: FM_SB45_MON_t) return natural;
    function convert(x: FM_SB45_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB45_MON_t) return FM_SB45_MON_t;
@@ -1893,7 +1893,7 @@ package FM_CTRL is
    type FM_SB45_CTRL_t is record
       SB_MEM : FM_SB45_SB_MEM_MOSI_t;
    end record FM_SB45_CTRL_t;
-   attribute w of FM_SB45_CTRL_t : type is 44;
+   attribute w of FM_SB45_CTRL_t : type is FM_SB45_SB_MEM_MOSI_t'w;
    function width(x: FM_SB45_CTRL_t) return natural;
    function convert(x: FM_SB45_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB45_CTRL_t) return FM_SB45_CTRL_t;
@@ -1906,7 +1906,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB46_SB_MEM_MOSI_t;
-   attribute w of FM_SB46_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB46_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB46_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB46_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB46_SB_MEM_MOSI_t) return FM_SB46_SB_MEM_MOSI_t;
@@ -1916,7 +1916,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB46_SB_MEM_MISO_t;
-   attribute w of FM_SB46_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB46_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB46_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB46_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB46_SB_MEM_MISO_t) return FM_SB46_SB_MEM_MISO_t;
@@ -1925,7 +1925,7 @@ package FM_CTRL is
    type FM_SB46_MON_t is record
       SB_MEM : FM_SB46_SB_MEM_MISO_t;
    end record FM_SB46_MON_t;
-   attribute w of FM_SB46_MON_t : type is 33;
+   attribute w of FM_SB46_MON_t : type is FM_SB46_SB_MEM_MISO_t'w;
    function width(x: FM_SB46_MON_t) return natural;
    function convert(x: FM_SB46_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB46_MON_t) return FM_SB46_MON_t;
@@ -1934,7 +1934,7 @@ package FM_CTRL is
    type FM_SB46_CTRL_t is record
       SB_MEM : FM_SB46_SB_MEM_MOSI_t;
    end record FM_SB46_CTRL_t;
-   attribute w of FM_SB46_CTRL_t : type is 44;
+   attribute w of FM_SB46_CTRL_t : type is FM_SB46_SB_MEM_MOSI_t'w;
    function width(x: FM_SB46_CTRL_t) return natural;
    function convert(x: FM_SB46_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB46_CTRL_t) return FM_SB46_CTRL_t;
@@ -1947,7 +1947,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB47_SB_MEM_MOSI_t;
-   attribute w of FM_SB47_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB47_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB47_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB47_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB47_SB_MEM_MOSI_t) return FM_SB47_SB_MEM_MOSI_t;
@@ -1957,7 +1957,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB47_SB_MEM_MISO_t;
-   attribute w of FM_SB47_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB47_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB47_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB47_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB47_SB_MEM_MISO_t) return FM_SB47_SB_MEM_MISO_t;
@@ -1966,7 +1966,7 @@ package FM_CTRL is
    type FM_SB47_MON_t is record
       SB_MEM : FM_SB47_SB_MEM_MISO_t;
    end record FM_SB47_MON_t;
-   attribute w of FM_SB47_MON_t : type is 33;
+   attribute w of FM_SB47_MON_t : type is FM_SB47_SB_MEM_MISO_t'w;
    function width(x: FM_SB47_MON_t) return natural;
    function convert(x: FM_SB47_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB47_MON_t) return FM_SB47_MON_t;
@@ -1975,7 +1975,7 @@ package FM_CTRL is
    type FM_SB47_CTRL_t is record
       SB_MEM : FM_SB47_SB_MEM_MOSI_t;
    end record FM_SB47_CTRL_t;
-   attribute w of FM_SB47_CTRL_t : type is 44;
+   attribute w of FM_SB47_CTRL_t : type is FM_SB47_SB_MEM_MOSI_t'w;
    function width(x: FM_SB47_CTRL_t) return natural;
    function convert(x: FM_SB47_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB47_CTRL_t) return FM_SB47_CTRL_t;
@@ -1988,7 +1988,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB48_SB_MEM_MOSI_t;
-   attribute w of FM_SB48_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB48_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB48_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB48_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB48_SB_MEM_MOSI_t) return FM_SB48_SB_MEM_MOSI_t;
@@ -1998,7 +1998,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB48_SB_MEM_MISO_t;
-   attribute w of FM_SB48_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB48_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB48_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB48_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB48_SB_MEM_MISO_t) return FM_SB48_SB_MEM_MISO_t;
@@ -2007,7 +2007,7 @@ package FM_CTRL is
    type FM_SB48_MON_t is record
       SB_MEM : FM_SB48_SB_MEM_MISO_t;
    end record FM_SB48_MON_t;
-   attribute w of FM_SB48_MON_t : type is 33;
+   attribute w of FM_SB48_MON_t : type is FM_SB48_SB_MEM_MISO_t'w;
    function width(x: FM_SB48_MON_t) return natural;
    function convert(x: FM_SB48_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB48_MON_t) return FM_SB48_MON_t;
@@ -2016,7 +2016,7 @@ package FM_CTRL is
    type FM_SB48_CTRL_t is record
       SB_MEM : FM_SB48_SB_MEM_MOSI_t;
    end record FM_SB48_CTRL_t;
-   attribute w of FM_SB48_CTRL_t : type is 44;
+   attribute w of FM_SB48_CTRL_t : type is FM_SB48_SB_MEM_MOSI_t'w;
    function width(x: FM_SB48_CTRL_t) return natural;
    function convert(x: FM_SB48_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB48_CTRL_t) return FM_SB48_CTRL_t;
@@ -2029,7 +2029,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB49_SB_MEM_MOSI_t;
-   attribute w of FM_SB49_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB49_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB49_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB49_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB49_SB_MEM_MOSI_t) return FM_SB49_SB_MEM_MOSI_t;
@@ -2039,7 +2039,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB49_SB_MEM_MISO_t;
-   attribute w of FM_SB49_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB49_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB49_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB49_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB49_SB_MEM_MISO_t) return FM_SB49_SB_MEM_MISO_t;
@@ -2048,7 +2048,7 @@ package FM_CTRL is
    type FM_SB49_MON_t is record
       SB_MEM : FM_SB49_SB_MEM_MISO_t;
    end record FM_SB49_MON_t;
-   attribute w of FM_SB49_MON_t : type is 33;
+   attribute w of FM_SB49_MON_t : type is FM_SB49_SB_MEM_MISO_t'w;
    function width(x: FM_SB49_MON_t) return natural;
    function convert(x: FM_SB49_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB49_MON_t) return FM_SB49_MON_t;
@@ -2057,7 +2057,7 @@ package FM_CTRL is
    type FM_SB49_CTRL_t is record
       SB_MEM : FM_SB49_SB_MEM_MOSI_t;
    end record FM_SB49_CTRL_t;
-   attribute w of FM_SB49_CTRL_t : type is 44;
+   attribute w of FM_SB49_CTRL_t : type is FM_SB49_SB_MEM_MOSI_t'w;
    function width(x: FM_SB49_CTRL_t) return natural;
    function convert(x: FM_SB49_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB49_CTRL_t) return FM_SB49_CTRL_t;
@@ -2070,7 +2070,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB50_SB_MEM_MOSI_t;
-   attribute w of FM_SB50_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB50_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB50_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB50_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB50_SB_MEM_MOSI_t) return FM_SB50_SB_MEM_MOSI_t;
@@ -2080,7 +2080,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB50_SB_MEM_MISO_t;
-   attribute w of FM_SB50_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB50_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB50_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB50_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB50_SB_MEM_MISO_t) return FM_SB50_SB_MEM_MISO_t;
@@ -2089,7 +2089,7 @@ package FM_CTRL is
    type FM_SB50_MON_t is record
       SB_MEM : FM_SB50_SB_MEM_MISO_t;
    end record FM_SB50_MON_t;
-   attribute w of FM_SB50_MON_t : type is 33;
+   attribute w of FM_SB50_MON_t : type is FM_SB50_SB_MEM_MISO_t'w;
    function width(x: FM_SB50_MON_t) return natural;
    function convert(x: FM_SB50_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB50_MON_t) return FM_SB50_MON_t;
@@ -2098,7 +2098,7 @@ package FM_CTRL is
    type FM_SB50_CTRL_t is record
       SB_MEM : FM_SB50_SB_MEM_MOSI_t;
    end record FM_SB50_CTRL_t;
-   attribute w of FM_SB50_CTRL_t : type is 44;
+   attribute w of FM_SB50_CTRL_t : type is FM_SB50_SB_MEM_MOSI_t'w;
    function width(x: FM_SB50_CTRL_t) return natural;
    function convert(x: FM_SB50_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB50_CTRL_t) return FM_SB50_CTRL_t;
@@ -2111,7 +2111,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB51_SB_MEM_MOSI_t;
-   attribute w of FM_SB51_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB51_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB51_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB51_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB51_SB_MEM_MOSI_t) return FM_SB51_SB_MEM_MOSI_t;
@@ -2121,7 +2121,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB51_SB_MEM_MISO_t;
-   attribute w of FM_SB51_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB51_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB51_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB51_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB51_SB_MEM_MISO_t) return FM_SB51_SB_MEM_MISO_t;
@@ -2130,7 +2130,7 @@ package FM_CTRL is
    type FM_SB51_MON_t is record
       SB_MEM : FM_SB51_SB_MEM_MISO_t;
    end record FM_SB51_MON_t;
-   attribute w of FM_SB51_MON_t : type is 33;
+   attribute w of FM_SB51_MON_t : type is FM_SB51_SB_MEM_MISO_t'w;
    function width(x: FM_SB51_MON_t) return natural;
    function convert(x: FM_SB51_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB51_MON_t) return FM_SB51_MON_t;
@@ -2139,7 +2139,7 @@ package FM_CTRL is
    type FM_SB51_CTRL_t is record
       SB_MEM : FM_SB51_SB_MEM_MOSI_t;
    end record FM_SB51_CTRL_t;
-   attribute w of FM_SB51_CTRL_t : type is 44;
+   attribute w of FM_SB51_CTRL_t : type is FM_SB51_SB_MEM_MOSI_t'w;
    function width(x: FM_SB51_CTRL_t) return natural;
    function convert(x: FM_SB51_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB51_CTRL_t) return FM_SB51_CTRL_t;
@@ -2152,7 +2152,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB52_SB_MEM_MOSI_t;
-   attribute w of FM_SB52_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB52_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB52_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB52_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB52_SB_MEM_MOSI_t) return FM_SB52_SB_MEM_MOSI_t;
@@ -2162,7 +2162,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB52_SB_MEM_MISO_t;
-   attribute w of FM_SB52_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB52_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB52_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB52_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB52_SB_MEM_MISO_t) return FM_SB52_SB_MEM_MISO_t;
@@ -2171,7 +2171,7 @@ package FM_CTRL is
    type FM_SB52_MON_t is record
       SB_MEM : FM_SB52_SB_MEM_MISO_t;
    end record FM_SB52_MON_t;
-   attribute w of FM_SB52_MON_t : type is 33;
+   attribute w of FM_SB52_MON_t : type is FM_SB52_SB_MEM_MISO_t'w;
    function width(x: FM_SB52_MON_t) return natural;
    function convert(x: FM_SB52_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB52_MON_t) return FM_SB52_MON_t;
@@ -2180,7 +2180,7 @@ package FM_CTRL is
    type FM_SB52_CTRL_t is record
       SB_MEM : FM_SB52_SB_MEM_MOSI_t;
    end record FM_SB52_CTRL_t;
-   attribute w of FM_SB52_CTRL_t : type is 44;
+   attribute w of FM_SB52_CTRL_t : type is FM_SB52_SB_MEM_MOSI_t'w;
    function width(x: FM_SB52_CTRL_t) return natural;
    function convert(x: FM_SB52_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB52_CTRL_t) return FM_SB52_CTRL_t;
@@ -2193,7 +2193,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB53_SB_MEM_MOSI_t;
-   attribute w of FM_SB53_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB53_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB53_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB53_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB53_SB_MEM_MOSI_t) return FM_SB53_SB_MEM_MOSI_t;
@@ -2203,7 +2203,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB53_SB_MEM_MISO_t;
-   attribute w of FM_SB53_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB53_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB53_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB53_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB53_SB_MEM_MISO_t) return FM_SB53_SB_MEM_MISO_t;
@@ -2212,7 +2212,7 @@ package FM_CTRL is
    type FM_SB53_MON_t is record
       SB_MEM : FM_SB53_SB_MEM_MISO_t;
    end record FM_SB53_MON_t;
-   attribute w of FM_SB53_MON_t : type is 33;
+   attribute w of FM_SB53_MON_t : type is FM_SB53_SB_MEM_MISO_t'w;
    function width(x: FM_SB53_MON_t) return natural;
    function convert(x: FM_SB53_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB53_MON_t) return FM_SB53_MON_t;
@@ -2221,7 +2221,7 @@ package FM_CTRL is
    type FM_SB53_CTRL_t is record
       SB_MEM : FM_SB53_SB_MEM_MOSI_t;
    end record FM_SB53_CTRL_t;
-   attribute w of FM_SB53_CTRL_t : type is 44;
+   attribute w of FM_SB53_CTRL_t : type is FM_SB53_SB_MEM_MOSI_t'w;
    function width(x: FM_SB53_CTRL_t) return natural;
    function convert(x: FM_SB53_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB53_CTRL_t) return FM_SB53_CTRL_t;
@@ -2234,7 +2234,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB54_SB_MEM_MOSI_t;
-   attribute w of FM_SB54_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB54_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB54_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB54_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB54_SB_MEM_MOSI_t) return FM_SB54_SB_MEM_MOSI_t;
@@ -2244,7 +2244,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB54_SB_MEM_MISO_t;
-   attribute w of FM_SB54_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB54_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB54_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB54_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB54_SB_MEM_MISO_t) return FM_SB54_SB_MEM_MISO_t;
@@ -2253,7 +2253,7 @@ package FM_CTRL is
    type FM_SB54_MON_t is record
       SB_MEM : FM_SB54_SB_MEM_MISO_t;
    end record FM_SB54_MON_t;
-   attribute w of FM_SB54_MON_t : type is 33;
+   attribute w of FM_SB54_MON_t : type is FM_SB54_SB_MEM_MISO_t'w;
    function width(x: FM_SB54_MON_t) return natural;
    function convert(x: FM_SB54_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB54_MON_t) return FM_SB54_MON_t;
@@ -2262,7 +2262,7 @@ package FM_CTRL is
    type FM_SB54_CTRL_t is record
       SB_MEM : FM_SB54_SB_MEM_MOSI_t;
    end record FM_SB54_CTRL_t;
-   attribute w of FM_SB54_CTRL_t : type is 44;
+   attribute w of FM_SB54_CTRL_t : type is FM_SB54_SB_MEM_MOSI_t'w;
    function width(x: FM_SB54_CTRL_t) return natural;
    function convert(x: FM_SB54_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB54_CTRL_t) return FM_SB54_CTRL_t;
@@ -2275,7 +2275,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB55_SB_MEM_MOSI_t;
-   attribute w of FM_SB55_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB55_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB55_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB55_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB55_SB_MEM_MOSI_t) return FM_SB55_SB_MEM_MOSI_t;
@@ -2285,7 +2285,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB55_SB_MEM_MISO_t;
-   attribute w of FM_SB55_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB55_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB55_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB55_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB55_SB_MEM_MISO_t) return FM_SB55_SB_MEM_MISO_t;
@@ -2294,7 +2294,7 @@ package FM_CTRL is
    type FM_SB55_MON_t is record
       SB_MEM : FM_SB55_SB_MEM_MISO_t;
    end record FM_SB55_MON_t;
-   attribute w of FM_SB55_MON_t : type is 33;
+   attribute w of FM_SB55_MON_t : type is FM_SB55_SB_MEM_MISO_t'w;
    function width(x: FM_SB55_MON_t) return natural;
    function convert(x: FM_SB55_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB55_MON_t) return FM_SB55_MON_t;
@@ -2303,7 +2303,7 @@ package FM_CTRL is
    type FM_SB55_CTRL_t is record
       SB_MEM : FM_SB55_SB_MEM_MOSI_t;
    end record FM_SB55_CTRL_t;
-   attribute w of FM_SB55_CTRL_t : type is 44;
+   attribute w of FM_SB55_CTRL_t : type is FM_SB55_SB_MEM_MOSI_t'w;
    function width(x: FM_SB55_CTRL_t) return natural;
    function convert(x: FM_SB55_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB55_CTRL_t) return FM_SB55_CTRL_t;
@@ -2316,7 +2316,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB56_SB_MEM_MOSI_t;
-   attribute w of FM_SB56_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB56_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB56_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB56_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB56_SB_MEM_MOSI_t) return FM_SB56_SB_MEM_MOSI_t;
@@ -2326,7 +2326,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB56_SB_MEM_MISO_t;
-   attribute w of FM_SB56_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB56_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB56_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB56_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB56_SB_MEM_MISO_t) return FM_SB56_SB_MEM_MISO_t;
@@ -2335,7 +2335,7 @@ package FM_CTRL is
    type FM_SB56_MON_t is record
       SB_MEM : FM_SB56_SB_MEM_MISO_t;
    end record FM_SB56_MON_t;
-   attribute w of FM_SB56_MON_t : type is 33;
+   attribute w of FM_SB56_MON_t : type is FM_SB56_SB_MEM_MISO_t'w;
    function width(x: FM_SB56_MON_t) return natural;
    function convert(x: FM_SB56_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB56_MON_t) return FM_SB56_MON_t;
@@ -2344,7 +2344,7 @@ package FM_CTRL is
    type FM_SB56_CTRL_t is record
       SB_MEM : FM_SB56_SB_MEM_MOSI_t;
    end record FM_SB56_CTRL_t;
-   attribute w of FM_SB56_CTRL_t : type is 44;
+   attribute w of FM_SB56_CTRL_t : type is FM_SB56_SB_MEM_MOSI_t'w;
    function width(x: FM_SB56_CTRL_t) return natural;
    function convert(x: FM_SB56_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB56_CTRL_t) return FM_SB56_CTRL_t;
@@ -2357,7 +2357,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB57_SB_MEM_MOSI_t;
-   attribute w of FM_SB57_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB57_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB57_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB57_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB57_SB_MEM_MOSI_t) return FM_SB57_SB_MEM_MOSI_t;
@@ -2367,7 +2367,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB57_SB_MEM_MISO_t;
-   attribute w of FM_SB57_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB57_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB57_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB57_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB57_SB_MEM_MISO_t) return FM_SB57_SB_MEM_MISO_t;
@@ -2376,7 +2376,7 @@ package FM_CTRL is
    type FM_SB57_MON_t is record
       SB_MEM : FM_SB57_SB_MEM_MISO_t;
    end record FM_SB57_MON_t;
-   attribute w of FM_SB57_MON_t : type is 33;
+   attribute w of FM_SB57_MON_t : type is FM_SB57_SB_MEM_MISO_t'w;
    function width(x: FM_SB57_MON_t) return natural;
    function convert(x: FM_SB57_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB57_MON_t) return FM_SB57_MON_t;
@@ -2385,7 +2385,7 @@ package FM_CTRL is
    type FM_SB57_CTRL_t is record
       SB_MEM : FM_SB57_SB_MEM_MOSI_t;
    end record FM_SB57_CTRL_t;
-   attribute w of FM_SB57_CTRL_t : type is 44;
+   attribute w of FM_SB57_CTRL_t : type is FM_SB57_SB_MEM_MOSI_t'w;
    function width(x: FM_SB57_CTRL_t) return natural;
    function convert(x: FM_SB57_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB57_CTRL_t) return FM_SB57_CTRL_t;
@@ -2398,7 +2398,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB58_SB_MEM_MOSI_t;
-   attribute w of FM_SB58_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB58_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB58_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB58_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB58_SB_MEM_MOSI_t) return FM_SB58_SB_MEM_MOSI_t;
@@ -2408,7 +2408,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB58_SB_MEM_MISO_t;
-   attribute w of FM_SB58_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB58_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB58_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB58_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB58_SB_MEM_MISO_t) return FM_SB58_SB_MEM_MISO_t;
@@ -2417,7 +2417,7 @@ package FM_CTRL is
    type FM_SB58_MON_t is record
       SB_MEM : FM_SB58_SB_MEM_MISO_t;
    end record FM_SB58_MON_t;
-   attribute w of FM_SB58_MON_t : type is 33;
+   attribute w of FM_SB58_MON_t : type is FM_SB58_SB_MEM_MISO_t'w;
    function width(x: FM_SB58_MON_t) return natural;
    function convert(x: FM_SB58_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB58_MON_t) return FM_SB58_MON_t;
@@ -2426,7 +2426,7 @@ package FM_CTRL is
    type FM_SB58_CTRL_t is record
       SB_MEM : FM_SB58_SB_MEM_MOSI_t;
    end record FM_SB58_CTRL_t;
-   attribute w of FM_SB58_CTRL_t : type is 44;
+   attribute w of FM_SB58_CTRL_t : type is FM_SB58_SB_MEM_MOSI_t'w;
    function width(x: FM_SB58_CTRL_t) return natural;
    function convert(x: FM_SB58_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB58_CTRL_t) return FM_SB58_CTRL_t;
@@ -2439,7 +2439,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB59_SB_MEM_MOSI_t;
-   attribute w of FM_SB59_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB59_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB59_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB59_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB59_SB_MEM_MOSI_t) return FM_SB59_SB_MEM_MOSI_t;
@@ -2449,7 +2449,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB59_SB_MEM_MISO_t;
-   attribute w of FM_SB59_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB59_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB59_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB59_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB59_SB_MEM_MISO_t) return FM_SB59_SB_MEM_MISO_t;
@@ -2458,7 +2458,7 @@ package FM_CTRL is
    type FM_SB59_MON_t is record
       SB_MEM : FM_SB59_SB_MEM_MISO_t;
    end record FM_SB59_MON_t;
-   attribute w of FM_SB59_MON_t : type is 33;
+   attribute w of FM_SB59_MON_t : type is FM_SB59_SB_MEM_MISO_t'w;
    function width(x: FM_SB59_MON_t) return natural;
    function convert(x: FM_SB59_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB59_MON_t) return FM_SB59_MON_t;
@@ -2467,7 +2467,7 @@ package FM_CTRL is
    type FM_SB59_CTRL_t is record
       SB_MEM : FM_SB59_SB_MEM_MOSI_t;
    end record FM_SB59_CTRL_t;
-   attribute w of FM_SB59_CTRL_t : type is 44;
+   attribute w of FM_SB59_CTRL_t : type is FM_SB59_SB_MEM_MOSI_t'w;
    function width(x: FM_SB59_CTRL_t) return natural;
    function convert(x: FM_SB59_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB59_CTRL_t) return FM_SB59_CTRL_t;
@@ -2480,7 +2480,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB60_SB_MEM_MOSI_t;
-   attribute w of FM_SB60_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB60_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB60_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB60_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB60_SB_MEM_MOSI_t) return FM_SB60_SB_MEM_MOSI_t;
@@ -2490,7 +2490,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB60_SB_MEM_MISO_t;
-   attribute w of FM_SB60_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB60_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB60_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB60_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB60_SB_MEM_MISO_t) return FM_SB60_SB_MEM_MISO_t;
@@ -2499,7 +2499,7 @@ package FM_CTRL is
    type FM_SB60_MON_t is record
       SB_MEM : FM_SB60_SB_MEM_MISO_t;
    end record FM_SB60_MON_t;
-   attribute w of FM_SB60_MON_t : type is 33;
+   attribute w of FM_SB60_MON_t : type is FM_SB60_SB_MEM_MISO_t'w;
    function width(x: FM_SB60_MON_t) return natural;
    function convert(x: FM_SB60_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB60_MON_t) return FM_SB60_MON_t;
@@ -2508,7 +2508,7 @@ package FM_CTRL is
    type FM_SB60_CTRL_t is record
       SB_MEM : FM_SB60_SB_MEM_MOSI_t;
    end record FM_SB60_CTRL_t;
-   attribute w of FM_SB60_CTRL_t : type is 44;
+   attribute w of FM_SB60_CTRL_t : type is FM_SB60_SB_MEM_MOSI_t'w;
    function width(x: FM_SB60_CTRL_t) return natural;
    function convert(x: FM_SB60_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB60_CTRL_t) return FM_SB60_CTRL_t;
@@ -2521,7 +2521,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB61_SB_MEM_MOSI_t;
-   attribute w of FM_SB61_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB61_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB61_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB61_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB61_SB_MEM_MOSI_t) return FM_SB61_SB_MEM_MOSI_t;
@@ -2531,7 +2531,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB61_SB_MEM_MISO_t;
-   attribute w of FM_SB61_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB61_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB61_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB61_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB61_SB_MEM_MISO_t) return FM_SB61_SB_MEM_MISO_t;
@@ -2540,7 +2540,7 @@ package FM_CTRL is
    type FM_SB61_MON_t is record
       SB_MEM : FM_SB61_SB_MEM_MISO_t;
    end record FM_SB61_MON_t;
-   attribute w of FM_SB61_MON_t : type is 33;
+   attribute w of FM_SB61_MON_t : type is FM_SB61_SB_MEM_MISO_t'w;
    function width(x: FM_SB61_MON_t) return natural;
    function convert(x: FM_SB61_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB61_MON_t) return FM_SB61_MON_t;
@@ -2549,7 +2549,7 @@ package FM_CTRL is
    type FM_SB61_CTRL_t is record
       SB_MEM : FM_SB61_SB_MEM_MOSI_t;
    end record FM_SB61_CTRL_t;
-   attribute w of FM_SB61_CTRL_t : type is 44;
+   attribute w of FM_SB61_CTRL_t : type is FM_SB61_SB_MEM_MOSI_t'w;
    function width(x: FM_SB61_CTRL_t) return natural;
    function convert(x: FM_SB61_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB61_CTRL_t) return FM_SB61_CTRL_t;
@@ -2562,7 +2562,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB62_SB_MEM_MOSI_t;
-   attribute w of FM_SB62_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB62_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB62_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB62_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB62_SB_MEM_MOSI_t) return FM_SB62_SB_MEM_MOSI_t;
@@ -2572,7 +2572,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB62_SB_MEM_MISO_t;
-   attribute w of FM_SB62_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB62_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB62_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB62_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB62_SB_MEM_MISO_t) return FM_SB62_SB_MEM_MISO_t;
@@ -2581,7 +2581,7 @@ package FM_CTRL is
    type FM_SB62_MON_t is record
       SB_MEM : FM_SB62_SB_MEM_MISO_t;
    end record FM_SB62_MON_t;
-   attribute w of FM_SB62_MON_t : type is 33;
+   attribute w of FM_SB62_MON_t : type is FM_SB62_SB_MEM_MISO_t'w;
    function width(x: FM_SB62_MON_t) return natural;
    function convert(x: FM_SB62_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB62_MON_t) return FM_SB62_MON_t;
@@ -2590,7 +2590,7 @@ package FM_CTRL is
    type FM_SB62_CTRL_t is record
       SB_MEM : FM_SB62_SB_MEM_MOSI_t;
    end record FM_SB62_CTRL_t;
-   attribute w of FM_SB62_CTRL_t : type is 44;
+   attribute w of FM_SB62_CTRL_t : type is FM_SB62_SB_MEM_MOSI_t'w;
    function width(x: FM_SB62_CTRL_t) return natural;
    function convert(x: FM_SB62_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB62_CTRL_t) return FM_SB62_CTRL_t;
@@ -2603,7 +2603,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB63_SB_MEM_MOSI_t;
-   attribute w of FM_SB63_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB63_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB63_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB63_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB63_SB_MEM_MOSI_t) return FM_SB63_SB_MEM_MOSI_t;
@@ -2613,7 +2613,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB63_SB_MEM_MISO_t;
-   attribute w of FM_SB63_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB63_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB63_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB63_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB63_SB_MEM_MISO_t) return FM_SB63_SB_MEM_MISO_t;
@@ -2622,7 +2622,7 @@ package FM_CTRL is
    type FM_SB63_MON_t is record
       SB_MEM : FM_SB63_SB_MEM_MISO_t;
    end record FM_SB63_MON_t;
-   attribute w of FM_SB63_MON_t : type is 33;
+   attribute w of FM_SB63_MON_t : type is FM_SB63_SB_MEM_MISO_t'w;
    function width(x: FM_SB63_MON_t) return natural;
    function convert(x: FM_SB63_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB63_MON_t) return FM_SB63_MON_t;
@@ -2631,7 +2631,7 @@ package FM_CTRL is
    type FM_SB63_CTRL_t is record
       SB_MEM : FM_SB63_SB_MEM_MOSI_t;
    end record FM_SB63_CTRL_t;
-   attribute w of FM_SB63_CTRL_t : type is 44;
+   attribute w of FM_SB63_CTRL_t : type is FM_SB63_SB_MEM_MOSI_t'w;
    function width(x: FM_SB63_CTRL_t) return natural;
    function convert(x: FM_SB63_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB63_CTRL_t) return FM_SB63_CTRL_t;
@@ -2644,7 +2644,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB64_SB_MEM_MOSI_t;
-   attribute w of FM_SB64_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB64_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB64_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB64_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB64_SB_MEM_MOSI_t) return FM_SB64_SB_MEM_MOSI_t;
@@ -2654,7 +2654,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB64_SB_MEM_MISO_t;
-   attribute w of FM_SB64_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB64_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB64_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB64_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB64_SB_MEM_MISO_t) return FM_SB64_SB_MEM_MISO_t;
@@ -2663,7 +2663,7 @@ package FM_CTRL is
    type FM_SB64_MON_t is record
       SB_MEM : FM_SB64_SB_MEM_MISO_t;
    end record FM_SB64_MON_t;
-   attribute w of FM_SB64_MON_t : type is 33;
+   attribute w of FM_SB64_MON_t : type is FM_SB64_SB_MEM_MISO_t'w;
    function width(x: FM_SB64_MON_t) return natural;
    function convert(x: FM_SB64_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB64_MON_t) return FM_SB64_MON_t;
@@ -2672,7 +2672,7 @@ package FM_CTRL is
    type FM_SB64_CTRL_t is record
       SB_MEM : FM_SB64_SB_MEM_MOSI_t;
    end record FM_SB64_CTRL_t;
-   attribute w of FM_SB64_CTRL_t : type is 44;
+   attribute w of FM_SB64_CTRL_t : type is FM_SB64_SB_MEM_MOSI_t'w;
    function width(x: FM_SB64_CTRL_t) return natural;
    function convert(x: FM_SB64_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB64_CTRL_t) return FM_SB64_CTRL_t;
@@ -2685,7 +2685,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB65_SB_MEM_MOSI_t;
-   attribute w of FM_SB65_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB65_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB65_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB65_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB65_SB_MEM_MOSI_t) return FM_SB65_SB_MEM_MOSI_t;
@@ -2695,7 +2695,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB65_SB_MEM_MISO_t;
-   attribute w of FM_SB65_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB65_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB65_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB65_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB65_SB_MEM_MISO_t) return FM_SB65_SB_MEM_MISO_t;
@@ -2704,7 +2704,7 @@ package FM_CTRL is
    type FM_SB65_MON_t is record
       SB_MEM : FM_SB65_SB_MEM_MISO_t;
    end record FM_SB65_MON_t;
-   attribute w of FM_SB65_MON_t : type is 33;
+   attribute w of FM_SB65_MON_t : type is FM_SB65_SB_MEM_MISO_t'w;
    function width(x: FM_SB65_MON_t) return natural;
    function convert(x: FM_SB65_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB65_MON_t) return FM_SB65_MON_t;
@@ -2713,7 +2713,7 @@ package FM_CTRL is
    type FM_SB65_CTRL_t is record
       SB_MEM : FM_SB65_SB_MEM_MOSI_t;
    end record FM_SB65_CTRL_t;
-   attribute w of FM_SB65_CTRL_t : type is 44;
+   attribute w of FM_SB65_CTRL_t : type is FM_SB65_SB_MEM_MOSI_t'w;
    function width(x: FM_SB65_CTRL_t) return natural;
    function convert(x: FM_SB65_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB65_CTRL_t) return FM_SB65_CTRL_t;
@@ -2726,7 +2726,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB66_SB_MEM_MOSI_t;
-   attribute w of FM_SB66_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB66_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB66_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB66_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB66_SB_MEM_MOSI_t) return FM_SB66_SB_MEM_MOSI_t;
@@ -2736,7 +2736,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB66_SB_MEM_MISO_t;
-   attribute w of FM_SB66_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB66_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB66_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB66_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB66_SB_MEM_MISO_t) return FM_SB66_SB_MEM_MISO_t;
@@ -2745,7 +2745,7 @@ package FM_CTRL is
    type FM_SB66_MON_t is record
       SB_MEM : FM_SB66_SB_MEM_MISO_t;
    end record FM_SB66_MON_t;
-   attribute w of FM_SB66_MON_t : type is 33;
+   attribute w of FM_SB66_MON_t : type is FM_SB66_SB_MEM_MISO_t'w;
    function width(x: FM_SB66_MON_t) return natural;
    function convert(x: FM_SB66_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB66_MON_t) return FM_SB66_MON_t;
@@ -2754,7 +2754,7 @@ package FM_CTRL is
    type FM_SB66_CTRL_t is record
       SB_MEM : FM_SB66_SB_MEM_MOSI_t;
    end record FM_SB66_CTRL_t;
-   attribute w of FM_SB66_CTRL_t : type is 44;
+   attribute w of FM_SB66_CTRL_t : type is FM_SB66_SB_MEM_MOSI_t'w;
    function width(x: FM_SB66_CTRL_t) return natural;
    function convert(x: FM_SB66_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB66_CTRL_t) return FM_SB66_CTRL_t;
@@ -2767,7 +2767,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB67_SB_MEM_MOSI_t;
-   attribute w of FM_SB67_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB67_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB67_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB67_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB67_SB_MEM_MOSI_t) return FM_SB67_SB_MEM_MOSI_t;
@@ -2777,7 +2777,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB67_SB_MEM_MISO_t;
-   attribute w of FM_SB67_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB67_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB67_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB67_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB67_SB_MEM_MISO_t) return FM_SB67_SB_MEM_MISO_t;
@@ -2786,7 +2786,7 @@ package FM_CTRL is
    type FM_SB67_MON_t is record
       SB_MEM : FM_SB67_SB_MEM_MISO_t;
    end record FM_SB67_MON_t;
-   attribute w of FM_SB67_MON_t : type is 33;
+   attribute w of FM_SB67_MON_t : type is FM_SB67_SB_MEM_MISO_t'w;
    function width(x: FM_SB67_MON_t) return natural;
    function convert(x: FM_SB67_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB67_MON_t) return FM_SB67_MON_t;
@@ -2795,7 +2795,7 @@ package FM_CTRL is
    type FM_SB67_CTRL_t is record
       SB_MEM : FM_SB67_SB_MEM_MOSI_t;
    end record FM_SB67_CTRL_t;
-   attribute w of FM_SB67_CTRL_t : type is 44;
+   attribute w of FM_SB67_CTRL_t : type is FM_SB67_SB_MEM_MOSI_t'w;
    function width(x: FM_SB67_CTRL_t) return natural;
    function convert(x: FM_SB67_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB67_CTRL_t) return FM_SB67_CTRL_t;
@@ -2808,7 +2808,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB68_SB_MEM_MOSI_t;
-   attribute w of FM_SB68_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB68_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB68_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB68_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB68_SB_MEM_MOSI_t) return FM_SB68_SB_MEM_MOSI_t;
@@ -2818,7 +2818,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB68_SB_MEM_MISO_t;
-   attribute w of FM_SB68_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB68_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB68_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB68_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB68_SB_MEM_MISO_t) return FM_SB68_SB_MEM_MISO_t;
@@ -2827,7 +2827,7 @@ package FM_CTRL is
    type FM_SB68_MON_t is record
       SB_MEM : FM_SB68_SB_MEM_MISO_t;
    end record FM_SB68_MON_t;
-   attribute w of FM_SB68_MON_t : type is 33;
+   attribute w of FM_SB68_MON_t : type is FM_SB68_SB_MEM_MISO_t'w;
    function width(x: FM_SB68_MON_t) return natural;
    function convert(x: FM_SB68_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB68_MON_t) return FM_SB68_MON_t;
@@ -2836,7 +2836,7 @@ package FM_CTRL is
    type FM_SB68_CTRL_t is record
       SB_MEM : FM_SB68_SB_MEM_MOSI_t;
    end record FM_SB68_CTRL_t;
-   attribute w of FM_SB68_CTRL_t : type is 44;
+   attribute w of FM_SB68_CTRL_t : type is FM_SB68_SB_MEM_MOSI_t'w;
    function width(x: FM_SB68_CTRL_t) return natural;
    function convert(x: FM_SB68_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB68_CTRL_t) return FM_SB68_CTRL_t;
@@ -2849,7 +2849,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB69_SB_MEM_MOSI_t;
-   attribute w of FM_SB69_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB69_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB69_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB69_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB69_SB_MEM_MOSI_t) return FM_SB69_SB_MEM_MOSI_t;
@@ -2859,7 +2859,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB69_SB_MEM_MISO_t;
-   attribute w of FM_SB69_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB69_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB69_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB69_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB69_SB_MEM_MISO_t) return FM_SB69_SB_MEM_MISO_t;
@@ -2868,7 +2868,7 @@ package FM_CTRL is
    type FM_SB69_MON_t is record
       SB_MEM : FM_SB69_SB_MEM_MISO_t;
    end record FM_SB69_MON_t;
-   attribute w of FM_SB69_MON_t : type is 33;
+   attribute w of FM_SB69_MON_t : type is FM_SB69_SB_MEM_MISO_t'w;
    function width(x: FM_SB69_MON_t) return natural;
    function convert(x: FM_SB69_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB69_MON_t) return FM_SB69_MON_t;
@@ -2877,7 +2877,7 @@ package FM_CTRL is
    type FM_SB69_CTRL_t is record
       SB_MEM : FM_SB69_SB_MEM_MOSI_t;
    end record FM_SB69_CTRL_t;
-   attribute w of FM_SB69_CTRL_t : type is 44;
+   attribute w of FM_SB69_CTRL_t : type is FM_SB69_SB_MEM_MOSI_t'w;
    function width(x: FM_SB69_CTRL_t) return natural;
    function convert(x: FM_SB69_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB69_CTRL_t) return FM_SB69_CTRL_t;
@@ -2890,7 +2890,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB70_SB_MEM_MOSI_t;
-   attribute w of FM_SB70_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB70_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB70_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB70_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB70_SB_MEM_MOSI_t) return FM_SB70_SB_MEM_MOSI_t;
@@ -2900,7 +2900,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB70_SB_MEM_MISO_t;
-   attribute w of FM_SB70_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB70_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB70_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB70_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB70_SB_MEM_MISO_t) return FM_SB70_SB_MEM_MISO_t;
@@ -2909,7 +2909,7 @@ package FM_CTRL is
    type FM_SB70_MON_t is record
       SB_MEM : FM_SB70_SB_MEM_MISO_t;
    end record FM_SB70_MON_t;
-   attribute w of FM_SB70_MON_t : type is 33;
+   attribute w of FM_SB70_MON_t : type is FM_SB70_SB_MEM_MISO_t'w;
    function width(x: FM_SB70_MON_t) return natural;
    function convert(x: FM_SB70_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB70_MON_t) return FM_SB70_MON_t;
@@ -2918,7 +2918,7 @@ package FM_CTRL is
    type FM_SB70_CTRL_t is record
       SB_MEM : FM_SB70_SB_MEM_MOSI_t;
    end record FM_SB70_CTRL_t;
-   attribute w of FM_SB70_CTRL_t : type is 44;
+   attribute w of FM_SB70_CTRL_t : type is FM_SB70_SB_MEM_MOSI_t'w;
    function width(x: FM_SB70_CTRL_t) return natural;
    function convert(x: FM_SB70_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB70_CTRL_t) return FM_SB70_CTRL_t;
@@ -2931,7 +2931,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB71_SB_MEM_MOSI_t;
-   attribute w of FM_SB71_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB71_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB71_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB71_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB71_SB_MEM_MOSI_t) return FM_SB71_SB_MEM_MOSI_t;
@@ -2941,7 +2941,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB71_SB_MEM_MISO_t;
-   attribute w of FM_SB71_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB71_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB71_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB71_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB71_SB_MEM_MISO_t) return FM_SB71_SB_MEM_MISO_t;
@@ -2950,7 +2950,7 @@ package FM_CTRL is
    type FM_SB71_MON_t is record
       SB_MEM : FM_SB71_SB_MEM_MISO_t;
    end record FM_SB71_MON_t;
-   attribute w of FM_SB71_MON_t : type is 33;
+   attribute w of FM_SB71_MON_t : type is FM_SB71_SB_MEM_MISO_t'w;
    function width(x: FM_SB71_MON_t) return natural;
    function convert(x: FM_SB71_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB71_MON_t) return FM_SB71_MON_t;
@@ -2959,7 +2959,7 @@ package FM_CTRL is
    type FM_SB71_CTRL_t is record
       SB_MEM : FM_SB71_SB_MEM_MOSI_t;
    end record FM_SB71_CTRL_t;
-   attribute w of FM_SB71_CTRL_t : type is 44;
+   attribute w of FM_SB71_CTRL_t : type is FM_SB71_SB_MEM_MOSI_t'w;
    function width(x: FM_SB71_CTRL_t) return natural;
    function convert(x: FM_SB71_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB71_CTRL_t) return FM_SB71_CTRL_t;
@@ -2972,7 +2972,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB72_SB_MEM_MOSI_t;
-   attribute w of FM_SB72_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB72_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB72_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB72_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB72_SB_MEM_MOSI_t) return FM_SB72_SB_MEM_MOSI_t;
@@ -2982,7 +2982,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB72_SB_MEM_MISO_t;
-   attribute w of FM_SB72_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB72_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB72_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB72_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB72_SB_MEM_MISO_t) return FM_SB72_SB_MEM_MISO_t;
@@ -2991,7 +2991,7 @@ package FM_CTRL is
    type FM_SB72_MON_t is record
       SB_MEM : FM_SB72_SB_MEM_MISO_t;
    end record FM_SB72_MON_t;
-   attribute w of FM_SB72_MON_t : type is 33;
+   attribute w of FM_SB72_MON_t : type is FM_SB72_SB_MEM_MISO_t'w;
    function width(x: FM_SB72_MON_t) return natural;
    function convert(x: FM_SB72_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB72_MON_t) return FM_SB72_MON_t;
@@ -3000,7 +3000,7 @@ package FM_CTRL is
    type FM_SB72_CTRL_t is record
       SB_MEM : FM_SB72_SB_MEM_MOSI_t;
    end record FM_SB72_CTRL_t;
-   attribute w of FM_SB72_CTRL_t : type is 44;
+   attribute w of FM_SB72_CTRL_t : type is FM_SB72_SB_MEM_MOSI_t'w;
    function width(x: FM_SB72_CTRL_t) return natural;
    function convert(x: FM_SB72_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB72_CTRL_t) return FM_SB72_CTRL_t;
@@ -3013,7 +3013,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB73_SB_MEM_MOSI_t;
-   attribute w of FM_SB73_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB73_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB73_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB73_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB73_SB_MEM_MOSI_t) return FM_SB73_SB_MEM_MOSI_t;
@@ -3023,7 +3023,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB73_SB_MEM_MISO_t;
-   attribute w of FM_SB73_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB73_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB73_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB73_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB73_SB_MEM_MISO_t) return FM_SB73_SB_MEM_MISO_t;
@@ -3032,7 +3032,7 @@ package FM_CTRL is
    type FM_SB73_MON_t is record
       SB_MEM : FM_SB73_SB_MEM_MISO_t;
    end record FM_SB73_MON_t;
-   attribute w of FM_SB73_MON_t : type is 33;
+   attribute w of FM_SB73_MON_t : type is FM_SB73_SB_MEM_MISO_t'w;
    function width(x: FM_SB73_MON_t) return natural;
    function convert(x: FM_SB73_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB73_MON_t) return FM_SB73_MON_t;
@@ -3041,7 +3041,7 @@ package FM_CTRL is
    type FM_SB73_CTRL_t is record
       SB_MEM : FM_SB73_SB_MEM_MOSI_t;
    end record FM_SB73_CTRL_t;
-   attribute w of FM_SB73_CTRL_t : type is 44;
+   attribute w of FM_SB73_CTRL_t : type is FM_SB73_SB_MEM_MOSI_t'w;
    function width(x: FM_SB73_CTRL_t) return natural;
    function convert(x: FM_SB73_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB73_CTRL_t) return FM_SB73_CTRL_t;
@@ -3054,7 +3054,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB74_SB_MEM_MOSI_t;
-   attribute w of FM_SB74_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB74_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB74_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB74_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB74_SB_MEM_MOSI_t) return FM_SB74_SB_MEM_MOSI_t;
@@ -3064,7 +3064,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB74_SB_MEM_MISO_t;
-   attribute w of FM_SB74_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB74_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB74_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB74_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB74_SB_MEM_MISO_t) return FM_SB74_SB_MEM_MISO_t;
@@ -3073,7 +3073,7 @@ package FM_CTRL is
    type FM_SB74_MON_t is record
       SB_MEM : FM_SB74_SB_MEM_MISO_t;
    end record FM_SB74_MON_t;
-   attribute w of FM_SB74_MON_t : type is 33;
+   attribute w of FM_SB74_MON_t : type is FM_SB74_SB_MEM_MISO_t'w;
    function width(x: FM_SB74_MON_t) return natural;
    function convert(x: FM_SB74_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB74_MON_t) return FM_SB74_MON_t;
@@ -3082,7 +3082,7 @@ package FM_CTRL is
    type FM_SB74_CTRL_t is record
       SB_MEM : FM_SB74_SB_MEM_MOSI_t;
    end record FM_SB74_CTRL_t;
-   attribute w of FM_SB74_CTRL_t : type is 44;
+   attribute w of FM_SB74_CTRL_t : type is FM_SB74_SB_MEM_MOSI_t'w;
    function width(x: FM_SB74_CTRL_t) return natural;
    function convert(x: FM_SB74_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB74_CTRL_t) return FM_SB74_CTRL_t;
@@ -3095,7 +3095,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB75_SB_MEM_MOSI_t;
-   attribute w of FM_SB75_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB75_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB75_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB75_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB75_SB_MEM_MOSI_t) return FM_SB75_SB_MEM_MOSI_t;
@@ -3105,7 +3105,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB75_SB_MEM_MISO_t;
-   attribute w of FM_SB75_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB75_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB75_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB75_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB75_SB_MEM_MISO_t) return FM_SB75_SB_MEM_MISO_t;
@@ -3114,7 +3114,7 @@ package FM_CTRL is
    type FM_SB75_MON_t is record
       SB_MEM : FM_SB75_SB_MEM_MISO_t;
    end record FM_SB75_MON_t;
-   attribute w of FM_SB75_MON_t : type is 33;
+   attribute w of FM_SB75_MON_t : type is FM_SB75_SB_MEM_MISO_t'w;
    function width(x: FM_SB75_MON_t) return natural;
    function convert(x: FM_SB75_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB75_MON_t) return FM_SB75_MON_t;
@@ -3123,7 +3123,7 @@ package FM_CTRL is
    type FM_SB75_CTRL_t is record
       SB_MEM : FM_SB75_SB_MEM_MOSI_t;
    end record FM_SB75_CTRL_t;
-   attribute w of FM_SB75_CTRL_t : type is 44;
+   attribute w of FM_SB75_CTRL_t : type is FM_SB75_SB_MEM_MOSI_t'w;
    function width(x: FM_SB75_CTRL_t) return natural;
    function convert(x: FM_SB75_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB75_CTRL_t) return FM_SB75_CTRL_t;
@@ -3136,7 +3136,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB76_SB_MEM_MOSI_t;
-   attribute w of FM_SB76_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB76_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB76_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB76_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB76_SB_MEM_MOSI_t) return FM_SB76_SB_MEM_MOSI_t;
@@ -3146,7 +3146,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB76_SB_MEM_MISO_t;
-   attribute w of FM_SB76_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB76_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB76_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB76_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB76_SB_MEM_MISO_t) return FM_SB76_SB_MEM_MISO_t;
@@ -3155,7 +3155,7 @@ package FM_CTRL is
    type FM_SB76_MON_t is record
       SB_MEM : FM_SB76_SB_MEM_MISO_t;
    end record FM_SB76_MON_t;
-   attribute w of FM_SB76_MON_t : type is 33;
+   attribute w of FM_SB76_MON_t : type is FM_SB76_SB_MEM_MISO_t'w;
    function width(x: FM_SB76_MON_t) return natural;
    function convert(x: FM_SB76_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB76_MON_t) return FM_SB76_MON_t;
@@ -3164,7 +3164,7 @@ package FM_CTRL is
    type FM_SB76_CTRL_t is record
       SB_MEM : FM_SB76_SB_MEM_MOSI_t;
    end record FM_SB76_CTRL_t;
-   attribute w of FM_SB76_CTRL_t : type is 44;
+   attribute w of FM_SB76_CTRL_t : type is FM_SB76_SB_MEM_MOSI_t'w;
    function width(x: FM_SB76_CTRL_t) return natural;
    function convert(x: FM_SB76_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB76_CTRL_t) return FM_SB76_CTRL_t;
@@ -3177,7 +3177,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB77_SB_MEM_MOSI_t;
-   attribute w of FM_SB77_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB77_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB77_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB77_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB77_SB_MEM_MOSI_t) return FM_SB77_SB_MEM_MOSI_t;
@@ -3187,7 +3187,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB77_SB_MEM_MISO_t;
-   attribute w of FM_SB77_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB77_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB77_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB77_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB77_SB_MEM_MISO_t) return FM_SB77_SB_MEM_MISO_t;
@@ -3196,7 +3196,7 @@ package FM_CTRL is
    type FM_SB77_MON_t is record
       SB_MEM : FM_SB77_SB_MEM_MISO_t;
    end record FM_SB77_MON_t;
-   attribute w of FM_SB77_MON_t : type is 33;
+   attribute w of FM_SB77_MON_t : type is FM_SB77_SB_MEM_MISO_t'w;
    function width(x: FM_SB77_MON_t) return natural;
    function convert(x: FM_SB77_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB77_MON_t) return FM_SB77_MON_t;
@@ -3205,7 +3205,7 @@ package FM_CTRL is
    type FM_SB77_CTRL_t is record
       SB_MEM : FM_SB77_SB_MEM_MOSI_t;
    end record FM_SB77_CTRL_t;
-   attribute w of FM_SB77_CTRL_t : type is 44;
+   attribute w of FM_SB77_CTRL_t : type is FM_SB77_SB_MEM_MOSI_t'w;
    function width(x: FM_SB77_CTRL_t) return natural;
    function convert(x: FM_SB77_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB77_CTRL_t) return FM_SB77_CTRL_t;
@@ -3218,7 +3218,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB78_SB_MEM_MOSI_t;
-   attribute w of FM_SB78_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB78_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB78_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB78_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB78_SB_MEM_MOSI_t) return FM_SB78_SB_MEM_MOSI_t;
@@ -3228,7 +3228,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB78_SB_MEM_MISO_t;
-   attribute w of FM_SB78_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB78_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB78_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB78_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB78_SB_MEM_MISO_t) return FM_SB78_SB_MEM_MISO_t;
@@ -3237,7 +3237,7 @@ package FM_CTRL is
    type FM_SB78_MON_t is record
       SB_MEM : FM_SB78_SB_MEM_MISO_t;
    end record FM_SB78_MON_t;
-   attribute w of FM_SB78_MON_t : type is 33;
+   attribute w of FM_SB78_MON_t : type is FM_SB78_SB_MEM_MISO_t'w;
    function width(x: FM_SB78_MON_t) return natural;
    function convert(x: FM_SB78_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB78_MON_t) return FM_SB78_MON_t;
@@ -3246,7 +3246,7 @@ package FM_CTRL is
    type FM_SB78_CTRL_t is record
       SB_MEM : FM_SB78_SB_MEM_MOSI_t;
    end record FM_SB78_CTRL_t;
-   attribute w of FM_SB78_CTRL_t : type is 44;
+   attribute w of FM_SB78_CTRL_t : type is FM_SB78_SB_MEM_MOSI_t'w;
    function width(x: FM_SB78_CTRL_t) return natural;
    function convert(x: FM_SB78_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB78_CTRL_t) return FM_SB78_CTRL_t;
@@ -3259,7 +3259,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB79_SB_MEM_MOSI_t;
-   attribute w of FM_SB79_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB79_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB79_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB79_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB79_SB_MEM_MOSI_t) return FM_SB79_SB_MEM_MOSI_t;
@@ -3269,7 +3269,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB79_SB_MEM_MISO_t;
-   attribute w of FM_SB79_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB79_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB79_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB79_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB79_SB_MEM_MISO_t) return FM_SB79_SB_MEM_MISO_t;
@@ -3278,7 +3278,7 @@ package FM_CTRL is
    type FM_SB79_MON_t is record
       SB_MEM : FM_SB79_SB_MEM_MISO_t;
    end record FM_SB79_MON_t;
-   attribute w of FM_SB79_MON_t : type is 33;
+   attribute w of FM_SB79_MON_t : type is FM_SB79_SB_MEM_MISO_t'w;
    function width(x: FM_SB79_MON_t) return natural;
    function convert(x: FM_SB79_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB79_MON_t) return FM_SB79_MON_t;
@@ -3287,7 +3287,7 @@ package FM_CTRL is
    type FM_SB79_CTRL_t is record
       SB_MEM : FM_SB79_SB_MEM_MOSI_t;
    end record FM_SB79_CTRL_t;
-   attribute w of FM_SB79_CTRL_t : type is 44;
+   attribute w of FM_SB79_CTRL_t : type is FM_SB79_SB_MEM_MOSI_t'w;
    function width(x: FM_SB79_CTRL_t) return natural;
    function convert(x: FM_SB79_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB79_CTRL_t) return FM_SB79_CTRL_t;
@@ -3300,7 +3300,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB80_SB_MEM_MOSI_t;
-   attribute w of FM_SB80_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB80_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB80_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB80_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB80_SB_MEM_MOSI_t) return FM_SB80_SB_MEM_MOSI_t;
@@ -3310,7 +3310,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB80_SB_MEM_MISO_t;
-   attribute w of FM_SB80_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB80_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB80_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB80_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB80_SB_MEM_MISO_t) return FM_SB80_SB_MEM_MISO_t;
@@ -3319,7 +3319,7 @@ package FM_CTRL is
    type FM_SB80_MON_t is record
       SB_MEM : FM_SB80_SB_MEM_MISO_t;
    end record FM_SB80_MON_t;
-   attribute w of FM_SB80_MON_t : type is 33;
+   attribute w of FM_SB80_MON_t : type is FM_SB80_SB_MEM_MISO_t'w;
    function width(x: FM_SB80_MON_t) return natural;
    function convert(x: FM_SB80_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB80_MON_t) return FM_SB80_MON_t;
@@ -3328,7 +3328,7 @@ package FM_CTRL is
    type FM_SB80_CTRL_t is record
       SB_MEM : FM_SB80_SB_MEM_MOSI_t;
    end record FM_SB80_CTRL_t;
-   attribute w of FM_SB80_CTRL_t : type is 44;
+   attribute w of FM_SB80_CTRL_t : type is FM_SB80_SB_MEM_MOSI_t'w;
    function width(x: FM_SB80_CTRL_t) return natural;
    function convert(x: FM_SB80_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB80_CTRL_t) return FM_SB80_CTRL_t;
@@ -3341,7 +3341,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB81_SB_MEM_MOSI_t;
-   attribute w of FM_SB81_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB81_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB81_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB81_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB81_SB_MEM_MOSI_t) return FM_SB81_SB_MEM_MOSI_t;
@@ -3351,7 +3351,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB81_SB_MEM_MISO_t;
-   attribute w of FM_SB81_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB81_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB81_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB81_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB81_SB_MEM_MISO_t) return FM_SB81_SB_MEM_MISO_t;
@@ -3360,7 +3360,7 @@ package FM_CTRL is
    type FM_SB81_MON_t is record
       SB_MEM : FM_SB81_SB_MEM_MISO_t;
    end record FM_SB81_MON_t;
-   attribute w of FM_SB81_MON_t : type is 33;
+   attribute w of FM_SB81_MON_t : type is FM_SB81_SB_MEM_MISO_t'w;
    function width(x: FM_SB81_MON_t) return natural;
    function convert(x: FM_SB81_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB81_MON_t) return FM_SB81_MON_t;
@@ -3369,7 +3369,7 @@ package FM_CTRL is
    type FM_SB81_CTRL_t is record
       SB_MEM : FM_SB81_SB_MEM_MOSI_t;
    end record FM_SB81_CTRL_t;
-   attribute w of FM_SB81_CTRL_t : type is 44;
+   attribute w of FM_SB81_CTRL_t : type is FM_SB81_SB_MEM_MOSI_t'w;
    function width(x: FM_SB81_CTRL_t) return natural;
    function convert(x: FM_SB81_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB81_CTRL_t) return FM_SB81_CTRL_t;
@@ -3382,7 +3382,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB82_SB_MEM_MOSI_t;
-   attribute w of FM_SB82_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB82_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB82_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB82_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB82_SB_MEM_MOSI_t) return FM_SB82_SB_MEM_MOSI_t;
@@ -3392,7 +3392,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB82_SB_MEM_MISO_t;
-   attribute w of FM_SB82_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB82_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB82_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB82_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB82_SB_MEM_MISO_t) return FM_SB82_SB_MEM_MISO_t;
@@ -3401,7 +3401,7 @@ package FM_CTRL is
    type FM_SB82_MON_t is record
       SB_MEM : FM_SB82_SB_MEM_MISO_t;
    end record FM_SB82_MON_t;
-   attribute w of FM_SB82_MON_t : type is 33;
+   attribute w of FM_SB82_MON_t : type is FM_SB82_SB_MEM_MISO_t'w;
    function width(x: FM_SB82_MON_t) return natural;
    function convert(x: FM_SB82_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB82_MON_t) return FM_SB82_MON_t;
@@ -3410,7 +3410,7 @@ package FM_CTRL is
    type FM_SB82_CTRL_t is record
       SB_MEM : FM_SB82_SB_MEM_MOSI_t;
    end record FM_SB82_CTRL_t;
-   attribute w of FM_SB82_CTRL_t : type is 44;
+   attribute w of FM_SB82_CTRL_t : type is FM_SB82_SB_MEM_MOSI_t'w;
    function width(x: FM_SB82_CTRL_t) return natural;
    function convert(x: FM_SB82_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB82_CTRL_t) return FM_SB82_CTRL_t;
@@ -3423,7 +3423,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB83_SB_MEM_MOSI_t;
-   attribute w of FM_SB83_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB83_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB83_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB83_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB83_SB_MEM_MOSI_t) return FM_SB83_SB_MEM_MOSI_t;
@@ -3433,7 +3433,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB83_SB_MEM_MISO_t;
-   attribute w of FM_SB83_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB83_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB83_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB83_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB83_SB_MEM_MISO_t) return FM_SB83_SB_MEM_MISO_t;
@@ -3442,7 +3442,7 @@ package FM_CTRL is
    type FM_SB83_MON_t is record
       SB_MEM : FM_SB83_SB_MEM_MISO_t;
    end record FM_SB83_MON_t;
-   attribute w of FM_SB83_MON_t : type is 33;
+   attribute w of FM_SB83_MON_t : type is FM_SB83_SB_MEM_MISO_t'w;
    function width(x: FM_SB83_MON_t) return natural;
    function convert(x: FM_SB83_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB83_MON_t) return FM_SB83_MON_t;
@@ -3451,7 +3451,7 @@ package FM_CTRL is
    type FM_SB83_CTRL_t is record
       SB_MEM : FM_SB83_SB_MEM_MOSI_t;
    end record FM_SB83_CTRL_t;
-   attribute w of FM_SB83_CTRL_t : type is 44;
+   attribute w of FM_SB83_CTRL_t : type is FM_SB83_SB_MEM_MOSI_t'w;
    function width(x: FM_SB83_CTRL_t) return natural;
    function convert(x: FM_SB83_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB83_CTRL_t) return FM_SB83_CTRL_t;
@@ -3464,7 +3464,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB84_SB_MEM_MOSI_t;
-   attribute w of FM_SB84_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB84_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB84_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB84_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB84_SB_MEM_MOSI_t) return FM_SB84_SB_MEM_MOSI_t;
@@ -3474,7 +3474,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB84_SB_MEM_MISO_t;
-   attribute w of FM_SB84_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB84_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB84_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB84_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB84_SB_MEM_MISO_t) return FM_SB84_SB_MEM_MISO_t;
@@ -3483,7 +3483,7 @@ package FM_CTRL is
    type FM_SB84_MON_t is record
       SB_MEM : FM_SB84_SB_MEM_MISO_t;
    end record FM_SB84_MON_t;
-   attribute w of FM_SB84_MON_t : type is 33;
+   attribute w of FM_SB84_MON_t : type is FM_SB84_SB_MEM_MISO_t'w;
    function width(x: FM_SB84_MON_t) return natural;
    function convert(x: FM_SB84_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB84_MON_t) return FM_SB84_MON_t;
@@ -3492,7 +3492,7 @@ package FM_CTRL is
    type FM_SB84_CTRL_t is record
       SB_MEM : FM_SB84_SB_MEM_MOSI_t;
    end record FM_SB84_CTRL_t;
-   attribute w of FM_SB84_CTRL_t : type is 44;
+   attribute w of FM_SB84_CTRL_t : type is FM_SB84_SB_MEM_MOSI_t'w;
    function width(x: FM_SB84_CTRL_t) return natural;
    function convert(x: FM_SB84_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB84_CTRL_t) return FM_SB84_CTRL_t;
@@ -3505,7 +3505,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB85_SB_MEM_MOSI_t;
-   attribute w of FM_SB85_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB85_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB85_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB85_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB85_SB_MEM_MOSI_t) return FM_SB85_SB_MEM_MOSI_t;
@@ -3515,7 +3515,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB85_SB_MEM_MISO_t;
-   attribute w of FM_SB85_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB85_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB85_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB85_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB85_SB_MEM_MISO_t) return FM_SB85_SB_MEM_MISO_t;
@@ -3524,7 +3524,7 @@ package FM_CTRL is
    type FM_SB85_MON_t is record
       SB_MEM : FM_SB85_SB_MEM_MISO_t;
    end record FM_SB85_MON_t;
-   attribute w of FM_SB85_MON_t : type is 33;
+   attribute w of FM_SB85_MON_t : type is FM_SB85_SB_MEM_MISO_t'w;
    function width(x: FM_SB85_MON_t) return natural;
    function convert(x: FM_SB85_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB85_MON_t) return FM_SB85_MON_t;
@@ -3533,7 +3533,7 @@ package FM_CTRL is
    type FM_SB85_CTRL_t is record
       SB_MEM : FM_SB85_SB_MEM_MOSI_t;
    end record FM_SB85_CTRL_t;
-   attribute w of FM_SB85_CTRL_t : type is 44;
+   attribute w of FM_SB85_CTRL_t : type is FM_SB85_SB_MEM_MOSI_t'w;
    function width(x: FM_SB85_CTRL_t) return natural;
    function convert(x: FM_SB85_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB85_CTRL_t) return FM_SB85_CTRL_t;
@@ -3546,7 +3546,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB86_SB_MEM_MOSI_t;
-   attribute w of FM_SB86_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB86_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB86_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB86_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB86_SB_MEM_MOSI_t) return FM_SB86_SB_MEM_MOSI_t;
@@ -3556,7 +3556,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB86_SB_MEM_MISO_t;
-   attribute w of FM_SB86_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB86_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB86_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB86_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB86_SB_MEM_MISO_t) return FM_SB86_SB_MEM_MISO_t;
@@ -3565,7 +3565,7 @@ package FM_CTRL is
    type FM_SB86_MON_t is record
       SB_MEM : FM_SB86_SB_MEM_MISO_t;
    end record FM_SB86_MON_t;
-   attribute w of FM_SB86_MON_t : type is 33;
+   attribute w of FM_SB86_MON_t : type is FM_SB86_SB_MEM_MISO_t'w;
    function width(x: FM_SB86_MON_t) return natural;
    function convert(x: FM_SB86_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB86_MON_t) return FM_SB86_MON_t;
@@ -3574,7 +3574,7 @@ package FM_CTRL is
    type FM_SB86_CTRL_t is record
       SB_MEM : FM_SB86_SB_MEM_MOSI_t;
    end record FM_SB86_CTRL_t;
-   attribute w of FM_SB86_CTRL_t : type is 44;
+   attribute w of FM_SB86_CTRL_t : type is FM_SB86_SB_MEM_MOSI_t'w;
    function width(x: FM_SB86_CTRL_t) return natural;
    function convert(x: FM_SB86_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB86_CTRL_t) return FM_SB86_CTRL_t;
@@ -3587,7 +3587,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB87_SB_MEM_MOSI_t;
-   attribute w of FM_SB87_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB87_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB87_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB87_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB87_SB_MEM_MOSI_t) return FM_SB87_SB_MEM_MOSI_t;
@@ -3597,7 +3597,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB87_SB_MEM_MISO_t;
-   attribute w of FM_SB87_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB87_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB87_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB87_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB87_SB_MEM_MISO_t) return FM_SB87_SB_MEM_MISO_t;
@@ -3606,7 +3606,7 @@ package FM_CTRL is
    type FM_SB87_MON_t is record
       SB_MEM : FM_SB87_SB_MEM_MISO_t;
    end record FM_SB87_MON_t;
-   attribute w of FM_SB87_MON_t : type is 33;
+   attribute w of FM_SB87_MON_t : type is FM_SB87_SB_MEM_MISO_t'w;
    function width(x: FM_SB87_MON_t) return natural;
    function convert(x: FM_SB87_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB87_MON_t) return FM_SB87_MON_t;
@@ -3615,7 +3615,7 @@ package FM_CTRL is
    type FM_SB87_CTRL_t is record
       SB_MEM : FM_SB87_SB_MEM_MOSI_t;
    end record FM_SB87_CTRL_t;
-   attribute w of FM_SB87_CTRL_t : type is 44;
+   attribute w of FM_SB87_CTRL_t : type is FM_SB87_SB_MEM_MOSI_t'w;
    function width(x: FM_SB87_CTRL_t) return natural;
    function convert(x: FM_SB87_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB87_CTRL_t) return FM_SB87_CTRL_t;
@@ -3628,7 +3628,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB88_SB_MEM_MOSI_t;
-   attribute w of FM_SB88_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB88_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB88_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB88_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB88_SB_MEM_MOSI_t) return FM_SB88_SB_MEM_MOSI_t;
@@ -3638,7 +3638,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB88_SB_MEM_MISO_t;
-   attribute w of FM_SB88_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB88_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB88_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB88_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB88_SB_MEM_MISO_t) return FM_SB88_SB_MEM_MISO_t;
@@ -3647,7 +3647,7 @@ package FM_CTRL is
    type FM_SB88_MON_t is record
       SB_MEM : FM_SB88_SB_MEM_MISO_t;
    end record FM_SB88_MON_t;
-   attribute w of FM_SB88_MON_t : type is 33;
+   attribute w of FM_SB88_MON_t : type is FM_SB88_SB_MEM_MISO_t'w;
    function width(x: FM_SB88_MON_t) return natural;
    function convert(x: FM_SB88_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB88_MON_t) return FM_SB88_MON_t;
@@ -3656,7 +3656,7 @@ package FM_CTRL is
    type FM_SB88_CTRL_t is record
       SB_MEM : FM_SB88_SB_MEM_MOSI_t;
    end record FM_SB88_CTRL_t;
-   attribute w of FM_SB88_CTRL_t : type is 44;
+   attribute w of FM_SB88_CTRL_t : type is FM_SB88_SB_MEM_MOSI_t'w;
    function width(x: FM_SB88_CTRL_t) return natural;
    function convert(x: FM_SB88_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB88_CTRL_t) return FM_SB88_CTRL_t;
@@ -3669,7 +3669,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB89_SB_MEM_MOSI_t;
-   attribute w of FM_SB89_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB89_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB89_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB89_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB89_SB_MEM_MOSI_t) return FM_SB89_SB_MEM_MOSI_t;
@@ -3679,7 +3679,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB89_SB_MEM_MISO_t;
-   attribute w of FM_SB89_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB89_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB89_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB89_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB89_SB_MEM_MISO_t) return FM_SB89_SB_MEM_MISO_t;
@@ -3688,7 +3688,7 @@ package FM_CTRL is
    type FM_SB89_MON_t is record
       SB_MEM : FM_SB89_SB_MEM_MISO_t;
    end record FM_SB89_MON_t;
-   attribute w of FM_SB89_MON_t : type is 33;
+   attribute w of FM_SB89_MON_t : type is FM_SB89_SB_MEM_MISO_t'w;
    function width(x: FM_SB89_MON_t) return natural;
    function convert(x: FM_SB89_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB89_MON_t) return FM_SB89_MON_t;
@@ -3697,7 +3697,7 @@ package FM_CTRL is
    type FM_SB89_CTRL_t is record
       SB_MEM : FM_SB89_SB_MEM_MOSI_t;
    end record FM_SB89_CTRL_t;
-   attribute w of FM_SB89_CTRL_t : type is 44;
+   attribute w of FM_SB89_CTRL_t : type is FM_SB89_SB_MEM_MOSI_t'w;
    function width(x: FM_SB89_CTRL_t) return natural;
    function convert(x: FM_SB89_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB89_CTRL_t) return FM_SB89_CTRL_t;
@@ -3710,7 +3710,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB90_SB_MEM_MOSI_t;
-   attribute w of FM_SB90_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB90_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB90_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB90_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB90_SB_MEM_MOSI_t) return FM_SB90_SB_MEM_MOSI_t;
@@ -3720,7 +3720,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB90_SB_MEM_MISO_t;
-   attribute w of FM_SB90_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB90_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB90_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB90_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB90_SB_MEM_MISO_t) return FM_SB90_SB_MEM_MISO_t;
@@ -3729,7 +3729,7 @@ package FM_CTRL is
    type FM_SB90_MON_t is record
       SB_MEM : FM_SB90_SB_MEM_MISO_t;
    end record FM_SB90_MON_t;
-   attribute w of FM_SB90_MON_t : type is 33;
+   attribute w of FM_SB90_MON_t : type is FM_SB90_SB_MEM_MISO_t'w;
    function width(x: FM_SB90_MON_t) return natural;
    function convert(x: FM_SB90_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB90_MON_t) return FM_SB90_MON_t;
@@ -3738,7 +3738,7 @@ package FM_CTRL is
    type FM_SB90_CTRL_t is record
       SB_MEM : FM_SB90_SB_MEM_MOSI_t;
    end record FM_SB90_CTRL_t;
-   attribute w of FM_SB90_CTRL_t : type is 44;
+   attribute w of FM_SB90_CTRL_t : type is FM_SB90_SB_MEM_MOSI_t'w;
    function width(x: FM_SB90_CTRL_t) return natural;
    function convert(x: FM_SB90_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB90_CTRL_t) return FM_SB90_CTRL_t;
@@ -3751,7 +3751,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB91_SB_MEM_MOSI_t;
-   attribute w of FM_SB91_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB91_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB91_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB91_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB91_SB_MEM_MOSI_t) return FM_SB91_SB_MEM_MOSI_t;
@@ -3761,7 +3761,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB91_SB_MEM_MISO_t;
-   attribute w of FM_SB91_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB91_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB91_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB91_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB91_SB_MEM_MISO_t) return FM_SB91_SB_MEM_MISO_t;
@@ -3770,7 +3770,7 @@ package FM_CTRL is
    type FM_SB91_MON_t is record
       SB_MEM : FM_SB91_SB_MEM_MISO_t;
    end record FM_SB91_MON_t;
-   attribute w of FM_SB91_MON_t : type is 33;
+   attribute w of FM_SB91_MON_t : type is FM_SB91_SB_MEM_MISO_t'w;
    function width(x: FM_SB91_MON_t) return natural;
    function convert(x: FM_SB91_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB91_MON_t) return FM_SB91_MON_t;
@@ -3779,7 +3779,7 @@ package FM_CTRL is
    type FM_SB91_CTRL_t is record
       SB_MEM : FM_SB91_SB_MEM_MOSI_t;
    end record FM_SB91_CTRL_t;
-   attribute w of FM_SB91_CTRL_t : type is 44;
+   attribute w of FM_SB91_CTRL_t : type is FM_SB91_SB_MEM_MOSI_t'w;
    function width(x: FM_SB91_CTRL_t) return natural;
    function convert(x: FM_SB91_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB91_CTRL_t) return FM_SB91_CTRL_t;
@@ -3792,7 +3792,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB92_SB_MEM_MOSI_t;
-   attribute w of FM_SB92_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB92_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB92_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB92_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB92_SB_MEM_MOSI_t) return FM_SB92_SB_MEM_MOSI_t;
@@ -3802,7 +3802,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB92_SB_MEM_MISO_t;
-   attribute w of FM_SB92_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB92_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB92_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB92_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB92_SB_MEM_MISO_t) return FM_SB92_SB_MEM_MISO_t;
@@ -3811,7 +3811,7 @@ package FM_CTRL is
    type FM_SB92_MON_t is record
       SB_MEM : FM_SB92_SB_MEM_MISO_t;
    end record FM_SB92_MON_t;
-   attribute w of FM_SB92_MON_t : type is 33;
+   attribute w of FM_SB92_MON_t : type is FM_SB92_SB_MEM_MISO_t'w;
    function width(x: FM_SB92_MON_t) return natural;
    function convert(x: FM_SB92_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB92_MON_t) return FM_SB92_MON_t;
@@ -3820,7 +3820,7 @@ package FM_CTRL is
    type FM_SB92_CTRL_t is record
       SB_MEM : FM_SB92_SB_MEM_MOSI_t;
    end record FM_SB92_CTRL_t;
-   attribute w of FM_SB92_CTRL_t : type is 44;
+   attribute w of FM_SB92_CTRL_t : type is FM_SB92_SB_MEM_MOSI_t'w;
    function width(x: FM_SB92_CTRL_t) return natural;
    function convert(x: FM_SB92_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB92_CTRL_t) return FM_SB92_CTRL_t;
@@ -3833,7 +3833,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB93_SB_MEM_MOSI_t;
-   attribute w of FM_SB93_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB93_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB93_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB93_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB93_SB_MEM_MOSI_t) return FM_SB93_SB_MEM_MOSI_t;
@@ -3843,7 +3843,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB93_SB_MEM_MISO_t;
-   attribute w of FM_SB93_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB93_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB93_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB93_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB93_SB_MEM_MISO_t) return FM_SB93_SB_MEM_MISO_t;
@@ -3852,7 +3852,7 @@ package FM_CTRL is
    type FM_SB93_MON_t is record
       SB_MEM : FM_SB93_SB_MEM_MISO_t;
    end record FM_SB93_MON_t;
-   attribute w of FM_SB93_MON_t : type is 33;
+   attribute w of FM_SB93_MON_t : type is FM_SB93_SB_MEM_MISO_t'w;
    function width(x: FM_SB93_MON_t) return natural;
    function convert(x: FM_SB93_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB93_MON_t) return FM_SB93_MON_t;
@@ -3861,7 +3861,7 @@ package FM_CTRL is
    type FM_SB93_CTRL_t is record
       SB_MEM : FM_SB93_SB_MEM_MOSI_t;
    end record FM_SB93_CTRL_t;
-   attribute w of FM_SB93_CTRL_t : type is 44;
+   attribute w of FM_SB93_CTRL_t : type is FM_SB93_SB_MEM_MOSI_t'w;
    function width(x: FM_SB93_CTRL_t) return natural;
    function convert(x: FM_SB93_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB93_CTRL_t) return FM_SB93_CTRL_t;
@@ -3874,7 +3874,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB94_SB_MEM_MOSI_t;
-   attribute w of FM_SB94_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB94_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB94_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB94_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB94_SB_MEM_MOSI_t) return FM_SB94_SB_MEM_MOSI_t;
@@ -3884,7 +3884,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB94_SB_MEM_MISO_t;
-   attribute w of FM_SB94_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB94_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB94_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB94_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB94_SB_MEM_MISO_t) return FM_SB94_SB_MEM_MISO_t;
@@ -3893,7 +3893,7 @@ package FM_CTRL is
    type FM_SB94_MON_t is record
       SB_MEM : FM_SB94_SB_MEM_MISO_t;
    end record FM_SB94_MON_t;
-   attribute w of FM_SB94_MON_t : type is 33;
+   attribute w of FM_SB94_MON_t : type is FM_SB94_SB_MEM_MISO_t'w;
    function width(x: FM_SB94_MON_t) return natural;
    function convert(x: FM_SB94_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB94_MON_t) return FM_SB94_MON_t;
@@ -3902,7 +3902,7 @@ package FM_CTRL is
    type FM_SB94_CTRL_t is record
       SB_MEM : FM_SB94_SB_MEM_MOSI_t;
    end record FM_SB94_CTRL_t;
-   attribute w of FM_SB94_CTRL_t : type is 44;
+   attribute w of FM_SB94_CTRL_t : type is FM_SB94_SB_MEM_MOSI_t'w;
    function width(x: FM_SB94_CTRL_t) return natural;
    function convert(x: FM_SB94_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB94_CTRL_t) return FM_SB94_CTRL_t;
@@ -3915,7 +3915,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB95_SB_MEM_MOSI_t;
-   attribute w of FM_SB95_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB95_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB95_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB95_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB95_SB_MEM_MOSI_t) return FM_SB95_SB_MEM_MOSI_t;
@@ -3925,7 +3925,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB95_SB_MEM_MISO_t;
-   attribute w of FM_SB95_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB95_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB95_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB95_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB95_SB_MEM_MISO_t) return FM_SB95_SB_MEM_MISO_t;
@@ -3934,7 +3934,7 @@ package FM_CTRL is
    type FM_SB95_MON_t is record
       SB_MEM : FM_SB95_SB_MEM_MISO_t;
    end record FM_SB95_MON_t;
-   attribute w of FM_SB95_MON_t : type is 33;
+   attribute w of FM_SB95_MON_t : type is FM_SB95_SB_MEM_MISO_t'w;
    function width(x: FM_SB95_MON_t) return natural;
    function convert(x: FM_SB95_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB95_MON_t) return FM_SB95_MON_t;
@@ -3943,7 +3943,7 @@ package FM_CTRL is
    type FM_SB95_CTRL_t is record
       SB_MEM : FM_SB95_SB_MEM_MOSI_t;
    end record FM_SB95_CTRL_t;
-   attribute w of FM_SB95_CTRL_t : type is 44;
+   attribute w of FM_SB95_CTRL_t : type is FM_SB95_SB_MEM_MOSI_t'w;
    function width(x: FM_SB95_CTRL_t) return natural;
    function convert(x: FM_SB95_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB95_CTRL_t) return FM_SB95_CTRL_t;
@@ -3956,7 +3956,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB96_SB_MEM_MOSI_t;
-   attribute w of FM_SB96_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB96_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB96_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB96_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB96_SB_MEM_MOSI_t) return FM_SB96_SB_MEM_MOSI_t;
@@ -3966,7 +3966,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB96_SB_MEM_MISO_t;
-   attribute w of FM_SB96_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB96_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB96_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB96_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB96_SB_MEM_MISO_t) return FM_SB96_SB_MEM_MISO_t;
@@ -3975,7 +3975,7 @@ package FM_CTRL is
    type FM_SB96_MON_t is record
       SB_MEM : FM_SB96_SB_MEM_MISO_t;
    end record FM_SB96_MON_t;
-   attribute w of FM_SB96_MON_t : type is 33;
+   attribute w of FM_SB96_MON_t : type is FM_SB96_SB_MEM_MISO_t'w;
    function width(x: FM_SB96_MON_t) return natural;
    function convert(x: FM_SB96_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB96_MON_t) return FM_SB96_MON_t;
@@ -3984,7 +3984,7 @@ package FM_CTRL is
    type FM_SB96_CTRL_t is record
       SB_MEM : FM_SB96_SB_MEM_MOSI_t;
    end record FM_SB96_CTRL_t;
-   attribute w of FM_SB96_CTRL_t : type is 44;
+   attribute w of FM_SB96_CTRL_t : type is FM_SB96_SB_MEM_MOSI_t'w;
    function width(x: FM_SB96_CTRL_t) return natural;
    function convert(x: FM_SB96_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB96_CTRL_t) return FM_SB96_CTRL_t;
@@ -3997,7 +3997,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB97_SB_MEM_MOSI_t;
-   attribute w of FM_SB97_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB97_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB97_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB97_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB97_SB_MEM_MOSI_t) return FM_SB97_SB_MEM_MOSI_t;
@@ -4007,7 +4007,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB97_SB_MEM_MISO_t;
-   attribute w of FM_SB97_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB97_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB97_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB97_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB97_SB_MEM_MISO_t) return FM_SB97_SB_MEM_MISO_t;
@@ -4016,7 +4016,7 @@ package FM_CTRL is
    type FM_SB97_MON_t is record
       SB_MEM : FM_SB97_SB_MEM_MISO_t;
    end record FM_SB97_MON_t;
-   attribute w of FM_SB97_MON_t : type is 33;
+   attribute w of FM_SB97_MON_t : type is FM_SB97_SB_MEM_MISO_t'w;
    function width(x: FM_SB97_MON_t) return natural;
    function convert(x: FM_SB97_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB97_MON_t) return FM_SB97_MON_t;
@@ -4025,7 +4025,7 @@ package FM_CTRL is
    type FM_SB97_CTRL_t is record
       SB_MEM : FM_SB97_SB_MEM_MOSI_t;
    end record FM_SB97_CTRL_t;
-   attribute w of FM_SB97_CTRL_t : type is 44;
+   attribute w of FM_SB97_CTRL_t : type is FM_SB97_SB_MEM_MOSI_t'w;
    function width(x: FM_SB97_CTRL_t) return natural;
    function convert(x: FM_SB97_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB97_CTRL_t) return FM_SB97_CTRL_t;
@@ -4038,7 +4038,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB98_SB_MEM_MOSI_t;
-   attribute w of FM_SB98_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB98_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB98_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB98_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB98_SB_MEM_MOSI_t) return FM_SB98_SB_MEM_MOSI_t;
@@ -4048,7 +4048,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB98_SB_MEM_MISO_t;
-   attribute w of FM_SB98_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB98_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB98_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB98_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB98_SB_MEM_MISO_t) return FM_SB98_SB_MEM_MISO_t;
@@ -4057,7 +4057,7 @@ package FM_CTRL is
    type FM_SB98_MON_t is record
       SB_MEM : FM_SB98_SB_MEM_MISO_t;
    end record FM_SB98_MON_t;
-   attribute w of FM_SB98_MON_t : type is 33;
+   attribute w of FM_SB98_MON_t : type is FM_SB98_SB_MEM_MISO_t'w;
    function width(x: FM_SB98_MON_t) return natural;
    function convert(x: FM_SB98_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB98_MON_t) return FM_SB98_MON_t;
@@ -4066,7 +4066,7 @@ package FM_CTRL is
    type FM_SB98_CTRL_t is record
       SB_MEM : FM_SB98_SB_MEM_MOSI_t;
    end record FM_SB98_CTRL_t;
-   attribute w of FM_SB98_CTRL_t : type is 44;
+   attribute w of FM_SB98_CTRL_t : type is FM_SB98_SB_MEM_MOSI_t'w;
    function width(x: FM_SB98_CTRL_t) return natural;
    function convert(x: FM_SB98_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB98_CTRL_t) return FM_SB98_CTRL_t;
@@ -4079,7 +4079,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB99_SB_MEM_MOSI_t;
-   attribute w of FM_SB99_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB99_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB99_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB99_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB99_SB_MEM_MOSI_t) return FM_SB99_SB_MEM_MOSI_t;
@@ -4089,7 +4089,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB99_SB_MEM_MISO_t;
-   attribute w of FM_SB99_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB99_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB99_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB99_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB99_SB_MEM_MISO_t) return FM_SB99_SB_MEM_MISO_t;
@@ -4098,7 +4098,7 @@ package FM_CTRL is
    type FM_SB99_MON_t is record
       SB_MEM : FM_SB99_SB_MEM_MISO_t;
    end record FM_SB99_MON_t;
-   attribute w of FM_SB99_MON_t : type is 33;
+   attribute w of FM_SB99_MON_t : type is FM_SB99_SB_MEM_MISO_t'w;
    function width(x: FM_SB99_MON_t) return natural;
    function convert(x: FM_SB99_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB99_MON_t) return FM_SB99_MON_t;
@@ -4107,7 +4107,7 @@ package FM_CTRL is
    type FM_SB99_CTRL_t is record
       SB_MEM : FM_SB99_SB_MEM_MOSI_t;
    end record FM_SB99_CTRL_t;
-   attribute w of FM_SB99_CTRL_t : type is 44;
+   attribute w of FM_SB99_CTRL_t : type is FM_SB99_SB_MEM_MOSI_t'w;
    function width(x: FM_SB99_CTRL_t) return natural;
    function convert(x: FM_SB99_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB99_CTRL_t) return FM_SB99_CTRL_t;
@@ -4120,7 +4120,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB100_SB_MEM_MOSI_t;
-   attribute w of FM_SB100_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB100_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB100_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB100_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB100_SB_MEM_MOSI_t) return FM_SB100_SB_MEM_MOSI_t;
@@ -4130,7 +4130,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB100_SB_MEM_MISO_t;
-   attribute w of FM_SB100_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB100_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB100_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB100_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB100_SB_MEM_MISO_t) return FM_SB100_SB_MEM_MISO_t;
@@ -4139,7 +4139,7 @@ package FM_CTRL is
    type FM_SB100_MON_t is record
       SB_MEM : FM_SB100_SB_MEM_MISO_t;
    end record FM_SB100_MON_t;
-   attribute w of FM_SB100_MON_t : type is 33;
+   attribute w of FM_SB100_MON_t : type is FM_SB100_SB_MEM_MISO_t'w;
    function width(x: FM_SB100_MON_t) return natural;
    function convert(x: FM_SB100_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB100_MON_t) return FM_SB100_MON_t;
@@ -4148,7 +4148,7 @@ package FM_CTRL is
    type FM_SB100_CTRL_t is record
       SB_MEM : FM_SB100_SB_MEM_MOSI_t;
    end record FM_SB100_CTRL_t;
-   attribute w of FM_SB100_CTRL_t : type is 44;
+   attribute w of FM_SB100_CTRL_t : type is FM_SB100_SB_MEM_MOSI_t'w;
    function width(x: FM_SB100_CTRL_t) return natural;
    function convert(x: FM_SB100_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB100_CTRL_t) return FM_SB100_CTRL_t;
@@ -4161,7 +4161,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB101_SB_MEM_MOSI_t;
-   attribute w of FM_SB101_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB101_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB101_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB101_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB101_SB_MEM_MOSI_t) return FM_SB101_SB_MEM_MOSI_t;
@@ -4171,7 +4171,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB101_SB_MEM_MISO_t;
-   attribute w of FM_SB101_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB101_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB101_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB101_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB101_SB_MEM_MISO_t) return FM_SB101_SB_MEM_MISO_t;
@@ -4180,7 +4180,7 @@ package FM_CTRL is
    type FM_SB101_MON_t is record
       SB_MEM : FM_SB101_SB_MEM_MISO_t;
    end record FM_SB101_MON_t;
-   attribute w of FM_SB101_MON_t : type is 33;
+   attribute w of FM_SB101_MON_t : type is FM_SB101_SB_MEM_MISO_t'w;
    function width(x: FM_SB101_MON_t) return natural;
    function convert(x: FM_SB101_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB101_MON_t) return FM_SB101_MON_t;
@@ -4189,7 +4189,7 @@ package FM_CTRL is
    type FM_SB101_CTRL_t is record
       SB_MEM : FM_SB101_SB_MEM_MOSI_t;
    end record FM_SB101_CTRL_t;
-   attribute w of FM_SB101_CTRL_t : type is 44;
+   attribute w of FM_SB101_CTRL_t : type is FM_SB101_SB_MEM_MOSI_t'w;
    function width(x: FM_SB101_CTRL_t) return natural;
    function convert(x: FM_SB101_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB101_CTRL_t) return FM_SB101_CTRL_t;
@@ -4202,7 +4202,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB102_SB_MEM_MOSI_t;
-   attribute w of FM_SB102_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB102_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB102_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB102_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB102_SB_MEM_MOSI_t) return FM_SB102_SB_MEM_MOSI_t;
@@ -4212,7 +4212,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB102_SB_MEM_MISO_t;
-   attribute w of FM_SB102_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB102_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB102_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB102_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB102_SB_MEM_MISO_t) return FM_SB102_SB_MEM_MISO_t;
@@ -4221,7 +4221,7 @@ package FM_CTRL is
    type FM_SB102_MON_t is record
       SB_MEM : FM_SB102_SB_MEM_MISO_t;
    end record FM_SB102_MON_t;
-   attribute w of FM_SB102_MON_t : type is 33;
+   attribute w of FM_SB102_MON_t : type is FM_SB102_SB_MEM_MISO_t'w;
    function width(x: FM_SB102_MON_t) return natural;
    function convert(x: FM_SB102_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB102_MON_t) return FM_SB102_MON_t;
@@ -4230,7 +4230,7 @@ package FM_CTRL is
    type FM_SB102_CTRL_t is record
       SB_MEM : FM_SB102_SB_MEM_MOSI_t;
    end record FM_SB102_CTRL_t;
-   attribute w of FM_SB102_CTRL_t : type is 44;
+   attribute w of FM_SB102_CTRL_t : type is FM_SB102_SB_MEM_MOSI_t'w;
    function width(x: FM_SB102_CTRL_t) return natural;
    function convert(x: FM_SB102_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB102_CTRL_t) return FM_SB102_CTRL_t;
@@ -4243,7 +4243,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB103_SB_MEM_MOSI_t;
-   attribute w of FM_SB103_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB103_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB103_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB103_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB103_SB_MEM_MOSI_t) return FM_SB103_SB_MEM_MOSI_t;
@@ -4253,7 +4253,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB103_SB_MEM_MISO_t;
-   attribute w of FM_SB103_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB103_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB103_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB103_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB103_SB_MEM_MISO_t) return FM_SB103_SB_MEM_MISO_t;
@@ -4262,7 +4262,7 @@ package FM_CTRL is
    type FM_SB103_MON_t is record
       SB_MEM : FM_SB103_SB_MEM_MISO_t;
    end record FM_SB103_MON_t;
-   attribute w of FM_SB103_MON_t : type is 33;
+   attribute w of FM_SB103_MON_t : type is FM_SB103_SB_MEM_MISO_t'w;
    function width(x: FM_SB103_MON_t) return natural;
    function convert(x: FM_SB103_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB103_MON_t) return FM_SB103_MON_t;
@@ -4271,7 +4271,7 @@ package FM_CTRL is
    type FM_SB103_CTRL_t is record
       SB_MEM : FM_SB103_SB_MEM_MOSI_t;
    end record FM_SB103_CTRL_t;
-   attribute w of FM_SB103_CTRL_t : type is 44;
+   attribute w of FM_SB103_CTRL_t : type is FM_SB103_SB_MEM_MOSI_t'w;
    function width(x: FM_SB103_CTRL_t) return natural;
    function convert(x: FM_SB103_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB103_CTRL_t) return FM_SB103_CTRL_t;
@@ -4284,7 +4284,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB104_SB_MEM_MOSI_t;
-   attribute w of FM_SB104_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB104_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB104_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB104_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB104_SB_MEM_MOSI_t) return FM_SB104_SB_MEM_MOSI_t;
@@ -4294,7 +4294,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB104_SB_MEM_MISO_t;
-   attribute w of FM_SB104_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB104_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB104_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB104_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB104_SB_MEM_MISO_t) return FM_SB104_SB_MEM_MISO_t;
@@ -4303,7 +4303,7 @@ package FM_CTRL is
    type FM_SB104_MON_t is record
       SB_MEM : FM_SB104_SB_MEM_MISO_t;
    end record FM_SB104_MON_t;
-   attribute w of FM_SB104_MON_t : type is 33;
+   attribute w of FM_SB104_MON_t : type is FM_SB104_SB_MEM_MISO_t'w;
    function width(x: FM_SB104_MON_t) return natural;
    function convert(x: FM_SB104_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB104_MON_t) return FM_SB104_MON_t;
@@ -4312,7 +4312,7 @@ package FM_CTRL is
    type FM_SB104_CTRL_t is record
       SB_MEM : FM_SB104_SB_MEM_MOSI_t;
    end record FM_SB104_CTRL_t;
-   attribute w of FM_SB104_CTRL_t : type is 44;
+   attribute w of FM_SB104_CTRL_t : type is FM_SB104_SB_MEM_MOSI_t'w;
    function width(x: FM_SB104_CTRL_t) return natural;
    function convert(x: FM_SB104_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB104_CTRL_t) return FM_SB104_CTRL_t;
@@ -4325,7 +4325,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB105_SB_MEM_MOSI_t;
-   attribute w of FM_SB105_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB105_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB105_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB105_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB105_SB_MEM_MOSI_t) return FM_SB105_SB_MEM_MOSI_t;
@@ -4335,7 +4335,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB105_SB_MEM_MISO_t;
-   attribute w of FM_SB105_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB105_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB105_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB105_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB105_SB_MEM_MISO_t) return FM_SB105_SB_MEM_MISO_t;
@@ -4344,7 +4344,7 @@ package FM_CTRL is
    type FM_SB105_MON_t is record
       SB_MEM : FM_SB105_SB_MEM_MISO_t;
    end record FM_SB105_MON_t;
-   attribute w of FM_SB105_MON_t : type is 33;
+   attribute w of FM_SB105_MON_t : type is FM_SB105_SB_MEM_MISO_t'w;
    function width(x: FM_SB105_MON_t) return natural;
    function convert(x: FM_SB105_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB105_MON_t) return FM_SB105_MON_t;
@@ -4353,7 +4353,7 @@ package FM_CTRL is
    type FM_SB105_CTRL_t is record
       SB_MEM : FM_SB105_SB_MEM_MOSI_t;
    end record FM_SB105_CTRL_t;
-   attribute w of FM_SB105_CTRL_t : type is 44;
+   attribute w of FM_SB105_CTRL_t : type is FM_SB105_SB_MEM_MOSI_t'w;
    function width(x: FM_SB105_CTRL_t) return natural;
    function convert(x: FM_SB105_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB105_CTRL_t) return FM_SB105_CTRL_t;
@@ -4366,7 +4366,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB106_SB_MEM_MOSI_t;
-   attribute w of FM_SB106_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB106_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB106_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB106_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB106_SB_MEM_MOSI_t) return FM_SB106_SB_MEM_MOSI_t;
@@ -4376,7 +4376,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB106_SB_MEM_MISO_t;
-   attribute w of FM_SB106_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB106_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB106_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB106_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB106_SB_MEM_MISO_t) return FM_SB106_SB_MEM_MISO_t;
@@ -4385,7 +4385,7 @@ package FM_CTRL is
    type FM_SB106_MON_t is record
       SB_MEM : FM_SB106_SB_MEM_MISO_t;
    end record FM_SB106_MON_t;
-   attribute w of FM_SB106_MON_t : type is 33;
+   attribute w of FM_SB106_MON_t : type is FM_SB106_SB_MEM_MISO_t'w;
    function width(x: FM_SB106_MON_t) return natural;
    function convert(x: FM_SB106_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB106_MON_t) return FM_SB106_MON_t;
@@ -4394,7 +4394,7 @@ package FM_CTRL is
    type FM_SB106_CTRL_t is record
       SB_MEM : FM_SB106_SB_MEM_MOSI_t;
    end record FM_SB106_CTRL_t;
-   attribute w of FM_SB106_CTRL_t : type is 44;
+   attribute w of FM_SB106_CTRL_t : type is FM_SB106_SB_MEM_MOSI_t'w;
    function width(x: FM_SB106_CTRL_t) return natural;
    function convert(x: FM_SB106_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB106_CTRL_t) return FM_SB106_CTRL_t;
@@ -4407,7 +4407,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB107_SB_MEM_MOSI_t;
-   attribute w of FM_SB107_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB107_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB107_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB107_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB107_SB_MEM_MOSI_t) return FM_SB107_SB_MEM_MOSI_t;
@@ -4417,7 +4417,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB107_SB_MEM_MISO_t;
-   attribute w of FM_SB107_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB107_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB107_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB107_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB107_SB_MEM_MISO_t) return FM_SB107_SB_MEM_MISO_t;
@@ -4426,7 +4426,7 @@ package FM_CTRL is
    type FM_SB107_MON_t is record
       SB_MEM : FM_SB107_SB_MEM_MISO_t;
    end record FM_SB107_MON_t;
-   attribute w of FM_SB107_MON_t : type is 33;
+   attribute w of FM_SB107_MON_t : type is FM_SB107_SB_MEM_MISO_t'w;
    function width(x: FM_SB107_MON_t) return natural;
    function convert(x: FM_SB107_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB107_MON_t) return FM_SB107_MON_t;
@@ -4435,7 +4435,7 @@ package FM_CTRL is
    type FM_SB107_CTRL_t is record
       SB_MEM : FM_SB107_SB_MEM_MOSI_t;
    end record FM_SB107_CTRL_t;
-   attribute w of FM_SB107_CTRL_t : type is 44;
+   attribute w of FM_SB107_CTRL_t : type is FM_SB107_SB_MEM_MOSI_t'w;
    function width(x: FM_SB107_CTRL_t) return natural;
    function convert(x: FM_SB107_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB107_CTRL_t) return FM_SB107_CTRL_t;
@@ -4448,7 +4448,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB108_SB_MEM_MOSI_t;
-   attribute w of FM_SB108_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB108_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB108_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB108_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB108_SB_MEM_MOSI_t) return FM_SB108_SB_MEM_MOSI_t;
@@ -4458,7 +4458,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB108_SB_MEM_MISO_t;
-   attribute w of FM_SB108_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB108_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB108_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB108_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB108_SB_MEM_MISO_t) return FM_SB108_SB_MEM_MISO_t;
@@ -4467,7 +4467,7 @@ package FM_CTRL is
    type FM_SB108_MON_t is record
       SB_MEM : FM_SB108_SB_MEM_MISO_t;
    end record FM_SB108_MON_t;
-   attribute w of FM_SB108_MON_t : type is 33;
+   attribute w of FM_SB108_MON_t : type is FM_SB108_SB_MEM_MISO_t'w;
    function width(x: FM_SB108_MON_t) return natural;
    function convert(x: FM_SB108_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB108_MON_t) return FM_SB108_MON_t;
@@ -4476,7 +4476,7 @@ package FM_CTRL is
    type FM_SB108_CTRL_t is record
       SB_MEM : FM_SB108_SB_MEM_MOSI_t;
    end record FM_SB108_CTRL_t;
-   attribute w of FM_SB108_CTRL_t : type is 44;
+   attribute w of FM_SB108_CTRL_t : type is FM_SB108_SB_MEM_MOSI_t'w;
    function width(x: FM_SB108_CTRL_t) return natural;
    function convert(x: FM_SB108_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB108_CTRL_t) return FM_SB108_CTRL_t;
@@ -4489,7 +4489,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB109_SB_MEM_MOSI_t;
-   attribute w of FM_SB109_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB109_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB109_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB109_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB109_SB_MEM_MOSI_t) return FM_SB109_SB_MEM_MOSI_t;
@@ -4499,7 +4499,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB109_SB_MEM_MISO_t;
-   attribute w of FM_SB109_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB109_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB109_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB109_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB109_SB_MEM_MISO_t) return FM_SB109_SB_MEM_MISO_t;
@@ -4508,7 +4508,7 @@ package FM_CTRL is
    type FM_SB109_MON_t is record
       SB_MEM : FM_SB109_SB_MEM_MISO_t;
    end record FM_SB109_MON_t;
-   attribute w of FM_SB109_MON_t : type is 33;
+   attribute w of FM_SB109_MON_t : type is FM_SB109_SB_MEM_MISO_t'w;
    function width(x: FM_SB109_MON_t) return natural;
    function convert(x: FM_SB109_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB109_MON_t) return FM_SB109_MON_t;
@@ -4517,7 +4517,7 @@ package FM_CTRL is
    type FM_SB109_CTRL_t is record
       SB_MEM : FM_SB109_SB_MEM_MOSI_t;
    end record FM_SB109_CTRL_t;
-   attribute w of FM_SB109_CTRL_t : type is 44;
+   attribute w of FM_SB109_CTRL_t : type is FM_SB109_SB_MEM_MOSI_t'w;
    function width(x: FM_SB109_CTRL_t) return natural;
    function convert(x: FM_SB109_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB109_CTRL_t) return FM_SB109_CTRL_t;
@@ -4530,7 +4530,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB110_SB_MEM_MOSI_t;
-   attribute w of FM_SB110_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB110_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB110_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB110_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB110_SB_MEM_MOSI_t) return FM_SB110_SB_MEM_MOSI_t;
@@ -4540,7 +4540,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB110_SB_MEM_MISO_t;
-   attribute w of FM_SB110_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB110_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB110_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB110_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB110_SB_MEM_MISO_t) return FM_SB110_SB_MEM_MISO_t;
@@ -4549,7 +4549,7 @@ package FM_CTRL is
    type FM_SB110_MON_t is record
       SB_MEM : FM_SB110_SB_MEM_MISO_t;
    end record FM_SB110_MON_t;
-   attribute w of FM_SB110_MON_t : type is 33;
+   attribute w of FM_SB110_MON_t : type is FM_SB110_SB_MEM_MISO_t'w;
    function width(x: FM_SB110_MON_t) return natural;
    function convert(x: FM_SB110_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB110_MON_t) return FM_SB110_MON_t;
@@ -4558,7 +4558,7 @@ package FM_CTRL is
    type FM_SB110_CTRL_t is record
       SB_MEM : FM_SB110_SB_MEM_MOSI_t;
    end record FM_SB110_CTRL_t;
-   attribute w of FM_SB110_CTRL_t : type is 44;
+   attribute w of FM_SB110_CTRL_t : type is FM_SB110_SB_MEM_MOSI_t'w;
    function width(x: FM_SB110_CTRL_t) return natural;
    function convert(x: FM_SB110_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB110_CTRL_t) return FM_SB110_CTRL_t;
@@ -4571,7 +4571,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB111_SB_MEM_MOSI_t;
-   attribute w of FM_SB111_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB111_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB111_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB111_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB111_SB_MEM_MOSI_t) return FM_SB111_SB_MEM_MOSI_t;
@@ -4581,7 +4581,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB111_SB_MEM_MISO_t;
-   attribute w of FM_SB111_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB111_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB111_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB111_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB111_SB_MEM_MISO_t) return FM_SB111_SB_MEM_MISO_t;
@@ -4590,7 +4590,7 @@ package FM_CTRL is
    type FM_SB111_MON_t is record
       SB_MEM : FM_SB111_SB_MEM_MISO_t;
    end record FM_SB111_MON_t;
-   attribute w of FM_SB111_MON_t : type is 33;
+   attribute w of FM_SB111_MON_t : type is FM_SB111_SB_MEM_MISO_t'w;
    function width(x: FM_SB111_MON_t) return natural;
    function convert(x: FM_SB111_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB111_MON_t) return FM_SB111_MON_t;
@@ -4599,7 +4599,7 @@ package FM_CTRL is
    type FM_SB111_CTRL_t is record
       SB_MEM : FM_SB111_SB_MEM_MOSI_t;
    end record FM_SB111_CTRL_t;
-   attribute w of FM_SB111_CTRL_t : type is 44;
+   attribute w of FM_SB111_CTRL_t : type is FM_SB111_SB_MEM_MOSI_t'w;
    function width(x: FM_SB111_CTRL_t) return natural;
    function convert(x: FM_SB111_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB111_CTRL_t) return FM_SB111_CTRL_t;
@@ -4612,7 +4612,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB112_SB_MEM_MOSI_t;
-   attribute w of FM_SB112_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB112_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB112_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB112_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB112_SB_MEM_MOSI_t) return FM_SB112_SB_MEM_MOSI_t;
@@ -4622,7 +4622,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB112_SB_MEM_MISO_t;
-   attribute w of FM_SB112_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB112_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB112_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB112_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB112_SB_MEM_MISO_t) return FM_SB112_SB_MEM_MISO_t;
@@ -4631,7 +4631,7 @@ package FM_CTRL is
    type FM_SB112_MON_t is record
       SB_MEM : FM_SB112_SB_MEM_MISO_t;
    end record FM_SB112_MON_t;
-   attribute w of FM_SB112_MON_t : type is 33;
+   attribute w of FM_SB112_MON_t : type is FM_SB112_SB_MEM_MISO_t'w;
    function width(x: FM_SB112_MON_t) return natural;
    function convert(x: FM_SB112_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB112_MON_t) return FM_SB112_MON_t;
@@ -4640,7 +4640,7 @@ package FM_CTRL is
    type FM_SB112_CTRL_t is record
       SB_MEM : FM_SB112_SB_MEM_MOSI_t;
    end record FM_SB112_CTRL_t;
-   attribute w of FM_SB112_CTRL_t : type is 44;
+   attribute w of FM_SB112_CTRL_t : type is FM_SB112_SB_MEM_MOSI_t'w;
    function width(x: FM_SB112_CTRL_t) return natural;
    function convert(x: FM_SB112_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB112_CTRL_t) return FM_SB112_CTRL_t;
@@ -4653,7 +4653,7 @@ package FM_CTRL is
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB113_SB_MEM_MOSI_t;
-   attribute w of FM_SB113_SB_MEM_MOSI_t : type is 44;
+   attribute w of FM_SB113_SB_MEM_MOSI_t : type is 1+1+1+9+32;
    function width(x: FM_SB113_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB113_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB113_SB_MEM_MOSI_t) return FM_SB113_SB_MEM_MOSI_t;
@@ -4663,7 +4663,7 @@ package FM_CTRL is
       rd_data : std_logic_vector(32 -1 downto 0);
       rd_data_valid : std_logic;
    end record FM_SB113_SB_MEM_MISO_t;
-   attribute w of FM_SB113_SB_MEM_MISO_t : type is 33;
+   attribute w of FM_SB113_SB_MEM_MISO_t : type is 32+1;
    function width(x: FM_SB113_SB_MEM_MISO_t) return natural;
    function convert(x: FM_SB113_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB113_SB_MEM_MISO_t) return FM_SB113_SB_MEM_MISO_t;
@@ -4672,7 +4672,7 @@ package FM_CTRL is
    type FM_SB113_MON_t is record
       SB_MEM : FM_SB113_SB_MEM_MISO_t;
    end record FM_SB113_MON_t;
-   attribute w of FM_SB113_MON_t : type is 33;
+   attribute w of FM_SB113_MON_t : type is FM_SB113_SB_MEM_MISO_t'w;
    function width(x: FM_SB113_MON_t) return natural;
    function convert(x: FM_SB113_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB113_MON_t) return FM_SB113_MON_t;
@@ -4681,7 +4681,7 @@ package FM_CTRL is
    type FM_SB113_CTRL_t is record
       SB_MEM : FM_SB113_SB_MEM_MOSI_t;
    end record FM_SB113_CTRL_t;
-   attribute w of FM_SB113_CTRL_t : type is 44;
+   attribute w of FM_SB113_CTRL_t : type is FM_SB113_SB_MEM_MOSI_t'w;
    function width(x: FM_SB113_CTRL_t) return natural;
    function convert(x: FM_SB113_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB113_CTRL_t) return FM_SB113_CTRL_t;
@@ -4692,7 +4692,7 @@ package FM_CTRL is
       GLOBAL_PLAYBACK_MODE : std_logic_vector(2 - 1 downto 0);
       INITIALIZE_SPY_MEMORY : std_logic;
    end record FM_SPY_CTRL_CTRL_t;
-   attribute w of FM_SPY_CTRL_CTRL_t : type is 4;
+   attribute w of FM_SPY_CTRL_CTRL_t : type is 1+2+1;
    function width(x: FM_SPY_CTRL_CTRL_t) return natural;
    function convert(x: FM_SPY_CTRL_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SPY_CTRL_CTRL_t) return FM_SPY_CTRL_CTRL_t;
@@ -4814,7 +4814,7 @@ package FM_CTRL is
       SB112 : FM_SB112_MON_t;
       SB113 : FM_SB113_MON_t;
    end record FM_MON_t;
-   attribute w of FM_MON_t : type is 3762;
+   attribute w of FM_MON_t : type is FM_SB0_MON_t'w+FM_SB1_MON_t'w+FM_SB2_MON_t'w+FM_SB3_MON_t'w+FM_SB4_MON_t'w+FM_SB5_MON_t'w+FM_SB6_MON_t'w+FM_SB7_MON_t'w+FM_SB8_MON_t'w+FM_SB9_MON_t'w+FM_SB10_MON_t'w+FM_SB11_MON_t'w+FM_SB12_MON_t'w+FM_SB13_MON_t'w+FM_SB14_MON_t'w+FM_SB15_MON_t'w+FM_SB16_MON_t'w+FM_SB17_MON_t'w+FM_SB18_MON_t'w+FM_SB19_MON_t'w+FM_SB20_MON_t'w+FM_SB21_MON_t'w+FM_SB22_MON_t'w+FM_SB23_MON_t'w+FM_SB24_MON_t'w+FM_SB25_MON_t'w+FM_SB26_MON_t'w+FM_SB27_MON_t'w+FM_SB28_MON_t'w+FM_SB29_MON_t'w+FM_SB30_MON_t'w+FM_SB31_MON_t'w+FM_SB32_MON_t'w+FM_SB33_MON_t'w+FM_SB34_MON_t'w+FM_SB35_MON_t'w+FM_SB36_MON_t'w+FM_SB37_MON_t'w+FM_SB38_MON_t'w+FM_SB39_MON_t'w+FM_SB40_MON_t'w+FM_SB41_MON_t'w+FM_SB42_MON_t'w+FM_SB43_MON_t'w+FM_SB44_MON_t'w+FM_SB45_MON_t'w+FM_SB46_MON_t'w+FM_SB47_MON_t'w+FM_SB48_MON_t'w+FM_SB49_MON_t'w+FM_SB50_MON_t'w+FM_SB51_MON_t'w+FM_SB52_MON_t'w+FM_SB53_MON_t'w+FM_SB54_MON_t'w+FM_SB55_MON_t'w+FM_SB56_MON_t'w+FM_SB57_MON_t'w+FM_SB58_MON_t'w+FM_SB59_MON_t'w+FM_SB60_MON_t'w+FM_SB61_MON_t'w+FM_SB62_MON_t'w+FM_SB63_MON_t'w+FM_SB64_MON_t'w+FM_SB65_MON_t'w+FM_SB66_MON_t'w+FM_SB67_MON_t'w+FM_SB68_MON_t'w+FM_SB69_MON_t'w+FM_SB70_MON_t'w+FM_SB71_MON_t'w+FM_SB72_MON_t'w+FM_SB73_MON_t'w+FM_SB74_MON_t'w+FM_SB75_MON_t'w+FM_SB76_MON_t'w+FM_SB77_MON_t'w+FM_SB78_MON_t'w+FM_SB79_MON_t'w+FM_SB80_MON_t'w+FM_SB81_MON_t'w+FM_SB82_MON_t'w+FM_SB83_MON_t'w+FM_SB84_MON_t'w+FM_SB85_MON_t'w+FM_SB86_MON_t'w+FM_SB87_MON_t'w+FM_SB88_MON_t'w+FM_SB89_MON_t'w+FM_SB90_MON_t'w+FM_SB91_MON_t'w+FM_SB92_MON_t'w+FM_SB93_MON_t'w+FM_SB94_MON_t'w+FM_SB95_MON_t'w+FM_SB96_MON_t'w+FM_SB97_MON_t'w+FM_SB98_MON_t'w+FM_SB99_MON_t'w+FM_SB100_MON_t'w+FM_SB101_MON_t'w+FM_SB102_MON_t'w+FM_SB103_MON_t'w+FM_SB104_MON_t'w+FM_SB105_MON_t'w+FM_SB106_MON_t'w+FM_SB107_MON_t'w+FM_SB108_MON_t'w+FM_SB109_MON_t'w+FM_SB110_MON_t'w+FM_SB111_MON_t'w+FM_SB112_MON_t'w+FM_SB113_MON_t'w;
    function width(x: FM_MON_t) return natural;
    function convert(x: FM_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_MON_t) return FM_MON_t;
@@ -4949,7 +4949,7 @@ package FM_CTRL is
       SB_RESET_2 : std_logic_vector(32 - 1 downto 0);
       SB_RESET_3 : std_logic_vector(32 - 1 downto 0);
    end record FM_CTRL_t;
-   attribute w of FM_CTRL_t : type is 5404;
+   attribute w of FM_CTRL_t : type is FM_SB0_CTRL_t'w+FM_SB1_CTRL_t'w+FM_SB2_CTRL_t'w+FM_SB3_CTRL_t'w+FM_SB4_CTRL_t'w+FM_SB5_CTRL_t'w+FM_SB6_CTRL_t'w+FM_SB7_CTRL_t'w+FM_SB8_CTRL_t'w+FM_SB9_CTRL_t'w+FM_SB10_CTRL_t'w+FM_SB11_CTRL_t'w+FM_SB12_CTRL_t'w+FM_SB13_CTRL_t'w+FM_SB14_CTRL_t'w+FM_SB15_CTRL_t'w+FM_SB16_CTRL_t'w+FM_SB17_CTRL_t'w+FM_SB18_CTRL_t'w+FM_SB19_CTRL_t'w+FM_SB20_CTRL_t'w+FM_SB21_CTRL_t'w+FM_SB22_CTRL_t'w+FM_SB23_CTRL_t'w+FM_SB24_CTRL_t'w+FM_SB25_CTRL_t'w+FM_SB26_CTRL_t'w+FM_SB27_CTRL_t'w+FM_SB28_CTRL_t'w+FM_SB29_CTRL_t'w+FM_SB30_CTRL_t'w+FM_SB31_CTRL_t'w+FM_SB32_CTRL_t'w+FM_SB33_CTRL_t'w+FM_SB34_CTRL_t'w+FM_SB35_CTRL_t'w+FM_SB36_CTRL_t'w+FM_SB37_CTRL_t'w+FM_SB38_CTRL_t'w+FM_SB39_CTRL_t'w+FM_SB40_CTRL_t'w+FM_SB41_CTRL_t'w+FM_SB42_CTRL_t'w+FM_SB43_CTRL_t'w+FM_SB44_CTRL_t'w+FM_SB45_CTRL_t'w+FM_SB46_CTRL_t'w+FM_SB47_CTRL_t'w+FM_SB48_CTRL_t'w+FM_SB49_CTRL_t'w+FM_SB50_CTRL_t'w+FM_SB51_CTRL_t'w+FM_SB52_CTRL_t'w+FM_SB53_CTRL_t'w+FM_SB54_CTRL_t'w+FM_SB55_CTRL_t'w+FM_SB56_CTRL_t'w+FM_SB57_CTRL_t'w+FM_SB58_CTRL_t'w+FM_SB59_CTRL_t'w+FM_SB60_CTRL_t'w+FM_SB61_CTRL_t'w+FM_SB62_CTRL_t'w+FM_SB63_CTRL_t'w+FM_SB64_CTRL_t'w+FM_SB65_CTRL_t'w+FM_SB66_CTRL_t'w+FM_SB67_CTRL_t'w+FM_SB68_CTRL_t'w+FM_SB69_CTRL_t'w+FM_SB70_CTRL_t'w+FM_SB71_CTRL_t'w+FM_SB72_CTRL_t'w+FM_SB73_CTRL_t'w+FM_SB74_CTRL_t'w+FM_SB75_CTRL_t'w+FM_SB76_CTRL_t'w+FM_SB77_CTRL_t'w+FM_SB78_CTRL_t'w+FM_SB79_CTRL_t'w+FM_SB80_CTRL_t'w+FM_SB81_CTRL_t'w+FM_SB82_CTRL_t'w+FM_SB83_CTRL_t'w+FM_SB84_CTRL_t'w+FM_SB85_CTRL_t'w+FM_SB86_CTRL_t'w+FM_SB87_CTRL_t'w+FM_SB88_CTRL_t'w+FM_SB89_CTRL_t'w+FM_SB90_CTRL_t'w+FM_SB91_CTRL_t'w+FM_SB92_CTRL_t'w+FM_SB93_CTRL_t'w+FM_SB94_CTRL_t'w+FM_SB95_CTRL_t'w+FM_SB96_CTRL_t'w+FM_SB97_CTRL_t'w+FM_SB98_CTRL_t'w+FM_SB99_CTRL_t'w+FM_SB100_CTRL_t'w+FM_SB101_CTRL_t'w+FM_SB102_CTRL_t'w+FM_SB103_CTRL_t'w+FM_SB104_CTRL_t'w+FM_SB105_CTRL_t'w+FM_SB106_CTRL_t'w+FM_SB107_CTRL_t'w+FM_SB108_CTRL_t'w+FM_SB109_CTRL_t'w+FM_SB110_CTRL_t'w+FM_SB111_CTRL_t'w+FM_SB112_CTRL_t'w+FM_SB113_CTRL_t'w+FM_SPY_CTRL_CTRL_t'w+32+32+32+32+32+32+32+32+32+32+32+32;
    function width(x: FM_CTRL_t) return natural;
    function convert(x: FM_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_CTRL_t) return FM_CTRL_t;

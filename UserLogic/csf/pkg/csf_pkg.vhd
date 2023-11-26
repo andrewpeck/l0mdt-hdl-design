@@ -70,7 +70,7 @@ package csf_pkg is
       mdtid : vec_mdtid_rt;
       data_valid : std_logic;
    end record csf_seed_rt;
-   attribute w of csf_seed_rt : type is 70;
+   attribute w of csf_seed_rt : type is slc_muid_rt'w+Abs(UCM_VEC_ANG_LEN)+Abs(UCM_Z_ROI_LEN)+Abs(UCM_Z_ROI_LEN)+vec_mdtid_rt'w+1;
    function width(x: csf_seed_rt) return natural;
    function convert(x: csf_seed_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: csf_seed_rt) return csf_seed_rt;
@@ -81,14 +81,14 @@ package csf_pkg is
       x : unsigned(MDT_LOCAL_X_LEN-1 downto 0);
       y : unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
    end record csf_hit_rt;
-   attribute w of csf_hit_rt : type is 31;
+   attribute w of csf_hit_rt : type is 1+Abs(MDT_LOCAL_X_LEN)+Abs(MDT_LOCAL_Y_LEN);
    function width(x: csf_hit_rt) return natural;
    function convert(x: csf_hit_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: csf_hit_rt) return csf_hit_rt;
    function zero(tpl: csf_hit_rt) return csf_hit_rt;
 
    subtype csf_hit_vt is std_logic_vector(csf_hit_rt'w-1 downto 0);
-   attribute w of csf_hit_vt : subtype is 31;
+   attribute w of csf_hit_vt : subtype is Abs(csf_hit_rt'w);
 
    type csf_hit_art is array(integer range <>) of csf_hit_rt;
    function width(x: csf_hit_art) return integer;
@@ -113,14 +113,14 @@ package csf_pkg is
       chi2 : unsigned(CSF_SEG_CHI2_LEN-1 downto 0);
       nhits : unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0);
    end record csf_locseg_rt;
-   attribute w of csf_locseg_rt : type is 48;
+   attribute w of csf_locseg_rt : type is 1+Abs(CSF_SEG_B_LEN)+Abs(CSF_SEG_M_LEN)+Abs(CSF_SEG_CHI2_LEN)+Abs(CSF_MAXHITS_SEG_LEN);
    function width(x: csf_locseg_rt) return natural;
    function convert(x: csf_locseg_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: csf_locseg_rt) return csf_locseg_rt;
    function zero(tpl: csf_locseg_rt) return csf_locseg_rt;
 
    subtype csf_locseg_vt is std_logic_vector(csf_locseg_rt'w-1 downto 0);
-   attribute w of csf_locseg_vt : subtype is 48;
+   attribute w of csf_locseg_vt : subtype is Abs(csf_locseg_rt'w);
 
    type csf_locseg_art is array(integer range <>) of csf_locseg_rt;
    function width(x: csf_locseg_art) return integer;
@@ -146,14 +146,14 @@ package csf_pkg is
       x2 : unsigned(SUM_X2_LEN-1 downto 0);
       n : unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0);
    end record csf_sums_rt;
-   attribute w of csf_sums_rt : type is 111;
+   attribute w of csf_sums_rt : type is 1+Abs(SUM_XY_LEN)+Abs(SUM_Y_LEN)+Abs(SUM_X_LEN)+Abs(SUM_X2_LEN)+Abs(CSF_MAXHITS_SEG_LEN);
    function width(x: csf_sums_rt) return natural;
    function convert(x: csf_sums_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: csf_sums_rt) return csf_sums_rt;
    function zero(tpl: csf_sums_rt) return csf_sums_rt;
 
    subtype csf_sums_vt is std_logic_vector(csf_sums_rt'w-1 downto 0);
-   attribute w of csf_sums_vt : subtype is 111;
+   attribute w of csf_sums_vt : subtype is Abs(csf_sums_rt'w);
 
    type csf_sums_art is array(integer range <>) of csf_sums_rt;
    function width(x: csf_sums_art) return integer;
@@ -179,7 +179,7 @@ package csf_pkg is
       angle : signed(SF_SEG_ANG_LEN-1 downto 0);
       quality : std_logic;
    end record sf_seg_data_barrel_rt;
-   attribute w of sf_seg_data_barrel_rt : type is 64;
+   attribute w of sf_seg_data_barrel_rt : type is 1+slc_muid_rt'w+vec_mdtid_rt'w+Abs(SF_SEG_POS_LEN)+Abs(SF_SEG_ANG_LEN)+1;
    function width(x: sf_seg_data_barrel_rt) return natural;
    function convert(x: sf_seg_data_barrel_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt;
@@ -193,7 +193,7 @@ package csf_pkg is
       angle : signed(SF_SEG_ANG_LEN-1 downto 0);
       quality : std_logic;
    end record sf_seg_data_endcap_rt;
-   attribute w of sf_seg_data_endcap_rt : type is 64;
+   attribute w of sf_seg_data_endcap_rt : type is 1+slc_muid_rt'w+vec_mdtid_rt'w+Abs(SF_SEG_POS_LEN)+Abs(SF_SEG_ANG_LEN)+1;
    function width(x: sf_seg_data_endcap_rt) return natural;
    function convert(x: sf_seg_data_endcap_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt;
@@ -389,29 +389,26 @@ package body csf_pkg is
    end function zero;
 
    function width(x: csf_hit_art) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: csf_hit_art; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -420,19 +417,21 @@ package body csf_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: csf_hit_art) return csf_hit_art is
+      variable e : tpl'element;
       variable y : csf_hit_art(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -445,14 +444,16 @@ package body csf_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: csf_hit_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: csf_hit_art) return csf_hit_art is
+      variable e : tpl'element;
       variable y : csf_hit_art(tpl'range);
    begin
       for j in y'range loop
@@ -462,29 +463,26 @@ package body csf_pkg is
    end function convert;
 
    function width(x: csf_hit_avt) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: csf_hit_avt; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -493,19 +491,21 @@ package body csf_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: csf_hit_avt) return csf_hit_avt is
+      variable e : tpl'element;
       variable y : csf_hit_avt(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -518,14 +518,16 @@ package body csf_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: csf_hit_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: csf_hit_avt) return csf_hit_avt is
+      variable e : tpl'element;
       variable y : csf_hit_avt(tpl'range);
    begin
       for j in y'range loop
@@ -626,29 +628,26 @@ package body csf_pkg is
    end function zero;
 
    function width(x: csf_locseg_art) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: csf_locseg_art; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -657,19 +656,21 @@ package body csf_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: csf_locseg_art) return csf_locseg_art is
+      variable e : tpl'element;
       variable y : csf_locseg_art(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -682,14 +683,16 @@ package body csf_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: csf_locseg_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: csf_locseg_art) return csf_locseg_art is
+      variable e : tpl'element;
       variable y : csf_locseg_art(tpl'range);
    begin
       for j in y'range loop
@@ -699,29 +702,26 @@ package body csf_pkg is
    end function convert;
 
    function width(x: csf_locseg_avt) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: csf_locseg_avt; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -730,19 +730,21 @@ package body csf_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: csf_locseg_avt) return csf_locseg_avt is
+      variable e : tpl'element;
       variable y : csf_locseg_avt(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -755,14 +757,16 @@ package body csf_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: csf_locseg_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: csf_locseg_avt) return csf_locseg_avt is
+      variable e : tpl'element;
       variable y : csf_locseg_avt(tpl'range);
    begin
       for j in y'range loop
@@ -876,29 +880,26 @@ package body csf_pkg is
    end function zero;
 
    function width(x: csf_sums_art) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: csf_sums_art; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -907,19 +908,21 @@ package body csf_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: csf_sums_art) return csf_sums_art is
+      variable e : tpl'element;
       variable y : csf_sums_art(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -932,14 +935,16 @@ package body csf_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: csf_sums_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: csf_sums_art) return csf_sums_art is
+      variable e : tpl'element;
       variable y : csf_sums_art(tpl'range);
    begin
       for j in y'range loop
@@ -949,29 +954,26 @@ package body csf_pkg is
    end function convert;
 
    function width(x: csf_sums_avt) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: csf_sums_avt; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -980,19 +982,21 @@ package body csf_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: csf_sums_avt) return csf_sums_avt is
+      variable e : tpl'element;
       variable y : csf_sums_avt(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -1005,14 +1009,16 @@ package body csf_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: csf_sums_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: csf_sums_avt) return csf_sums_avt is
+      variable e : tpl'element;
       variable y : csf_sums_avt(tpl'range);
    begin
       for j in y'range loop

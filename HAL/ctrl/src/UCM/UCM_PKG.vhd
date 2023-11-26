@@ -19,7 +19,7 @@ package UCM_CTRL is
       DISABLE : std_logic;
       FREEZE : std_logic;
    end record UCM_SUPER_ACTIONS_CTRL_t;
-   attribute w of UCM_SUPER_ACTIONS_CTRL_t : type is 4;
+   attribute w of UCM_SUPER_ACTIONS_CTRL_t : type is 1+1+1+1;
    function width(x: UCM_SUPER_ACTIONS_CTRL_t) return natural;
    function convert(x: UCM_SUPER_ACTIONS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t;
@@ -30,7 +30,7 @@ package UCM_CTRL is
       INPUT_EN : std_logic;
       OUTPUT_EN : std_logic;
    end record UCM_SUPER_CONFIGS_CTRL_t;
-   attribute w of UCM_SUPER_CONFIGS_CTRL_t : type is 6;
+   attribute w of UCM_SUPER_CONFIGS_CTRL_t : type is 4+1+1;
    function width(x: UCM_SUPER_CONFIGS_CTRL_t) return natural;
    function convert(x: UCM_SUPER_CONFIGS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t;
@@ -41,7 +41,7 @@ package UCM_CTRL is
       READY : std_logic;
       ERROR : std_logic_vector(8 - 1 downto 0);
    end record UCM_SUPER_STATUS_MON_t;
-   attribute w of UCM_SUPER_STATUS_MON_t : type is 10;
+   attribute w of UCM_SUPER_STATUS_MON_t : type is 1+1+8;
    function width(x: UCM_SUPER_STATUS_MON_t) return natural;
    function convert(x: UCM_SUPER_STATUS_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t;
@@ -61,7 +61,7 @@ package UCM_CTRL is
       rd_req : std_logic;
       wr_data : std_logic_vector(10 - 1 downto 0);
    end record UCM_SUPER_SECTOR_PHI_CTRL_t;
-   attribute w of UCM_SUPER_SECTOR_PHI_CTRL_t : type is 12;
+   attribute w of UCM_SUPER_SECTOR_PHI_CTRL_t : type is 1+1+10;
    function width(x: UCM_SUPER_SECTOR_PHI_CTRL_t) return natural;
    function convert(x: UCM_SUPER_SECTOR_PHI_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t;
@@ -71,7 +71,7 @@ package UCM_CTRL is
       rd_rdy : std_logic;
       freeze_ena : std_logic;
    end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
-   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t : type is 2;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t : type is 1+1;
    function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return natural;
    function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
@@ -86,7 +86,7 @@ package UCM_CTRL is
       freeze_req : std_logic;
       mem_sel : std_logic_vector(3 - 1 downto 0);
    end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
-   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t : type is 9;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t : type is 1+1+1+1+1+1+3;
    function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return natural;
    function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
@@ -114,14 +114,14 @@ package UCM_CTRL is
       SIGNALS : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
       rd_data : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
    end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
-   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t : type is 18;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t : type is UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t'w+UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t'w;
    function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural;
    function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
    function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
 
-   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is array(4 -1 downto 0) of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
-   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY : type is 72;
+   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY : type is (4)*UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t'w;
    function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return integer;
    function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
@@ -135,14 +135,14 @@ package UCM_CTRL is
       rd_addr : std_logic_vector(8 - 1 downto 0);
       wr_data : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
    end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
-   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t : type is 41;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t : type is UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t'w+8+8+UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t'w;
    function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural;
    function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
    function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
 
-   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is array(4 -1 downto 0) of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
-   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY : type is 164;
+   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY : type is (4)*UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t'w;
    function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return integer;
    function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
@@ -153,7 +153,7 @@ package UCM_CTRL is
    type UCM_SUPER_CDE_CHAMB_Z0_MON_t is record
       CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
    end record UCM_SUPER_CDE_CHAMB_Z0_MON_t;
-   attribute w of UCM_SUPER_CDE_CHAMB_Z0_MON_t : type is 72;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_MON_t : type is UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY'w;
    function width(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return natural;
    function convert(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t;
@@ -162,7 +162,7 @@ package UCM_CTRL is
    type UCM_SUPER_CDE_CHAMB_Z0_CTRL_t is record
       CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
    end record UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
-   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CTRL_t : type is 164;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CTRL_t : type is UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY'w;
    function width(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return natural;
    function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
@@ -172,7 +172,7 @@ package UCM_CTRL is
       rd_rdy : std_logic;
       freeze_ena : std_logic;
    end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
-   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t : type is 2;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t : type is 1+1;
    function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return natural;
    function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
@@ -187,7 +187,7 @@ package UCM_CTRL is
       freeze_req : std_logic;
       mem_sel : std_logic_vector(3 - 1 downto 0);
    end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
-   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t : type is 9;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t : type is 1+1+1+1+1+1+3;
    function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return natural;
    function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
@@ -215,14 +215,14 @@ package UCM_CTRL is
       SIGNALS : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
       rd_data : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
    end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
-   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t : type is 18;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t : type is UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t'w+UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t'w;
    function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural;
    function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
    function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
 
-   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is array(4 -1 downto 0) of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
-   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY : type is 72;
+   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY : type is (4)*UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t'w;
    function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return integer;
    function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
@@ -236,14 +236,14 @@ package UCM_CTRL is
       rd_addr : std_logic_vector(8 - 1 downto 0);
       wr_data : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
    end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
-   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t : type is 41;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t : type is UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t'w+8+8+UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t'w;
    function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural;
    function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
    function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
 
-   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is array(4 -1 downto 0) of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
-   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY : type is 164;
+   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY : type is (4)*UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t'w;
    function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return integer;
    function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
@@ -254,7 +254,7 @@ package UCM_CTRL is
    type UCM_SUPER_CVP_CHAMB_Z0_MON_t is record
       CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
    end record UCM_SUPER_CVP_CHAMB_Z0_MON_t;
-   attribute w of UCM_SUPER_CVP_CHAMB_Z0_MON_t : type is 72;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_MON_t : type is UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY'w;
    function width(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return natural;
    function convert(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t;
@@ -263,7 +263,7 @@ package UCM_CTRL is
    type UCM_SUPER_CVP_CHAMB_Z0_CTRL_t is record
       CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
    end record UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
-   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CTRL_t : type is 164;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CTRL_t : type is UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY'w;
    function width(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return natural;
    function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
@@ -275,7 +275,7 @@ package UCM_CTRL is
       CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_MON_t;
       CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_MON_t;
    end record UCM_SUPER_MON_t;
-   attribute w of UCM_SUPER_MON_t : type is 164;
+   attribute w of UCM_SUPER_MON_t : type is UCM_SUPER_STATUS_MON_t'w+UCM_SUPER_SECTOR_PHI_MON_t'w+UCM_SUPER_CDE_CHAMB_Z0_MON_t'w+UCM_SUPER_CVP_CHAMB_Z0_MON_t'w;
    function width(x: UCM_SUPER_MON_t) return natural;
    function convert(x: UCM_SUPER_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_MON_t) return UCM_SUPER_MON_t;
@@ -288,7 +288,7 @@ package UCM_CTRL is
       CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
       CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
    end record UCM_SUPER_CTRL_t;
-   attribute w of UCM_SUPER_CTRL_t : type is 350;
+   attribute w of UCM_SUPER_CTRL_t : type is UCM_SUPER_ACTIONS_CTRL_t'w+UCM_SUPER_CONFIGS_CTRL_t'w+UCM_SUPER_SECTOR_PHI_CTRL_t'w+UCM_SUPER_CDE_CHAMB_Z0_CTRL_t'w+UCM_SUPER_CVP_CHAMB_Z0_CTRL_t'w;
    function width(x: UCM_SUPER_CTRL_t) return natural;
    function convert(x: UCM_SUPER_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t;
@@ -298,7 +298,7 @@ package UCM_CTRL is
       rd_rdy : std_logic;
       rd_data : std_logic_vector(12 - 1 downto 0);
    end record UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
-   attribute w of UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t : type is 13;
+   attribute w of UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t : type is 1+12;
    function width(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return natural;
    function convert(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
@@ -311,7 +311,7 @@ package UCM_CTRL is
       rd_addr : std_logic_vector(5 - 1 downto 0);
       wr_data : std_logic_vector(12 - 1 downto 0);
    end record UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
-   attribute w of UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t : type is 24;
+   attribute w of UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t : type is 1+1+5+5+12;
    function width(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return natural;
    function convert(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
@@ -320,7 +320,7 @@ package UCM_CTRL is
    type UCM_R_PHI_COMP_RPC_MON_t is record
       MEM_INTERFACE : UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
    end record UCM_R_PHI_COMP_RPC_MON_t;
-   attribute w of UCM_R_PHI_COMP_RPC_MON_t : type is 13;
+   attribute w of UCM_R_PHI_COMP_RPC_MON_t : type is UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t'w;
    function width(x: UCM_R_PHI_COMP_RPC_MON_t) return natural;
    function convert(x: UCM_R_PHI_COMP_RPC_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t;
@@ -333,7 +333,7 @@ package UCM_CTRL is
       ext_ctrl : std_logic;
       MEM_INTERFACE : UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
    end record UCM_R_PHI_COMP_RPC_CTRL_t;
-   attribute w of UCM_R_PHI_COMP_RPC_CTRL_t : type is 37;
+   attribute w of UCM_R_PHI_COMP_RPC_CTRL_t : type is 4+4+4+1+UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t'w;
    function width(x: UCM_R_PHI_COMP_RPC_CTRL_t) return natural;
    function convert(x: UCM_R_PHI_COMP_RPC_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t;
@@ -343,7 +343,7 @@ package UCM_CTRL is
       rd_rdy : std_logic;
       rd_data : std_logic_vector(14 - 1 downto 0);
    end record UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
-   attribute w of UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t : type is 15;
+   attribute w of UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t : type is 1+14;
    function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return natural;
    function convert(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
@@ -356,7 +356,7 @@ package UCM_CTRL is
       rd_addr : std_logic_vector(5 - 1 downto 0);
       wr_data : std_logic_vector(14 - 1 downto 0);
    end record UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
-   attribute w of UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t : type is 26;
+   attribute w of UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t : type is 1+1+5+5+14;
    function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return natural;
    function convert(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
@@ -365,7 +365,7 @@ package UCM_CTRL is
    type UCM_R_PHI_COMP_MDT_MON_t is record
       MEM_INTERFACE : UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
    end record UCM_R_PHI_COMP_MDT_MON_t;
-   attribute w of UCM_R_PHI_COMP_MDT_MON_t : type is 15;
+   attribute w of UCM_R_PHI_COMP_MDT_MON_t : type is UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t'w;
    function width(x: UCM_R_PHI_COMP_MDT_MON_t) return natural;
    function convert(x: UCM_R_PHI_COMP_MDT_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t;
@@ -378,7 +378,7 @@ package UCM_CTRL is
       ext_ctrl : std_logic;
       MEM_INTERFACE : UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
    end record UCM_R_PHI_COMP_MDT_CTRL_t;
-   attribute w of UCM_R_PHI_COMP_MDT_CTRL_t : type is 39;
+   attribute w of UCM_R_PHI_COMP_MDT_CTRL_t : type is 4+4+4+1+UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t'w;
    function width(x: UCM_R_PHI_COMP_MDT_CTRL_t) return natural;
    function convert(x: UCM_R_PHI_COMP_MDT_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t;
@@ -388,7 +388,7 @@ package UCM_CTRL is
       RPC : UCM_R_PHI_COMP_RPC_MON_t;
       MDT : UCM_R_PHI_COMP_MDT_MON_t;
    end record UCM_R_PHI_COMP_MON_t;
-   attribute w of UCM_R_PHI_COMP_MON_t : type is 28;
+   attribute w of UCM_R_PHI_COMP_MON_t : type is UCM_R_PHI_COMP_RPC_MON_t'w+UCM_R_PHI_COMP_MDT_MON_t'w;
    function width(x: UCM_R_PHI_COMP_MON_t) return natural;
    function convert(x: UCM_R_PHI_COMP_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t;
@@ -398,7 +398,7 @@ package UCM_CTRL is
       RPC : UCM_R_PHI_COMP_RPC_CTRL_t;
       MDT : UCM_R_PHI_COMP_MDT_CTRL_t;
    end record UCM_R_PHI_COMP_CTRL_t;
-   attribute w of UCM_R_PHI_COMP_CTRL_t : type is 76;
+   attribute w of UCM_R_PHI_COMP_CTRL_t : type is UCM_R_PHI_COMP_RPC_CTRL_t'w+UCM_R_PHI_COMP_MDT_CTRL_t'w;
    function width(x: UCM_R_PHI_COMP_CTRL_t) return natural;
    function convert(x: UCM_R_PHI_COMP_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t;
@@ -408,7 +408,7 @@ package UCM_CTRL is
       SUPER : UCM_SUPER_MON_t;
       R_PHI_COMP : UCM_R_PHI_COMP_MON_t;
    end record UCM_MON_t;
-   attribute w of UCM_MON_t : type is 192;
+   attribute w of UCM_MON_t : type is UCM_SUPER_MON_t'w+UCM_R_PHI_COMP_MON_t'w;
    function width(x: UCM_MON_t) return natural;
    function convert(x: UCM_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_MON_t) return UCM_MON_t;
@@ -418,7 +418,7 @@ package UCM_CTRL is
       SUPER : UCM_SUPER_CTRL_t;
       R_PHI_COMP : UCM_R_PHI_COMP_CTRL_t;
    end record UCM_CTRL_t;
-   attribute w of UCM_CTRL_t : type is 426;
+   attribute w of UCM_CTRL_t : type is UCM_SUPER_CTRL_t'w+UCM_R_PHI_COMP_CTRL_t'w;
    function width(x: UCM_CTRL_t) return natural;
    function convert(x: UCM_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_CTRL_t) return UCM_CTRL_t;
@@ -1052,29 +1052,26 @@ package body UCM_CTRL is
    end function zero;
 
    function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -1083,19 +1080,21 @@ package body UCM_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -1108,14 +1107,16 @@ package body UCM_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
    begin
       for j in y'range loop
@@ -1203,29 +1204,26 @@ package body UCM_CTRL is
    end function zero;
 
    function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -1234,19 +1232,21 @@ package body UCM_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -1259,14 +1259,16 @@ package body UCM_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
    begin
       for j in y'range loop
@@ -1653,29 +1655,26 @@ package body UCM_CTRL is
    end function zero;
 
    function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -1684,19 +1683,21 @@ package body UCM_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -1709,14 +1710,16 @@ package body UCM_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
    begin
       for j in y'range loop
@@ -1804,29 +1807,26 @@ package body UCM_CTRL is
    end function zero;
 
    function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -1835,19 +1835,21 @@ package body UCM_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -1860,14 +1862,16 @@ package body UCM_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
    begin
       for j in y'range loop

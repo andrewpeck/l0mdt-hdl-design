@@ -19,7 +19,7 @@ package CORE_CTRL is
       CLK320_FREQ : std_logic_vector(32 - 1 downto 0);
       CLK50_FREQ : std_logic_vector(32 - 1 downto 0);
    end record CORE_CLOCKING_MON_t;
-   attribute w of CORE_CLOCKING_MON_t : type is 97;
+   attribute w of CORE_CLOCKING_MON_t : type is 1+32+32+32;
    function width(x: CORE_CLOCKING_MON_t) return natural;
    function convert(x: CORE_CLOCKING_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_CLOCKING_MON_t) return CORE_CLOCKING_MON_t;
@@ -44,7 +44,7 @@ package CORE_CTRL is
       buffbypass_tx_done_out : std_logic;
       buffbypass_tx_error_out : std_logic;
    end record CORE_MGT_MGT_STATUS_MON_t;
-   attribute w of CORE_MGT_MGT_STATUS_MON_t : type is 8;
+   attribute w of CORE_MGT_MGT_STATUS_MON_t : type is 1+1+1+1+1+1+1+1;
    function width(x: CORE_MGT_MGT_STATUS_MON_t) return natural;
    function convert(x: CORE_MGT_MGT_STATUS_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_STATUS_MON_t) return CORE_MGT_MGT_STATUS_MON_t;
@@ -54,7 +54,7 @@ package CORE_CTRL is
       rd_rdy : std_logic;
       rd_data : std_logic_vector(16 - 1 downto 0);
    end record CORE_MGT_MGT_DRP_MON_t;
-   attribute w of CORE_MGT_MGT_DRP_MON_t : type is 17;
+   attribute w of CORE_MGT_MGT_DRP_MON_t : type is 1+16;
    function width(x: CORE_MGT_MGT_DRP_MON_t) return natural;
    function convert(x: CORE_MGT_MGT_DRP_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_DRP_MON_t) return CORE_MGT_MGT_DRP_MON_t;
@@ -66,7 +66,7 @@ package CORE_CTRL is
       en : std_logic;
       wr_data : std_logic_vector(16 - 1 downto 0);
    end record CORE_MGT_MGT_DRP_CTRL_t;
-   attribute w of CORE_MGT_MGT_DRP_CTRL_t : type is 28;
+   attribute w of CORE_MGT_MGT_DRP_CTRL_t : type is 1+10+1+16;
    function width(x: CORE_MGT_MGT_DRP_CTRL_t) return natural;
    function convert(x: CORE_MGT_MGT_DRP_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_DRP_CTRL_t) return CORE_MGT_MGT_DRP_CTRL_t;
@@ -77,7 +77,7 @@ package CORE_CTRL is
       reset_datapath : std_logic;
       reset_bufbypass : std_logic;
    end record CORE_MGT_MGT_TX_RESETS_CTRL_t;
-   attribute w of CORE_MGT_MGT_TX_RESETS_CTRL_t : type is 3;
+   attribute w of CORE_MGT_MGT_TX_RESETS_CTRL_t : type is 1+1+1;
    function width(x: CORE_MGT_MGT_TX_RESETS_CTRL_t) return natural;
    function convert(x: CORE_MGT_MGT_TX_RESETS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_TX_RESETS_CTRL_t) return CORE_MGT_MGT_TX_RESETS_CTRL_t;
@@ -88,7 +88,7 @@ package CORE_CTRL is
       reset_datapath : std_logic;
       reset_bufbypass : std_logic;
    end record CORE_MGT_MGT_RX_RESETS_CTRL_t;
-   attribute w of CORE_MGT_MGT_RX_RESETS_CTRL_t : type is 3;
+   attribute w of CORE_MGT_MGT_RX_RESETS_CTRL_t : type is 1+1+1;
    function width(x: CORE_MGT_MGT_RX_RESETS_CTRL_t) return natural;
    function convert(x: CORE_MGT_MGT_RX_RESETS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_RX_RESETS_CTRL_t) return CORE_MGT_MGT_RX_RESETS_CTRL_t;
@@ -102,7 +102,7 @@ package CORE_CTRL is
       y_loc : std_logic_vector(6 - 1 downto 0);
       is_active : std_logic;
    end record CORE_MGT_MGT_CONFIG_MON_t;
-   attribute w of CORE_MGT_MGT_CONFIG_MON_t : type is 19;
+   attribute w of CORE_MGT_MGT_CONFIG_MON_t : type is 3+5+2+2+6+1;
    function width(x: CORE_MGT_MGT_CONFIG_MON_t) return natural;
    function convert(x: CORE_MGT_MGT_CONFIG_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_CONFIG_MON_t) return CORE_MGT_MGT_CONFIG_MON_t;
@@ -113,14 +113,14 @@ package CORE_CTRL is
       DRP : CORE_MGT_MGT_DRP_MON_t;
       CONFIG : CORE_MGT_MGT_CONFIG_MON_t;
    end record CORE_MGT_MGT_MON_t;
-   attribute w of CORE_MGT_MGT_MON_t : type is 44;
+   attribute w of CORE_MGT_MGT_MON_t : type is CORE_MGT_MGT_STATUS_MON_t'w+CORE_MGT_MGT_DRP_MON_t'w+CORE_MGT_MGT_CONFIG_MON_t'w;
    function width(x: CORE_MGT_MGT_MON_t) return natural;
    function convert(x: CORE_MGT_MGT_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_MON_t) return CORE_MGT_MGT_MON_t;
    function zero(tpl: CORE_MGT_MGT_MON_t) return CORE_MGT_MGT_MON_t;
 
-   type CORE_MGT_MGT_MON_t_ARRAY is array(128 -1 downto 0) of CORE_MGT_MGT_MON_t;
-   attribute w of CORE_MGT_MGT_MON_t_ARRAY : type is 5632;
+   type CORE_MGT_MGT_MON_t_ARRAY is array(128-1 downto 0) of CORE_MGT_MGT_MON_t;
+   attribute w of CORE_MGT_MGT_MON_t_ARRAY : type is (128)*CORE_MGT_MGT_MON_t'w;
    function width(x: CORE_MGT_MGT_MON_t_ARRAY) return integer;
    function convert(x: CORE_MGT_MGT_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_MON_t_ARRAY) return CORE_MGT_MGT_MON_t_ARRAY;
@@ -134,14 +134,14 @@ package CORE_CTRL is
       TX_RESETS : CORE_MGT_MGT_TX_RESETS_CTRL_t;
       RX_RESETS : CORE_MGT_MGT_RX_RESETS_CTRL_t;
    end record CORE_MGT_MGT_CTRL_t;
-   attribute w of CORE_MGT_MGT_CTRL_t : type is 35;
+   attribute w of CORE_MGT_MGT_CTRL_t : type is 1+CORE_MGT_MGT_DRP_CTRL_t'w+CORE_MGT_MGT_TX_RESETS_CTRL_t'w+CORE_MGT_MGT_RX_RESETS_CTRL_t'w;
    function width(x: CORE_MGT_MGT_CTRL_t) return natural;
    function convert(x: CORE_MGT_MGT_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_CTRL_t) return CORE_MGT_MGT_CTRL_t;
    function zero(tpl: CORE_MGT_MGT_CTRL_t) return CORE_MGT_MGT_CTRL_t;
 
-   type CORE_MGT_MGT_CTRL_t_ARRAY is array(128 -1 downto 0) of CORE_MGT_MGT_CTRL_t;
-   attribute w of CORE_MGT_MGT_CTRL_t_ARRAY : type is 4480;
+   type CORE_MGT_MGT_CTRL_t_ARRAY is array(128-1 downto 0) of CORE_MGT_MGT_CTRL_t;
+   attribute w of CORE_MGT_MGT_CTRL_t_ARRAY : type is (128)*CORE_MGT_MGT_CTRL_t'w;
    function width(x: CORE_MGT_MGT_CTRL_t_ARRAY) return integer;
    function convert(x: CORE_MGT_MGT_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_CTRL_t_ARRAY) return CORE_MGT_MGT_CTRL_t_ARRAY;
@@ -153,14 +153,14 @@ package CORE_CTRL is
       FREQ : std_logic_vector(29 - 1 downto 0);
       REFCLK_TYPE : std_logic_vector(3 - 1 downto 0);
    end record CORE_MGT_REFCLK_MON_t;
-   attribute w of CORE_MGT_REFCLK_MON_t : type is 32;
+   attribute w of CORE_MGT_REFCLK_MON_t : type is 29+3;
    function width(x: CORE_MGT_REFCLK_MON_t) return natural;
    function convert(x: CORE_MGT_REFCLK_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_REFCLK_MON_t) return CORE_MGT_REFCLK_MON_t;
    function zero(tpl: CORE_MGT_REFCLK_MON_t) return CORE_MGT_REFCLK_MON_t;
 
-   type CORE_MGT_REFCLK_MON_t_ARRAY is array(32 -1 downto 0) of CORE_MGT_REFCLK_MON_t;
-   attribute w of CORE_MGT_REFCLK_MON_t_ARRAY : type is 1024;
+   type CORE_MGT_REFCLK_MON_t_ARRAY is array(32-1 downto 0) of CORE_MGT_REFCLK_MON_t;
+   attribute w of CORE_MGT_REFCLK_MON_t_ARRAY : type is (32)*CORE_MGT_REFCLK_MON_t'w;
    function width(x: CORE_MGT_REFCLK_MON_t_ARRAY) return integer;
    function convert(x: CORE_MGT_REFCLK_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_REFCLK_MON_t_ARRAY) return CORE_MGT_REFCLK_MON_t_ARRAY;
@@ -172,7 +172,7 @@ package CORE_CTRL is
       FREQ : std_logic_vector(29 - 1 downto 0);
       REFCLK_TYPE : std_logic_vector(3 - 1 downto 0);
    end record CORE_MGT_RECCLK_out_MON_t;
-   attribute w of CORE_MGT_RECCLK_out_MON_t : type is 32;
+   attribute w of CORE_MGT_RECCLK_out_MON_t : type is 29+3;
    function width(x: CORE_MGT_RECCLK_out_MON_t) return natural;
    function convert(x: CORE_MGT_RECCLK_out_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_RECCLK_out_MON_t) return CORE_MGT_RECCLK_out_MON_t;
@@ -183,7 +183,7 @@ package CORE_CTRL is
       REFCLK : CORE_MGT_REFCLK_MON_t_ARRAY;
       RECCLK_out : CORE_MGT_RECCLK_out_MON_t;
    end record CORE_MGT_MON_t;
-   attribute w of CORE_MGT_MON_t : type is 6688;
+   attribute w of CORE_MGT_MON_t : type is CORE_MGT_MGT_MON_t_ARRAY'w+CORE_MGT_REFCLK_MON_t_ARRAY'w+CORE_MGT_RECCLK_out_MON_t'w;
    function width(x: CORE_MGT_MON_t) return natural;
    function convert(x: CORE_MGT_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MON_t) return CORE_MGT_MON_t;
@@ -192,7 +192,7 @@ package CORE_CTRL is
    type CORE_MGT_CTRL_t is record
       MGT : CORE_MGT_MGT_CTRL_t_ARRAY;
    end record CORE_MGT_CTRL_t;
-   attribute w of CORE_MGT_CTRL_t : type is 4480;
+   attribute w of CORE_MGT_CTRL_t : type is CORE_MGT_MGT_CTRL_t_ARRAY'w;
    function width(x: CORE_MGT_CTRL_t) return natural;
    function convert(x: CORE_MGT_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_CTRL_t) return CORE_MGT_CTRL_t;
@@ -202,7 +202,7 @@ package CORE_CTRL is
       CLOCKING : CORE_CLOCKING_MON_t;
       MGT : CORE_MGT_MON_t;
    end record CORE_MON_t;
-   attribute w of CORE_MON_t : type is 6785;
+   attribute w of CORE_MON_t : type is CORE_CLOCKING_MON_t'w+CORE_MGT_MON_t'w;
    function width(x: CORE_MON_t) return natural;
    function convert(x: CORE_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MON_t) return CORE_MON_t;
@@ -212,7 +212,7 @@ package CORE_CTRL is
       CLOCKING : CORE_CLOCKING_CTRL_t;
       MGT : CORE_MGT_CTRL_t;
    end record CORE_CTRL_t;
-   attribute w of CORE_CTRL_t : type is 4481;
+   attribute w of CORE_CTRL_t : type is CORE_CLOCKING_CTRL_t'w+CORE_MGT_CTRL_t'w;
    function width(x: CORE_CTRL_t) return natural;
    function convert(x: CORE_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_CTRL_t) return CORE_CTRL_t;
@@ -911,29 +911,26 @@ package body CORE_CTRL is
    end function zero;
 
    function width(x: CORE_MGT_MGT_MON_t_ARRAY) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: CORE_MGT_MGT_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -942,19 +939,21 @@ package body CORE_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_MON_t_ARRAY) return CORE_MGT_MGT_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : CORE_MGT_MGT_MON_t_ARRAY;
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -967,14 +966,16 @@ package body CORE_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: CORE_MGT_MGT_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: CORE_MGT_MGT_MON_t_ARRAY) return CORE_MGT_MGT_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : CORE_MGT_MGT_MON_t_ARRAY;
    begin
       for j in y'range loop
@@ -1062,29 +1063,26 @@ package body CORE_CTRL is
    end function zero;
 
    function width(x: CORE_MGT_MGT_CTRL_t_ARRAY) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: CORE_MGT_MGT_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -1093,19 +1091,21 @@ package body CORE_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_CTRL_t_ARRAY) return CORE_MGT_MGT_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : CORE_MGT_MGT_CTRL_t_ARRAY;
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -1118,14 +1118,16 @@ package body CORE_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: CORE_MGT_MGT_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: CORE_MGT_MGT_CTRL_t_ARRAY) return CORE_MGT_MGT_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : CORE_MGT_MGT_CTRL_t_ARRAY;
    begin
       for j in y'range loop
@@ -1187,29 +1189,26 @@ package body CORE_CTRL is
    end function zero;
 
    function width(x: CORE_MGT_REFCLK_MON_t_ARRAY) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: CORE_MGT_REFCLK_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -1218,19 +1217,21 @@ package body CORE_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: CORE_MGT_REFCLK_MON_t_ARRAY) return CORE_MGT_REFCLK_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : CORE_MGT_REFCLK_MON_t_ARRAY;
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -1243,14 +1244,16 @@ package body CORE_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: CORE_MGT_REFCLK_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: CORE_MGT_REFCLK_MON_t_ARRAY) return CORE_MGT_REFCLK_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : CORE_MGT_REFCLK_MON_t_ARRAY;
    begin
       for j in y'range loop

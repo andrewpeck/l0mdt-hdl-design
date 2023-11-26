@@ -19,7 +19,7 @@ package TAR_CTRL is
       DISABLE : std_logic;
       FREEZE : std_logic;
    end record TAR_ACTIONS_CTRL_t;
-   attribute w of TAR_ACTIONS_CTRL_t : type is 4;
+   attribute w of TAR_ACTIONS_CTRL_t : type is 1+1+1+1;
    function width(x: TAR_ACTIONS_CTRL_t) return natural;
    function convert(x: TAR_ACTIONS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
@@ -30,7 +30,7 @@ package TAR_CTRL is
       OUTPUT_EN : std_logic;
       FLUSH_MEM_RESET : std_logic;
    end record TAR_CONFIGS_CTRL_t;
-   attribute w of TAR_CONFIGS_CTRL_t : type is 3;
+   attribute w of TAR_CONFIGS_CTRL_t : type is 1+1+1;
    function width(x: TAR_CONFIGS_CTRL_t) return natural;
    function convert(x: TAR_CONFIGS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t;
@@ -42,7 +42,7 @@ package TAR_CTRL is
       FREEZED : std_logic;
       ERROR : std_logic_vector(8 - 1 downto 0);
    end record TAR_STATUS_MON_t;
-   attribute w of TAR_STATUS_MON_t : type is 11;
+   attribute w of TAR_STATUS_MON_t : type is 1+1+1+8;
    function width(x: TAR_STATUS_MON_t) return natural;
    function convert(x: TAR_STATUS_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_STATUS_MON_t) return TAR_STATUS_MON_t;
@@ -52,7 +52,7 @@ package TAR_CTRL is
       rd_rdy : std_logic;
       freeze_ena : std_logic;
    end record TAR_PL_ST_PL_MEM_SIGNALS_MON_t;
-   attribute w of TAR_PL_ST_PL_MEM_SIGNALS_MON_t : type is 2;
+   attribute w of TAR_PL_ST_PL_MEM_SIGNALS_MON_t : type is 1+1;
    function width(x: TAR_PL_ST_PL_MEM_SIGNALS_MON_t) return natural;
    function convert(x: TAR_PL_ST_PL_MEM_SIGNALS_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_SIGNALS_MON_t) return TAR_PL_ST_PL_MEM_SIGNALS_MON_t;
@@ -67,7 +67,7 @@ package TAR_CTRL is
       freeze_req : std_logic;
       mem_sel : std_logic_vector(3 - 1 downto 0);
    end record TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t;
-   attribute w of TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t : type is 9;
+   attribute w of TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t : type is 1+1+1+1+1+1+3;
    function width(x: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t) return natural;
    function convert(x: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t;
@@ -77,7 +77,7 @@ package TAR_CTRL is
       wr_data_0 : std_logic_vector(32 - 1 downto 0);
       wr_data_1 : std_logic_vector(10 - 1 downto 0);
    end record TAR_PL_ST_PL_MEM_wr_data_CTRL_t;
-   attribute w of TAR_PL_ST_PL_MEM_wr_data_CTRL_t : type is 42;
+   attribute w of TAR_PL_ST_PL_MEM_wr_data_CTRL_t : type is 32+10;
    function width(x: TAR_PL_ST_PL_MEM_wr_data_CTRL_t) return natural;
    function convert(x: TAR_PL_ST_PL_MEM_wr_data_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_wr_data_CTRL_t) return TAR_PL_ST_PL_MEM_wr_data_CTRL_t;
@@ -87,7 +87,7 @@ package TAR_CTRL is
       rd_data_0 : std_logic_vector(32 - 1 downto 0);
       rd_data_1 : std_logic_vector(10 - 1 downto 0);
    end record TAR_PL_ST_PL_MEM_rd_data_MON_t;
-   attribute w of TAR_PL_ST_PL_MEM_rd_data_MON_t : type is 42;
+   attribute w of TAR_PL_ST_PL_MEM_rd_data_MON_t : type is 32+10;
    function width(x: TAR_PL_ST_PL_MEM_rd_data_MON_t) return natural;
    function convert(x: TAR_PL_ST_PL_MEM_rd_data_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_rd_data_MON_t) return TAR_PL_ST_PL_MEM_rd_data_MON_t;
@@ -97,14 +97,14 @@ package TAR_CTRL is
       SIGNALS : TAR_PL_ST_PL_MEM_SIGNALS_MON_t;
       rd_data : TAR_PL_ST_PL_MEM_rd_data_MON_t;
    end record TAR_PL_ST_PL_MEM_MON_t;
-   attribute w of TAR_PL_ST_PL_MEM_MON_t : type is 44;
+   attribute w of TAR_PL_ST_PL_MEM_MON_t : type is TAR_PL_ST_PL_MEM_SIGNALS_MON_t'w+TAR_PL_ST_PL_MEM_rd_data_MON_t'w;
    function width(x: TAR_PL_ST_PL_MEM_MON_t) return natural;
    function convert(x: TAR_PL_ST_PL_MEM_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_MON_t) return TAR_PL_ST_PL_MEM_MON_t;
    function zero(tpl: TAR_PL_ST_PL_MEM_MON_t) return TAR_PL_ST_PL_MEM_MON_t;
 
-   type TAR_PL_ST_PL_MEM_MON_t_ARRAY is array(6 -1 downto 0) of TAR_PL_ST_PL_MEM_MON_t;
-   attribute w of TAR_PL_ST_PL_MEM_MON_t_ARRAY : type is 264;
+   type TAR_PL_ST_PL_MEM_MON_t_ARRAY is array(6-1 downto 0) of TAR_PL_ST_PL_MEM_MON_t;
+   attribute w of TAR_PL_ST_PL_MEM_MON_t_ARRAY : type is (6)*TAR_PL_ST_PL_MEM_MON_t'w;
    function width(x: TAR_PL_ST_PL_MEM_MON_t_ARRAY) return integer;
    function convert(x: TAR_PL_ST_PL_MEM_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_MEM_MON_t_ARRAY;
@@ -118,14 +118,14 @@ package TAR_CTRL is
       rd_addr : std_logic_vector(12 - 1 downto 0);
       wr_data : TAR_PL_ST_PL_MEM_wr_data_CTRL_t;
    end record TAR_PL_ST_PL_MEM_CTRL_t;
-   attribute w of TAR_PL_ST_PL_MEM_CTRL_t : type is 75;
+   attribute w of TAR_PL_ST_PL_MEM_CTRL_t : type is TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t'w+12+12+TAR_PL_ST_PL_MEM_wr_data_CTRL_t'w;
    function width(x: TAR_PL_ST_PL_MEM_CTRL_t) return natural;
    function convert(x: TAR_PL_ST_PL_MEM_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_CTRL_t) return TAR_PL_ST_PL_MEM_CTRL_t;
    function zero(tpl: TAR_PL_ST_PL_MEM_CTRL_t) return TAR_PL_ST_PL_MEM_CTRL_t;
 
-   type TAR_PL_ST_PL_MEM_CTRL_t_ARRAY is array(6 -1 downto 0) of TAR_PL_ST_PL_MEM_CTRL_t;
-   attribute w of TAR_PL_ST_PL_MEM_CTRL_t_ARRAY : type is 450;
+   type TAR_PL_ST_PL_MEM_CTRL_t_ARRAY is array(6-1 downto 0) of TAR_PL_ST_PL_MEM_CTRL_t;
+   attribute w of TAR_PL_ST_PL_MEM_CTRL_t_ARRAY : type is (6)*TAR_PL_ST_PL_MEM_CTRL_t'w;
    function width(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return integer;
    function convert(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_MEM_CTRL_t_ARRAY;
@@ -136,7 +136,7 @@ package TAR_CTRL is
    type TAR_PL_ST_MON_t is record
       PL_MEM : TAR_PL_ST_PL_MEM_MON_t_ARRAY;
    end record TAR_PL_ST_MON_t;
-   attribute w of TAR_PL_ST_MON_t : type is 264;
+   attribute w of TAR_PL_ST_MON_t : type is TAR_PL_ST_PL_MEM_MON_t_ARRAY'w;
    function width(x: TAR_PL_ST_MON_t) return natural;
    function convert(x: TAR_PL_ST_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_MON_t) return TAR_PL_ST_MON_t;
@@ -145,7 +145,7 @@ package TAR_CTRL is
    type TAR_PL_ST_CTRL_t is record
       PL_MEM : TAR_PL_ST_PL_MEM_CTRL_t_ARRAY;
    end record TAR_PL_ST_CTRL_t;
-   attribute w of TAR_PL_ST_CTRL_t : type is 450;
+   attribute w of TAR_PL_ST_CTRL_t : type is TAR_PL_ST_PL_MEM_CTRL_t_ARRAY'w;
    function width(x: TAR_PL_ST_CTRL_t) return natural;
    function convert(x: TAR_PL_ST_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_CTRL_t) return TAR_PL_ST_CTRL_t;
@@ -155,7 +155,7 @@ package TAR_CTRL is
       STATUS : TAR_STATUS_MON_t;
       PL_ST : TAR_PL_ST_MON_t;
    end record TAR_MON_t;
-   attribute w of TAR_MON_t : type is 275;
+   attribute w of TAR_MON_t : type is TAR_STATUS_MON_t'w+TAR_PL_ST_MON_t'w;
    function width(x: TAR_MON_t) return natural;
    function convert(x: TAR_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_MON_t) return TAR_MON_t;
@@ -166,7 +166,7 @@ package TAR_CTRL is
       CONFIGS : TAR_CONFIGS_CTRL_t;
       PL_ST : TAR_PL_ST_CTRL_t;
    end record TAR_CTRL_t;
-   attribute w of TAR_CTRL_t : type is 457;
+   attribute w of TAR_CTRL_t : type is TAR_ACTIONS_CTRL_t'w+TAR_CONFIGS_CTRL_t'w+TAR_PL_ST_CTRL_t'w;
    function width(x: TAR_CTRL_t) return natural;
    function convert(x: TAR_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_CTRL_t) return TAR_CTRL_t;
@@ -735,29 +735,26 @@ package body TAR_CTRL is
    end function zero;
 
    function width(x: TAR_PL_ST_PL_MEM_MON_t_ARRAY) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: TAR_PL_ST_PL_MEM_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -766,19 +763,21 @@ package body TAR_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_MEM_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : TAR_PL_ST_PL_MEM_MON_t_ARRAY;
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -791,14 +790,16 @@ package body TAR_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: TAR_PL_ST_PL_MEM_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: TAR_PL_ST_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_MEM_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : TAR_PL_ST_PL_MEM_MON_t_ARRAY;
    begin
       for j in y'range loop
@@ -886,29 +887,26 @@ package body TAR_CTRL is
    end function zero;
 
    function width(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -917,19 +915,21 @@ package body TAR_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_MEM_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : TAR_PL_ST_PL_MEM_CTRL_t_ARRAY;
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -942,14 +942,16 @@ package body TAR_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_MEM_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : TAR_PL_ST_PL_MEM_CTRL_t_ARRAY;
    begin
       for j in y'range loop

@@ -17,7 +17,7 @@ package APB_MEM_SIG_CTRL is
       rd_rdy : std_logic;
       freeze_ena : std_logic;
    end record APB_MEM_SIG_MON_t;
-   attribute w of APB_MEM_SIG_MON_t : type is 2;
+   attribute w of APB_MEM_SIG_MON_t : type is 1+1;
    function width(x: APB_MEM_SIG_MON_t) return natural;
    function convert(x: APB_MEM_SIG_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: APB_MEM_SIG_MON_t) return APB_MEM_SIG_MON_t;
@@ -32,7 +32,7 @@ package APB_MEM_SIG_CTRL is
       freeze_req : std_logic;
       mem_sel : std_logic_vector(3 - 1 downto 0);
    end record APB_MEM_SIG_CTRL_t;
-   attribute w of APB_MEM_SIG_CTRL_t : type is 9;
+   attribute w of APB_MEM_SIG_CTRL_t : type is 1+1+1+1+1+1+3;
    function width(x: APB_MEM_SIG_CTRL_t) return natural;
    function convert(x: APB_MEM_SIG_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: APB_MEM_SIG_CTRL_t) return APB_MEM_SIG_CTRL_t;

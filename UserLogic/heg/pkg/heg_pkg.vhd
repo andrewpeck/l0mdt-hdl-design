@@ -21,7 +21,7 @@ package heg_pkg is
    -- Custom types and functions --
 
    subtype heg_pc2heg_vt is std_logic_vector(hp_hpsPc2hp_rt'w-1 downto 0);
-   attribute w of heg_pc2heg_vt : subtype is 70;
+   attribute w of heg_pc2heg_vt : subtype is Abs(hp_hpsPc2hp_rt'w);
 
    type heg_pc2heg_art is array(integer range <>) of hp_hpsPc2hp_rt;
    function width(x: heg_pc2heg_art) return integer;
@@ -39,8 +39,8 @@ package heg_pkg is
    function convert(x: heg_pc2heg_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: heg_pc2heg_avt) return heg_pc2heg_avt;
 
-   subtype heg_roi_center_ut is unsigned(MDT_TUBE_LEN - 1 downto 0);
-   attribute w of heg_roi_center_ut : subtype is 9;
+   subtype heg_roi_center_ut is unsigned(MDT_TUBE_LEN-1 downto 0);
+   attribute w of heg_roi_center_ut : subtype is Abs(MDT_TUBE_LEN);
 
    type heg_roi_center_aut is array(integer range <>) of heg_roi_center_ut;
    function width(x: heg_roi_center_aut) return integer;
@@ -54,14 +54,14 @@ package heg_pkg is
       rst : std_logic;
       enable : std_logic;
    end record heg_ctrl2hp_rt;
-   attribute w of heg_ctrl2hp_rt : type is 2;
+   attribute w of heg_ctrl2hp_rt : type is 1+1;
    function width(x: heg_ctrl2hp_rt) return natural;
    function convert(x: heg_ctrl2hp_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: heg_ctrl2hp_rt) return heg_ctrl2hp_rt;
    function zero(tpl: heg_ctrl2hp_rt) return heg_ctrl2hp_rt;
 
    subtype heg_ctrl2hp_vt is std_logic_vector(heg_ctrl2hp_rt'w-1 downto 0);
-   attribute w of heg_ctrl2hp_vt : subtype is 2;
+   attribute w of heg_ctrl2hp_vt : subtype is Abs(heg_ctrl2hp_rt'w);
 
    type heg_ctrl2hp_art is array(integer range <>) of heg_ctrl2hp_rt;
    function width(x: heg_ctrl2hp_art) return integer;
@@ -96,17 +96,17 @@ package heg_pkg is
       eof : std_logic;
       enable : std_logic;
    end record heg_ctrl2sf_rt;
-   attribute w of heg_ctrl2sf_rt : type is 3;
+   attribute w of heg_ctrl2sf_rt : type is 1+1+1;
    function width(x: heg_ctrl2sf_rt) return natural;
    function convert(x: heg_ctrl2sf_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: heg_ctrl2sf_rt) return heg_ctrl2sf_rt;
    function zero(tpl: heg_ctrl2sf_rt) return heg_ctrl2sf_rt;
 
    subtype heg_ctrl2sf_vt is std_logic_vector(heg_ctrl2sf_rt'w-1 downto 0);
-   attribute w of heg_ctrl2sf_vt : subtype is 3;
+   attribute w of heg_ctrl2sf_vt : subtype is Abs(heg_ctrl2sf_rt'w);
 
    subtype heg_hp2bm_vt is std_logic_vector(hp_hp2bm_rt'w-1 downto 0);
-   attribute w of heg_hp2bm_vt : subtype is 42;
+   attribute w of heg_hp2bm_vt : subtype is Abs(hp_hp2bm_rt'w);
 
    type heg_hp2bm_art is array(integer range <>) of hp_hp2bm_rt;
    function width(x: heg_hp2bm_art) return integer;
@@ -128,14 +128,14 @@ package heg_pkg is
       data : hp_hp2sf_data_rt;
       data_valid : std_logic;
    end record heg_bm2sf_rt;
-   attribute w of heg_bm2sf_rt : type is 41;
+   attribute w of heg_bm2sf_rt : type is hp_hp2sf_data_rt'w+1;
    function width(x: heg_bm2sf_rt) return natural;
    function convert(x: heg_bm2sf_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: heg_bm2sf_rt) return heg_bm2sf_rt;
    function zero(tpl: heg_bm2sf_rt) return heg_bm2sf_rt;
 
    subtype heg_hp2bm_data_vt is std_logic_vector(hp_hp2sf_data_rt'w-1 downto 0);
-   attribute w of heg_hp2bm_data_vt : subtype is 40;
+   attribute w of heg_hp2bm_data_vt : subtype is Abs(hp_hp2sf_data_rt'w);
 
    type heg_hp2bm_data_art is array(integer range <>) of hp_hp2sf_data_rt;
    function width(x: heg_hp2bm_data_art) return integer;
@@ -177,29 +177,26 @@ package body heg_pkg is
    -- Custom types and functions --
 
    function width(x: heg_pc2heg_art) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: heg_pc2heg_art; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -208,19 +205,21 @@ package body heg_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: heg_pc2heg_art) return heg_pc2heg_art is
+      variable e : tpl'element;
       variable y : heg_pc2heg_art(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -233,14 +232,16 @@ package body heg_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: heg_pc2heg_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: heg_pc2heg_art) return heg_pc2heg_art is
+      variable e : tpl'element;
       variable y : heg_pc2heg_art(tpl'range);
    begin
       for j in y'range loop
@@ -250,29 +251,26 @@ package body heg_pkg is
    end function convert;
 
    function width(x: heg_pc2heg_avt) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: heg_pc2heg_avt; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -281,19 +279,21 @@ package body heg_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: heg_pc2heg_avt) return heg_pc2heg_avt is
+      variable e : tpl'element;
       variable y : heg_pc2heg_avt(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -306,14 +306,16 @@ package body heg_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: heg_pc2heg_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: heg_pc2heg_avt) return heg_pc2heg_avt is
+      variable e : tpl'element;
       variable y : heg_pc2heg_avt(tpl'range);
    begin
       for j in y'range loop
@@ -323,29 +325,26 @@ package body heg_pkg is
    end function convert;
 
    function width(x: heg_roi_center_aut) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: heg_roi_center_aut; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -354,19 +353,21 @@ package body heg_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: heg_roi_center_aut) return heg_roi_center_aut is
-      variable y : heg_roi_center_aut(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable e : tpl'element;
+      variable y : heg_roi_center_aut(tpl'range)(e'range);
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -379,14 +380,16 @@ package body heg_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: heg_roi_center_aut; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: heg_roi_center_aut) return heg_roi_center_aut is
+      variable e : tpl'element;
       variable y : heg_roi_center_aut(tpl'range);
    begin
       for j in y'range loop
@@ -448,29 +451,26 @@ package body heg_pkg is
    end function zero;
 
    function width(x: heg_ctrl2hp_art) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: heg_ctrl2hp_art; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -479,19 +479,21 @@ package body heg_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: heg_ctrl2hp_art) return heg_ctrl2hp_art is
+      variable e : tpl'element;
       variable y : heg_ctrl2hp_art(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -504,14 +506,16 @@ package body heg_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: heg_ctrl2hp_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: heg_ctrl2hp_art) return heg_ctrl2hp_art is
+      variable e : tpl'element;
       variable y : heg_ctrl2hp_art(tpl'range);
    begin
       for j in y'range loop
@@ -521,29 +525,26 @@ package body heg_pkg is
    end function convert;
 
    function width(x: heg_ctrl2hp_avt) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: heg_ctrl2hp_avt; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -552,19 +553,21 @@ package body heg_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: heg_ctrl2hp_avt) return heg_ctrl2hp_avt is
+      variable e : tpl'element;
       variable y : heg_ctrl2hp_avt(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -577,14 +580,16 @@ package body heg_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: heg_ctrl2hp_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: heg_ctrl2hp_avt) return heg_ctrl2hp_avt is
+      variable e : tpl'element;
       variable y : heg_ctrl2hp_avt(tpl'range);
    begin
       for j in y'range loop
@@ -698,29 +703,26 @@ package body heg_pkg is
    end function zero;
 
    function width(x: heg_hp2bm_art) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: heg_hp2bm_art; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -729,19 +731,21 @@ package body heg_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: heg_hp2bm_art) return heg_hp2bm_art is
+      variable e : tpl'element;
       variable y : heg_hp2bm_art(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -754,14 +758,16 @@ package body heg_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: heg_hp2bm_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: heg_hp2bm_art) return heg_hp2bm_art is
+      variable e : tpl'element;
       variable y : heg_hp2bm_art(tpl'range);
    begin
       for j in y'range loop
@@ -771,29 +777,26 @@ package body heg_pkg is
    end function convert;
 
    function width(x: heg_hp2bm_avt) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: heg_hp2bm_avt; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -802,19 +805,21 @@ package body heg_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: heg_hp2bm_avt) return heg_hp2bm_avt is
+      variable e : tpl'element;
       variable y : heg_hp2bm_avt(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -827,14 +832,16 @@ package body heg_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: heg_hp2bm_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: heg_hp2bm_avt) return heg_hp2bm_avt is
+      variable e : tpl'element;
       variable y : heg_hp2bm_avt(tpl'range);
    begin
       for j in y'range loop
@@ -896,29 +903,26 @@ package body heg_pkg is
    end function zero;
 
    function width(x: heg_hp2bm_data_art) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: heg_hp2bm_data_art; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -927,19 +931,21 @@ package body heg_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: heg_hp2bm_data_art) return heg_hp2bm_data_art is
+      variable e : tpl'element;
       variable y : heg_hp2bm_data_art(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -952,14 +958,16 @@ package body heg_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: heg_hp2bm_data_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: heg_hp2bm_data_art) return heg_hp2bm_data_art is
+      variable e : tpl'element;
       variable y : heg_hp2bm_data_art(tpl'range);
    begin
       for j in y'range loop
@@ -969,29 +977,26 @@ package body heg_pkg is
    end function convert;
 
    function width(x: heg_hp2bm_data_avt) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: heg_hp2bm_data_avt; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -1000,19 +1005,21 @@ package body heg_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: heg_hp2bm_data_avt) return heg_hp2bm_data_avt is
+      variable e : tpl'element;
       variable y : heg_hp2bm_data_avt(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -1025,14 +1032,16 @@ package body heg_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: heg_hp2bm_data_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: heg_hp2bm_data_avt) return heg_hp2bm_data_avt is
+      variable e : tpl'element;
       variable y : heg_hp2bm_data_avt(tpl'range);
    begin
       for j in y'range loop

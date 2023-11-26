@@ -44,7 +44,7 @@ package FW_INFO_CTRL is
       MAX_NUM_SL : std_logic_vector(8 - 1 downto 0);
       NUM_THREADS : std_logic_vector(8 - 1 downto 0);
    end record FW_INFO_CONFIG_MON_t;
-   attribute w of FW_INFO_CONFIG_MON_t : type is 261;
+   attribute w of FW_INFO_CONFIG_MON_t : type is 1+1+1+1+1+32+32+32+32+32+1+1+1+1+8+8+8+8+8+8+1+1+1+1+8+8+8+8+8;
    function width(x: FW_INFO_CONFIG_MON_t) return natural;
    function convert(x: FW_INFO_CONFIG_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FW_INFO_CONFIG_MON_t) return FW_INFO_CONFIG_MON_t;
@@ -53,7 +53,7 @@ package FW_INFO_CTRL is
    type FW_INFO_MON_t is record
       CONFIG : FW_INFO_CONFIG_MON_t;
    end record FW_INFO_MON_t;
-   attribute w of FW_INFO_MON_t : type is 261;
+   attribute w of FW_INFO_MON_t : type is FW_INFO_CONFIG_MON_t'w;
    function width(x: FW_INFO_MON_t) return natural;
    function convert(x: FW_INFO_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FW_INFO_MON_t) return FW_INFO_MON_t;

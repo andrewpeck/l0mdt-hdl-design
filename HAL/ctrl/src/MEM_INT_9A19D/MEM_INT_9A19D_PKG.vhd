@@ -35,7 +35,7 @@ package MEM_INT_9A19D_CTRL is
       rd_rdy : std_logic;
       rd_data : MEM_INT_9A19D_rd_data_MON_t;
    end record MEM_INT_9A19D_MON_t;
-   attribute w of MEM_INT_9A19D_MON_t : type is 20;
+   attribute w of MEM_INT_9A19D_MON_t : type is 1+MEM_INT_9A19D_rd_data_MON_t'w;
    function width(x: MEM_INT_9A19D_MON_t) return natural;
    function convert(x: MEM_INT_9A19D_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MEM_INT_9A19D_MON_t) return MEM_INT_9A19D_MON_t;
@@ -51,7 +51,7 @@ package MEM_INT_9A19D_CTRL is
       rd_addr : std_logic_vector(9 - 1 downto 0);
       wr_data : MEM_INT_9A19D_wr_data_CTRL_t;
    end record MEM_INT_9A19D_CTRL_t;
-   attribute w of MEM_INT_9A19D_CTRL_t : type is 42;
+   attribute w of MEM_INT_9A19D_CTRL_t : type is 1+1+1+1+1+9+9+MEM_INT_9A19D_wr_data_CTRL_t'w;
    function width(x: MEM_INT_9A19D_CTRL_t) return natural;
    function convert(x: MEM_INT_9A19D_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MEM_INT_9A19D_CTRL_t) return MEM_INT_9A19D_CTRL_t;

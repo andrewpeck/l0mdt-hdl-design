@@ -19,7 +19,7 @@ package HEG_CTRL is
       DISABLE : std_logic;
       FREEZE : std_logic;
    end record HEG_SUPER_ACTIONS_CTRL_t;
-   attribute w of HEG_SUPER_ACTIONS_CTRL_t : type is 4;
+   attribute w of HEG_SUPER_ACTIONS_CTRL_t : type is 1+1+1+1;
    function width(x: HEG_SUPER_ACTIONS_CTRL_t) return natural;
    function convert(x: HEG_SUPER_ACTIONS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_SUPER_ACTIONS_CTRL_t) return HEG_SUPER_ACTIONS_CTRL_t;
@@ -30,7 +30,7 @@ package HEG_CTRL is
       OUTPUT_EN : std_logic;
       FLUSH_MEM_RESET : std_logic;
    end record HEG_SUPER_CONFIGS_CTRL_t;
-   attribute w of HEG_SUPER_CONFIGS_CTRL_t : type is 3;
+   attribute w of HEG_SUPER_CONFIGS_CTRL_t : type is 1+1+1;
    function width(x: HEG_SUPER_CONFIGS_CTRL_t) return natural;
    function convert(x: HEG_SUPER_CONFIGS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_SUPER_CONFIGS_CTRL_t) return HEG_SUPER_CONFIGS_CTRL_t;
@@ -41,7 +41,7 @@ package HEG_CTRL is
       READY : std_logic;
       ERROR : std_logic;
    end record HEG_SUPER_STATUS_MON_t;
-   attribute w of HEG_SUPER_STATUS_MON_t : type is 3;
+   attribute w of HEG_SUPER_STATUS_MON_t : type is 1+1+1;
    function width(x: HEG_SUPER_STATUS_MON_t) return natural;
    function convert(x: HEG_SUPER_STATUS_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_SUPER_STATUS_MON_t) return HEG_SUPER_STATUS_MON_t;
@@ -53,7 +53,7 @@ package HEG_CTRL is
       HIT_OK : std_logic_vector(32 - 1 downto 0);
       ERROR : std_logic_vector(32 - 1 downto 0);
    end record HEG_SUPER_COUNTERS_MON_t;
-   attribute w of HEG_SUPER_COUNTERS_MON_t : type is 128;
+   attribute w of HEG_SUPER_COUNTERS_MON_t : type is 32+32+32+32;
    function width(x: HEG_SUPER_COUNTERS_MON_t) return natural;
    function convert(x: HEG_SUPER_COUNTERS_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_SUPER_COUNTERS_MON_t) return HEG_SUPER_COUNTERS_MON_t;
@@ -63,7 +63,7 @@ package HEG_CTRL is
       STATUS : HEG_SUPER_STATUS_MON_t;
       COUNTERS : HEG_SUPER_COUNTERS_MON_t;
    end record HEG_SUPER_MON_t;
-   attribute w of HEG_SUPER_MON_t : type is 131;
+   attribute w of HEG_SUPER_MON_t : type is HEG_SUPER_STATUS_MON_t'w+HEG_SUPER_COUNTERS_MON_t'w;
    function width(x: HEG_SUPER_MON_t) return natural;
    function convert(x: HEG_SUPER_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_SUPER_MON_t) return HEG_SUPER_MON_t;
@@ -73,7 +73,7 @@ package HEG_CTRL is
       ACTIONS : HEG_SUPER_ACTIONS_CTRL_t;
       CONFIGS : HEG_SUPER_CONFIGS_CTRL_t;
    end record HEG_SUPER_CTRL_t;
-   attribute w of HEG_SUPER_CTRL_t : type is 7;
+   attribute w of HEG_SUPER_CTRL_t : type is HEG_SUPER_ACTIONS_CTRL_t'w+HEG_SUPER_CONFIGS_CTRL_t'w;
    function width(x: HEG_SUPER_CTRL_t) return natural;
    function convert(x: HEG_SUPER_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_SUPER_CTRL_t) return HEG_SUPER_CTRL_t;
@@ -83,7 +83,7 @@ package HEG_CTRL is
       rd_rdy : std_logic;
       freeze_ena : std_logic;
    end record HEG_CTRL_ROI_TC_SIGNALS_MON_t;
-   attribute w of HEG_CTRL_ROI_TC_SIGNALS_MON_t : type is 2;
+   attribute w of HEG_CTRL_ROI_TC_SIGNALS_MON_t : type is 1+1;
    function width(x: HEG_CTRL_ROI_TC_SIGNALS_MON_t) return natural;
    function convert(x: HEG_CTRL_ROI_TC_SIGNALS_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_CTRL_ROI_TC_SIGNALS_MON_t) return HEG_CTRL_ROI_TC_SIGNALS_MON_t;
@@ -98,7 +98,7 @@ package HEG_CTRL is
       freeze_req : std_logic;
       mem_sel : std_logic_vector(3 - 1 downto 0);
    end record HEG_CTRL_ROI_TC_SIGNALS_CTRL_t;
-   attribute w of HEG_CTRL_ROI_TC_SIGNALS_CTRL_t : type is 9;
+   attribute w of HEG_CTRL_ROI_TC_SIGNALS_CTRL_t : type is 1+1+1+1+1+1+3;
    function width(x: HEG_CTRL_ROI_TC_SIGNALS_CTRL_t) return natural;
    function convert(x: HEG_CTRL_ROI_TC_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_CTRL_ROI_TC_SIGNALS_CTRL_t) return HEG_CTRL_ROI_TC_SIGNALS_CTRL_t;
@@ -108,7 +108,7 @@ package HEG_CTRL is
       wr_data_0 : std_logic_vector(32 - 1 downto 0);
       wr_data_1 : std_logic_vector(6 - 1 downto 0);
    end record HEG_CTRL_ROI_TC_wr_data_CTRL_t;
-   attribute w of HEG_CTRL_ROI_TC_wr_data_CTRL_t : type is 38;
+   attribute w of HEG_CTRL_ROI_TC_wr_data_CTRL_t : type is 32+6;
    function width(x: HEG_CTRL_ROI_TC_wr_data_CTRL_t) return natural;
    function convert(x: HEG_CTRL_ROI_TC_wr_data_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_CTRL_ROI_TC_wr_data_CTRL_t) return HEG_CTRL_ROI_TC_wr_data_CTRL_t;
@@ -118,7 +118,7 @@ package HEG_CTRL is
       rd_data_1 : std_logic_vector(6 - 1 downto 0);
       rd_data_0 : std_logic_vector(32 - 1 downto 0);
    end record HEG_CTRL_ROI_TC_rd_data_MON_t;
-   attribute w of HEG_CTRL_ROI_TC_rd_data_MON_t : type is 38;
+   attribute w of HEG_CTRL_ROI_TC_rd_data_MON_t : type is 6+32;
    function width(x: HEG_CTRL_ROI_TC_rd_data_MON_t) return natural;
    function convert(x: HEG_CTRL_ROI_TC_rd_data_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_CTRL_ROI_TC_rd_data_MON_t) return HEG_CTRL_ROI_TC_rd_data_MON_t;
@@ -128,7 +128,7 @@ package HEG_CTRL is
       SIGNALS : HEG_CTRL_ROI_TC_SIGNALS_MON_t;
       rd_data : HEG_CTRL_ROI_TC_rd_data_MON_t;
    end record HEG_CTRL_ROI_TC_MON_t;
-   attribute w of HEG_CTRL_ROI_TC_MON_t : type is 40;
+   attribute w of HEG_CTRL_ROI_TC_MON_t : type is HEG_CTRL_ROI_TC_SIGNALS_MON_t'w+HEG_CTRL_ROI_TC_rd_data_MON_t'w;
    function width(x: HEG_CTRL_ROI_TC_MON_t) return natural;
    function convert(x: HEG_CTRL_ROI_TC_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_CTRL_ROI_TC_MON_t) return HEG_CTRL_ROI_TC_MON_t;
@@ -140,7 +140,7 @@ package HEG_CTRL is
       rd_addr : std_logic_vector(10 - 1 downto 0);
       wr_data : HEG_CTRL_ROI_TC_wr_data_CTRL_t;
    end record HEG_CTRL_ROI_TC_CTRL_t;
-   attribute w of HEG_CTRL_ROI_TC_CTRL_t : type is 67;
+   attribute w of HEG_CTRL_ROI_TC_CTRL_t : type is HEG_CTRL_ROI_TC_SIGNALS_CTRL_t'w+10+10+HEG_CTRL_ROI_TC_wr_data_CTRL_t'w;
    function width(x: HEG_CTRL_ROI_TC_CTRL_t) return natural;
    function convert(x: HEG_CTRL_ROI_TC_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_CTRL_ROI_TC_CTRL_t) return HEG_CTRL_ROI_TC_CTRL_t;
@@ -149,7 +149,7 @@ package HEG_CTRL is
    type HEG_CTRL_MON_t is record
       ROI_TC : HEG_CTRL_ROI_TC_MON_t;
    end record HEG_CTRL_MON_t;
-   attribute w of HEG_CTRL_MON_t : type is 40;
+   attribute w of HEG_CTRL_MON_t : type is HEG_CTRL_ROI_TC_MON_t'w;
    function width(x: HEG_CTRL_MON_t) return natural;
    function convert(x: HEG_CTRL_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_CTRL_MON_t) return HEG_CTRL_MON_t;
@@ -158,7 +158,7 @@ package HEG_CTRL is
    type HEG_CTRL_CTRL_t is record
       ROI_TC : HEG_CTRL_ROI_TC_CTRL_t;
    end record HEG_CTRL_CTRL_t;
-   attribute w of HEG_CTRL_CTRL_t : type is 67;
+   attribute w of HEG_CTRL_CTRL_t : type is HEG_CTRL_ROI_TC_CTRL_t'w;
    function width(x: HEG_CTRL_CTRL_t) return natural;
    function convert(x: HEG_CTRL_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_CTRL_CTRL_t) return HEG_CTRL_CTRL_t;
@@ -170,7 +170,7 @@ package HEG_CTRL is
       DISABLE : std_logic;
       FREEZE : std_logic;
    end record HEG_HP_HP_ACTIONS_CTRL_t;
-   attribute w of HEG_HP_HP_ACTIONS_CTRL_t : type is 4;
+   attribute w of HEG_HP_HP_ACTIONS_CTRL_t : type is 1+1+1+1;
    function width(x: HEG_HP_HP_ACTIONS_CTRL_t) return natural;
    function convert(x: HEG_HP_HP_ACTIONS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_HP_HP_ACTIONS_CTRL_t) return HEG_HP_HP_ACTIONS_CTRL_t;
@@ -181,7 +181,7 @@ package HEG_CTRL is
       OUTPUT_EN : std_logic;
       FLUSH_MEM_RESET : std_logic;
    end record HEG_HP_HP_CONFIGS_CTRL_t;
-   attribute w of HEG_HP_HP_CONFIGS_CTRL_t : type is 3;
+   attribute w of HEG_HP_HP_CONFIGS_CTRL_t : type is 1+1+1;
    function width(x: HEG_HP_HP_CONFIGS_CTRL_t) return natural;
    function convert(x: HEG_HP_HP_CONFIGS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_HP_HP_CONFIGS_CTRL_t) return HEG_HP_HP_CONFIGS_CTRL_t;
@@ -191,7 +191,7 @@ package HEG_CTRL is
       rd_rdy : std_logic;
       freeze_ena : std_logic;
    end record HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t;
-   attribute w of HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t : type is 2;
+   attribute w of HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t : type is 1+1;
    function width(x: HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t) return natural;
    function convert(x: HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t) return HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t;
@@ -206,7 +206,7 @@ package HEG_CTRL is
       freeze_req : std_logic;
       mem_sel : std_logic_vector(3 - 1 downto 0);
    end record HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t;
-   attribute w of HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t : type is 9;
+   attribute w of HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t : type is 1+1+1+1+1+1+3;
    function width(x: HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t) return natural;
    function convert(x: HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t) return HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t;
@@ -234,7 +234,7 @@ package HEG_CTRL is
       SIGNALS : HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t;
       rd_data : HEG_HP_HP_MDT_DT2R_rd_data_MON_t;
    end record HEG_HP_HP_MDT_DT2R_MON_t;
-   attribute w of HEG_HP_HP_MDT_DT2R_MON_t : type is 11;
+   attribute w of HEG_HP_HP_MDT_DT2R_MON_t : type is HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t'w+HEG_HP_HP_MDT_DT2R_rd_data_MON_t'w;
    function width(x: HEG_HP_HP_MDT_DT2R_MON_t) return natural;
    function convert(x: HEG_HP_HP_MDT_DT2R_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_HP_HP_MDT_DT2R_MON_t) return HEG_HP_HP_MDT_DT2R_MON_t;
@@ -246,7 +246,7 @@ package HEG_CTRL is
       rd_addr : std_logic_vector(10 - 1 downto 0);
       wr_data : HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t;
    end record HEG_HP_HP_MDT_DT2R_CTRL_t;
-   attribute w of HEG_HP_HP_MDT_DT2R_CTRL_t : type is 38;
+   attribute w of HEG_HP_HP_MDT_DT2R_CTRL_t : type is HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t'w+10+10+HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t'w;
    function width(x: HEG_HP_HP_MDT_DT2R_CTRL_t) return natural;
    function convert(x: HEG_HP_HP_MDT_DT2R_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_HP_HP_MDT_DT2R_CTRL_t) return HEG_HP_HP_MDT_DT2R_CTRL_t;
@@ -255,14 +255,14 @@ package HEG_CTRL is
    type HEG_HP_HP_MON_t is record
       MDT_DT2R : HEG_HP_HP_MDT_DT2R_MON_t;
    end record HEG_HP_HP_MON_t;
-   attribute w of HEG_HP_HP_MON_t : type is 11;
+   attribute w of HEG_HP_HP_MON_t : type is HEG_HP_HP_MDT_DT2R_MON_t'w;
    function width(x: HEG_HP_HP_MON_t) return natural;
    function convert(x: HEG_HP_HP_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_HP_HP_MON_t) return HEG_HP_HP_MON_t;
    function zero(tpl: HEG_HP_HP_MON_t) return HEG_HP_HP_MON_t;
 
-   type HEG_HP_HP_MON_t_ARRAY is array(6 -1 downto 0) of HEG_HP_HP_MON_t;
-   attribute w of HEG_HP_HP_MON_t_ARRAY : type is 66;
+   type HEG_HP_HP_MON_t_ARRAY is array(6-1 downto 0) of HEG_HP_HP_MON_t;
+   attribute w of HEG_HP_HP_MON_t_ARRAY : type is (6)*HEG_HP_HP_MON_t'w;
    function width(x: HEG_HP_HP_MON_t_ARRAY) return integer;
    function convert(x: HEG_HP_HP_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_HP_HP_MON_t_ARRAY) return HEG_HP_HP_MON_t_ARRAY;
@@ -275,14 +275,14 @@ package HEG_CTRL is
       CONFIGS : HEG_HP_HP_CONFIGS_CTRL_t;
       MDT_DT2R : HEG_HP_HP_MDT_DT2R_CTRL_t;
    end record HEG_HP_HP_CTRL_t;
-   attribute w of HEG_HP_HP_CTRL_t : type is 45;
+   attribute w of HEG_HP_HP_CTRL_t : type is HEG_HP_HP_ACTIONS_CTRL_t'w+HEG_HP_HP_CONFIGS_CTRL_t'w+HEG_HP_HP_MDT_DT2R_CTRL_t'w;
    function width(x: HEG_HP_HP_CTRL_t) return natural;
    function convert(x: HEG_HP_HP_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_HP_HP_CTRL_t) return HEG_HP_HP_CTRL_t;
    function zero(tpl: HEG_HP_HP_CTRL_t) return HEG_HP_HP_CTRL_t;
 
-   type HEG_HP_HP_CTRL_t_ARRAY is array(6 -1 downto 0) of HEG_HP_HP_CTRL_t;
-   attribute w of HEG_HP_HP_CTRL_t_ARRAY : type is 270;
+   type HEG_HP_HP_CTRL_t_ARRAY is array(6-1 downto 0) of HEG_HP_HP_CTRL_t;
+   attribute w of HEG_HP_HP_CTRL_t_ARRAY : type is (6)*HEG_HP_HP_CTRL_t'w;
    function width(x: HEG_HP_HP_CTRL_t_ARRAY) return integer;
    function convert(x: HEG_HP_HP_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_HP_HP_CTRL_t_ARRAY) return HEG_HP_HP_CTRL_t_ARRAY;
@@ -293,7 +293,7 @@ package HEG_CTRL is
    type HEG_HP_MON_t is record
       HP : HEG_HP_HP_MON_t_ARRAY;
    end record HEG_HP_MON_t;
-   attribute w of HEG_HP_MON_t : type is 66;
+   attribute w of HEG_HP_MON_t : type is HEG_HP_HP_MON_t_ARRAY'w;
    function width(x: HEG_HP_MON_t) return natural;
    function convert(x: HEG_HP_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_HP_MON_t) return HEG_HP_MON_t;
@@ -302,7 +302,7 @@ package HEG_CTRL is
    type HEG_HP_CTRL_t is record
       HP : HEG_HP_HP_CTRL_t_ARRAY;
    end record HEG_HP_CTRL_t;
-   attribute w of HEG_HP_CTRL_t : type is 270;
+   attribute w of HEG_HP_CTRL_t : type is HEG_HP_HP_CTRL_t_ARRAY'w;
    function width(x: HEG_HP_CTRL_t) return natural;
    function convert(x: HEG_HP_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_HP_CTRL_t) return HEG_HP_CTRL_t;
@@ -313,7 +313,7 @@ package HEG_CTRL is
       CTRL : HEG_CTRL_MON_t;
       HP : HEG_HP_MON_t;
    end record HEG_MON_t;
-   attribute w of HEG_MON_t : type is 237;
+   attribute w of HEG_MON_t : type is HEG_SUPER_MON_t'w+HEG_CTRL_MON_t'w+HEG_HP_MON_t'w;
    function width(x: HEG_MON_t) return natural;
    function convert(x: HEG_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_MON_t) return HEG_MON_t;
@@ -324,7 +324,7 @@ package HEG_CTRL is
       CTRL : HEG_CTRL_CTRL_t;
       HP : HEG_HP_CTRL_t;
    end record HEG_CTRL_t;
-   attribute w of HEG_CTRL_t : type is 344;
+   attribute w of HEG_CTRL_t : type is HEG_SUPER_CTRL_t'w+HEG_CTRL_CTRL_t'w+HEG_HP_CTRL_t'w;
    function width(x: HEG_CTRL_t) return natural;
    function convert(x: HEG_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HEG_CTRL_t) return HEG_CTRL_t;
@@ -1777,29 +1777,26 @@ package body HEG_CTRL is
    end function zero;
 
    function width(x: HEG_HP_HP_MON_t_ARRAY) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: HEG_HP_HP_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -1808,19 +1805,21 @@ package body HEG_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: HEG_HP_HP_MON_t_ARRAY) return HEG_HP_HP_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : HEG_HP_HP_MON_t_ARRAY;
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -1833,14 +1832,16 @@ package body HEG_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: HEG_HP_HP_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: HEG_HP_HP_MON_t_ARRAY) return HEG_HP_HP_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : HEG_HP_HP_MON_t_ARRAY;
    begin
       for j in y'range loop
@@ -1915,29 +1916,26 @@ package body HEG_CTRL is
    end function zero;
 
    function width(x: HEG_HP_HP_CTRL_t_ARRAY) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: HEG_HP_HP_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -1946,19 +1944,21 @@ package body HEG_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: HEG_HP_HP_CTRL_t_ARRAY) return HEG_HP_HP_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : HEG_HP_HP_CTRL_t_ARRAY;
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -1971,14 +1971,16 @@ package body HEG_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: HEG_HP_HP_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
+          y(j) := convert(x(j), y(j));
       end loop;
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: HEG_HP_HP_CTRL_t_ARRAY) return HEG_HP_HP_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : HEG_HP_HP_CTRL_t_ARRAY;
    begin
       for j in y'range loop

@@ -17,7 +17,7 @@ package DAQ_CTRL is
       RESET : std_logic;
       WR_EN : std_logic;
    end record DAQ_action_CTRL_t;
-   attribute w of DAQ_action_CTRL_t : type is 2;
+   attribute w of DAQ_action_CTRL_t : type is 1+1;
    function width(x: DAQ_action_CTRL_t) return natural;
    function convert(x: DAQ_action_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: DAQ_action_CTRL_t) return DAQ_action_CTRL_t;
@@ -27,7 +27,7 @@ package DAQ_CTRL is
       opening_offset : std_logic_vector(12 - 1 downto 0);
       request_offset : std_logic_vector(12 - 1 downto 0);
    end record DAQ_wr0_CTRL_t;
-   attribute w of DAQ_wr0_CTRL_t : type is 24;
+   attribute w of DAQ_wr0_CTRL_t : type is 12+12;
    function width(x: DAQ_wr0_CTRL_t) return natural;
    function convert(x: DAQ_wr0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: DAQ_wr0_CTRL_t) return DAQ_wr0_CTRL_t;
@@ -38,7 +38,7 @@ package DAQ_CTRL is
       window_timeout : std_logic_vector(12 - 1 downto 0);
       busy_threshold : std_logic_vector(8 - 1 downto 0);
    end record DAQ_wr1_CTRL_t;
-   attribute w of DAQ_wr1_CTRL_t : type is 32;
+   attribute w of DAQ_wr1_CTRL_t : type is 12+12+8;
    function width(x: DAQ_wr1_CTRL_t) return natural;
    function convert(x: DAQ_wr1_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: DAQ_wr1_CTRL_t) return DAQ_wr1_CTRL_t;
@@ -48,7 +48,7 @@ package DAQ_CTRL is
       opening_offset : std_logic_vector(12 - 1 downto 0);
       request_offset : std_logic_vector(12 - 1 downto 0);
    end record DAQ_rd0_MON_t;
-   attribute w of DAQ_rd0_MON_t : type is 24;
+   attribute w of DAQ_rd0_MON_t : type is 12+12;
    function width(x: DAQ_rd0_MON_t) return natural;
    function convert(x: DAQ_rd0_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: DAQ_rd0_MON_t) return DAQ_rd0_MON_t;
@@ -59,7 +59,7 @@ package DAQ_CTRL is
       window_timeout : std_logic_vector(12 - 1 downto 0);
       busy_threshold : std_logic_vector(8 - 1 downto 0);
    end record DAQ_rd1_MON_t;
-   attribute w of DAQ_rd1_MON_t : type is 32;
+   attribute w of DAQ_rd1_MON_t : type is 12+12+8;
    function width(x: DAQ_rd1_MON_t) return natural;
    function convert(x: DAQ_rd1_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: DAQ_rd1_MON_t) return DAQ_rd1_MON_t;
@@ -79,7 +79,7 @@ package DAQ_CTRL is
       rd1 : DAQ_rd1_MON_t;
       status : DAQ_status_MON_t;
    end record DAQ_MON_t;
-   attribute w of DAQ_MON_t : type is 57;
+   attribute w of DAQ_MON_t : type is DAQ_rd0_MON_t'w+DAQ_rd1_MON_t'w+DAQ_status_MON_t'w;
    function width(x: DAQ_MON_t) return natural;
    function convert(x: DAQ_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: DAQ_MON_t) return DAQ_MON_t;
@@ -90,7 +90,7 @@ package DAQ_CTRL is
       wr0 : DAQ_wr0_CTRL_t;
       wr1 : DAQ_wr1_CTRL_t;
    end record DAQ_CTRL_t;
-   attribute w of DAQ_CTRL_t : type is 58;
+   attribute w of DAQ_CTRL_t : type is DAQ_action_CTRL_t'w+DAQ_wr0_CTRL_t'w+DAQ_wr1_CTRL_t'w;
    function width(x: DAQ_CTRL_t) return natural;
    function convert(x: DAQ_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: DAQ_CTRL_t) return DAQ_CTRL_t;

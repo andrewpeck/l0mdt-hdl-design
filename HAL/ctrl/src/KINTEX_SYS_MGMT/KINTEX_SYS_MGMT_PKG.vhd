@@ -27,7 +27,7 @@ package KINTEX_SYS_MGMT_CTRL is
       VCCAUX_MIN : std_logic_vector(10 - 1 downto 0);
       VCCBRAM_MIN : std_logic_vector(10 - 1 downto 0);
    end record KINTEX_SYS_MGMT_MON_t;
-   attribute w of KINTEX_SYS_MGMT_MON_t : type is 120;
+   attribute w of KINTEX_SYS_MGMT_MON_t : type is 10+10+10+10+10+10+10+10+10+10+10+10;
    function width(x: KINTEX_SYS_MGMT_MON_t) return natural;
    function convert(x: KINTEX_SYS_MGMT_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: KINTEX_SYS_MGMT_MON_t) return KINTEX_SYS_MGMT_MON_t;

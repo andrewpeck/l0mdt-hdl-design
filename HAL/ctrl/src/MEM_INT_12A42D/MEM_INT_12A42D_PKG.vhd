@@ -17,7 +17,7 @@ package MEM_INT_12A42D_CTRL is
       rd_rdy : std_logic;
       freeze_ena : std_logic;
    end record MEM_INT_12A42D_SIGNALS_MON_t;
-   attribute w of MEM_INT_12A42D_SIGNALS_MON_t : type is 2;
+   attribute w of MEM_INT_12A42D_SIGNALS_MON_t : type is 1+1;
    function width(x: MEM_INT_12A42D_SIGNALS_MON_t) return natural;
    function convert(x: MEM_INT_12A42D_SIGNALS_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MEM_INT_12A42D_SIGNALS_MON_t) return MEM_INT_12A42D_SIGNALS_MON_t;
@@ -32,7 +32,7 @@ package MEM_INT_12A42D_CTRL is
       freeze_req : std_logic;
       mem_sel : std_logic_vector(3 - 1 downto 0);
    end record MEM_INT_12A42D_SIGNALS_CTRL_t;
-   attribute w of MEM_INT_12A42D_SIGNALS_CTRL_t : type is 9;
+   attribute w of MEM_INT_12A42D_SIGNALS_CTRL_t : type is 1+1+1+1+1+1+3;
    function width(x: MEM_INT_12A42D_SIGNALS_CTRL_t) return natural;
    function convert(x: MEM_INT_12A42D_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MEM_INT_12A42D_SIGNALS_CTRL_t) return MEM_INT_12A42D_SIGNALS_CTRL_t;
@@ -42,7 +42,7 @@ package MEM_INT_12A42D_CTRL is
       wr_data_0 : std_logic_vector(32 - 1 downto 0);
       wr_data_1 : std_logic_vector(10 - 1 downto 0);
    end record MEM_INT_12A42D_wr_data_CTRL_t;
-   attribute w of MEM_INT_12A42D_wr_data_CTRL_t : type is 42;
+   attribute w of MEM_INT_12A42D_wr_data_CTRL_t : type is 32+10;
    function width(x: MEM_INT_12A42D_wr_data_CTRL_t) return natural;
    function convert(x: MEM_INT_12A42D_wr_data_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MEM_INT_12A42D_wr_data_CTRL_t) return MEM_INT_12A42D_wr_data_CTRL_t;
@@ -52,7 +52,7 @@ package MEM_INT_12A42D_CTRL is
       rd_data_0 : std_logic_vector(32 - 1 downto 0);
       rd_data_1 : std_logic_vector(10 - 1 downto 0);
    end record MEM_INT_12A42D_rd_data_MON_t;
-   attribute w of MEM_INT_12A42D_rd_data_MON_t : type is 42;
+   attribute w of MEM_INT_12A42D_rd_data_MON_t : type is 32+10;
    function width(x: MEM_INT_12A42D_rd_data_MON_t) return natural;
    function convert(x: MEM_INT_12A42D_rd_data_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MEM_INT_12A42D_rd_data_MON_t) return MEM_INT_12A42D_rd_data_MON_t;
@@ -62,7 +62,7 @@ package MEM_INT_12A42D_CTRL is
       SIGNALS : MEM_INT_12A42D_SIGNALS_MON_t;
       rd_data : MEM_INT_12A42D_rd_data_MON_t;
    end record MEM_INT_12A42D_MON_t;
-   attribute w of MEM_INT_12A42D_MON_t : type is 44;
+   attribute w of MEM_INT_12A42D_MON_t : type is MEM_INT_12A42D_SIGNALS_MON_t'w+MEM_INT_12A42D_rd_data_MON_t'w;
    function width(x: MEM_INT_12A42D_MON_t) return natural;
    function convert(x: MEM_INT_12A42D_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MEM_INT_12A42D_MON_t) return MEM_INT_12A42D_MON_t;
@@ -74,7 +74,7 @@ package MEM_INT_12A42D_CTRL is
       rd_addr : std_logic_vector(12 - 1 downto 0);
       wr_data : MEM_INT_12A42D_wr_data_CTRL_t;
    end record MEM_INT_12A42D_CTRL_t;
-   attribute w of MEM_INT_12A42D_CTRL_t : type is 75;
+   attribute w of MEM_INT_12A42D_CTRL_t : type is MEM_INT_12A42D_SIGNALS_CTRL_t'w+12+12+MEM_INT_12A42D_wr_data_CTRL_t'w;
    function width(x: MEM_INT_12A42D_CTRL_t) return natural;
    function convert(x: MEM_INT_12A42D_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MEM_INT_12A42D_CTRL_t) return MEM_INT_12A42D_CTRL_t;

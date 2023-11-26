@@ -17,7 +17,7 @@ package MTC_CTRL is
       STATUS : std_logic;
       READY : std_logic;
    end record MTC_MON_t;
-   attribute w of MTC_MON_t : type is 2;
+   attribute w of MTC_MON_t : type is 1+1;
    function width(x: MTC_MON_t) return natural;
    function convert(x: MTC_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MTC_MON_t) return MTC_MON_t;

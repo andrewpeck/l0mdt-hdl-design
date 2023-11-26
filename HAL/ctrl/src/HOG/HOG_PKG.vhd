@@ -27,7 +27,7 @@ package HOG_CTRL is
       PROJECT_LIB_SHA : std_logic_vector(32 - 1 downto 0);
       PROJECT_LIB_VER : std_logic_vector(32 - 1 downto 0);
    end record HOG_HOG_INFO_MON_t;
-   attribute w of HOG_HOG_INFO_MON_t : type is 384;
+   attribute w of HOG_HOG_INFO_MON_t : type is 32+32+32+32+32+32+32+32+32+32+32+32;
    function width(x: HOG_HOG_INFO_MON_t) return natural;
    function convert(x: HOG_HOG_INFO_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HOG_HOG_INFO_MON_t) return HOG_HOG_INFO_MON_t;
@@ -36,7 +36,7 @@ package HOG_CTRL is
    type HOG_MON_t is record
       HOG_INFO : HOG_HOG_INFO_MON_t;
    end record HOG_MON_t;
-   attribute w of HOG_MON_t : type is 384;
+   attribute w of HOG_MON_t : type is HOG_HOG_INFO_MON_t'w;
    function width(x: HOG_MON_t) return natural;
    function convert(x: HOG_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HOG_MON_t) return HOG_MON_t;

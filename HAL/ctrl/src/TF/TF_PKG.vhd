@@ -18,7 +18,7 @@ package TF_CTRL is
       ENABLED : std_logic;
       ERROR : std_logic;
    end record TF_MON_t;
-   attribute w of TF_MON_t : type is 3;
+   attribute w of TF_MON_t : type is 1+1+1;
    function width(x: TF_MON_t) return natural;
    function convert(x: TF_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TF_MON_t) return TF_MON_t;
@@ -28,7 +28,7 @@ package TF_CTRL is
       ENABLE : std_logic;
       RESET : std_logic;
    end record TF_CTRL_t;
-   attribute w of TF_CTRL_t : type is 2;
+   attribute w of TF_CTRL_t : type is 1+1;
    function width(x: TF_CTRL_t) return natural;
    function convert(x: TF_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TF_CTRL_t) return TF_CTRL_t;
