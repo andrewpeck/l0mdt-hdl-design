@@ -98,6 +98,8 @@ entity ult is
     fm_ctrl_v : in    std_logic_vector;
     fm_mon_v  : out   std_logic_vector;
 
+    --Fast Monitoring
+    csm_fm_mon_v : in std_logic_vector;
     -- TDC Hits from Polmux
     i_inn_tdc_hits_av : in    tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN - 1 downto 0);
     i_mid_tdc_hits_av : in    tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID - 1 downto 0);
@@ -271,12 +273,17 @@ architecture behavioral of ult is
   signal mpl_sump : std_logic := '1';
 
   -- FAST MONITORING  
-    signal fm_slc_rx_pb_v     : slc_rx_avt(2 downto 0);
-
+  signal fm_slc_rx_pb_v                  : slc_rx_avt(2 downto 0);
+  signal fm_tar_polmux2tar_pb_v  : tdcpolmux2tar_avt(tar_sb_all_stations_n-1 downto 0);
+  signal fm_mtc2sl_pb_v                : mtc_out_avt(mtc_sb_n-1 downto 0);
+    
   signal fm_sb_mon_r        : fm_mon;
   signal h2s_fm_mon_v  : std_logic_vector(fm_hps_mon'w-1 downto 0);           
   signal ucm_fm_mon_v : std_logic_vector(fm_ucm_mon_data'w-1 downto 0);
-
+  signal tar_fm_mon_v   : std_logic_vector(fm_tar_mon_data'w-1 downto 0);
+  signal mtc_fm_mon_v : std_logic_vector(fm_mtc_mon_data'w-1 downto 0);
+  signal daq_fm_mon_v : std_logic_vector(fm_daq_mon_data'w-1 downto 0);
+ 
 begin
 
   -- -- ctrl/mon
@@ -297,8 +304,7 @@ begin
 
   logic_gen : if (not dummy) generate
 
-    tar_gen : if c_TAR_ENABLED = '1' generate
-
+    tar_gen : if c_TAR_ENABLED = '1' generate    
       ult_tar : entity ult_lib.mdt_tar
         port map (
           -- clock, control, and monitoring
@@ -312,6 +318,10 @@ begin
           tar_out_mon_v  => tar_out_mon_v,
           tar_ext_ctrl_v => tar_ext_ctrl_v,
           tar_ext_mon_v  => tar_ext_mon_v,
+
+          -- Fast Monitoring
+          fm_tar_mon_v   => tar_fm_mon_v,
+          fm_tar_polmux2tar_pb_v => fm_tar_polmux2tar_pb_v,
           -- TDC Hits from Polmux
           i_inn_tdc_hits_av => int_inn_tdc_hits_av,
           i_mid_tdc_hits_av => int_mid_tdc_hits_av,
@@ -410,10 +420,7 @@ begin
       ult_ext_tar_hits_in_av <= ult_ext_tar_hits_out_av;
     end generate hps_ext;
 
-    ucm_gen : if c_UCM_ENABLED = '1' generate
-      fm_sb_mon_r.fm_ucm_mon <= convert(ucm_fm_mon_v, fm_sb_mon_r.fm_ucm_mon);
-
-      
+    ucm_gen : if c_UCM_ENABLED = '1' generate  
       -- block
       ult_ucm : entity ult_lib.candidate_manager
         port map (
@@ -597,8 +604,7 @@ begin
     --   end if;
     -- end process;
 
-    h2s_gen : if c_H2S_ENABLED = '1' generate
-      fm_sb_mon_r.fm_hps_mon <= convert(h2s_fm_mon_v, fm_sb_mon_r.fm_hps_mon );
+    h2s_gen : if c_H2S_ENABLED = '1' generate     
       ult_h2s : entity ult_lib.hits_to_segments
         port map (
           -- clock, control, and monitoring
@@ -909,15 +915,17 @@ begin
 
     end generate pt_gen;
 
-    mtc_gen : if c_MTC_ENABLED = '1' generate
-
+    mtc_gen : if c_MTC_ENABLED = '1' generate     
       ult_mtcb : entity ult_lib.mtc_builder
         port map (
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
           ttc_commands      => ttc_commands,
           ctrl_v            => mtc_ctrl_v,
-          mon_v             => mtc_mon_v,
+          mon_v          => mtc_mon_v,
+          --Fast Monitoring
+          fm_mtc_mon_v    => mtc_fm_mon_v,
+          fm_mtc2sl_pb_v  => fm_mtc2sl_pb_v,
           --  inputs
           i_ptcalc => pt2mtc_av,
           i_pl2mtc => pl2mtc_av,
@@ -960,6 +968,7 @@ begin
           ttc_commands      => ttc_commands,
           ctrl_v            => daq_ctrl_v,
           mon_v             => daq_mon_v,
+          fm_daq_mon_v => daq_fm_mon_v,
           ----------------------------------------------------------------------
           i_flags     => (others => '0'),
           i_ec        => '0',
@@ -1016,9 +1025,14 @@ begin
 
     -- Fast Monitoring
 
-    fm_gen : if c_FM_ENABLED = '1' generate     
-      
-      ult_fm : entity ult_lib.ult_fm
+    fm_gen : if c_FM_ENABLED = '1' generate
+      fm_sb_mon_r.fm_hps_mon <= convert(h2s_fm_mon_v, fm_sb_mon_r.fm_hps_mon );
+      fm_sb_mon_r.fm_ucm_mon <= convert(ucm_fm_mon_v, fm_sb_mon_r.fm_ucm_mon);
+      fm_sb_mon_r.fm_csm_mon <= convert(csm_fm_mon_v, fm_sb_mon_r.fm_csm_mon);
+      fm_sb_mon_r.fm_tar_mon <= convert(tar_fm_mon_v, fm_sb_mon_r.fm_tar_mon);
+      fm_sb_mon_r.fm_mtc_mon <= convert(mtc_fm_mon_v, fm_sb_mon_r.fm_mtc_mon);
+      fm_sb_mon_r.fm_daq_mon <= convert(daq_fm_mon_v, fm_sb_mon_r.fm_daq_mon);
+      ult_fm : entity ult_lib.ult_fm        
         port map (
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
@@ -1028,12 +1042,17 @@ begin
           mon_v                    => fm_mon_v,
           --  inputs
           fm_mon                  => fm_sb_mon_r,
-          fm_ucm_slc_rx_pb => fm_slc_rx_pb_v
+          fm_ucm_slc_rx_pb => fm_slc_rx_pb_v,
+          fm_tar_polmux2tar_pb => fm_tar_polmux2tar_pb_v,
+          fm_mtc2sl_pb                => fm_mtc2sl_pb_v
         );
 
     else generate
 
       fm_mon_v <= (fm_mon_v'length - 1 downto 0 => '0');
+      fm_tar_polmux2tar_pb_v(c_HPS_NUM_MDT_CH_INN -1 downto 0) <= i_inn_tdc_hits_av;
+      fm_tar_polmux2tar_pb_v(csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_MID -1 downto csm_polmux_in_sb_n) <= i_mid_tdc_hits_av;
+      fm_tar_polmux2tar_pb_v(2*csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_OUT  -1 downto 2*csm_polmux_in_sb_n) <= i_out_tdc_hits_av;
     end generate fm_gen;
 
     sump <= tar_sump xor ucm_sump xor h2s_sump xor pt_sump xor mtc_sump xor daq_sump xor mpl_sump;

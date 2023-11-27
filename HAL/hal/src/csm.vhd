@@ -24,6 +24,9 @@ use hal.link_map.all;
 library tdc;
 use tdc.csm_pkg.all;
 
+library fm_lib;
+use fm_lib.fm_types.all;
+
 entity csm is
   generic (
     g_NUM_DOWNLINKS : integer := 1;
@@ -38,6 +41,9 @@ entity csm is
     reset_i    : in std_logic;
     strobe_320 : in std_logic;
     clk40      : in std_logic;
+
+    --Fast Monitoring
+    fm_csm_mon : out fm_rt ;
 
     -- TTC
     trg_i : in std_logic; --trigger 
@@ -163,6 +169,9 @@ begin
 --  downlink_data(0).data(11 downto 10) <= sca1_down when (ctrl.sc.frame_format='1') else ;
 --  downlink_data(0).data(17 downto 16) <= sca2_down when (ctrl.sc.frame_format='1') else ;
 --  downlink_data(0).data(23 downto 22) <= sca3_down when (ctrl.sc.frame_format='1') else ;
+
+  fm_csm_mon.fm_data <= (mon_dw_max-1 downto  16 => '0') & uplink_data(0).data(15 downto 0);
+  fm_csm_mon.fm_vld    <= '1';
   
   process(ctrl.sc.frame_format, sca0_down, sca1_down, sca2_down, sca3_down)
 	begin

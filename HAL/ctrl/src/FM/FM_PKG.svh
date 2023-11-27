@@ -934,6 +934,1476 @@ package FM_CTRL;
    } FM_SB43_CTRL_t ;
 
    typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB44_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB44_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB44_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB44_MON_t ;
+
+   typedef struct packed {
+      FM_SB44_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB44_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB45_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB45_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB45_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB45_MON_t ;
+
+   typedef struct packed {
+      FM_SB45_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB45_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB46_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB46_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB46_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB46_MON_t ;
+
+   typedef struct packed {
+      FM_SB46_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB46_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB47_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB47_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB47_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB47_MON_t ;
+
+   typedef struct packed {
+      FM_SB47_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB47_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB48_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB48_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB48_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB48_MON_t ;
+
+   typedef struct packed {
+      FM_SB48_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB48_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB49_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB49_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB49_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB49_MON_t ;
+
+   typedef struct packed {
+      FM_SB49_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB49_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB50_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB50_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB50_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB50_MON_t ;
+
+   typedef struct packed {
+      FM_SB50_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB50_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB51_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB51_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB51_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB51_MON_t ;
+
+   typedef struct packed {
+      FM_SB51_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB51_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB52_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB52_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB52_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB52_MON_t ;
+
+   typedef struct packed {
+      FM_SB52_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB52_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB53_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB53_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB53_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB53_MON_t ;
+
+   typedef struct packed {
+      FM_SB53_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB53_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB54_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB54_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB54_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB54_MON_t ;
+
+   typedef struct packed {
+      FM_SB54_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB54_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB55_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB55_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB55_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB55_MON_t ;
+
+   typedef struct packed {
+      FM_SB55_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB55_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB56_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB56_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB56_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB56_MON_t ;
+
+   typedef struct packed {
+      FM_SB56_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB56_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB57_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB57_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB57_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB57_MON_t ;
+
+   typedef struct packed {
+      FM_SB57_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB57_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB58_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB58_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB58_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB58_MON_t ;
+
+   typedef struct packed {
+      FM_SB58_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB58_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB59_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB59_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB59_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB59_MON_t ;
+
+   typedef struct packed {
+      FM_SB59_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB59_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB60_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB60_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB60_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB60_MON_t ;
+
+   typedef struct packed {
+      FM_SB60_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB60_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB61_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB61_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB61_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB61_MON_t ;
+
+   typedef struct packed {
+      FM_SB61_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB61_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB62_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB62_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB62_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB62_MON_t ;
+
+   typedef struct packed {
+      FM_SB62_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB62_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB63_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB63_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB63_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB63_MON_t ;
+
+   typedef struct packed {
+      FM_SB63_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB63_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB64_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB64_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB64_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB64_MON_t ;
+
+   typedef struct packed {
+      FM_SB64_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB64_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB65_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB65_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB65_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB65_MON_t ;
+
+   typedef struct packed {
+      FM_SB65_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB65_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB66_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB66_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB66_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB66_MON_t ;
+
+   typedef struct packed {
+      FM_SB66_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB66_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB67_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB67_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB67_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB67_MON_t ;
+
+   typedef struct packed {
+      FM_SB67_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB67_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB68_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB68_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB68_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB68_MON_t ;
+
+   typedef struct packed {
+      FM_SB68_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB68_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB69_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB69_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB69_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB69_MON_t ;
+
+   typedef struct packed {
+      FM_SB69_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB69_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB70_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB70_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB70_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB70_MON_t ;
+
+   typedef struct packed {
+      FM_SB70_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB70_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB71_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB71_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB71_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB71_MON_t ;
+
+   typedef struct packed {
+      FM_SB71_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB71_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB72_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB72_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB72_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB72_MON_t ;
+
+   typedef struct packed {
+      FM_SB72_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB72_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB73_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB73_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB73_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB73_MON_t ;
+
+   typedef struct packed {
+      FM_SB73_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB73_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB74_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB74_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB74_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB74_MON_t ;
+
+   typedef struct packed {
+      FM_SB74_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB74_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB75_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB75_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB75_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB75_MON_t ;
+
+   typedef struct packed {
+      FM_SB75_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB75_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB76_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB76_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB76_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB76_MON_t ;
+
+   typedef struct packed {
+      FM_SB76_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB76_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB77_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB77_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB77_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB77_MON_t ;
+
+   typedef struct packed {
+      FM_SB77_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB77_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB78_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB78_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB78_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB78_MON_t ;
+
+   typedef struct packed {
+      FM_SB78_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB78_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB79_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB79_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB79_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB79_MON_t ;
+
+   typedef struct packed {
+      FM_SB79_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB79_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB80_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB80_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB80_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB80_MON_t ;
+
+   typedef struct packed {
+      FM_SB80_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB80_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB81_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB81_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB81_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB81_MON_t ;
+
+   typedef struct packed {
+      FM_SB81_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB81_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB82_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB82_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB82_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB82_MON_t ;
+
+   typedef struct packed {
+      FM_SB82_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB82_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB83_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB83_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB83_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB83_MON_t ;
+
+   typedef struct packed {
+      FM_SB83_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB83_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB84_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB84_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB84_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB84_MON_t ;
+
+   typedef struct packed {
+      FM_SB84_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB84_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB85_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB85_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB85_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB85_MON_t ;
+
+   typedef struct packed {
+      FM_SB85_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB85_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB86_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB86_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB86_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB86_MON_t ;
+
+   typedef struct packed {
+      FM_SB86_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB86_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB87_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB87_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB87_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB87_MON_t ;
+
+   typedef struct packed {
+      FM_SB87_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB87_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB88_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB88_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB88_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB88_MON_t ;
+
+   typedef struct packed {
+      FM_SB88_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB88_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB89_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB89_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB89_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB89_MON_t ;
+
+   typedef struct packed {
+      FM_SB89_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB89_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB90_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB90_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB90_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB90_MON_t ;
+
+   typedef struct packed {
+      FM_SB90_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB90_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB91_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB91_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB91_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB91_MON_t ;
+
+   typedef struct packed {
+      FM_SB91_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB91_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB92_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB92_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB92_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB92_MON_t ;
+
+   typedef struct packed {
+      FM_SB92_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB92_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB93_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB93_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB93_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB93_MON_t ;
+
+   typedef struct packed {
+      FM_SB93_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB93_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB94_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB94_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB94_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB94_MON_t ;
+
+   typedef struct packed {
+      FM_SB94_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB94_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB95_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB95_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB95_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB95_MON_t ;
+
+   typedef struct packed {
+      FM_SB95_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB95_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB96_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB96_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB96_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB96_MON_t ;
+
+   typedef struct packed {
+      FM_SB96_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB96_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB97_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB97_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB97_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB97_MON_t ;
+
+   typedef struct packed {
+      FM_SB97_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB97_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB98_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB98_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB98_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB98_MON_t ;
+
+   typedef struct packed {
+      FM_SB98_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB98_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB99_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB99_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB99_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB99_MON_t ;
+
+   typedef struct packed {
+      FM_SB99_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB99_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB100_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB100_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB100_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB100_MON_t ;
+
+   typedef struct packed {
+      FM_SB100_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB100_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB101_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB101_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB101_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB101_MON_t ;
+
+   typedef struct packed {
+      FM_SB101_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB101_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB102_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB102_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB102_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB102_MON_t ;
+
+   typedef struct packed {
+      FM_SB102_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB102_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB103_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB103_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB103_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB103_MON_t ;
+
+   typedef struct packed {
+      FM_SB103_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB103_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB104_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB104_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB104_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB104_MON_t ;
+
+   typedef struct packed {
+      FM_SB104_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB104_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB105_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB105_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB105_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB105_MON_t ;
+
+   typedef struct packed {
+      FM_SB105_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB105_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB106_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB106_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB106_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB106_MON_t ;
+
+   typedef struct packed {
+      FM_SB106_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB106_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB107_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB107_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB107_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB107_MON_t ;
+
+   typedef struct packed {
+      FM_SB107_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB107_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB108_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB108_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB108_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB108_MON_t ;
+
+   typedef struct packed {
+      FM_SB108_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB108_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB109_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB109_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB109_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB109_MON_t ;
+
+   typedef struct packed {
+      FM_SB109_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB109_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB110_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB110_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB110_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB110_MON_t ;
+
+   typedef struct packed {
+      FM_SB110_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB110_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB111_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB111_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB111_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB111_MON_t ;
+
+   typedef struct packed {
+      FM_SB111_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB111_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB112_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB112_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB112_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB112_MON_t ;
+
+   typedef struct packed {
+      FM_SB112_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB112_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB113_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB113_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB113_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB113_MON_t ;
+
+   typedef struct packed {
+      FM_SB113_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB113_CTRL_t ;
+
+   typedef struct packed {
       logic  GLOBAL_FREEZE;
       logic [2 - 1:0] GLOBAL_PLAYBACK_MODE;
       logic  INITIALIZE_SPY_MEMORY;
@@ -984,6 +2454,76 @@ package FM_CTRL;
       FM_SB41_MON_t  SB41;
       FM_SB42_MON_t  SB42;
       FM_SB43_MON_t  SB43;
+      FM_SB44_MON_t  SB44;
+      FM_SB45_MON_t  SB45;
+      FM_SB46_MON_t  SB46;
+      FM_SB47_MON_t  SB47;
+      FM_SB48_MON_t  SB48;
+      FM_SB49_MON_t  SB49;
+      FM_SB50_MON_t  SB50;
+      FM_SB51_MON_t  SB51;
+      FM_SB52_MON_t  SB52;
+      FM_SB53_MON_t  SB53;
+      FM_SB54_MON_t  SB54;
+      FM_SB55_MON_t  SB55;
+      FM_SB56_MON_t  SB56;
+      FM_SB57_MON_t  SB57;
+      FM_SB58_MON_t  SB58;
+      FM_SB59_MON_t  SB59;
+      FM_SB60_MON_t  SB60;
+      FM_SB61_MON_t  SB61;
+      FM_SB62_MON_t  SB62;
+      FM_SB63_MON_t  SB63;
+      FM_SB64_MON_t  SB64;
+      FM_SB65_MON_t  SB65;
+      FM_SB66_MON_t  SB66;
+      FM_SB67_MON_t  SB67;
+      FM_SB68_MON_t  SB68;
+      FM_SB69_MON_t  SB69;
+      FM_SB70_MON_t  SB70;
+      FM_SB71_MON_t  SB71;
+      FM_SB72_MON_t  SB72;
+      FM_SB73_MON_t  SB73;
+      FM_SB74_MON_t  SB74;
+      FM_SB75_MON_t  SB75;
+      FM_SB76_MON_t  SB76;
+      FM_SB77_MON_t  SB77;
+      FM_SB78_MON_t  SB78;
+      FM_SB79_MON_t  SB79;
+      FM_SB80_MON_t  SB80;
+      FM_SB81_MON_t  SB81;
+      FM_SB82_MON_t  SB82;
+      FM_SB83_MON_t  SB83;
+      FM_SB84_MON_t  SB84;
+      FM_SB85_MON_t  SB85;
+      FM_SB86_MON_t  SB86;
+      FM_SB87_MON_t  SB87;
+      FM_SB88_MON_t  SB88;
+      FM_SB89_MON_t  SB89;
+      FM_SB90_MON_t  SB90;
+      FM_SB91_MON_t  SB91;
+      FM_SB92_MON_t  SB92;
+      FM_SB93_MON_t  SB93;
+      FM_SB94_MON_t  SB94;
+      FM_SB95_MON_t  SB95;
+      FM_SB96_MON_t  SB96;
+      FM_SB97_MON_t  SB97;
+      FM_SB98_MON_t  SB98;
+      FM_SB99_MON_t  SB99;
+      FM_SB100_MON_t  SB100;
+      FM_SB101_MON_t  SB101;
+      FM_SB102_MON_t  SB102;
+      FM_SB103_MON_t  SB103;
+      FM_SB104_MON_t  SB104;
+      FM_SB105_MON_t  SB105;
+      FM_SB106_MON_t  SB106;
+      FM_SB107_MON_t  SB107;
+      FM_SB108_MON_t  SB108;
+      FM_SB109_MON_t  SB109;
+      FM_SB110_MON_t  SB110;
+      FM_SB111_MON_t  SB111;
+      FM_SB112_MON_t  SB112;
+      FM_SB113_MON_t  SB113;
    } FM_MON_t ;
 
    typedef struct packed {
@@ -1031,13 +2571,89 @@ package FM_CTRL;
       FM_SB41_CTRL_t  SB41;
       FM_SB42_CTRL_t  SB42;
       FM_SB43_CTRL_t  SB43;
+      FM_SB44_CTRL_t  SB44;
+      FM_SB45_CTRL_t  SB45;
+      FM_SB46_CTRL_t  SB46;
+      FM_SB47_CTRL_t  SB47;
+      FM_SB48_CTRL_t  SB48;
+      FM_SB49_CTRL_t  SB49;
+      FM_SB50_CTRL_t  SB50;
+      FM_SB51_CTRL_t  SB51;
+      FM_SB52_CTRL_t  SB52;
+      FM_SB53_CTRL_t  SB53;
+      FM_SB54_CTRL_t  SB54;
+      FM_SB55_CTRL_t  SB55;
+      FM_SB56_CTRL_t  SB56;
+      FM_SB57_CTRL_t  SB57;
+      FM_SB58_CTRL_t  SB58;
+      FM_SB59_CTRL_t  SB59;
+      FM_SB60_CTRL_t  SB60;
+      FM_SB61_CTRL_t  SB61;
+      FM_SB62_CTRL_t  SB62;
+      FM_SB63_CTRL_t  SB63;
+      FM_SB64_CTRL_t  SB64;
+      FM_SB65_CTRL_t  SB65;
+      FM_SB66_CTRL_t  SB66;
+      FM_SB67_CTRL_t  SB67;
+      FM_SB68_CTRL_t  SB68;
+      FM_SB69_CTRL_t  SB69;
+      FM_SB70_CTRL_t  SB70;
+      FM_SB71_CTRL_t  SB71;
+      FM_SB72_CTRL_t  SB72;
+      FM_SB73_CTRL_t  SB73;
+      FM_SB74_CTRL_t  SB74;
+      FM_SB75_CTRL_t  SB75;
+      FM_SB76_CTRL_t  SB76;
+      FM_SB77_CTRL_t  SB77;
+      FM_SB78_CTRL_t  SB78;
+      FM_SB79_CTRL_t  SB79;
+      FM_SB80_CTRL_t  SB80;
+      FM_SB81_CTRL_t  SB81;
+      FM_SB82_CTRL_t  SB82;
+      FM_SB83_CTRL_t  SB83;
+      FM_SB84_CTRL_t  SB84;
+      FM_SB85_CTRL_t  SB85;
+      FM_SB86_CTRL_t  SB86;
+      FM_SB87_CTRL_t  SB87;
+      FM_SB88_CTRL_t  SB88;
+      FM_SB89_CTRL_t  SB89;
+      FM_SB90_CTRL_t  SB90;
+      FM_SB91_CTRL_t  SB91;
+      FM_SB92_CTRL_t  SB92;
+      FM_SB93_CTRL_t  SB93;
+      FM_SB94_CTRL_t  SB94;
+      FM_SB95_CTRL_t  SB95;
+      FM_SB96_CTRL_t  SB96;
+      FM_SB97_CTRL_t  SB97;
+      FM_SB98_CTRL_t  SB98;
+      FM_SB99_CTRL_t  SB99;
+      FM_SB100_CTRL_t  SB100;
+      FM_SB101_CTRL_t  SB101;
+      FM_SB102_CTRL_t  SB102;
+      FM_SB103_CTRL_t  SB103;
+      FM_SB104_CTRL_t  SB104;
+      FM_SB105_CTRL_t  SB105;
+      FM_SB106_CTRL_t  SB106;
+      FM_SB107_CTRL_t  SB107;
+      FM_SB108_CTRL_t  SB108;
+      FM_SB109_CTRL_t  SB109;
+      FM_SB110_CTRL_t  SB110;
+      FM_SB111_CTRL_t  SB111;
+      FM_SB112_CTRL_t  SB112;
+      FM_SB113_CTRL_t  SB113;
       FM_SPY_CTRL_CTRL_t  SPY_CTRL;
       logic [32 - 1:0] FREEZE_MASK_0;
       logic [32 - 1:0] FREEZE_MASK_1;
+      logic [32 - 1:0] FREEZE_MASK_2;
+      logic [32 - 1:0] FREEZE_MASK_3;
       logic [32 - 1:0] PLAYBACK_MASK_0;
       logic [32 - 1:0] PLAYBACK_MASK_1;
+      logic [32 - 1:0] PLAYBACK_MASK_2;
+      logic [32 - 1:0] PLAYBACK_MASK_3;
       logic [32 - 1:0] SB_RESET_0;
       logic [32 - 1:0] SB_RESET_1;
+      logic [32 - 1:0] SB_RESET_2;
+      logic [32 - 1:0] SB_RESET_3;
    } FM_CTRL_t ;
 
 endpackage : FM_CTRL
