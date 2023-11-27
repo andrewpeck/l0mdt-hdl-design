@@ -573,7 +573,8 @@ reset_clk40 <= '0' when lhc_locked else '1';
   begin
 
     fm_mon: if CSM = 0 generate
-      fm_csm_mon_r.fm_csm_uplink_data <= fm_csm_uplink_data ;
+      fm_csm_mon_r.fm_csm_uplink_data.fm_data <= fm_csm_uplink_data.fm_data ;
+      fm_csm_mon_r.fm_csm_uplink_data.fm_vld   <= strobe_320;
     
     end generate;
   
