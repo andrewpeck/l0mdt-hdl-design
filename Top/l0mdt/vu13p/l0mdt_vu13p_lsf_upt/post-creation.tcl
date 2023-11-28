@@ -34,7 +34,7 @@ set regenerate_svg 0
 foreach source_file $sources {
     set source_modification_time [file mtime ${source_file}]
     if {[expr ${source_modification_time} > ${svg_modification_time}]} {
-        set regenerate_svg 1
+        set regenerate_svg 0
     }
 }
 
@@ -52,7 +52,7 @@ if {$have_jq} {
     regexp -- {Vivado v([0-9]{4})\.([0-9])*(\.[0-9])*} [version] -> \
         VIVADO_YEAR VIVADO_MINOR VIVADO_PATCH
     if {0 != [string compare "{$VIVADO_YEAR}.{VIVADO_MINOR}${VIVADO_PATCH}" "$bd_vivado_version"]} {
-        set regenerate_svg 1
+        set regenerate_svg 0
     }
 }
 
