@@ -315,7 +315,7 @@ assign axi_sb_enable_internal                =  (init_spy_mem_internal == 1)? '1
 
   
 
-   always @(posedge spy_clock)
+   always @(posedge spy_clock  or negedge axi_reset_n)
      begin
 	if(~axi_reset_n)
 	  begin
@@ -353,7 +353,7 @@ assign axi_sb_enable_internal                =  (init_spy_mem_internal == 1)? '1
 
 
 
-    always @(posedge spy_clock)
+    always @(posedge spy_clock  or negedge axi_reset_n)
      begin
 	if(~axi_reset_n)
 	  begin
