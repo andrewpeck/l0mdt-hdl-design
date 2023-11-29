@@ -36,7 +36,7 @@ package fm_sb_pkg;
 
       logic 	      spy_clock;
 
-parameter total_l0mdt_sb    = 112;
+parameter total_l0mdt_sb    = 106;
 parameter sb_total_dummy = 2;
 parameter sb_mapped_n      = total_l0mdt_sb + sb_total_dummy;
 
@@ -83,12 +83,6 @@ parameter integer sb_tp_dw[sb_mapped_n] = {
 		,UCM2PL_LEN
 		,UCM2PL_LEN
 		,UCM2PL_LEN
-		,MTC2SL_LEN
-		,MTC2SL_LEN
-		,MTC2SL_LEN
-		,MTC2SL_LEN
-		,MTC2SL_LEN
-		,MTC2SL_LEN
 		,MTC2SL_LEN
 		,MTC2SL_LEN
 		,MTC2SL_LEN
@@ -199,12 +193,6 @@ parameter integer sb_dw[sb_mapped_n] = {
 		,find_sb_dw(UCM2PL_LEN, axi_dw)
 		,find_sb_dw(UCM2PL_LEN, axi_dw)
 		,find_sb_dw(UCM2PL_LEN, axi_dw)
-		,find_sb_dw(MTC2SL_LEN, axi_dw)
-		,find_sb_dw(MTC2SL_LEN, axi_dw)
-		,find_sb_dw(MTC2SL_LEN, axi_dw)
-		,find_sb_dw(MTC2SL_LEN, axi_dw)
-		,find_sb_dw(MTC2SL_LEN, axi_dw)
-		,find_sb_dw(MTC2SL_LEN, axi_dw)
 		,find_sb_dw(MTC2SL_LEN, axi_dw)
 		,find_sb_dw(MTC2SL_LEN, axi_dw)
 		,find_sb_dw(MTC2SL_LEN, axi_dw)
@@ -380,13 +368,7 @@ parameter integer sb_dw[sb_mapped_n] = {
 		$bits(FM_CTRL.SB104.SB_MEM.address),
 		$bits(FM_CTRL.SB105.SB_MEM.address),
 		$bits(FM_CTRL.SB106.SB_MEM.address),
-		$bits(FM_CTRL.SB107.SB_MEM.address),
-		$bits(FM_CTRL.SB108.SB_MEM.address),
-		$bits(FM_CTRL.SB109.SB_MEM.address),
-		$bits(FM_CTRL.SB110.SB_MEM.address),
-		$bits(FM_CTRL.SB111.SB_MEM.address),
-		$bits(FM_CTRL.SB112.SB_MEM.address),
-		$bits(FM_CTRL.SB113.SB_MEM.address)			};
+		$bits(FM_CTRL.SB107.SB_MEM.address)			};
 
   //Need to update sb_mapped_n manually from fm_ult_pkg.vhd (total_sb + 2 dummy sb)
    parameter sb_master_dummy_index    = total_l0mdt_sb ;

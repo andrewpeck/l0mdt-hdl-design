@@ -60,7 +60,7 @@ package fm_types is
    constant ucm_sb_n : integer := 15; -- primary_sl_n + ucm2hps_sb_n + primary_sl_n
    attribute w of ucm_sb_n : constant is 32;
 
-   constant csm_polmux_in_sb_n : integer := 9;
+   constant csm_polmux_in_sb_n : integer := 6;
    attribute w of csm_polmux_in_sb_n : constant is 32;
 
    constant csm_custom_sb_n : integer := 1;
@@ -81,7 +81,7 @@ package fm_types is
    constant daq_sb_all_stations_n : integer := 18; -- daq_sb_n  * stations_n
    attribute w of daq_sb_all_stations_n : constant is 32;
 
-   constant total_l0mdt_sb : integer := 109; -- h2s_sb_all_station_n + ucm_sb_n + csm_polmux_in_sb_n + csm_custom_sb_n + tar_sb_all_stations_n + mtc_sb_n + daq_sb_all_stations_n
+   constant total_l0mdt_sb : integer := 106; -- h2s_sb_all_station_n + ucm_sb_n + csm_polmux_in_sb_n + csm_custom_sb_n + tar_sb_all_stations_n + mtc_sb_n + daq_sb_all_stations_n
    attribute w of total_l0mdt_sb : constant is 32;
 
    type fm_rt is record
@@ -181,7 +181,7 @@ package fm_types is
    function zero(tpl: fm_ucm_mon_data) return fm_ucm_mon_data;
 
    type fm_csm_to_polmux is array(0 to csm_polmux_in_sb_n-1) of fm_rt;
-   attribute w of fm_csm_to_polmux : type is 2313;
+   attribute w of fm_csm_to_polmux : type is 1542;
    function width(x: fm_csm_to_polmux) return integer;
    function convert(x: fm_csm_to_polmux; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: fm_csm_to_polmux) return fm_csm_to_polmux;
@@ -193,7 +193,7 @@ package fm_types is
       fm_csm_uplink_data : fm_rt;
       fm_csm_to_polmux : fm_csm_to_polmux;
    end record fm_csm_mon_data;
-   attribute w of fm_csm_mon_data : type is 2570;
+   attribute w of fm_csm_mon_data : type is 1799;
    function width(x: fm_csm_mon_data) return natural;
    function convert(x: fm_csm_mon_data; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: fm_csm_mon_data) return fm_csm_mon_data;
@@ -243,14 +243,14 @@ package fm_types is
       fm_mtc_mon : fm_mtc_mon_data;
       fm_daq_mon : fm_daq_mon_data;
    end record fm_mon;
-   attribute w of fm_mon : type is 28013;
+   attribute w of fm_mon : type is 27242;
    function width(x: fm_mon) return natural;
    function convert(x: fm_mon; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: fm_mon) return fm_mon;
    function zero(tpl: fm_mon) return fm_mon;
 
    type fm_pb is array(0 to total_l0mdt_sb -1) of std_logic_vector(mon_dw_max-1 downto 0);
-   attribute w of fm_pb : type is 27904;
+   attribute w of fm_pb : type is 27136;
    function width(x: fm_pb) return integer;
    function convert(x: fm_pb; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: fm_pb) return fm_pb;
