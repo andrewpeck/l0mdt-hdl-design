@@ -3,7 +3,7 @@
   "ip_inst": {
     "xci_name": "hls_get_legendre_segment_barrel",
     "component_reference": "xilinx.com:hls:get_legendre_segment_barrel:1.0",
-    "ip_revision": "2112421989",
+    "ip_revision": "2113313683",
     "gen_directory": ".",
     "parameters": {
       "component_parameters": {
@@ -31,7 +31,7 @@
       },
       "runtime_parameters": {
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
-        "IPREVISION": [ { "value": "2112421989" } ],
+        "IPREVISION": [ { "value": "2113313683" } ],
         "MANAGED": [ { "value": "TRUE" } ],
         "OUTPUTDIR": [ { "value": "." } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
@@ -67,7 +67,7 @@
             "ASSOCIATED_RESET": [ { "value": "ap_rst", "value_src": "constant", "usage": "all" } ],
             "FREQ_HZ": [ { "value": "100000000", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "FREQ_TOLERANCE_HZ": [ { "value": "0", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
-            "PHASE": [ { "value": "0.000", "resolve_type": "generated", "format": "float", "is_ips_inferred": true, "is_static_object": false } ],
+            "PHASE": [ { "value": "0.0", "resolve_type": "generated", "format": "float", "is_ips_inferred": true, "is_static_object": false } ],
             "CLK_DOMAIN": [ { "value": "", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
             "ASSOCIATED_BUSIF": [ { "value": "", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
             "ASSOCIATED_PORT": [ { "value": "", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],

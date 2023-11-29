@@ -3,7 +3,7 @@
   "ip_inst": {
     "xci_name": "hls_get_trig_vals",
     "component_reference": "xilinx.com:hls:get_trig_vals:1.0",
-    "ip_revision": "2112421968",
+    "ip_revision": "2113313665",
     "gen_directory": ".",
     "parameters": {
       "component_parameters": {
@@ -11,7 +11,7 @@
         "clk_period": [ { "value": "3.125", "enabled": false, "usage": "all" } ],
         "machine": [ { "value": "64", "enabled": false, "usage": "all" } ],
         "combinational": [ { "value": "0", "enabled": false, "usage": "all" } ],
-        "latency": [ { "value": "3", "enabled": false, "usage": "all" } ],
+        "latency": [ { "value": "4", "enabled": false, "usage": "all" } ],
         "II": [ { "value": "1", "enabled": false, "usage": "all" } ]
       },
       "project_parameters": {
@@ -31,7 +31,7 @@
       },
       "runtime_parameters": {
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
-        "IPREVISION": [ { "value": "2112421968" } ],
+        "IPREVISION": [ { "value": "2113313665" } ],
         "MANAGED": [ { "value": "TRUE" } ],
         "OUTPUTDIR": [ { "value": "." } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
@@ -42,22 +42,6 @@
     },
     "boundary": {
       "ports": {
-        "hw_trig_vals_0_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_1_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_2_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_3_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_4_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_5_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_6_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_7_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_8_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_9_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_10_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_11_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_12_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_13_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_14_ap_vld": [ { "direction": "out" } ],
-        "hw_trig_vals_15_ap_vld": [ { "direction": "out" } ],
         "ap_clk": [ { "direction": "in" } ],
         "ap_rst": [ { "direction": "in" } ],
         "ap_start": [ { "direction": "in" } ],
@@ -92,7 +76,7 @@
             "ASSOCIATED_RESET": [ { "value": "ap_rst", "value_src": "constant", "usage": "all" } ],
             "FREQ_HZ": [ { "value": "100000000", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "FREQ_TOLERANCE_HZ": [ { "value": "0", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
-            "PHASE": [ { "value": "0.000", "resolve_type": "generated", "format": "float", "is_ips_inferred": true, "is_static_object": false } ],
+            "PHASE": [ { "value": "0.0", "resolve_type": "generated", "format": "float", "is_ips_inferred": true, "is_static_object": false } ],
             "CLK_DOMAIN": [ { "value": "", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
             "ASSOCIATED_BUSIF": [ { "value": "", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
             "ASSOCIATED_PORT": [ { "value": "", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
