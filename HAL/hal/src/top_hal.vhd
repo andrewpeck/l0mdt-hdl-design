@@ -61,6 +61,12 @@ entity top_hal is
     -- LPGBT Links
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
+    
+    rxp : in std_logic_vector(3 downto 0);
+    rxn : in std_logic_vector(3 downto 0);
+    
+    txp : out std_logic_vector(3 downto 0);
+    txn : out std_logic_vector(3 downto 0);   
 
     --------------------------------------------------------------------------------
     -- ULL clock and control
@@ -264,6 +270,7 @@ architecture behavioral of top_hal is
 
   signal csm_ctrl_v : std_logic_vector(width(csm_ctrl_r) - 1 downto 0);
   signal csm_mon_v  : std_logic_vector(width(csm_mon_r ) - 1 downto 0);
+  signal clk_mgtTxClk_s : std_logic_vector(3 downto 0);
 
  
   --------------------------------------------------------------------------------
@@ -457,6 +464,12 @@ begin  -- architecture behavioral
       -- ctrl & monitoring
       ctrl => core_ctrl.mgt,
       mon  => core_mon.mgt,
+      
+      rxp => rxp,
+      rxn => rxn,
+    
+      txp => txp,
+      txn => txn,      
 
       -- reference clocks
       refclk_i_p => refclk_i_p,
@@ -491,7 +504,8 @@ begin  -- architecture behavioral
 
       -- Felix DAQ
       felix_uplink_mgt_word_array_i => felix_uplink_mgt_word_array,
-      felix_mgt_txusrclk_o          => felix_mgt_txusrclk
+      felix_mgt_txusrclk_o          => felix_mgt_txusrclk,
+      clk_mgtTxClk_o                => clk_mgtTxClk_s    
       );
 
   -- FIXME: this should come from an ODDR (output double data rate buffer).
@@ -616,6 +630,7 @@ begin  -- architecture behavioral
             read_done_from_polmux_i => read_done_from_polmux (hi downto lo),
             ctrl                    => csm_ctrl_r(CSM),
             mon                     => csm_mon_r(CSM)
+--            clk_mgtTxClk_i          => clk_mgtTxClk_s
             );
 
       end generate;

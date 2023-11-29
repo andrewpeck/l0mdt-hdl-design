@@ -48,8 +48,28 @@ architecture behavioral of tdc_decoder_wrapper is
 
   type err_cnt_array_t is array (integer range <>) of std_logic_vector(15 downto 0);
   signal err_cnt : err_cnt_array_t (g_NUM_TDCS-1 downto 0) := (others => (others => '0'));
+  
+  COMPONENT ila_3
+
+PORT (
+	clk : IN STD_LOGIC;
+
+	probe0 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe1 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe2 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe3 : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
+	probe4 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+	probe5 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+	probe6 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+	probe7 : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
+	probe8 : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
+	probe9 : IN STD_LOGIC_VECTOR(0 DOWNTO 0)
+);
+END COMPONENT  ;
 
 begin
+
+
 
   tdc_loop : for I in g_ENABLE_MASK'range generate
   begin
@@ -122,7 +142,7 @@ begin
       end generate;
 
       --------------------------------------------------------------------------------
-      -- Data Mapping
+      -- Data Mappingidx
       --------------------------------------------------------------------------------
 
       even_data <= lpgbt_uplink_data_i(lpgbt).data(8*(d1+1)-1 downto 8*d1);
@@ -158,7 +178,7 @@ begin
             );
       end generate;  -- new TDC gen
 
-      --------------------------------------------------------------------------------
+      --------------------------------------------------------------------------------even_data
       -- Legacy TDC
       --------------------------------------------------------------------------------
 
@@ -180,8 +200,28 @@ begin
           count  => err_cnt(idx),
           at_max => open
           );
-
+          
+      tdc_ila_cores : if (I = 6) generate  
+          ila_tdc_6 : ila_3
+            PORT MAP (
+                clk => clock,
+                    
+                probe0      => even_data, 
+                probe1      => odd_data, 
+                probe2      => tdc_word, 
+                probe3      => synced_o,
+                probe4(0)   => valid,
+                probe5(0)   => tdc_valid,
+                probe6      => tdc_word,
+                probe7      => synced_o,
+                probe8      => read_done_i,
+                probe9(0)   => err
+            );
+       end generate;
+            
     end generate;
   end generate;  -- TDC loop
+  
+
 
 end behavioral;

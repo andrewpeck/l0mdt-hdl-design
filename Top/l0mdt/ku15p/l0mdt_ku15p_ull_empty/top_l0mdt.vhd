@@ -150,6 +150,12 @@ entity top_l0mdt is
 
     tc_clk_o_p : out std_logic;
     tc_clk_o_n : out std_logic;
+    
+    rxp : in std_logic_vector(3 downto 0);
+    rxn : in std_logic_vector(3 downto 0);
+    
+    txp : out std_logic_vector(3 downto 0);
+    txn : out std_logic_vector(3 downto 0);    
 
     --------------------------------------------------------------------------------
     -- AXI C2C
@@ -341,6 +347,12 @@ begin
 
       lhc_refclk_o_p  => tc_clk_o_p,
       lhc_refclk_o_n  => tc_clk_o_n,
+      
+      rxp => rxp,
+      rxn => rxn,
+    
+      txp => txp,
+      txn => txn,      
 
       refclk_i_p      => refclk_i_p,
       refclk_i_n      => refclk_i_n,

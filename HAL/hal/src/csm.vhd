@@ -76,10 +76,20 @@ entity csm is
 
     ctrl : in  HAL_CSM_CSM_CTRL_t;
     mon  : out HAL_CSM_CSM_MON_t
+--    clk_mgtTxClk_i :  in std_logic_vector(3 downto 0)
     );
 end csm;
 
 architecture behavioral of csm is
+  
+COMPONENT CSM_ila
+PORT (
+	clk : IN STD_LOGIC;
+	probe0 : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+	probe1 : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+	probe2 : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
+);
+END COMPONENT  ;
   
   -- ENC: Encoded Control
   constant enc_elink : integer := CSM_ENC_DOWNLINK;
@@ -168,7 +178,6 @@ begin
 --  process (ctrl.sc.frame_format) is
 --  begin
 --    if(ctrl.sc.frame_format == '1') then
-
 --      sca0_up_8bit <= uplink_data(0).data(143 downto 136);      --trying debugging with fixed bit assignment 
 --      sca1_up_8bit <= uplink_data(0).data(95 downto 88);
 --      sca2_up_8bit <= uplink_data(0).data(111 downto 104);
@@ -228,6 +237,15 @@ begin
   --------------------------------------------------------------------------------
   -- ENC
   --------------------------------------------------------------------------------
+  
+--  TTC_GEN_CSM_inst: entity work.TTC_GEN 
+--  Port map (
+--        txFrameClk_from_txPll           => clk40,
+--        enc_mode                        => "11",
+--        rst                             => reset_i,
+--        encode_ctrl_en                  => ttc_enable_vio,    
+--        ttc                             => ttc_internal
+--  );
 
   encoded_control_inst : entity tdc.encoded_control
     port map (
@@ -340,5 +358,12 @@ begin
       );
 
 
+ila_csm : CSM_ila
+PORT MAP (
+	clk => uplink_clk,
+	probe0 => uplink_data(0).data(7 downto 0),
+	probe1 => uplink_data(0).data(15 downto 8),
+	probe2 => enc_o & enc_o
+);
 
 end behavioral;

@@ -77,6 +77,14 @@ entity mgt_10g24_wrapper is
 end mgt_10g24_wrapper;
 
 architecture Behavioral of mgt_10g24_wrapper is
+    signal rx_wordclk_sig                   : std_logic;
+    signal rxBuffBypassRst                  : std_logic;
+    signal gtwiz_buffbypass_rx_reset_in_s   : std_logic;    
+    signal rxpmaresetdone                   : std_logic;  
+    signal gtwiz_userclk_rx_active_int      : std_logic;   
+    signal gtwiz_userclk_rx_reset_int       : std_logic;   
+    signal rxfsm_reset_done                 : std_logic;    
+
 
 begin
 
@@ -172,17 +180,11 @@ begin
         );
     end component;
     
-        signal rxpmaresetdone                   : std_logic;  
-    signal rx_wordclk_sig                   : std_logic;
-    signal gtwiz_userclk_rx_active_int      : std_logic;   
-    signal gtwiz_userclk_rx_reset_int       : std_logic;   
-    signal gtwiz_buffbypass_rx_reset_in_s   : std_logic;    
-    signal rxBuffBypassRst                  : std_logic;
-    signal rxfsm_reset_done                 : std_logic;    
+  
 
   begin
 
-      rxBuffBypassRst        <= not(gtwiz_userclk_rx_active_int) or (not(status_o(0).tx_reset_done));-- and not(MGT_TX_ALIGNED_s));
+    rxBuffBypassRst        <= not(gtwiz_userclk_rx_active_int) or (not(status_o(0).tx_reset_done));-- and not(MGT_TX_ALIGNED_s));
               
     resetDoneSynch_rx: entity work.xlx_ku_mgt_ip_reset_synchronizer
         PORT MAP(

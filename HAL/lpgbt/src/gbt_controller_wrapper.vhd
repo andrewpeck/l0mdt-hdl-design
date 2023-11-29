@@ -53,8 +53,8 @@ architecture structural of gbt_controller_wrapper is
 COMPONENT ila_0
 PORT (
 	clk : IN STD_LOGIC;
-	probe0 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe1 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+	probe0 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe1 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
 	probe2 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
 	probe3 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
 	probe4 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
@@ -80,8 +80,8 @@ PORT (
 	probe24 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
 	probe25 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
 	probe26 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-	probe27 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-	probe28 : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
+	probe27 : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+	probe28 : IN STD_LOGIC_VECTOR(7 DOWNTO 0)
 );
 END COMPONENT  ;
 
@@ -125,6 +125,7 @@ END COMPONENT  ;
   signal sca_command_reg : std_logic;
   signal sca_connect : std_logic;
   signal sca_connect_reg : std_logic;
+  signal reply_received: std_logic;
   
   
 
@@ -181,6 +182,16 @@ begin
       
       sca_connect_reg       <= ctrl.master.start_connect;
       sca_connect           <= ctrl.master.start_connect and (not sca_connect_reg);
+      
+      if(reply_received = '1') then
+            mon.master.sca_rx.rx(0).rx_received <= '1';
+      end if;
+      
+      if(sca_command = '1' ) then
+            mon.master.sca_rx.rx(0).rx_received <= '0';
+      end if;
+
+        
 
     end if;
   end process;
@@ -368,7 +379,7 @@ begin
       rx_len_o(1)      => mon.master.sca_rx.rx(1).rx_len,
       rx_len_o(2)      => mon.master.sca_rx.rx(2).rx_len,
       rx_len_o(3)      => mon.master.sca_rx.rx(3).rx_len,
-      rx_received_o(0) => mon.master.sca_rx.rx(0).rx_received,
+      rx_received_o(0) => reply_received, --mon.master.sca_rx.rx(0).rx_received,
       rx_received_o(1) => mon.master.sca_rx.rx(1).rx_received,
       rx_received_o(2) => mon.master.sca_rx.rx(2).rx_received,
       rx_received_o(3) => mon.master.sca_rx.rx(3).rx_received,
@@ -417,24 +428,24 @@ begin
 ila_scm_ctrl_c2c : ila_0
 PORT MAP (
 	clk    => clk40,
-	probe0 => sca0_data_o_int, 
-	probe1 => sca1_data_o_int, 
+	probe0 => mon.master.sca_rx.rx(0).rx_data, --sca0_data_o_int, 
+	probe1 => mon.master.sca_rx.rx(0).rx_control, --sca1_data_o_int, 
 	probe2 => sca2_data_o_int, 
 	probe3 => sca0_data_i_int, 
 	probe4 => ic_data_o_int, 
 	probe5 => ctrl.master.sca_enable, 
 	probe6(0) => sca_reset, --ctrl.master.start_reset,
-	probe7(0) => sca_connect, --ctrl.master.start_connect,
+	probe7(0) => reply_received, --sca_connect, --ctrl.master.start_connect,
 	probe8(0) => sca_command, --ctrl.master.start_command,
 	probe9(0) => reset_i,
 	probe10   => ic_data_i_int,
-	probe11(0)=> slave_rx_empty,
+	probe11(0)=> mon.master.sca_rx.rx(0).rx_received, --slave_rx_empty,
 	probe12(0)=> tx_start_read_s,
 	probe13   => master_rx_frame,
 	probe14(0)=> mon.master.ic.rx_err,
 	probe15(0)=> mon.slave.ic.rx_err,
 	probe16(0)=> master_rx_empty,
-	probe17   => slave_rx_frame,
+	probe17   => mon.master.sca_rx.rx(0).rx_address, --slave_rx_frame,
 	probe18   => ec_data_i_int,
 	probe19   => ec_data_o_int,
 	probe20(0)=> tx_start_write_m,
@@ -444,8 +455,8 @@ PORT MAP (
 	probe24   => sca1_data_i_int,
 	probe25   => sca2_data_i_int,
 	probe26   => ic_data_i_s,
-	probe27   => sca3_data_o_int,
-	probe28   => sca3_data_i_int
+	probe27   => mon.master.sca_rx.rx(0).rx_transID, --sca3_data_o_int,
+	probe28   => mon.master.sca_rx.rx(0).rx_err --sca3_data_i_int
 );      
 
 end structural;

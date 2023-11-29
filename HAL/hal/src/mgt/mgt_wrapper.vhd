@@ -31,6 +31,12 @@ entity mgt_wrapper is
     refclk_mirrors_out    : out std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     -- Reset
     reset : in std_logic;
+    
+    rxp : in std_logic_vector(3 downto 0);
+    rxn : in std_logic_vector(3 downto 0);
+    
+    txp : out std_logic_vector(3 downto 0);
+    txn : out std_logic_vector(3 downto 0);    
 
     -- AXI Control
     ctrl : in  CORE_MGT_CTRL_t;
@@ -106,7 +112,8 @@ entity mgt_wrapper is
     sl_re_channel : in std_logic_vector(c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     
     -- done
-    sl_rx_init_done : out std_logic_vector(c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
+    sl_rx_init_done : out std_logic_vector(c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    clk_mgtTxClk_o : out std_logic_vector (3 downto 0)
 
     );
 end mgt_wrapper;
@@ -141,6 +148,36 @@ architecture Behavioral of mgt_wrapper is
   -- Sector Logic
   signal  sl_tx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal  sl_rx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  
+COMPONENT ibert_ultrascale_gth_0
+  PORT (
+    txn_o : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+    txp_o : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+    rxoutclk_o : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+    rxn_i : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+    rxp_i : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+    gtrefclk0_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtrefclk1_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtnorthrefclk0_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtnorthrefclk1_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtsouthrefclk0_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtsouthrefclk1_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtrefclk00_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtrefclk10_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtrefclk01_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtrefclk11_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtnorthrefclk00_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtnorthrefclk10_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtnorthrefclk01_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtnorthrefclk11_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtsouthrefclk00_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtsouthrefclk10_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtsouthrefclk01_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtsouthrefclk11_i : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    clk : IN STD_LOGIC
+  );
+END COMPONENT;  
+  
 begin
 
 
@@ -358,6 +395,7 @@ begin
       -- data
       signal tx_data : std32_array_t (3 downto 0);
       signal rx_data : std32_array_t (3 downto 0);
+      signal clk_mgtTxClk_s : std_logic_vector (3 downto 0);
 
     begin
 
@@ -463,6 +501,8 @@ begin
           mgt_drp_i => drp_i(I+3 downto I),
           mgt_drp_o => drp_o(I+3 downto I),
           status_o  => status(I+3 downto I)
+          
+--          txoutclk => clk_mgtTxClk_o
           );
 
       --------------------------------------------------------------------------------
@@ -696,7 +736,7 @@ begin
           I       => refclk_mirrors(I),
           O       => refclk_bufg(I),
           CE      => ce,
-          DIV     => (others => '0'),
+          DIV     => "000", --(others => '0'),
           CLR     => clr,
           CLRMASK => '0',
           CEMASK  => '0'
@@ -715,6 +755,35 @@ begin
     end generate no_axi;
 
   end generate refclk_mirror;
+
+
+your_instance_name : ibert_ultrascale_gth_0
+  PORT MAP (
+    txn_o                => txn,
+    txp_o                => txp,
+    rxoutclk_o           => open,
+    rxn_i                => rxn,
+    rxp_i                => rxp,
+    gtrefclk0_i(0)       => refclk(13),
+    gtrefclk1_i(0)       => '0',
+    gtnorthrefclk0_i(0)  => '0',
+    gtnorthrefclk1_i(0)  => '0',
+    gtsouthrefclk0_i(0)  => '0',
+    gtsouthrefclk1_i(0)  => '0',
+    gtrefclk00_i(0)      => refclk(13),
+    gtrefclk10_i(0)      => '0',
+    gtrefclk01_i(0)      => '0',
+    gtrefclk11_i(0)      => '0',
+    gtnorthrefclk00_i(0) => '0',
+    gtnorthrefclk10_i(0) => '0',
+    gtnorthrefclk01_i(0) => '0',
+    gtnorthrefclk11_i(0) => '0',
+    gtsouthrefclk00_i(0) => '0',
+    gtsouthrefclk10_i(0) => '0',
+    gtsouthrefclk01_i(0) => '0',
+    gtsouthrefclk11_i(0) => '0',
+    clk                  => refclk_bufg(13)
+  );
 
 
 end Behavioral;
