@@ -184,7 +184,7 @@ entity ult_fm is
             end generate;
 
              FM_PB_MTC_OUTPUT: for I in 0 to mtc_sb_n-1 generate
-               fm_mtc2sl_pb (I) <= fm_pb_v(h2s_sb_all_station_n + ucm_sb_n + csm_polmux_in_sb_n + csm_custom_sb_n + tar_sb_all_stations_n + I)(width(fm_mtc2sl_pb (I)) - 1 downto 0);
+	       fm_mtc2sl_pb (I) <= fm_pb_v(h2s_sb_all_station_n + ucm_sb_n + I)(width(fm_mtc2sl_pb (I)) - 1 downto 0);
              end generate;
 
      ult_fm_data_flatten: for sb_i in 0 to total_l0mdt_sb-1 generate     
