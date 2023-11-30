@@ -30,7 +30,7 @@ types:
 - ucm_sb_n : {qualifier: constant , type: integer, value: primary_sl_n + ucm2hps_sb_n + primary_sl_n }
 
 #SpyBuffers for CSM
-- csm_polmux_in_sb_n : {qualifier: constant , type: integer, value: 9 }
+- csm_polmux_in_sb_n : {qualifier: constant , type: integer, value: 6 }
 - csm_custom_sb_n : {qualifier: constant , type: integer, value: 1 }
 
 #SpyBuffers for TAR
