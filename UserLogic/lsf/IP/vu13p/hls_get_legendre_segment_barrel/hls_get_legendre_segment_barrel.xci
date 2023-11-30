@@ -3,7 +3,7 @@
   "ip_inst": {
     "xci_name": "hls_get_legendre_segment_barrel",
     "component_reference": "xilinx.com:hls:get_legendre_segment_barrel:1.0",
-    "ip_revision": "2113313683",
+    "ip_revision": "2113316519",
     "gen_directory": ".",
     "parameters": {
       "component_parameters": {
@@ -31,7 +31,7 @@
       },
       "runtime_parameters": {
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
-        "IPREVISION": [ { "value": "2113313683" } ],
+        "IPREVISION": [ { "value": "2113316519" } ],
         "MANAGED": [ { "value": "TRUE" } ],
         "OUTPUTDIR": [ { "value": "." } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],

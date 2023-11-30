@@ -3,7 +3,7 @@
   "ip_inst": {
     "xci_name": "hls_find_max_bin",
     "component_reference": "xilinx.com:hls:find_max_bin:1.0",
-    "ip_revision": "2113313679",
+    "ip_revision": "2113316515",
     "gen_directory": ".",
     "parameters": {
       "component_parameters": {
@@ -31,7 +31,7 @@
       },
       "runtime_parameters": {
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
-        "IPREVISION": [ { "value": "2113313679" } ],
+        "IPREVISION": [ { "value": "2113316515" } ],
         "MANAGED": [ { "value": "TRUE" } ],
         "OUTPUTDIR": [ { "value": "." } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],

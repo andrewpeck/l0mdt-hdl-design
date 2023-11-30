@@ -3,7 +3,7 @@
   "ip_inst": {
     "xci_name": "hls_get_trig_vals",
     "component_reference": "xilinx.com:hls:get_trig_vals:1.0",
-    "ip_revision": "2113313665",
+    "ip_revision": "2113316502",
     "gen_directory": ".",
     "parameters": {
       "component_parameters": {
@@ -31,7 +31,7 @@
       },
       "runtime_parameters": {
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
-        "IPREVISION": [ { "value": "2113313665" } ],
+        "IPREVISION": [ { "value": "2113316502" } ],
         "MANAGED": [ { "value": "TRUE" } ],
         "OUTPUTDIR": [ { "value": "." } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
