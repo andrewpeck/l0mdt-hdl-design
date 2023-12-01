@@ -175,7 +175,7 @@ architecture behavioral of top_ult is
   signal mpl_mon_r             : MPL_MON_t;
   signal fm_ctrl_r             : FM_CTRL_t;
   signal fm_mon_r              : FM_MON_t;
-
+  signal fm_csm_mon_r : fm_csm_mon_data;
   signal hps_inn_ctrl_v        : std_logic_vector(HPS_CTRL_t'w -1 downto 0); -- : in  H2S_CTRL_t;
   signal hps_inn_mon_v         : std_logic_vector(HPS_MON_t'w -1 downto 0);--  : out H2S_MON_t;
   signal hps_mid_ctrl_v        : std_logic_vector(HPS_CTRL_t'w -1 downto 0); -- : in  H2S_CTRL_t;
@@ -211,6 +211,7 @@ architecture behavioral of top_ult is
   
   signal fm_ctrl_v             : std_logic_vector(FM_CTRL_t'w -1 downto 0);
   signal fm_mon_v              : std_logic_vector(FM_MON_t'w -1 downto 0);
+  signal csm_fm_mon_v     : std_logic_vector(width(fm_csm_mon_r)-1 downto 0);
 
   signal i_inner_tdc_hits  : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
   signal i_middle_tdc_hits : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
@@ -448,7 +449,7 @@ begin
       mpl_mon_v  => mpl_mon_v,
       fm_ctrl_v  => fm_ctrl_v,
       fm_mon_v   => fm_mon_v,
-
+      csm_fm_mon_v => csm_fm_mon_v,
       
       -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
       -- o_daq_streams => o_daq_streams,

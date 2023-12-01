@@ -144,7 +144,8 @@ set_false_path \
 # this might be useful to keep.. it is a high fanout net (~2500) and has issues
 # so keep the fanout low to force replication
 set_property -quiet MAX_FANOUT 256 [get_cells -hier "*int_rst_reg"]
-set_property MAX_FANOUT 256 [get_cells "top_hal/userclk_rst_bit_synchronizer/syncstages_ff_reg*"]
+#PRIYAset_property MAX_FANOUT 256 [get_cells "top_hal/userclk_rst_bit_synchronizer/syncstages_ff_reg*"]
+set_property MAX_FANOUT 256 [get_cells "top_hal/rst_bit_synchronizer/syncstages_ff_reg*"]
 set_property -quiet MAX_FANOUT 256 [get_cells "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_*.HPS/PC/pc_gen*.pc_en.PC/VC/apb_mem_interface/MEM_TYPE.o_wr_addr_reg*"]
 #PRIYA set_max_delay -datapath_only  -from [get_pins top_hal/reset_clk40_reg/C] -to [get_pins {top_hal/csm_gen[0].csm_ifgen.mgt_tag[32].csm_inst/lpgbt_links_inst/downlink_gen[0].downlink_reset_reg/D}] 2.300
 

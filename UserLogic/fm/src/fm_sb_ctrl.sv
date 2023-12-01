@@ -65,11 +65,35 @@ module fm_sb_ctrl(
 			    freeze[i] <= 1'b0;
 			 end
 		    end // if (i<64)
-		  else
+		  else if (i<96)
+		    begin
+		       if(fm_ctrl_in.FREEZE_MASK_2[i-64] == 0)
+			 begin
+			    freeze[i] <= global_freeze;
+			 end
+		       else
+			 begin
+			    freeze[i] <= 1'b0;
+			 end
+		    end // if (i<96)
+		   else if (i<127)
+		    begin
+		       if(fm_ctrl_in.FREEZE_MASK_3[i-96] == 0)
+			 begin
+			    freeze[i] <= global_freeze;
+			 end
+		       else
+			 begin
+			    freeze[i] <= 1'b0;
+			 end
+		    end // if (i<127)
+		   else
 		    begin
 		       freeze[i] = 1'b0;
 
-		    end
+		    end // else: !if(i<127)
+		  
+		  
 	       end // for (int i=0; i<total_sb; i=i+1)
 
 
@@ -98,7 +122,29 @@ module fm_sb_ctrl(
 			    playback_mode[i] <= 0;
 			 end
 		    end // if (i < 64 )
-		  else
+		    else if (i < 96 )
+		    begin
+		         if(fm_ctrl_in.PLAYBACK_MASK_2[i-64] == 0)
+			 begin
+			    playback_mode[i] <= global_pb_mode;
+			 end
+		       else
+			 begin
+			    playback_mode[i] <= 0;
+			 end
+		    end // if (i < 96 )
+		    else if (i < 128 )
+		    begin
+		         if(fm_ctrl_in.PLAYBACK_MASK_1[i-96] == 0)
+			 begin
+			    playback_mode[i] <= global_pb_mode;
+			 end
+		       else
+			 begin
+			    playback_mode[i] <= 0;
+			 end
+		    end // if (i < 128 )
+		    else
 		    begin
 		       playback_mode[i] <= 2'b0;
 		    end

@@ -143,6 +143,70 @@ assign fm_mon_out.SB40.SB_MEM = (axi_spy_rd_vld[40] == 0)? '{rd_data:'b0, rd_dat
 assign fm_mon_out.SB41.SB_MEM = (axi_spy_rd_vld[41] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[41], rd_data_valid:axi_spy_rd_vld[41]};
 assign fm_mon_out.SB42.SB_MEM = (axi_spy_rd_vld[42] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[42], rd_data_valid:axi_spy_rd_vld[42]};
 assign fm_mon_out.SB43.SB_MEM = (axi_spy_rd_vld[43] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[43], rd_data_valid:axi_spy_rd_vld[43]};
+assign fm_mon_out.SB44.SB_MEM = (axi_spy_rd_vld[44] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[44], rd_data_valid:axi_spy_rd_vld[44]};
+assign fm_mon_out.SB45.SB_MEM = (axi_spy_rd_vld[45] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[45], rd_data_valid:axi_spy_rd_vld[45]};
+assign fm_mon_out.SB46.SB_MEM = (axi_spy_rd_vld[46] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[46], rd_data_valid:axi_spy_rd_vld[46]};
+assign fm_mon_out.SB47.SB_MEM = (axi_spy_rd_vld[47] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[47], rd_data_valid:axi_spy_rd_vld[47]};
+assign fm_mon_out.SB48.SB_MEM = (axi_spy_rd_vld[48] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[48], rd_data_valid:axi_spy_rd_vld[48]};
+assign fm_mon_out.SB49.SB_MEM = (axi_spy_rd_vld[49] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[49], rd_data_valid:axi_spy_rd_vld[49]};
+assign fm_mon_out.SB50.SB_MEM = (axi_spy_rd_vld[50] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[50], rd_data_valid:axi_spy_rd_vld[50]};
+assign fm_mon_out.SB51.SB_MEM = (axi_spy_rd_vld[51] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[51], rd_data_valid:axi_spy_rd_vld[51]};
+assign fm_mon_out.SB52.SB_MEM = (axi_spy_rd_vld[52] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[52], rd_data_valid:axi_spy_rd_vld[52]};
+assign fm_mon_out.SB53.SB_MEM = (axi_spy_rd_vld[53] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[53], rd_data_valid:axi_spy_rd_vld[53]};
+assign fm_mon_out.SB54.SB_MEM = (axi_spy_rd_vld[54] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[54], rd_data_valid:axi_spy_rd_vld[54]};
+assign fm_mon_out.SB55.SB_MEM = (axi_spy_rd_vld[55] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[55], rd_data_valid:axi_spy_rd_vld[55]};
+assign fm_mon_out.SB56.SB_MEM = (axi_spy_rd_vld[56] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[56], rd_data_valid:axi_spy_rd_vld[56]};
+assign fm_mon_out.SB57.SB_MEM = (axi_spy_rd_vld[57] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[57], rd_data_valid:axi_spy_rd_vld[57]};
+assign fm_mon_out.SB58.SB_MEM = (axi_spy_rd_vld[58] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[58], rd_data_valid:axi_spy_rd_vld[58]};
+assign fm_mon_out.SB59.SB_MEM = (axi_spy_rd_vld[59] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[59], rd_data_valid:axi_spy_rd_vld[59]};
+assign fm_mon_out.SB60.SB_MEM = (axi_spy_rd_vld[60] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[60], rd_data_valid:axi_spy_rd_vld[60]};
+assign fm_mon_out.SB61.SB_MEM = (axi_spy_rd_vld[61] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[61], rd_data_valid:axi_spy_rd_vld[61]};
+assign fm_mon_out.SB62.SB_MEM = (axi_spy_rd_vld[62] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[62], rd_data_valid:axi_spy_rd_vld[62]};
+assign fm_mon_out.SB63.SB_MEM = (axi_spy_rd_vld[63] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[63], rd_data_valid:axi_spy_rd_vld[63]};
+assign fm_mon_out.SB64.SB_MEM = (axi_spy_rd_vld[64] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[64], rd_data_valid:axi_spy_rd_vld[64]};
+assign fm_mon_out.SB65.SB_MEM = (axi_spy_rd_vld[65] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[65], rd_data_valid:axi_spy_rd_vld[65]};
+assign fm_mon_out.SB66.SB_MEM = (axi_spy_rd_vld[66] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[66], rd_data_valid:axi_spy_rd_vld[66]};
+assign fm_mon_out.SB67.SB_MEM = (axi_spy_rd_vld[67] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[67], rd_data_valid:axi_spy_rd_vld[67]};
+assign fm_mon_out.SB68.SB_MEM = (axi_spy_rd_vld[68] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[68], rd_data_valid:axi_spy_rd_vld[68]};
+assign fm_mon_out.SB69.SB_MEM = (axi_spy_rd_vld[69] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[69], rd_data_valid:axi_spy_rd_vld[69]};
+assign fm_mon_out.SB70.SB_MEM = (axi_spy_rd_vld[70] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[70], rd_data_valid:axi_spy_rd_vld[70]};
+assign fm_mon_out.SB71.SB_MEM = (axi_spy_rd_vld[71] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[71], rd_data_valid:axi_spy_rd_vld[71]};
+assign fm_mon_out.SB72.SB_MEM = (axi_spy_rd_vld[72] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[72], rd_data_valid:axi_spy_rd_vld[72]};
+assign fm_mon_out.SB73.SB_MEM = (axi_spy_rd_vld[73] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[73], rd_data_valid:axi_spy_rd_vld[73]};
+assign fm_mon_out.SB74.SB_MEM = (axi_spy_rd_vld[74] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[74], rd_data_valid:axi_spy_rd_vld[74]};
+assign fm_mon_out.SB75.SB_MEM = (axi_spy_rd_vld[75] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[75], rd_data_valid:axi_spy_rd_vld[75]};
+assign fm_mon_out.SB76.SB_MEM = (axi_spy_rd_vld[76] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[76], rd_data_valid:axi_spy_rd_vld[76]};
+assign fm_mon_out.SB77.SB_MEM = (axi_spy_rd_vld[77] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[77], rd_data_valid:axi_spy_rd_vld[77]};
+assign fm_mon_out.SB78.SB_MEM = (axi_spy_rd_vld[78] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[78], rd_data_valid:axi_spy_rd_vld[78]};
+assign fm_mon_out.SB79.SB_MEM = (axi_spy_rd_vld[79] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[79], rd_data_valid:axi_spy_rd_vld[79]};
+assign fm_mon_out.SB80.SB_MEM = (axi_spy_rd_vld[80] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[80], rd_data_valid:axi_spy_rd_vld[80]};
+assign fm_mon_out.SB81.SB_MEM = (axi_spy_rd_vld[81] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[81], rd_data_valid:axi_spy_rd_vld[81]};
+assign fm_mon_out.SB82.SB_MEM = (axi_spy_rd_vld[82] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[82], rd_data_valid:axi_spy_rd_vld[82]};
+assign fm_mon_out.SB83.SB_MEM = (axi_spy_rd_vld[83] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[83], rd_data_valid:axi_spy_rd_vld[83]};
+assign fm_mon_out.SB84.SB_MEM = (axi_spy_rd_vld[84] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[84], rd_data_valid:axi_spy_rd_vld[84]};
+assign fm_mon_out.SB85.SB_MEM = (axi_spy_rd_vld[85] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[85], rd_data_valid:axi_spy_rd_vld[85]};
+assign fm_mon_out.SB86.SB_MEM = (axi_spy_rd_vld[86] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[86], rd_data_valid:axi_spy_rd_vld[86]};
+assign fm_mon_out.SB87.SB_MEM = (axi_spy_rd_vld[87] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[87], rd_data_valid:axi_spy_rd_vld[87]};
+assign fm_mon_out.SB88.SB_MEM = (axi_spy_rd_vld[88] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[88], rd_data_valid:axi_spy_rd_vld[88]};
+assign fm_mon_out.SB89.SB_MEM = (axi_spy_rd_vld[89] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[89], rd_data_valid:axi_spy_rd_vld[89]};
+assign fm_mon_out.SB90.SB_MEM = (axi_spy_rd_vld[90] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[90], rd_data_valid:axi_spy_rd_vld[90]};
+assign fm_mon_out.SB91.SB_MEM = (axi_spy_rd_vld[91] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[91], rd_data_valid:axi_spy_rd_vld[91]};
+assign fm_mon_out.SB92.SB_MEM = (axi_spy_rd_vld[92] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[92], rd_data_valid:axi_spy_rd_vld[92]};
+assign fm_mon_out.SB93.SB_MEM = (axi_spy_rd_vld[93] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[93], rd_data_valid:axi_spy_rd_vld[93]};
+assign fm_mon_out.SB94.SB_MEM = (axi_spy_rd_vld[94] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[94], rd_data_valid:axi_spy_rd_vld[94]};
+assign fm_mon_out.SB95.SB_MEM = (axi_spy_rd_vld[95] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[95], rd_data_valid:axi_spy_rd_vld[95]};
+assign fm_mon_out.SB96.SB_MEM = (axi_spy_rd_vld[96] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[96], rd_data_valid:axi_spy_rd_vld[96]};
+assign fm_mon_out.SB97.SB_MEM = (axi_spy_rd_vld[97] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[97], rd_data_valid:axi_spy_rd_vld[97]};
+assign fm_mon_out.SB98.SB_MEM = (axi_spy_rd_vld[98] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[98], rd_data_valid:axi_spy_rd_vld[98]};
+assign fm_mon_out.SB99.SB_MEM = (axi_spy_rd_vld[99] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[99], rd_data_valid:axi_spy_rd_vld[99]};
+assign fm_mon_out.SB100.SB_MEM = (axi_spy_rd_vld[100] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[100], rd_data_valid:axi_spy_rd_vld[100]};
+assign fm_mon_out.SB101.SB_MEM = (axi_spy_rd_vld[101] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[101], rd_data_valid:axi_spy_rd_vld[101]};
+assign fm_mon_out.SB102.SB_MEM = (axi_spy_rd_vld[102] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[102], rd_data_valid:axi_spy_rd_vld[102]};
+assign fm_mon_out.SB103.SB_MEM = (axi_spy_rd_vld[103] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[103], rd_data_valid:axi_spy_rd_vld[103]};
+assign fm_mon_out.SB104.SB_MEM = (axi_spy_rd_vld[104] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[104], rd_data_valid:axi_spy_rd_vld[104]};
+assign fm_mon_out.SB105.SB_MEM = (axi_spy_rd_vld[105] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[105], rd_data_valid:axi_spy_rd_vld[105]};
+assign fm_mon_out.SB106.SB_MEM = (axi_spy_rd_vld[106] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[106], rd_data_valid:axi_spy_rd_vld[106]};
+assign fm_mon_out.SB107.SB_MEM = (axi_spy_rd_vld[107] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[107], rd_data_valid:axi_spy_rd_vld[107]};
 
 assign  axi_sb_addr       = (init_spy_mem_internal)? axi_sb_init_addr : {
 	fm_ctrl_in.SB0.SB_MEM.address,
@@ -188,7 +252,71 @@ assign  axi_sb_addr       = (init_spy_mem_internal)? axi_sb_init_addr : {
 	fm_ctrl_in.SB40.SB_MEM.address,
 	fm_ctrl_in.SB41.SB_MEM.address,
 	fm_ctrl_in.SB42.SB_MEM.address,
-	fm_ctrl_in.SB43.SB_MEM.address
+	fm_ctrl_in.SB43.SB_MEM.address,
+	fm_ctrl_in.SB44.SB_MEM.address,
+	fm_ctrl_in.SB45.SB_MEM.address,
+	fm_ctrl_in.SB46.SB_MEM.address,
+	fm_ctrl_in.SB47.SB_MEM.address,
+	fm_ctrl_in.SB48.SB_MEM.address,
+	fm_ctrl_in.SB49.SB_MEM.address,
+	fm_ctrl_in.SB50.SB_MEM.address,
+	fm_ctrl_in.SB51.SB_MEM.address,
+	fm_ctrl_in.SB52.SB_MEM.address,
+	fm_ctrl_in.SB53.SB_MEM.address,
+	fm_ctrl_in.SB54.SB_MEM.address,
+	fm_ctrl_in.SB55.SB_MEM.address,
+	fm_ctrl_in.SB56.SB_MEM.address,
+	fm_ctrl_in.SB57.SB_MEM.address,
+	fm_ctrl_in.SB58.SB_MEM.address,
+	fm_ctrl_in.SB59.SB_MEM.address,
+	fm_ctrl_in.SB60.SB_MEM.address,
+	fm_ctrl_in.SB61.SB_MEM.address,
+	fm_ctrl_in.SB62.SB_MEM.address,
+	fm_ctrl_in.SB63.SB_MEM.address,
+	fm_ctrl_in.SB64.SB_MEM.address,
+	fm_ctrl_in.SB65.SB_MEM.address,
+	fm_ctrl_in.SB66.SB_MEM.address,
+	fm_ctrl_in.SB67.SB_MEM.address,
+	fm_ctrl_in.SB68.SB_MEM.address,
+	fm_ctrl_in.SB69.SB_MEM.address,
+	fm_ctrl_in.SB70.SB_MEM.address,
+	fm_ctrl_in.SB71.SB_MEM.address,
+	fm_ctrl_in.SB72.SB_MEM.address,
+	fm_ctrl_in.SB73.SB_MEM.address,
+	fm_ctrl_in.SB74.SB_MEM.address,
+	fm_ctrl_in.SB75.SB_MEM.address,
+	fm_ctrl_in.SB76.SB_MEM.address,
+	fm_ctrl_in.SB77.SB_MEM.address,
+	fm_ctrl_in.SB78.SB_MEM.address,
+	fm_ctrl_in.SB79.SB_MEM.address,
+	fm_ctrl_in.SB80.SB_MEM.address,
+	fm_ctrl_in.SB81.SB_MEM.address,
+	fm_ctrl_in.SB82.SB_MEM.address,
+	fm_ctrl_in.SB83.SB_MEM.address,
+	fm_ctrl_in.SB84.SB_MEM.address,
+	fm_ctrl_in.SB85.SB_MEM.address,
+	fm_ctrl_in.SB86.SB_MEM.address,
+	fm_ctrl_in.SB87.SB_MEM.address,
+	fm_ctrl_in.SB88.SB_MEM.address,
+	fm_ctrl_in.SB89.SB_MEM.address,
+	fm_ctrl_in.SB90.SB_MEM.address,
+	fm_ctrl_in.SB91.SB_MEM.address,
+	fm_ctrl_in.SB92.SB_MEM.address,
+	fm_ctrl_in.SB93.SB_MEM.address,
+	fm_ctrl_in.SB94.SB_MEM.address,
+	fm_ctrl_in.SB95.SB_MEM.address,
+	fm_ctrl_in.SB96.SB_MEM.address,
+	fm_ctrl_in.SB97.SB_MEM.address,
+	fm_ctrl_in.SB98.SB_MEM.address,
+	fm_ctrl_in.SB99.SB_MEM.address,
+	fm_ctrl_in.SB100.SB_MEM.address,
+	fm_ctrl_in.SB101.SB_MEM.address,
+	fm_ctrl_in.SB102.SB_MEM.address,
+	fm_ctrl_in.SB103.SB_MEM.address,
+	fm_ctrl_in.SB104.SB_MEM.address,
+	fm_ctrl_in.SB105.SB_MEM.address,
+	fm_ctrl_in.SB106.SB_MEM.address,
+	fm_ctrl_in.SB107.SB_MEM.address
 		};
 
 assign  axi_sb_enable       =  {
@@ -235,7 +363,71 @@ assign  axi_sb_enable       =  {
 	fm_ctrl_in.SB40.SB_MEM.enable,
 	fm_ctrl_in.SB41.SB_MEM.enable,
 	fm_ctrl_in.SB42.SB_MEM.enable,
-	fm_ctrl_in.SB43.SB_MEM.enable
+	fm_ctrl_in.SB43.SB_MEM.enable,
+	fm_ctrl_in.SB44.SB_MEM.enable,
+	fm_ctrl_in.SB45.SB_MEM.enable,
+	fm_ctrl_in.SB46.SB_MEM.enable,
+	fm_ctrl_in.SB47.SB_MEM.enable,
+	fm_ctrl_in.SB48.SB_MEM.enable,
+	fm_ctrl_in.SB49.SB_MEM.enable,
+	fm_ctrl_in.SB50.SB_MEM.enable,
+	fm_ctrl_in.SB51.SB_MEM.enable,
+	fm_ctrl_in.SB52.SB_MEM.enable,
+	fm_ctrl_in.SB53.SB_MEM.enable,
+	fm_ctrl_in.SB54.SB_MEM.enable,
+	fm_ctrl_in.SB55.SB_MEM.enable,
+	fm_ctrl_in.SB56.SB_MEM.enable,
+	fm_ctrl_in.SB57.SB_MEM.enable,
+	fm_ctrl_in.SB58.SB_MEM.enable,
+	fm_ctrl_in.SB59.SB_MEM.enable,
+	fm_ctrl_in.SB60.SB_MEM.enable,
+	fm_ctrl_in.SB61.SB_MEM.enable,
+	fm_ctrl_in.SB62.SB_MEM.enable,
+	fm_ctrl_in.SB63.SB_MEM.enable,
+	fm_ctrl_in.SB64.SB_MEM.enable,
+	fm_ctrl_in.SB65.SB_MEM.enable,
+	fm_ctrl_in.SB66.SB_MEM.enable,
+	fm_ctrl_in.SB67.SB_MEM.enable,
+	fm_ctrl_in.SB68.SB_MEM.enable,
+	fm_ctrl_in.SB69.SB_MEM.enable,
+	fm_ctrl_in.SB70.SB_MEM.enable,
+	fm_ctrl_in.SB71.SB_MEM.enable,
+	fm_ctrl_in.SB72.SB_MEM.enable,
+	fm_ctrl_in.SB73.SB_MEM.enable,
+	fm_ctrl_in.SB74.SB_MEM.enable,
+	fm_ctrl_in.SB75.SB_MEM.enable,
+	fm_ctrl_in.SB76.SB_MEM.enable,
+	fm_ctrl_in.SB77.SB_MEM.enable,
+	fm_ctrl_in.SB78.SB_MEM.enable,
+	fm_ctrl_in.SB79.SB_MEM.enable,
+	fm_ctrl_in.SB80.SB_MEM.enable,
+	fm_ctrl_in.SB81.SB_MEM.enable,
+	fm_ctrl_in.SB82.SB_MEM.enable,
+	fm_ctrl_in.SB83.SB_MEM.enable,
+	fm_ctrl_in.SB84.SB_MEM.enable,
+	fm_ctrl_in.SB85.SB_MEM.enable,
+	fm_ctrl_in.SB86.SB_MEM.enable,
+	fm_ctrl_in.SB87.SB_MEM.enable,
+	fm_ctrl_in.SB88.SB_MEM.enable,
+	fm_ctrl_in.SB89.SB_MEM.enable,
+	fm_ctrl_in.SB90.SB_MEM.enable,
+	fm_ctrl_in.SB91.SB_MEM.enable,
+	fm_ctrl_in.SB92.SB_MEM.enable,
+	fm_ctrl_in.SB93.SB_MEM.enable,
+	fm_ctrl_in.SB94.SB_MEM.enable,
+	fm_ctrl_in.SB95.SB_MEM.enable,
+	fm_ctrl_in.SB96.SB_MEM.enable,
+	fm_ctrl_in.SB97.SB_MEM.enable,
+	fm_ctrl_in.SB98.SB_MEM.enable,
+	fm_ctrl_in.SB99.SB_MEM.enable,
+	fm_ctrl_in.SB100.SB_MEM.enable,
+	fm_ctrl_in.SB101.SB_MEM.enable,
+	fm_ctrl_in.SB102.SB_MEM.enable,
+	fm_ctrl_in.SB103.SB_MEM.enable,
+	fm_ctrl_in.SB104.SB_MEM.enable,
+	fm_ctrl_in.SB105.SB_MEM.enable,
+	fm_ctrl_in.SB106.SB_MEM.enable,
+	fm_ctrl_in.SB107.SB_MEM.enable
 		};
 
 assign  axi_sb_wr_enable       = (init_spy_mem_internal == 1)? '1: { 
@@ -282,7 +474,71 @@ assign  axi_sb_wr_enable       = (init_spy_mem_internal == 1)? '1: {
 	fm_ctrl_in.SB40.SB_MEM.wr_enable,
 	fm_ctrl_in.SB41.SB_MEM.wr_enable,
 	fm_ctrl_in.SB42.SB_MEM.wr_enable,
-	fm_ctrl_in.SB43.SB_MEM.wr_enable
+	fm_ctrl_in.SB43.SB_MEM.wr_enable,
+	fm_ctrl_in.SB44.SB_MEM.wr_enable,
+	fm_ctrl_in.SB45.SB_MEM.wr_enable,
+	fm_ctrl_in.SB46.SB_MEM.wr_enable,
+	fm_ctrl_in.SB47.SB_MEM.wr_enable,
+	fm_ctrl_in.SB48.SB_MEM.wr_enable,
+	fm_ctrl_in.SB49.SB_MEM.wr_enable,
+	fm_ctrl_in.SB50.SB_MEM.wr_enable,
+	fm_ctrl_in.SB51.SB_MEM.wr_enable,
+	fm_ctrl_in.SB52.SB_MEM.wr_enable,
+	fm_ctrl_in.SB53.SB_MEM.wr_enable,
+	fm_ctrl_in.SB54.SB_MEM.wr_enable,
+	fm_ctrl_in.SB55.SB_MEM.wr_enable,
+	fm_ctrl_in.SB56.SB_MEM.wr_enable,
+	fm_ctrl_in.SB57.SB_MEM.wr_enable,
+	fm_ctrl_in.SB58.SB_MEM.wr_enable,
+	fm_ctrl_in.SB59.SB_MEM.wr_enable,
+	fm_ctrl_in.SB60.SB_MEM.wr_enable,
+	fm_ctrl_in.SB61.SB_MEM.wr_enable,
+	fm_ctrl_in.SB62.SB_MEM.wr_enable,
+	fm_ctrl_in.SB63.SB_MEM.wr_enable,
+	fm_ctrl_in.SB64.SB_MEM.wr_enable,
+	fm_ctrl_in.SB65.SB_MEM.wr_enable,
+	fm_ctrl_in.SB66.SB_MEM.wr_enable,
+	fm_ctrl_in.SB67.SB_MEM.wr_enable,
+	fm_ctrl_in.SB68.SB_MEM.wr_enable,
+	fm_ctrl_in.SB69.SB_MEM.wr_enable,
+	fm_ctrl_in.SB70.SB_MEM.wr_enable,
+	fm_ctrl_in.SB71.SB_MEM.wr_enable,
+	fm_ctrl_in.SB72.SB_MEM.wr_enable,
+	fm_ctrl_in.SB73.SB_MEM.wr_enable,
+	fm_ctrl_in.SB74.SB_MEM.wr_enable,
+	fm_ctrl_in.SB75.SB_MEM.wr_enable,
+	fm_ctrl_in.SB76.SB_MEM.wr_enable,
+	fm_ctrl_in.SB77.SB_MEM.wr_enable,
+	fm_ctrl_in.SB78.SB_MEM.wr_enable,
+	fm_ctrl_in.SB79.SB_MEM.wr_enable,
+	fm_ctrl_in.SB80.SB_MEM.wr_enable,
+	fm_ctrl_in.SB81.SB_MEM.wr_enable,
+	fm_ctrl_in.SB82.SB_MEM.wr_enable,
+	fm_ctrl_in.SB83.SB_MEM.wr_enable,
+	fm_ctrl_in.SB84.SB_MEM.wr_enable,
+	fm_ctrl_in.SB85.SB_MEM.wr_enable,
+	fm_ctrl_in.SB86.SB_MEM.wr_enable,
+	fm_ctrl_in.SB87.SB_MEM.wr_enable,
+	fm_ctrl_in.SB88.SB_MEM.wr_enable,
+	fm_ctrl_in.SB89.SB_MEM.wr_enable,
+	fm_ctrl_in.SB90.SB_MEM.wr_enable,
+	fm_ctrl_in.SB91.SB_MEM.wr_enable,
+	fm_ctrl_in.SB92.SB_MEM.wr_enable,
+	fm_ctrl_in.SB93.SB_MEM.wr_enable,
+	fm_ctrl_in.SB94.SB_MEM.wr_enable,
+	fm_ctrl_in.SB95.SB_MEM.wr_enable,
+	fm_ctrl_in.SB96.SB_MEM.wr_enable,
+	fm_ctrl_in.SB97.SB_MEM.wr_enable,
+	fm_ctrl_in.SB98.SB_MEM.wr_enable,
+	fm_ctrl_in.SB99.SB_MEM.wr_enable,
+	fm_ctrl_in.SB100.SB_MEM.wr_enable,
+	fm_ctrl_in.SB101.SB_MEM.wr_enable,
+	fm_ctrl_in.SB102.SB_MEM.wr_enable,
+	fm_ctrl_in.SB103.SB_MEM.wr_enable,
+	fm_ctrl_in.SB104.SB_MEM.wr_enable,
+	fm_ctrl_in.SB105.SB_MEM.wr_enable,
+	fm_ctrl_in.SB106.SB_MEM.wr_enable,
+	fm_ctrl_in.SB107.SB_MEM.wr_enable
 		};
 
 assign  axi_sb_wr_data       = (init_spy_mem_internal == 1)? axi_sb_init_wr_data: { 
@@ -329,7 +585,71 @@ assign  axi_sb_wr_data       = (init_spy_mem_internal == 1)? axi_sb_init_wr_data
 	fm_ctrl_in.SB40.SB_MEM.wr_data,
 	fm_ctrl_in.SB41.SB_MEM.wr_data,
 	fm_ctrl_in.SB42.SB_MEM.wr_data,
-	fm_ctrl_in.SB43.SB_MEM.wr_data
+	fm_ctrl_in.SB43.SB_MEM.wr_data,
+	fm_ctrl_in.SB44.SB_MEM.wr_data,
+	fm_ctrl_in.SB45.SB_MEM.wr_data,
+	fm_ctrl_in.SB46.SB_MEM.wr_data,
+	fm_ctrl_in.SB47.SB_MEM.wr_data,
+	fm_ctrl_in.SB48.SB_MEM.wr_data,
+	fm_ctrl_in.SB49.SB_MEM.wr_data,
+	fm_ctrl_in.SB50.SB_MEM.wr_data,
+	fm_ctrl_in.SB51.SB_MEM.wr_data,
+	fm_ctrl_in.SB52.SB_MEM.wr_data,
+	fm_ctrl_in.SB53.SB_MEM.wr_data,
+	fm_ctrl_in.SB54.SB_MEM.wr_data,
+	fm_ctrl_in.SB55.SB_MEM.wr_data,
+	fm_ctrl_in.SB56.SB_MEM.wr_data,
+	fm_ctrl_in.SB57.SB_MEM.wr_data,
+	fm_ctrl_in.SB58.SB_MEM.wr_data,
+	fm_ctrl_in.SB59.SB_MEM.wr_data,
+	fm_ctrl_in.SB60.SB_MEM.wr_data,
+	fm_ctrl_in.SB61.SB_MEM.wr_data,
+	fm_ctrl_in.SB62.SB_MEM.wr_data,
+	fm_ctrl_in.SB63.SB_MEM.wr_data,
+	fm_ctrl_in.SB64.SB_MEM.wr_data,
+	fm_ctrl_in.SB65.SB_MEM.wr_data,
+	fm_ctrl_in.SB66.SB_MEM.wr_data,
+	fm_ctrl_in.SB67.SB_MEM.wr_data,
+	fm_ctrl_in.SB68.SB_MEM.wr_data,
+	fm_ctrl_in.SB69.SB_MEM.wr_data,
+	fm_ctrl_in.SB70.SB_MEM.wr_data,
+	fm_ctrl_in.SB71.SB_MEM.wr_data,
+	fm_ctrl_in.SB72.SB_MEM.wr_data,
+	fm_ctrl_in.SB73.SB_MEM.wr_data,
+	fm_ctrl_in.SB74.SB_MEM.wr_data,
+	fm_ctrl_in.SB75.SB_MEM.wr_data,
+	fm_ctrl_in.SB76.SB_MEM.wr_data,
+	fm_ctrl_in.SB77.SB_MEM.wr_data,
+	fm_ctrl_in.SB78.SB_MEM.wr_data,
+	fm_ctrl_in.SB79.SB_MEM.wr_data,
+	fm_ctrl_in.SB80.SB_MEM.wr_data,
+	fm_ctrl_in.SB81.SB_MEM.wr_data,
+	fm_ctrl_in.SB82.SB_MEM.wr_data,
+	fm_ctrl_in.SB83.SB_MEM.wr_data,
+	fm_ctrl_in.SB84.SB_MEM.wr_data,
+	fm_ctrl_in.SB85.SB_MEM.wr_data,
+	fm_ctrl_in.SB86.SB_MEM.wr_data,
+	fm_ctrl_in.SB87.SB_MEM.wr_data,
+	fm_ctrl_in.SB88.SB_MEM.wr_data,
+	fm_ctrl_in.SB89.SB_MEM.wr_data,
+	fm_ctrl_in.SB90.SB_MEM.wr_data,
+	fm_ctrl_in.SB91.SB_MEM.wr_data,
+	fm_ctrl_in.SB92.SB_MEM.wr_data,
+	fm_ctrl_in.SB93.SB_MEM.wr_data,
+	fm_ctrl_in.SB94.SB_MEM.wr_data,
+	fm_ctrl_in.SB95.SB_MEM.wr_data,
+	fm_ctrl_in.SB96.SB_MEM.wr_data,
+	fm_ctrl_in.SB97.SB_MEM.wr_data,
+	fm_ctrl_in.SB98.SB_MEM.wr_data,
+	fm_ctrl_in.SB99.SB_MEM.wr_data,
+	fm_ctrl_in.SB100.SB_MEM.wr_data,
+	fm_ctrl_in.SB101.SB_MEM.wr_data,
+	fm_ctrl_in.SB102.SB_MEM.wr_data,
+	fm_ctrl_in.SB103.SB_MEM.wr_data,
+	fm_ctrl_in.SB104.SB_MEM.wr_data,
+	fm_ctrl_in.SB105.SB_MEM.wr_data,
+	fm_ctrl_in.SB106.SB_MEM.wr_data,
+	fm_ctrl_in.SB107.SB_MEM.wr_data
 	};
 
 
@@ -546,7 +866,7 @@ assign  axi_sb_wr_data       = (init_spy_mem_internal == 1)? axi_sb_init_wr_data
 
   
 
-   always @(posedge spy_clock)
+   always @(posedge spy_clock  or negedge axi_reset_n)
      begin
 	if(~axi_reset_n)
 	  begin
@@ -584,7 +904,7 @@ assign  axi_sb_wr_data       = (init_spy_mem_internal == 1)? axi_sb_init_wr_data
 
 
 
-    always @(posedge spy_clock)
+    always @(posedge spy_clock  or negedge axi_reset_n)
      begin
 	if(~axi_reset_n)
 	  begin

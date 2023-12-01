@@ -41,7 +41,8 @@ entity lpgbt_link_wrapper is
     -- pipeline registers
     g_PIPELINE_BITSLIP : boolean := true;
     g_PIPELINE_LPGBT   : boolean := true;
-    g_PIPELINE_MGT     : boolean := true
+    g_PIPELINE_MGT     : boolean := true;
+    g_CSM_ID           : integer := 0
     );
   port(
 
@@ -210,7 +211,7 @@ begin
     end generate;
     
 
-    lpgbt_ila_downlink : if c_ENABLE_ILA = '1' generate
+    lpgbt_ila_downlink : if c_ENABLE_ILA = '1' and g_CSM_ID = 0 generate
         uplink_lpgbt_ila : ila_downlink 
         port map(
             clk => downlink_clk,
@@ -285,7 +286,7 @@ begin
         );
         
 
-    lpgbt_ila_cores : if c_ENABLE_ILA = '1' generate
+    lpgbt_ila_cores : if c_ENABLE_ILA = '1' and g_CSM_ID = 0 generate
 
         uplink_lpgbt_ila : ila_lpgbt 
         port map(

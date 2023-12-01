@@ -114,8 +114,8 @@ begin  -- architecture behavioral
 
   axiclock_o        <= clk50;
   clock40_o         <= clk40;
-  clock240_o        <= clk240;
-  clock320_o        <= clk320;
+  clock240_o        <= clk240 ;
+  clock320_o        <= clk320 ;
   clock_userlogic_o <= clk320;
 
   --------------------------------------------------------------------------------
@@ -148,16 +148,16 @@ begin  -- architecture behavioral
   -------------------------------------------------------------------------------
   -- MMCM clocking
   --------------------------------------------------------------------------------
-    
+
   framework_mmcm_inst : framework_mmcm
     port map (
-      clk_in1_p => clock_i_p,
-      clk_in1_n => clock_i_n,
-      reset     => reset_lhc_mmcm_i,
-      clk320_o  => clk320,
-      clk240_o  => clk240,
-      clk40_o   => clk40,
-      locked_o  => lhc_locked_o
+      clk_in1_p   => clock_i_p,
+      clk_in1_n   => clock_i_n,
+      reset       => not(b2b_locked_o) or reset_lhc_mmcm_i,
+      clk320_o    => clk320,
+      clk240_o    => clk240,
+      clk40_o     => clk40,
+      locked_o    => lhc_locked_o
       );
 
   -- Counters to measure the clk frequency of clk_b from a known clk_a
