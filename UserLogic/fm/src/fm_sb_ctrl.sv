@@ -135,7 +135,7 @@ module fm_sb_ctrl(
 		    end // if (i < 96 )
 		    else if (i < 128 )
 		    begin
-		         if(fm_ctrl_in.PLAYBACK_MASK_1[i-96] == 0)
+		         if(fm_ctrl_in.PLAYBACK_MASK_3[i-96] == 0)
 			 begin
 			    playback_mode[i] <= global_pb_mode;
 			 end
