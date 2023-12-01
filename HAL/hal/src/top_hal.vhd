@@ -178,6 +178,31 @@ end entity top_hal;
 
 architecture behavioral of top_hal is
 
+
+  COMPONENT flx_rx_vio
+    PORT (clk        : IN STD_LOGIC;
+          probe_in0  : IN STD_LOGIC_VECTOR( 0 DOWNTO 0);
+          probe_in1  : IN STD_LOGIC_VECTOR( 0 DOWNTO 0);
+          probe_in2  : IN STD_LOGIC_VECTOR( 1 DOWNTO 0);
+          probe_in3  : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
+          probe_in4  : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+          probe_in5  : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+          probe_in6  : IN STD_LOGIC_VECTOR( 0 DOWNTO 0);
+          probe_in7  : IN STD_LOGIC_VECTOR( 3 DOWNTO 0);
+          probe_in8  : IN STD_LOGIC_VECTOR( 0 DOWNTO 0);
+          probe_in9  : IN STD_LOGIC_VECTOR( 0 DOWNTO 0);
+          probe_in10 : IN STD_LOGIC_VECTOR( 0 DOWNTO 0);
+          probe_in11 : IN STD_LOGIC_VECTOR( 0 DOWNTO 0);
+          probe_in12 : IN STD_LOGIC_VECTOR( 0 DOWNTO 0);
+          probe_in13 : IN STD_LOGIC_VECTOR(37 DOWNTO 0);
+          probe_in14 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+          probe_in15 : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+          probe_in16 : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+          probe_in17 : IN STD_LOGIC_VECTOR(63 DOWNTO 0);
+          probe_in18 : IN STD_LOGIC_VECTOR( 0 DOWNTO 0);
+          probe_in19 : IN STD_LOGIC_VECTOR( 0 DOWNTO 0));
+  END COMPONENT;
+
   --------------------------------------------------------------------------------
   -- Clocks and Resets
   --------------------------------------------------------------------------------
@@ -872,38 +897,54 @@ begin  -- architecture behavioral
 
               , clk40_ttc_vo           => flx_clk40_ttc_v(c_DAQ_LINKS-1 downto 0)         -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
               , clk40_ttc_ready_vo     => flx_clk40_ttc_ready_v(c_DAQ_LINKS-1 downto 0)); -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0));
+  
+  GEN_FLX_RX_TEST : for ii in 0 to c_DAQ_LINKS-1 generate
+    your_instance_name : flx_rx_vio
+      PORT MAP (clk             => flx_clk40_ttc_v(ii)
+                , probe_in0(0)  => flx_mt_v(ii)              
+                , probe_in1(0)  => flx_pt_v(ii)              
+                , probe_in2     => flx_partition_v(ii)       
+                , probe_in3     => flx_bcid_v(ii)            
+                , probe_in4     => flx_sync_user_data_v(ii)  
+                , probe_in5     => flx_sync_global_data_v(ii)
+                , probe_in6(0)  => flx_ts_v(ii)              
+                , probe_in7     => flx_error_flags_v(ii)     
+                , probe_in8(0)  => flx_sl0id_v(ii)           
+                , probe_in9(0)  => flx_sorb_v(ii)            
+                , probe_in10(0) => flx_sync_v(ii)            
+                , probe_in11(0) => flx_grst_v(ii)            
+                , probe_in12(0) => flx_l0a_v(ii)             
+                , probe_in13    => flx_l0id_v(ii)            
+                , probe_in14    => flx_orbid_v(ii)           
+                , probe_in15    => flx_trigger_type_v(ii)    
+                , probe_in16    => flx_lbid_v(ii)            
+                , probe_in17    => flx_async_user_data_v(ii) 
+                , probe_in18(0) => flx_lti_dec_aligned_v(ii) 
+                , probe_in19(0) => flx_lti_crc_valid_v(ii));
+  end generate GEN_FLX_RX_TEST;
 
-  GEN_FLX_LOOPBACK_TEST : for ii in 0 to c_DAQ_LINKS-1 generate
-      flx_loopback_data_v(ii) <= flx_async_user_data_v(ii)(33 downto 0);
-  end generate GEN_FLX_LOOPBACK_TEST;
-
-    flx_mt_o                  <= flx_mt_v(c_FELIX_RECCLK_SRC-1);
-    flx_pt_o                  <= flx_pt_v(c_FELIX_RECCLK_SRC-1);
-    flx_partition_o           <= flx_partition_v(c_FELIX_RECCLK_SRC-1);
-    flx_bcid_o                <= flx_bcid_v(c_FELIX_RECCLK_SRC-1);
-    flx_sync_user_data_o      <= flx_sync_user_data_v(c_FELIX_RECCLK_SRC-1);
-    flx_sync_global_data_o    <= flx_sync_global_data_v(c_FELIX_RECCLK_SRC-1);
-    flx_ts_o                  <= flx_ts_v(c_FELIX_RECCLK_SRC-1);
-    flx_error_flags_o         <= flx_error_flags_v(c_FELIX_RECCLK_SRC-1);
-    flx_sl0id_o               <= flx_sl0id_v(c_FELIX_RECCLK_SRC-1);
-    flx_sorb_o                <= flx_sorb_v(c_FELIX_RECCLK_SRC-1);
-    flx_sync_o                <= flx_sync_v(c_FELIX_RECCLK_SRC-1);
-    flx_grst_o                <= flx_grst_v(c_FELIX_RECCLK_SRC-1);
-    flx_l0a_o                 <= flx_l0a_v(c_FELIX_RECCLK_SRC-1);
-    flx_l0id_o                <= flx_l0id_v(c_FELIX_RECCLK_SRC-1);
-    flx_orbid_o               <= flx_orbid_v(c_FELIX_RECCLK_SRC-1);
-    flx_trigger_type_o        <= flx_trigger_type_v(c_FELIX_RECCLK_SRC-1);
-    flx_lbid_o                <= flx_lbid_v(c_FELIX_RECCLK_SRC-1);
-    flx_async_user_data_o     <= flx_async_user_data_v(c_FELIX_RECCLK_SRC-1);
-    flx_lti_dec_aligned_o     <= flx_lti_dec_aligned_v(c_FELIX_RECCLK_SRC-1);
-    flx_lti_crc_valid_o       <= flx_lti_crc_valid_v(c_FELIX_RECCLK_SRC-1);
-    flx_clk40_ttc_o           <= flx_clk40_ttc_v(c_FELIX_RECCLK_SRC-1);
-    flx_clk40_ttc_ready_o     <= flx_clk40_ttc_ready_v(c_FELIX_RECCLK_SRC-1);
-
-
-
-
-
+  flx_mt_o                  <= flx_mt_v(c_FELIX_RECCLK_SRC-1);
+  flx_pt_o                  <= flx_pt_v(c_FELIX_RECCLK_SRC-1);
+  flx_partition_o           <= flx_partition_v(c_FELIX_RECCLK_SRC-1);
+  flx_bcid_o                <= flx_bcid_v(c_FELIX_RECCLK_SRC-1);
+  flx_sync_user_data_o      <= flx_sync_user_data_v(c_FELIX_RECCLK_SRC-1);
+  flx_sync_global_data_o    <= flx_sync_global_data_v(c_FELIX_RECCLK_SRC-1);
+  flx_ts_o                  <= flx_ts_v(c_FELIX_RECCLK_SRC-1);
+  flx_error_flags_o         <= flx_error_flags_v(c_FELIX_RECCLK_SRC-1);
+  flx_sl0id_o               <= flx_sl0id_v(c_FELIX_RECCLK_SRC-1);
+  flx_sorb_o                <= flx_sorb_v(c_FELIX_RECCLK_SRC-1);
+  flx_sync_o                <= flx_sync_v(c_FELIX_RECCLK_SRC-1);
+  flx_grst_o                <= flx_grst_v(c_FELIX_RECCLK_SRC-1);
+  flx_l0a_o                 <= flx_l0a_v(c_FELIX_RECCLK_SRC-1);
+  flx_l0id_o                <= flx_l0id_v(c_FELIX_RECCLK_SRC-1);
+  flx_orbid_o               <= flx_orbid_v(c_FELIX_RECCLK_SRC-1);
+  flx_trigger_type_o        <= flx_trigger_type_v(c_FELIX_RECCLK_SRC-1);
+  flx_lbid_o                <= flx_lbid_v(c_FELIX_RECCLK_SRC-1);
+  flx_async_user_data_o     <= flx_async_user_data_v(c_FELIX_RECCLK_SRC-1);
+  flx_lti_dec_aligned_o     <= flx_lti_dec_aligned_v(c_FELIX_RECCLK_SRC-1);
+  flx_lti_crc_valid_o       <= flx_lti_crc_valid_v(c_FELIX_RECCLK_SRC-1);
+  flx_clk40_ttc_o           <= flx_clk40_ttc_v(c_FELIX_RECCLK_SRC-1);
+  flx_clk40_ttc_ready_o     <= flx_clk40_ttc_ready_v(c_FELIX_RECCLK_SRC-1);
 
   --felix_tx_inst : entity work.felix_tx
   --  generic map (

@@ -1,4 +1,3 @@
-HAL/flx/src/clk_frequency.vhd
 HAL/flx/src/crc.vhd
 HAL/flx/src/fifo34to34.vhd
 HAL/flx/src/FMchannelTXctrl.vhd
@@ -15,3 +14,4 @@ HAL/IP/ku15p/flx_link/flx_link.xci
 HAL/IP/ku15p/fifo1KB_34bit/fifo1KB_34bit.xci
 HAL/IP/ku15p/flx_link_vio_0/flx_link_vio_0.xci
 HAL/IP/ku15p/flx_link_vio_1/flx_link_vio_1.xci
+HAL/IP/vu13p/flx_rx_vio/flx_rx_vio.xci

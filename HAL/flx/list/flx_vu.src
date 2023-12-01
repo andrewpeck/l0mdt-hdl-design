@@ -14,3 +14,4 @@ HAL/IP/vu13p/flx_link/flx_link.xci
 HAL/IP/vu13p/fifo1KB_34bit/fifo1KB_34bit.xci
 HAL/IP/vu13p/flx_link_vio_0/flx_link_vio_0.xci
 HAL/IP/vu13p/flx_link_vio_1/flx_link_vio_1.xci
+HAL/IP/vu13p/flx_rx_vio/flx_rx_vio.xci
