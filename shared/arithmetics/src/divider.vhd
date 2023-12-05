@@ -122,7 +122,7 @@ begin
       dv3 <= dv2;
       if g_IS_SIGNED = '1' then
         num_signed <= SIGNED(num_s2);
-        if den_sign = '1' then
+        if den_sign_s2 = '1' then
           rec_signed <= -SIGNED('0' & SIGNED(reciprocal_den));
         else
           rec_signed <= SIGNED('0' & SIGNED(reciprocal_den));

@@ -88,3 +88,4 @@ set_msg_config -suppress -id {Common 17-576}
 # Suppress Missing generic message to avoid pollution from Hog try to set generics for each IP in the .bd
 set_msg_config -suppress -id {Synth 8-3819} 
 
+set_msg_config -id {Synth 8-6014} -limit 1000

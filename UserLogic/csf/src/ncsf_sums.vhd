@@ -45,7 +45,7 @@ END ncsf_sums;
 
 ARCHITECTURE Behavioral OF ncsf_sums IS
     -- Hits signals shifted
-    SIGNAL hit, hit_s : csf_hit_rt;
+    SIGNAL hit : csf_hit_rt;
 
     -- Summation signals
     SIGNAL dsp_SumXY, dsp_SumXY_s : unsigned(SUM_XY_LEN - 1 DOWNTO 0)
@@ -69,7 +69,6 @@ BEGIN
     Summing : PROCESS (clk)
     BEGIN
         IF rising_edge(clk) THEN
-            hit_s <= hit;
             sums <= zero(sums);
 
             IF (hit.valid = '1')
