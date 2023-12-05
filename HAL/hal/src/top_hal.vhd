@@ -959,7 +959,7 @@ reset_clk40 <= '0' when lhc_locked else '1';
         flx_lbid             <= flx_lbid_v(ii)             when flx_lbid_v(ii)             /= (flx_lbid'range             => '0') else flx_lbid;
         flx_async_user_data  <= flx_async_user_data_v(ii)  when flx_async_user_data_v(ii)  /= (flx_async_user_data'range  => '0') else flx_async_user_data;
         flx_lti_dec_aligned  <= flx_lti_dec_aligned_v(ii)  when flx_lti_dec_aligned_v(ii)  /= '0'                                 else flx_lti_dec_aligned;
-        flx_lti_crc_valid    <= flx_lti_crc_valid_v(ii));  when flx_lti_crc_valid_v(ii)    /= '0'                                 else flx_lti_crc_valid;
+        flx_lti_crc_valid    <= flx_lti_crc_valid_v(ii)    when flx_lti_crc_valid_v(ii)    /= '0'                                 else flx_lti_crc_valid;
       end if;
     end process;
 
