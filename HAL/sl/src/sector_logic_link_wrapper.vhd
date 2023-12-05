@@ -35,6 +35,9 @@ use work.constants_pkg.all;
 use work.board_pkg.all;
 use work.board_pkg_common.all;
 
+library xpm;
+use xpm.vcomponents.all;
+
 library sl;
 
 library ctrl_lib;
@@ -341,6 +344,8 @@ begin
         signal packet_txctrl2_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
 
         signal mux_ctrl_test_enabled : std_logic := ctrl.TX_ENA_TEST_PATTERN(idx); -- to be connected to a register
+
+        signal sl_tx_data_v : std_logic_vector( sl_tx_data_post_cdc(idx).data'length downto 0);
       begin
 
         assert false report "generating SL TX #" & integer'image(idx) & " on MGT#"
@@ -387,35 +392,79 @@ begin
         sl_tx_ctrl_o(idx).ctrl2 <= x"0" & txctrl2;
 
         -- sync from pipeline clock-----------------------------------------------------
-        sync_sl_tx : entity work.sync_cdc
+
+        -- xpm_cdc_array_single: Single-bit Array Synchronizer
+        -- Xilinx Parameterized Macro, version 2022.2
+
+        --sync_sl_tx : xpm_cdc_array_single
+        --  generic map (
+        --    DEST_SYNC_FF => 10,   -- DECIMAL; range: 2-10
+        --    INIT_SYNC_FF => 0,   -- DECIMAL; 0=disable simulation init values, 1=enable simulation init values
+        --    SIM_ASSERT_CHK => 0, -- DECIMAL; 0=disable simulation messages, 1=enable simulation messages
+        --    SRC_INPUT_REG => 1,  -- DECIMAL; 0=do not register input, 1=register input
+        --    WIDTH => sl_tx_data_post_cdc(idx).data'length  + 1         -- DECIMAL; range: 1-1024
+        --    )
+        --  port map (
+        --    dest_out => sl_tx_data_v, --( & ), -- WIDTH-bit output: src_in synchronized to the destination clock domain. This
+        --                                      -- output is registered.
+
+        --    dest_clk => tx_clk(idx), -- 1-bit input: Clock signal for the destination clock domain.
+        --    src_clk => pipeline_clock,   -- 1-bit input: optional; required when SRC_INPUT_REG = 1
+        --    src_in => (sl_tx_data(idx).valid & sl_tx_data(idx).data )     -- WIDTH-bit input: Input single-bit array to be synchronized to destination clock
+        --                                      -- domain. It is assumed that each bit of the array is unrelated to the others.
+        --                                      -- This is reflected in the constraints applied to this macro. To transfer a binary
+        --                                      -- value losslessly across the two clock domains, use the XPM_CDC_GRAY macro
+        --                                      -- instead.
+
+        --    );
+       
+
+        sync_sl_tx : entity xil_defaultlib.sync_cdc
           generic map (
-            WIDTH    => sl_tx_data_post_cdc(idx).data'length,
-            N_STAGES => 2)
+            NSTAGES_WCLK => 2,
+            NSTAGES_RCLK  => 2,
+            WIDTH => sl_tx_data_post_cdc(idx).data'length  + 1  
+            )
           port map (
-            clk_i   => tx_clk(idx),
-            valid_i => sl_tx_data(idx).valid,
-            data_i  => sl_tx_data(idx).data,
-            valid_o => sl_tx_data_post_cdc(idx).valid,
-            data_o  => sl_tx_data_post_cdc(idx).data
+            rst => reset,
+            wr_clk => pipeline_clock,
+            rd_clk => tx_clk(idx),
+            data_wr_in => (sl_tx_data(idx).valid & sl_tx_data(idx).data ),
+            data_rd_out => sl_tx_data_v
             );
+            
+        sl_tx_data_post_cdc(idx).valid <= sl_tx_data_v(sl_tx_data_post_cdc(idx).data'length );
+        sl_tx_data_post_cdc(idx).data <=  sl_tx_data_v(sl_tx_data_post_cdc(idx).data'length - 1 downto 0);
+        
+        --sync_sl_tx : entity work.sync_cdc
+        --  generic map (
+        --    WIDTH    => sl_tx_data_post_cdc(idx).data'length,
+        --    N_STAGES => 2)
+        --  port map (
+        --    clk_i   => tx_clk(idx),
+        --    valid_i => sl_tx_data(idx).valid,
+        --    data_i  => sl_tx_data(idx).data,
+        --    valid_o => sl_tx_data_post_cdc(idx).valid,
+        --    data_o  => sl_tx_data_post_cdc(idx).data
+        --    );
 
           ---------------------
           -- ILA
           --------------------
---          tx_ila_gen: if (I = 8) generate
---            assert false report "TX ILA generated for link " & integer'image(I) 
---                        & " sl_link# " & integer'image(idx)
---                        severity note;
---            ila_sl_tx_inst : ila_sl_tx
---            PORT MAP (
---                clk => refclk_mirrors_in(I/4),
---                probe0(0) => tx_packet_valid_mux, 
---                probe1 => packet_userdata_tx_mux, 
---                probe2 => packet_txctrl0_mux, 
---                probe3 => packet_txctrl1_mux,
---                probe4 => packet_txctrl2_mux
---            );
---        end generate; -- tx_ila_gen
+          tx_ila_gen: if (I = 8) generate
+            assert false report "TX ILA generated for link " & integer'image(I) 
+                        & " sl_link# " & integer'image(idx)
+                        severity note;
+            ila_sl_tx_inst : ila_sl_tx
+            PORT MAP (
+                clk => tx_clk(idx), --priya refclk_mirrors_in(I/4),
+                probe0(0) => tx_packet_valid_mux, 
+                probe1 => packet_userdata_tx_mux, 
+                probe2 => packet_txctrl0_mux, 
+                probe3 => packet_txctrl1_mux,
+                probe4 => packet_txctrl2_mux
+            );
+        end generate; -- tx_ila_gen
       end generate; -- tx_gen
 
       --------------------------------------------------------------------------------
@@ -429,8 +478,8 @@ begin
         signal dec_userdata    : std_logic_vector (31 downto 0);
         signal rxctrl0         : std_logic_vector (3 downto 0);
         signal rxctrl1         : std_logic_vector (3 downto 0);
-        signal sl_pre_cdc_vec  : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
-        signal sl_post_cdc_vec : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
+        signal sl_pre_cdc_vec  : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 2 downto 0);
+        signal sl_post_cdc_vec : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 2 downto 0);
         signal packet_rxctrl0_i: std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
         signal packet_rxctrl1_i: std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
         signal packet_rxctrl2_i: std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
@@ -530,56 +579,93 @@ begin
         --------------------------------------------------------------------------------
 
         -- convert to a std_logic_vector
-        sl_pre_cdc_vec <= sl_rx_data_pre_cdc(idx).data &
+        sl_pre_cdc_vec <= sl_rx_data_pre_cdc(idx).valid & sl_rx_data_pre_cdc(idx).data &
                           sl_rx_data_pre_cdc(idx).err & sl_rx_data_pre_cdc(idx).locked;
 
-        sync_sl_rx_data : entity work.sync_cdc
-          generic map (
-            WIDTH    => 1 + 1 + sl_rx_data_pre_cdc(idx).data'length,
-            N_STAGES => 2)
-          port map (
-            clk_i   => pipeline_clock,
-            valid_i => sl_rx_data_pre_cdc(idx).valid,
-            data_i  => sl_pre_cdc_vec,
-            valid_o => sl_rx_data(idx).valid,
-            data_o  => sl_post_cdc_vec
-            );
+          --sync_sl_rx_data : xpm_cdc_array_single
+          --generic map (
+          --  DEST_SYNC_FF => 10,   -- DECIMAL; range: 2-10
+          --  INIT_SYNC_FF => 0,   -- DECIMAL; 0=disable simulation init values, 1=enable simulation init values
+          --  SIM_ASSERT_CHK => 0, -- DECIMAL; 0=disable simulation messages, 1=enable simulation messages
+          --  SRC_INPUT_REG => 1,  -- DECIMAL; 0=do not register input, 1=register input
+          --  WIDTH => sl_rx_data_pre_cdc(idx).data'length  + 1 + 1 + 1         -- DECIMAL; range: 1-1024
+          --  )
+          --port map (
+          --  dest_out => sl_post_cdc_vec, --( & ), -- WIDTH-bit output: src_in synchronized to the destination clock domain. This
+          --                                    -- output is registered.
 
-        sl_rx_data(idx).data   <= sl_post_cdc_vec(sl_rx_data(idx).data'length+2-1 downto 2);
+          --  dest_clk => pipeline_clock, -- 1-bit input: Clock signal for the destination clock domain.
+          --  src_clk => rx_clk(idx),   -- 1-bit input: optional; required when SRC_INPUT_REG = 1
+          --  src_in => sl_pre_cdc_vec     -- WIDTH-bit input: Input single-bit array to be synchronized to destination clock
+          --                                    -- domain. It is assumed that each bit of the array is unrelated to the others.
+          --                                    -- This is reflected in the constraints applied to this macro. To transfer a binary
+          --                                    -- value losslessly across the two clock domains, use the XPM_CDC_GRAY macro
+          --                                    -- instead.
+
+          --  );
+
+        sync_sl_rx_data : entity xil_defaultlib.sync_cdc
+          generic map (
+            NSTAGES_WCLK => 2,
+            NSTAGES_RCLK  => 2,
+            WIDTH                => 3 + sl_rx_data_pre_cdc(idx).data'length)   --locked, valid and erro
+                                                                             
+                                                                             
+          port map (
+            rst => reset,
+            wr_clk => rx_clk(idx),
+            rd_clk => pipeline_clock,
+            data_wr_in => sl_pre_cdc_vec,
+            data_rd_out => sl_post_cdc_vec
+            );
+        
+        --sync_sl_rx_data : entity work.sync_cdc
+        --  generic map (
+        --    WIDTH    => 1 + 1 + sl_rx_data_pre_cdc(idx).data'length,
+        --    N_STAGES => 2)
+        --  port map (
+        --    clk_i   => pipeline_clock,
+        --    valid_i => sl_rx_data_pre_cdc(idx).valid,
+        --    data_i  => sl_pre_cdc_vec,
+        --    valid_o => sl_rx_data(idx).valid,
+        --    data_o  => sl_post_cdc_vec
+        --    );
+        sl_rx_data(idx).valid  <= sl_post_cdc_vec(sl_post_cdc_vec'length-1);
+        sl_rx_data(idx).data   <= sl_post_cdc_vec(sl_post_cdc_vec'length-2 downto 2);
         sl_rx_data(idx).err    <= sl_post_cdc_vec(1);
         sl_rx_data(idx).locked <= sl_post_cdc_vec(0);
 
       ---------------------
       -- ILA
       --------------------
---        rx_ila_gen: if (I = 8) generate
---        assert false report " RX ILA generated for link " & integer'image(I) 
---                    & " sl_link# " & integer'image(idx)
---                    severity note;
---        ila_sl_rx_inst : ila_sl_rx
---            PORT MAP (
---                clk => rx_clk(idx),
---                probe0 => sl_rx_mgt_word_array_i(idx), 
---                probe1 => rxctrl0, 
---                probe2 => rxctrl1, 
---                probe3 => dec_userdata, 
---                probe4 => dec_rxctrl0, 
---                probe5 => dec_rxctrl2, 
---                probe6(0) => comma_pulse_i, 
---                probe7(0) => Mon.RX_COMMA_LOCK(idx), 
---                probe8(0) => sl_rx_slide_o(idx), 
---                probe9(0) => sl_re_channel_o(idx), 
---                probe10(0) => sl_rx_init_done_i(idx), 
---                probe11 => packet_rxctrl0_i, 
---                probe12 => packet_rxctrl1_i, 
---                probe13 => packet_rxctrl2_i, 
---                probe14 => packet_rxctrl3_i, 
---                probe15 => sl_rx_data_pre_cdc(idx).data, 
---                probe16(0) => sl_rx_data_pre_cdc(idx).locked, 
---                probe17(0) => sl_rx_data_pre_cdc(idx).valid,
---                probe18(0) => sl_rx_data_pre_cdc(idx).err
---            );
---        end generate; -- rx_ila_gen
+        rx_ila_gen: if (I = 8) generate
+        assert false report " RX ILA generated for link " & integer'image(I) 
+                    & " sl_link# " & integer'image(idx)
+                    severity note;
+        ila_sl_rx_inst : ila_sl_rx
+            PORT MAP (
+                clk => rx_clk(idx),
+                probe0 => sl_rx_mgt_word_array_i(idx), 
+                probe1 => rxctrl0, 
+                probe2 => rxctrl1, 
+                probe3 => dec_userdata, 
+                probe4 => dec_rxctrl0, 
+                probe5 => dec_rxctrl2, 
+                probe6(0) => comma_pulse_i, 
+                probe7(0) => Mon.RX_COMMA_LOCK(idx), 
+                probe8(0) => sl_rx_slide_o(idx), 
+                probe9(0) => sl_re_channel_o(idx), 
+                probe10(0) => sl_rx_init_done_i(idx), 
+                probe11 => packet_rxctrl0_i, 
+                probe12 => packet_rxctrl1_i, 
+                probe13 => packet_rxctrl2_i, 
+                probe14 => packet_rxctrl3_i, 
+                probe15 => sl_rx_data_pre_cdc(idx).data, 
+                probe16(0) => sl_rx_data_pre_cdc(idx).locked, 
+                probe17(0) => sl_rx_data_pre_cdc(idx).valid,
+                probe18(0) => sl_rx_data_pre_cdc(idx).err
+            );
+        end generate; -- rx_ila_gen
       end generate; --rx_gen
     end generate; -- mgt_tag
   end generate; -- sl_gen

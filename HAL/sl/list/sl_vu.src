@@ -23,3 +23,5 @@ HAL/sl/src/gty122-for-sl/RTL/gty_bank122_gtwizard_top.v
 HAL/sl/src/gty122-for-sl/RTL/gty_bank122_gtye4_channel_wrapper.v
 HAL/sl/src/gty122-for-sl/RTL/gty_bank122_gtye4_common_wrapper.v
 HAL/sl/src/gty122-for-sl/cons/gty_bank122_false_path.xdc XDC
+HAL/IP/vu13p/ila_sl_rx/ila_sl_rx.xci
+HAL/IP/vu13p/ila_sl_tx/ila_sl_tx.xci

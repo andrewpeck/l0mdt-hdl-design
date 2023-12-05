@@ -44,7 +44,9 @@ types:
 - daq_sb_n  : {qualifier: constant , type: integer, value: 6 }
 - daq_sb_all_stations_n  : {qualifier: constant , type: integer, value: daq_sb_n  * stations_n }
 
-- total_l0mdt_sb : {qualifier: constant , type: integer, value: h2s_sb_all_station_n + ucm_sb_n + csm_polmux_in_sb_n + csm_custom_sb_n + tar_sb_all_stations_n + mtc_sb_n + daq_sb_all_stations_n}
+#SpyBuffers for PTCALC
+- ptcalc_sb_n : {qualifier: constant , type: integer, value: 3 }
+- total_l0mdt_sb : {qualifier: constant , type: integer, value: h2s_sb_all_station_n + ucm_sb_n + csm_polmux_in_sb_n + csm_custom_sb_n + tar_sb_all_stations_n + mtc_sb_n + daq_sb_all_stations_n + ptcalc_sb_n}
 
 
 - fm_rt:
@@ -91,6 +93,8 @@ types:
 
 - fm_daq_mon_data : {array: [0, daq_sb_all_stations_n -1], type: 'fm_rt'}
 
+- fm_ptcalc_mon_data : {array: [0, ptcalc_sb_n-1], type: 'fm_rt'}
+
 - fm_mon:
   - fm_hps_mon   : {type: 'fm_hps_mon'}   
   - fm_ucm_mon  : {type: 'fm_ucm_mon_data'}         
@@ -98,7 +102,7 @@ types:
   - fm_tar_mon    : {type: 'fm_tar_mon_data'}
   - fm_mtc_mon : {type: 'fm_mtc_mon_data'}
   - fm_daq_mon : {type: 'fm_daq_mon_data'}
-     
+  - fm_ptcalc_mon: {type: 'fm_ptcalc_mon_data'}     
 
 
 #- fm_pb_data: {type: slc_rx_rt}

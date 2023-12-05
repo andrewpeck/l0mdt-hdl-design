@@ -276,14 +276,15 @@ architecture behavioral of ult is
   signal fm_slc_rx_pb_v                  : slc_rx_avt(2 downto 0);
   signal fm_tar_polmux2tar_pb_v  : tdcpolmux2tar_avt(tar_sb_all_stations_n-1 downto 0);
   signal fm_mtc2sl_pb_v                : mtc_out_avt(mtc_sb_n-1 downto 0);
-    
+  signal fm_ptcalc2mtc_pb_v         : ptcalc2mtc_avt(ptcalc_sb_n-1 downto 0);
+  
   signal fm_sb_mon_r        : fm_mon;
   signal h2s_fm_mon_v  : std_logic_vector(fm_hps_mon'w-1 downto 0);           
   signal ucm_fm_mon_v : std_logic_vector(fm_ucm_mon_data'w-1 downto 0);
   signal tar_fm_mon_v   : std_logic_vector(fm_tar_mon_data'w-1 downto 0);
   signal mtc_fm_mon_v : std_logic_vector(fm_mtc_mon_data'w-1 downto 0);
   signal daq_fm_mon_v : std_logic_vector(fm_daq_mon_data'w-1 downto 0);
- 
+  signal ptcalc2mtc_fm_mon_v :std_logic_vector(fm_ptcalc_mon_data'w-1 downto 0);
 begin
 
   -- -- ctrl/mon
@@ -863,6 +864,9 @@ begin
           ttc_commands      => ttc_commands,
           ctrl_v            => tf_ctrl_v,
           mon_v             => tf_mon_v,
+          --Fast Monitoring
+          fm_ptcalc2mtc_mon_v => ptcalc2mtc_fm_mon_v,
+          fm_ptcalc2mtc_pb_v => fm_ptcalc2mtc_pb_v,
           --  segments from neighbors
           i_plus_neighbor_segments  => i_plus_neighbor_segments,
           i_minus_neighbor_segments => i_minus_neighbor_segments,
@@ -1032,6 +1036,7 @@ begin
       fm_sb_mon_r.fm_tar_mon <= convert(tar_fm_mon_v, fm_sb_mon_r.fm_tar_mon);
       fm_sb_mon_r.fm_mtc_mon <= convert(mtc_fm_mon_v, fm_sb_mon_r.fm_mtc_mon);
       fm_sb_mon_r.fm_daq_mon <= convert(daq_fm_mon_v, fm_sb_mon_r.fm_daq_mon);
+      fm_sb_mon_r.fm_ptcalc_mon <= convert(ptcalc2mtc_fm_mon_v, fm_sb_mon_r.fm_ptcalc_mon);
       ult_fm : entity ult_lib.ult_fm        
         port map (
           -- clock, control, and monitoring
@@ -1044,7 +1049,8 @@ begin
           fm_mon                  => fm_sb_mon_r,
           fm_ucm_slc_rx_pb => fm_slc_rx_pb_v,
           fm_tar_polmux2tar_pb => fm_tar_polmux2tar_pb_v,
-          fm_mtc2sl_pb                => fm_mtc2sl_pb_v
+          fm_mtc2sl_pb                => fm_mtc2sl_pb_v,
+          fm_ptcalc2mtc_pb         => fm_ptcalc2mtc_pb_v
         );
 
     else generate

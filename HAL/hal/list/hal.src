@@ -9,7 +9,8 @@ HAL/hal/src/top_clocking.vhd
 HAL/hal/src/board_pkg_common.vhd
 HAL/hal/src/constants_pkg.vhd
 HAL/hal/src/system_types_pkg.vhd
-HAL/hal/src/sync_cdc.vhd
+#HAL/hal/src/sync_cdc.vhd
+HAL/hal/src/sync_cdc.v lib=hal
 HAL/hal/src/pulse_extend.vhd
 HAL/hal/src/latch.vhd
 HAL/hal/src/synch.vhd

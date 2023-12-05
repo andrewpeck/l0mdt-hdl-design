@@ -2278,6 +2278,69 @@ package FM_CTRL;
    } FM_SB107_CTRL_t ;
 
    typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB108_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB108_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB108_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB108_MON_t ;
+
+   typedef struct packed {
+      FM_SB108_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB108_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB109_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB109_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB109_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB109_MON_t ;
+
+   typedef struct packed {
+      FM_SB109_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB109_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [9 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB110_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB110_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB110_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB110_MON_t ;
+
+   typedef struct packed {
+      FM_SB110_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB110_CTRL_t ;
+
+   typedef struct packed {
       logic  GLOBAL_FREEZE;
       logic [2 - 1:0] GLOBAL_PLAYBACK_MODE;
       logic  INITIALIZE_SPY_MEMORY;
@@ -2392,6 +2455,9 @@ package FM_CTRL;
       FM_SB105_MON_t  SB105;
       FM_SB106_MON_t  SB106;
       FM_SB107_MON_t  SB107;
+      FM_SB108_MON_t  SB108;
+      FM_SB109_MON_t  SB109;
+      FM_SB110_MON_t  SB110;
    } FM_MON_t ;
 
    typedef struct packed {
@@ -2503,6 +2569,9 @@ package FM_CTRL;
       FM_SB105_CTRL_t  SB105;
       FM_SB106_CTRL_t  SB106;
       FM_SB107_CTRL_t  SB107;
+      FM_SB108_CTRL_t  SB108;
+      FM_SB109_CTRL_t  SB109;
+      FM_SB110_CTRL_t  SB110;
       FM_SPY_CTRL_CTRL_t  SPY_CTRL;
       logic [32 - 1:0] FREEZE_MASK_0;
       logic [32 - 1:0] FREEZE_MASK_1;

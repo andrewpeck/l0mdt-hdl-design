@@ -34,7 +34,8 @@ entity ult_fm is
    fm_mon                  : in fm_mon;
    fm_ucm_slc_rx_pb           : out slc_rx_avt(2 downto 0);
    fm_tar_polmux2tar_pb    :  out tdcpolmux2tar_avt(tar_sb_all_stations_n-1 downto 0);
-   fm_mtc2sl_pb                  : out mtc_out_avt(mtc_sb_n-1 downto 0)
+   fm_mtc2sl_pb                  : out mtc_out_avt(mtc_sb_n-1 downto 0);
+   fm_ptcalc2mtc_pb           : out ptcalc2mtc_avt(ptcalc_sb_n-1 downto 0)
     );
   end entity ult_fm;
 
@@ -56,6 +57,7 @@ entity ult_fm is
     signal tar_fm_data                  : fm_tar_mon_data;
     signal mtc_fm_data                : fm_mtc_mon_data;
     signal daq_fm_data                : fm_daq_mon_data;
+    signal ptcalc_fm_data             : fm_ptcalc_mon_data;
     
     signal sf_fm                          : fm_art(0  to h2s_sb_all_station_n-1);
     signal slc_rx_fm_data          : fm_art(0  to primary_sl_n  -1);
@@ -66,7 +68,7 @@ entity ult_fm is
     signal fm_csm_art                : fm_art(0 to csm_polmux_in_sb_n-1);
     signal fm_tar_art                  : fm_art(0 to tar_sb_all_stations_n-1);
     signal fm_daq_art                : fm_art(0 to daq_sb_all_stations_n -1);
-    
+    signal fm_ptcalc_art             : fm_art(0 to ptcalc_sb_n -1);
    
   
 
@@ -129,6 +131,7 @@ entity ult_fm is
              tar_fm_data                 <= fm_mon.fm_tar_mon;             
              mtc_fm_data               <= fm_mon.fm_mtc_mon;
              daq_fm_data               <= fm_mon.fm_daq_mon;
+             ptcalc_fm_data            <= fm_mon.fm_ptcalc_mon;
              
              FM_CSM  : for j in 0 to csm_polmux_in_sb_n-1 generate
                fm_csm_art (j )                                               <= csm2polmux_fm_data(j);
@@ -151,7 +154,13 @@ entity ult_fm is
              FM_DAQ: for j in 0 to daq_sb_all_stations_n-1 generate
                fm_daq_art(j) <= daq_fm_data(j);
              end generate;
-               
+
+             FM_PTCALC: for j in 0 to ptcalc_sb_n-1 generate
+               fm_ptcalc_art(j) <= ptcalc_fm_data(j);
+               end generate;
+
+             fm_csm_custom_art(0) <= csm_uplink_fm_data;  --csm_uplink_fm_data_2d;
+             
              ult_fm_data <=  sf_fm &
                              slc_rx_fm_data &
                              ucm2hps_fm_data &
@@ -160,9 +169,10 @@ entity ult_fm is
                              fm_csm_custom_art &
                              fm_csm_art & 
                              fm_tar_art &                              
-                             fm_daq_art     ;
+                             fm_daq_art  &
+                             fm_ptcalc_art ;
 
-             fm_csm_custom_art(0) <= csm_uplink_fm_data;  --csm_uplink_fm_data_2d;
+             
             --FM_CSM_HAL : process (clock_and_control.clk, clock_and_control.rst) is
             --begin
             --  if(clock_and_control.rst) then
@@ -180,12 +190,16 @@ entity ult_fm is
             end generate;
 
              FM_PB_TAR_INPUT:for I in 0 to tar_sb_all_stations_n -1 generate
-              fm_tar_polmux2tar_pb(I)  <= fm_pb_v(h2s_sb_all_station_n + ucm_sb_n + csm_polmux_in_sb_n + csm_custom_sb_n + I)(width(fm_tar_polmux2tar_pb(I)) - 1 downto 0);             
+              fm_tar_polmux2tar_pb(I)  <= fm_pb_v(h2s_sb_all_station_n + ucm_sb_n + mtc_sb_n + csm_custom_sb_n + csm_polmux_in_sb_n + I)(width(fm_tar_polmux2tar_pb(I)) - 1 downto 0);             
             end generate;
 
              FM_PB_MTC_OUTPUT: for I in 0 to mtc_sb_n-1 generate
 	       fm_mtc2sl_pb (I) <= fm_pb_v(h2s_sb_all_station_n + ucm_sb_n + I)(width(fm_mtc2sl_pb (I)) - 1 downto 0);
              end generate;
+
+              FM_PB_PTCALC2MTC_INPUT:for I in 0 to ptcalc_sb_n -1 generate
+              fm_ptcalc2mtc_pb(I)  <= fm_pb_v(h2s_sb_all_station_n + ucm_sb_n + mtc_sb_n + csm_custom_sb_n + csm_polmux_in_sb_n + tar_sb_all_stations_n +  daq_sb_all_stations_n + I)(width(fm_ptcalc2mtc_pb(I)) - 1 downto 0);             
+            end generate;
 
      ult_fm_data_flatten: for sb_i in 0 to total_l0mdt_sb-1 generate     
         ult_fm_data_avt(sb_i) <= convert (ult_fm_data(sb_i), ult_fm_data_avt(sb_i));           

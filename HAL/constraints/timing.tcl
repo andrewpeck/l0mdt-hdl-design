@@ -51,21 +51,34 @@ set_clock_groups \
 # there's no known phase relationship between the rx clocks and the 40MHz clock
 # but the clocks are frequency locked (mesochronous)
 
-set_max_delay -quiet -datapath_only 5.0 \
-    -from [get_pins -hierarchical -filter \
-               "NAME =~ top_hal/*sector_logic*rx_packet_former*packet_valid_reg/C"] \
-    -to [get_pins -hierarchical -filter \
-             "NAME =~ top_hal/*rx_data*s_resync_reg*/D"]
+#set_max_delay -quiet -datapath_only 5.0 \
+#   -from [get_pins -hierarchical -filter \
+#             "NAME =~ top_hal/*sector_logic*rx_packet_former*packet_valid_reg/C"] \
+# -to [get_pins -hierarchical -filter \
+#         "NAME =~ top_hal/*rx_data*s_resync_reg*/D"]
 
-set_max_delay -quiet -datapath_only 5.0 \
-    -from [get_pins "top_hal/*sector_logic*/*rx_packet_former*/packet_userdata*/C"] \
-    -to   [get_pins "top_hal/sector_logic_link_wrapper_inst/*sync_sl_rx_data*/*data_o*/D"]
+#set_max_delay -quiet -datapath_only 5.0 \
+ #   -from [get_pins "top_hal/*sector_logic*/*rx_packet_former*/packet_userdata*/C"] \
+  #  -to   [get_pins "top_hal/sector_logic_link_wrapper_inst/*sync_sl_rx*/*dest_out*/D"]
 
-set_max_delay -quiet -datapath_only 5.0 \
-    -from [get_pins -hierarchical -filter \
-               "NAME =~ top_hal/*sector_logic*tx_packet_former_inst*packet_userdata*/C"] \
-    -to [get_pins -hierarchical -filter \
-             "NAME =~ top_hal/*sector_logic*cdc_bus_inst*data_o_reg*/D"]
+#set_max_delay -quiet -datapath_only 5.0 \
+ #   -from [get_pins -hierarchical -filter \
+  #             "NAME =~ top_hal/*sector_logic*`tx_packet_former_inst*packet_userdata*/C"] \
+  #  -to [get_pins -hierarchical -filter \
+   #          "NAME =~ top_hal/*sector_logic*cdc_bus_inst*data_o_reg*/D"]
+
+#set_max_delay -datapath_only -from [get_clocks  -regexp {.*320.*}] -to [get_clocks  -regexp {.*txoutclk_out\[.+\]$.*}] 5.0
+
+#set_max_delay -datapath_only 5.0 \
+ #   -from [get_clocks -of_objects [get_pins {top_hal/mgt_wrapper_inst/mgt_gen[*].sl_gen.MGT_INST/gty_gen_all.MGT_GEN/example_wrapper_inst/gty_bank122_inst/inst/gen_gtwizard_gtye4_top.gty_bank122_gtwizard_gtye4_inst/gen_gtwizard_gtye4.gen_channel_container[2].gen_enabled_channel.gtye4_channel_wrapper_inst/channel_inst/gtye4_channel_gen.gen_gtye4_channel_inst[*].GTYE4_CHANNEL_PRIM_INST/RXOUTCLK}]]  \
+#    -to [get_clocks -of_objects [get_pins top_hal/top_clocking_inst/framework_mmcm_inst/inst/mmcme4_adv_inst/CLKOUT0]] 
+
+
+
+
+
+
+
 
 # the TXCLK is something that is controlled by us, since it is locked to the
 # REFCLK that we supply.. there is some phase uncertainty of the 4.1166 ns clock
@@ -98,6 +111,11 @@ set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_
 set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] \
     -to [get_pins -filter {REF_PIN_NAME=~*R} -of_objects [get_cells -hierarchical -filter \
     {NAME =~ top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_test_pattern_checker_inst/*}]]
+
+set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] \
+    -to [get_pins -filter {REF_PIN_NAME=~*R} -of_objects [get_cells -hierarchical -filter \
+    {NAME =~ top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.sector_logic_rx_packet_former_inst/*}]]
+    
 ################################################################################
 # sys_resetter has an asynchronous output (on the axi clock domain) that
 # connects to synchronous reset inputs (on other clock domains) and creates a

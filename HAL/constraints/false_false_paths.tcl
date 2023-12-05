@@ -70,8 +70,8 @@ set_max_delay 8.0 \
     -from [get_pins {ult_inst/logic_gen.UCM_GEN.ULT_UCM/UCM/SLC_VP_A[*].SLC_VP/ucm2hps_ar*/C}]
 
 # fm needs to be split, it is crossing slrs
-set_max_delay 8.0 \
-    -from [get_pins {ult_inst/logic_gen.FM_GEN.ult_fm_data*/C}]
+#set_max_delay 8.0 \
+#    -from [get_pins {ult_inst/logic_gen.FM_GEN.ult_fm_data*/C}]
 
 # asynchronous relationship between TXOUTCLKPCS and TX/RXOUTCLK
 foreach clock_b \

@@ -36,7 +36,7 @@ package fm_sb_pkg;
 
       logic 	      spy_clock;
 
-parameter total_l0mdt_sb    = 106;
+parameter total_l0mdt_sb    = 109;
 parameter sb_total_dummy = 2;
 parameter sb_mapped_n      = total_l0mdt_sb + sb_total_dummy;
 
@@ -147,6 +147,9 @@ parameter integer sb_tp_dw[sb_mapped_n] = {
 		,CUSTOM_DAQ_LEN
 		,CUSTOM_DAQ_LEN
 		,CUSTOM_DAQ_LEN
+		,PTCALC2MTC_LEN
+		,PTCALC2MTC_LEN
+		,PTCALC2MTC_LEN
 		,SB_DUMMY_LEN
 		,SB_DUMMY_LEN
 			};
@@ -257,6 +260,9 @@ parameter integer sb_dw[sb_mapped_n] = {
 		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
 		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
 		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(PTCALC2MTC_LEN, axi_dw)
+		,find_sb_dw(PTCALC2MTC_LEN, axi_dw)
+		,find_sb_dw(PTCALC2MTC_LEN, axi_dw)
 		,find_sb_dw(SB_DUMMY_LEN, axi_dw)
 		,find_sb_dw(SB_DUMMY_LEN, axi_dw)
 			};
@@ -368,7 +374,10 @@ parameter integer sb_dw[sb_mapped_n] = {
 		$bits(FM_CTRL.SB104.SB_MEM.address),
 		$bits(FM_CTRL.SB105.SB_MEM.address),
 		$bits(FM_CTRL.SB106.SB_MEM.address),
-		$bits(FM_CTRL.SB107.SB_MEM.address)			};
+		$bits(FM_CTRL.SB107.SB_MEM.address),
+		$bits(FM_CTRL.SB108.SB_MEM.address),
+		$bits(FM_CTRL.SB109.SB_MEM.address),
+		$bits(FM_CTRL.SB110.SB_MEM.address)			};
 
   //Need to update sb_mapped_n manually from fm_ult_pkg.vhd (total_sb + 2 dummy sb)
    parameter sb_master_dummy_index    = total_l0mdt_sb ;

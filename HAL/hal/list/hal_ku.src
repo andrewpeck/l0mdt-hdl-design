@@ -2,6 +2,7 @@ HAL/IP/ku15p/framework_mmcm/framework_mmcm.xci
 HAL/IP/ku15p/onboardclk/onboardclk.xci
 HAL/IP/ku15p/mgt_10g24_gth/mgt_10g24_gth.xci
 HAL/IP/ku15p/mgt_10g24_gty/mgt_10g24_gty.xci
+HAL/IP/ku15p/sl_fifo_sync_cdc/sl_fifo_sync_cdc.xci
 
 HAL/hal/src/mgt/mgt_sl_wrapper_ku.vhd
 # Sector Logic

@@ -168,7 +168,7 @@ xil_axi_ulong                                            mtestWADDR_array[];
           mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
           mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED; //INCR;
           //Freeze and Playback masks
-	  mtestWData_array = {32'hc0000000, 32'h00000bff, 32'b0, 32'b0,32'hc7ffffff, 32'hffffffff, 32'b0, 32'b0, 32'b0111};
+	  mtestWData_array = {32'hc0000000, 32'h00000bff, 32'b0, 32'h800,32'hc7ffffff, 32'hffffffff, 32'b0, 32'b100000000000, 32'b00000111};
 	  mtestWADDR_array = {32'h1, 32'h2, 32'h3, 32'h4, 43'h5, 32'h6, 32'h7, 32'h8,32'h0};
 	  
 	    for (int i = 0; i < $size(mtestWADDR_array); i++)
@@ -189,7 +189,7 @@ xil_axi_ulong                                            mtestWADDR_array[];
 
 //Playback write mode
 	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
-          mtestWADDR = (32'h3600 << 2);  //priya 0;
+          mtestWADDR = (32'hd400 << 2);  //priya 0;
           mtestWBurstLength = 0; //0;
           mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
           mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED;
@@ -222,7 +222,7 @@ xil_axi_ulong                                            mtestWADDR_array[];
           mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
           mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED; //INCR;
           //Freeze and Playback masks
-	  mtestWData_array = {32'b0011};
+	  mtestWData_array = {32'b0011}; // playback write & freeze
 	  mtestWADDR_array = {32'h0};
 	  
 	    for (int i = 0; i < $size(mtestWADDR_array); i++)
@@ -243,7 +243,7 @@ xil_axi_ulong                                            mtestWADDR_array[];
 
 	  
        	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
-          mtestWADDR = (32'h3600 << 2 ); //(32'h000);  //priya 0;
+          mtestWADDR = (32'hd400 << 2 ); //(32'h000);  //priya 0;
           mtestWBurstLength = 0;
           mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
           mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED; //INCR;
@@ -278,7 +278,7 @@ xil_axi_ulong                                            mtestWADDR_array[];
 
 	  for (int i = 0 ; i < 1; i++)
 	    begin
-	       mtestWData = 0; //5-> playback loop; //$urandom();
+	       mtestWData = 5; //5-> playback loop; //$urandom();
 	      mtestWUSER      =   $urandom_range(0,15);
 	      mtestAWUSER     =   $urandom_range(0,15); 
 
@@ -298,7 +298,7 @@ xil_axi_ulong                                            mtestWADDR_array[];
 	    end // for (int i = 0 ; i < 1; i++)
 
 	  #12800 
-	  mtestRADDR = 32'h5400 << 2 ; //start bram reads
+	  mtestRADDR = 32'hd00 << 2 ; //start bram reads
 	  for (int i = 0; i < 32; i++)
 	    begin
                single_read_transaction_api("single read with api",
@@ -316,7 +316,7 @@ xil_axi_ulong                                            mtestWADDR_array[];
 	    end // for (int i = 0; i < 32; i++)
 
 
-	    mtestRADDR = 32'h5400 << 2 ; //start bram reads
+	    mtestRADDR = 32'hd600 << 2 ; //start bram reads
 	  for (int i = 0; i < 32; i++)
 	    begin
                single_read_transaction_api("single read with api",

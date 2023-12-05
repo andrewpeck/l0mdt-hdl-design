@@ -207,6 +207,9 @@ assign fm_mon_out.SB104.SB_MEM = (axi_spy_rd_vld[104] == 0)? '{rd_data:'b0, rd_d
 assign fm_mon_out.SB105.SB_MEM = (axi_spy_rd_vld[105] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[105], rd_data_valid:axi_spy_rd_vld[105]};
 assign fm_mon_out.SB106.SB_MEM = (axi_spy_rd_vld[106] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[106], rd_data_valid:axi_spy_rd_vld[106]};
 assign fm_mon_out.SB107.SB_MEM = (axi_spy_rd_vld[107] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[107], rd_data_valid:axi_spy_rd_vld[107]};
+assign fm_mon_out.SB108.SB_MEM = (axi_spy_rd_vld[108] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[108], rd_data_valid:axi_spy_rd_vld[108]};
+assign fm_mon_out.SB109.SB_MEM = (axi_spy_rd_vld[109] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[109], rd_data_valid:axi_spy_rd_vld[109]};
+assign fm_mon_out.SB110.SB_MEM = (axi_spy_rd_vld[110] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[110], rd_data_valid:axi_spy_rd_vld[110]};
 
 assign  axi_sb_addr       = (init_spy_mem_internal)? axi_sb_init_addr : {
 	fm_ctrl_in.SB0.SB_MEM.address,
@@ -316,7 +319,10 @@ assign  axi_sb_addr       = (init_spy_mem_internal)? axi_sb_init_addr : {
 	fm_ctrl_in.SB104.SB_MEM.address,
 	fm_ctrl_in.SB105.SB_MEM.address,
 	fm_ctrl_in.SB106.SB_MEM.address,
-	fm_ctrl_in.SB107.SB_MEM.address
+	fm_ctrl_in.SB107.SB_MEM.address,
+	fm_ctrl_in.SB108.SB_MEM.address,
+	fm_ctrl_in.SB109.SB_MEM.address,
+	fm_ctrl_in.SB110.SB_MEM.address
 		};
 
 assign  axi_sb_enable       =  {
@@ -427,7 +433,10 @@ assign  axi_sb_enable       =  {
 	fm_ctrl_in.SB104.SB_MEM.enable,
 	fm_ctrl_in.SB105.SB_MEM.enable,
 	fm_ctrl_in.SB106.SB_MEM.enable,
-	fm_ctrl_in.SB107.SB_MEM.enable
+	fm_ctrl_in.SB107.SB_MEM.enable,
+	fm_ctrl_in.SB108.SB_MEM.enable,
+	fm_ctrl_in.SB109.SB_MEM.enable,
+	fm_ctrl_in.SB110.SB_MEM.enable
 		};
 
 assign  axi_sb_wr_enable       = (init_spy_mem_internal == 1)? '1: { 
@@ -538,7 +547,10 @@ assign  axi_sb_wr_enable       = (init_spy_mem_internal == 1)? '1: {
 	fm_ctrl_in.SB104.SB_MEM.wr_enable,
 	fm_ctrl_in.SB105.SB_MEM.wr_enable,
 	fm_ctrl_in.SB106.SB_MEM.wr_enable,
-	fm_ctrl_in.SB107.SB_MEM.wr_enable
+	fm_ctrl_in.SB107.SB_MEM.wr_enable,
+	fm_ctrl_in.SB108.SB_MEM.wr_enable,
+	fm_ctrl_in.SB109.SB_MEM.wr_enable,
+	fm_ctrl_in.SB110.SB_MEM.wr_enable
 		};
 
 assign  axi_sb_wr_data       = (init_spy_mem_internal == 1)? axi_sb_init_wr_data: { 
@@ -649,7 +661,10 @@ assign  axi_sb_wr_data       = (init_spy_mem_internal == 1)? axi_sb_init_wr_data
 	fm_ctrl_in.SB104.SB_MEM.wr_data,
 	fm_ctrl_in.SB105.SB_MEM.wr_data,
 	fm_ctrl_in.SB106.SB_MEM.wr_data,
-	fm_ctrl_in.SB107.SB_MEM.wr_data
+	fm_ctrl_in.SB107.SB_MEM.wr_data,
+	fm_ctrl_in.SB108.SB_MEM.wr_data,
+	fm_ctrl_in.SB109.SB_MEM.wr_data,
+	fm_ctrl_in.SB110.SB_MEM.wr_data
 	};
 
 

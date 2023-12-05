@@ -31,6 +31,10 @@ library ptc_lib;
 
 library upt_lib;
 
+library fm_lib;
+use fm_lib.fm_types.all;
+
+
 entity ptcalc is
   port (
     -- clock and control
@@ -38,6 +42,9 @@ entity ptcalc is
     ttc_commands              : in    l0mdt_ttc_rt;
     ctrl_v                    : in    std_logic_vector; --  : in  TF_CTRL_t;
     mon_v                     : out   std_logic_vector; -- : out TF_MON_t;
+    --Fast Monitoring
+    fm_ptcalc2mtc_mon_v  : out std_logic_vector;
+    fm_ptcalc2mtc_pb_v     : in   ptcalc2mtc_avt(ptcalc_sb_n - 1 downto 0);
     i_inn_segments            : in    sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
     i_mid_segments            : in    sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
     i_out_segments            : in    sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
@@ -62,14 +69,25 @@ architecture behavioral of ptcalc is
   -- signal minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_INPUTS -1 downto 0);
   -- signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_INPUTS -1 downto 0);
   signal glob_en : std_logic;
-
+  signal fm_ptcalc2mtc_mon_r : fm_ptcalc_mon_data;
+  signal pt2mtc                         : ptcalc2mtc_avt(c_NUM_THREADS - 1 downto 0);
 begin
 
   glob_en <= '1';
   -- mon_v <=
-
+  fm_ptcalc2mtc_mon_v <= convert (fm_ptcalc2mtc_mon_r, fm_ptcalc2mtc_mon_v);
+  
   pt_en : if c_PT_ENABLED = '1' generate
 
+   FM : for I in 0 to c_NUM_THREADS - 1 generate
+     o_pt2mtc(I)<= fm_ptcalc2mtc_pb_v(I);
+     fm_ptcalc2mtc_mon_r(I).fm_data <= (mon_dw_max-1 downto  ptcalc2mtc_vt'w => '0') & pt2mtc(I);
+     fm_ptcalc2mtc_mon_r(I).fm_vld   <=  pt2mtc(I)( ptcalc2mtc_vt'w-1);
+   end generate FM;
+     
+     
+   
+      
     pt_type : if (c_PT_TYPE = '0') generate
 
       mpt : entity ptc_lib.top_ptc_mpi
@@ -89,7 +107,7 @@ begin
           i_segments_o => i_out_segments,
           i_nsp_segs   => i_plus_neighbor_segments,
           i_nsm_segs   => i_minus_neighbor_segments,
-          o_mtcs       => o_pt2mtc
+          o_mtcs       => pt2mtc
         );
 
     else generate
@@ -107,7 +125,7 @@ begin
             i_segment_m => i_mid_segments(I),
             i_segment_o => i_out_segments(I),
             i_slc       => i_pl2pt_av(I),
-            o_mtc       => o_pt2mtc(I)
+            o_mtc       => pt2mtc(I)
           );
 
       end generate upt_loop;

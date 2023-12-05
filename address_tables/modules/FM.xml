@@ -335,10 +335,19 @@
   <node id="SB105" address="0xd200" description =" width=64 df=CUSTOM_DAQ" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB106" address="0xd400" description =" width=64 df=SB_DUMMY" >
+  <node id="SB106" address="0xd400" description =" width=64 df=PTCALC2MTC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB107" address="0xd600" description =" width=64 df=SB_DUMMY" >
+  <node id="SB107" address="0xd600" description =" width=64 df=PTCALC2MTC" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB108" address="0xd800" description =" width=64 df=PTCALC2MTC" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB109" address="0xda00" description =" width=64 df=SB_DUMMY" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB110" address="0xdc00" description =" width=64 df=SB_DUMMY" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
  

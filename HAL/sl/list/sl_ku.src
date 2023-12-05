@@ -23,3 +23,5 @@ HAL/sl/src/my-sl-gty-interface/src/gty_fixed_latency/gtwizard_ultrascale_v1_7_gt
 HAL/sl/src/my-sl-gty-interface/src/gty_fixed_latency/gtwizard_ultrascale_v1_7_gtye4_channel.v
 HAL/sl/src/my-sl-gty-interface/src/gty_fixed_latency/gtwizard_ultrascale_v1_7_gtye4_delay_powergood.v
 
+HAL/IP/ku15p/ila_sl_rx/ila_sl_rx.xci
+HAL/IP/ku15p/ila_sl_tx/ila_sl_tx.xci
