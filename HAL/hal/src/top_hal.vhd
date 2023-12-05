@@ -943,7 +943,7 @@ reset_clk40 <= '0' when lhc_locked else '1';
         flx_mt               <= flx_mt_v(ii)               when flx_mt_v(ii)               /= '0'                                 else flx_mt;
         flx_pt               <= flx_pt_v(ii)               when flx_pt_v(ii)               /= '0'                                 else flx_pt;
         flx_partition        <= flx_partition_v(ii)        when flx_partition_v(ii)        /= (flx_partition'range        => '0') else flx_partition;
-        flx_bcid             <= flx_bcid_v(ii)             when flx_bcid_v(ii)             /= (flx_bcid'range             => '0') else flx_bcid
+        flx_bcid             <= flx_bcid_v(ii)             when flx_bcid_v(ii)             /= (flx_bcid'range             => '0') else flx_bcid;
         flx_sync_user_data   <= flx_sync_user_data_v(ii)   when flx_sync_user_data_v(ii)   /= (flx_sync_user_data'range   => '0') else flx_sync_user_data;
         flx_sync_global_data <= flx_sync_global_data_v(ii) when flx_sync_global_data_v(ii) /= (flx_sync_global_data'range => '0') else flx_sync_global_data;
         flx_ts               <= flx_ts_v(ii)               when flx_ts_v(ii)               /= '0'                                 else flx_ts;
@@ -959,12 +959,12 @@ reset_clk40 <= '0' when lhc_locked else '1';
         flx_lbid             <= flx_lbid_v(ii)             when flx_lbid_v(ii)             /= (flx_lbid'range             => '0') else flx_lbid;
         flx_async_user_data  <= flx_async_user_data_v(ii)  when flx_async_user_data_v(ii)  /= (flx_async_user_data'range  => '0') else flx_async_user_data;
         flx_lti_dec_aligned  <= flx_lti_dec_aligned_v(ii)  when flx_lti_dec_aligned_v(ii)  /= '0'                                 else flx_lti_dec_aligned;
-        flx_lti_crc_valid    <= flx_lti_crc_valid_v(ii));  when flx_lti_crc_valid_v(ii));  /= '0'                                 else flx_lti_crc_valid;
+        flx_lti_crc_valid    <= flx_lti_crc_valid_v(ii));  when flx_lti_crc_valid_v(ii)    /= '0'                                 else flx_lti_crc_valid;
       end if;
     end process;
 
     your_instance_name : flx_rx_vio
-      port map (clk             => flx_clk40_ttc
+      port map (clk             => flx_clk40_ttc_v(ii)
                 , probe_in0(0)  => flx_mt
                 , probe_in1(0)  => flx_pt
                 , probe_in2     => flx_partition
