@@ -85,19 +85,21 @@ begin
   ctrl_t  <= convert(i_ctrl_v, ctrl_t);
   o_mon_v <= convert(mon_t, o_mon_v);
 
+  -- Supervisor
+  supervisor : entity ptc_lib.pt_supervisor
+    port map (
+      clk         => clk,
+      rst         => rst,
+      glob_en     => glob_en,
+      i_actions   => ctrl_t,
+      o_status    => mon_t,
+      o_local_en  => local_en,
+      o_local_rst => local_rst
+    );
+
   sel_and_pt : for k in num_threads - 1 downto 0 generate
   begin
-    -- Supervisor
-    supervisor : entity ptc_lib.pt_supervisor
-      port map (
-        clk         => clk,
-        rst         => rst,
-        glob_en     => glob_en,
-        i_actions   => ctrl_t,
-        o_status    => mon_t,
-        o_local_en  => local_en,
-        o_local_rst => local_rst
-      );
+    
 
     -- Segment Selector
     segsel : entity ptc_lib.segment_selector
