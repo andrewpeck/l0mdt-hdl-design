@@ -940,26 +940,26 @@ reset_clk40 <= '0' when lhc_locked else '1';
     process (flx_clk40_ttc_v(ii))
     begin
       if rising_edge(flx_clk40_ttc_v(ii)) then
-        flx_mt               <= flx_mt_v(ii)               when flx_mt_v(ii)               /= '0'             else flx_mt;
-        flx_pt               <= flx_pt_v(ii)               when flx_pt_v(ii)               /= '0'             else flx_pt;
-        flx_partition        <= flx_partition_v(ii)        when flx_partition_v(ii)        /= (others => '0') else flx_partition;
-        flx_bcid             <= flx_bcid_v(ii)             when flx_bcid_v(ii)             /= (others => '0') else flx_bcid
-        flx_sync_user_data   <= flx_sync_user_data_v(ii)   when flx_sync_user_data_v(ii)   /= (others => '0') else flx_sync_user_data;
-        flx_sync_global_data <= flx_sync_global_data_v(ii) when flx_sync_global_data_v(ii) /= (others => '0') else flx_sync_global_data;
-        flx_ts               <= flx_ts_v(ii)               when flx_ts_v(ii)               /= '0'             else flx_ts;
-        flx_error_flags      <= flx_error_flags_v(ii)      when flx_error_flags_v(ii)      /= (others => '0') else flx_error_flags;
-        flx_sl0id            <= flx_sl0id_v(ii)            when flx_sl0id_v(ii)            /= '0'             else flx_sl0id;
-        flx_sorb             <= flx_sorb_v(ii)             when flx_sorb_v(ii)             /= '0'             else flx_sorb;
-        flx_sync             <= flx_sync_v(ii)             when flx_sync_v(ii)             /= '0'             else flx_sync;
-        flx_grst             <= flx_grst_v(ii)             when flx_grst_v(ii)             /= '0'             else flx_grst;
-        flx_l0a              <= flx_l0a_v(ii)              when flx_l0a_v(ii)              /= '0'             else flx_l0a;
-        flx_l0id             <= flx_l0id_v(ii)             when flx_l0id_v(ii)             /= (others => '0') else flx_l0id;
-        flx_orbid            <= flx_orbid_v(ii)            when flx_orbid_v(ii)            /= (others => '0') else flx_orbid;
-        flx_trigger_type     <= flx_trigger_type_v(ii)     when flx_trigger_type_v(ii)     /= (others => '0') else flx_trigger_type;
-        flx_lbid             <= flx_lbid_v(ii)             when flx_lbid_v(ii)             /= (others => '0') else flx_lbid;
-        flx_async_user_data  <= flx_async_user_data_v(ii)  when flx_async_user_data_v(ii)  /= (others => '0') else flx_async_user_data;
-        flx_lti_dec_aligned  <= flx_lti_dec_aligned_v(ii)  when flx_lti_dec_aligned_v(ii)  /= '0'             else flx_lti_dec_aligned;
-        flx_lti_crc_valid    <= flx_lti_crc_valid_v(ii));  when flx_lti_crc_valid_v(ii));  /= '0'             else flx_lti_crc_valid;
+        flx_mt               <= flx_mt_v(ii)               when flx_mt_v(ii)               /= '0'                                 else flx_mt;
+        flx_pt               <= flx_pt_v(ii)               when flx_pt_v(ii)               /= '0'                                 else flx_pt;
+        flx_partition        <= flx_partition_v(ii)        when flx_partition_v(ii)        /= (flx_partition'range        => '0') else flx_partition;
+        flx_bcid             <= flx_bcid_v(ii)             when flx_bcid_v(ii)             /= (flx_bcid'range             => '0') else flx_bcid
+        flx_sync_user_data   <= flx_sync_user_data_v(ii)   when flx_sync_user_data_v(ii)   /= (flx_sync_user_data'range   => '0') else flx_sync_user_data;
+        flx_sync_global_data <= flx_sync_global_data_v(ii) when flx_sync_global_data_v(ii) /= (flx_sync_global_data'range => '0') else flx_sync_global_data;
+        flx_ts               <= flx_ts_v(ii)               when flx_ts_v(ii)               /= '0'                                 else flx_ts;
+        flx_error_flags      <= flx_error_flags_v(ii)      when flx_error_flags_v(ii)      /= (flx_error_flags'range      => '0') else flx_error_flags;
+        flx_sl0id            <= flx_sl0id_v(ii)            when flx_sl0id_v(ii)            /= '0'                                 else flx_sl0id;
+        flx_sorb             <= flx_sorb_v(ii)             when flx_sorb_v(ii)             /= '0'                                 else flx_sorb;
+        flx_sync             <= flx_sync_v(ii)             when flx_sync_v(ii)             /= '0'                                 else flx_sync;
+        flx_grst             <= flx_grst_v(ii)             when flx_grst_v(ii)             /= '0'                                 else flx_grst;
+        flx_l0a              <= flx_l0a_v(ii)              when flx_l0a_v(ii)              /= '0'                                 else flx_l0a;
+        flx_l0id             <= flx_l0id_v(ii)             when flx_l0id_v(ii)             /= (flx_l0id'range             => '0') else flx_l0id;
+        flx_orbid            <= flx_orbid_v(ii)            when flx_orbid_v(ii)            /= (flx_orbid'range            => '0') else flx_orbid;
+        flx_trigger_type     <= flx_trigger_type_v(ii)     when flx_trigger_type_v(ii)     /= (flx_trigger_type'range     => '0') else flx_trigger_type;
+        flx_lbid             <= flx_lbid_v(ii)             when flx_lbid_v(ii)             /= (flx_lbid'range             => '0') else flx_lbid;
+        flx_async_user_data  <= flx_async_user_data_v(ii)  when flx_async_user_data_v(ii)  /= (flx_async_user_data'range  => '0') else flx_async_user_data;
+        flx_lti_dec_aligned  <= flx_lti_dec_aligned_v(ii)  when flx_lti_dec_aligned_v(ii)  /= '0'                                 else flx_lti_dec_aligned;
+        flx_lti_crc_valid    <= flx_lti_crc_valid_v(ii));  when flx_lti_crc_valid_v(ii));  /= '0'                                 else flx_lti_crc_valid;
       end if;
     end process;
 
