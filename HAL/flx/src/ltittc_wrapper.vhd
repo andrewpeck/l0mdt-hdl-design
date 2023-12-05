@@ -159,8 +159,8 @@ begin
     orbitid           <= TTC_data_decoder_i(31+3*32 downto  0+3*32) when typemsg = '0' else orbitid_r;
     ttype             <= TTC_data_decoder_i(31+4*32 downto 16+4*32) when typemsg = '0' else ttype_r;
     lbid              <= TTC_data_decoder_i(15+4*32 downto  0+4*32) when typemsg = '0' else lbid_r;
-    -- asyncusrdata      <= TTC_data_decoder_i(31+4*32 downto  0+3*32) when typemsg = '1' else asyncusrdata_r;
-    asyncusrdata      <= TTC_data_decoder_i(31+4*32 downto  0+3*32) when typemsg = '1' else (others => '1');
+    asyncusrdata      <= TTC_data_decoder_i(31+4*32 downto  0+3*32) when typemsg = '1' else asyncusrdata_r;
+    -- asyncusrdata      <= TTC_data_decoder_i(31+4*32 downto  0+3*32) when typemsg = '1' else (others => '1');
     --CRC is checked in ltittc_decoder
     --crc               <= TTC_data_decoder_i(31+5*32 downto 16+5*32);
 

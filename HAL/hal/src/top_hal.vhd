@@ -502,9 +502,9 @@ reset_clk40 <= '0' when lhc_locked else '1';
   --------------------------------------------------------------------------------
   --
   -- Create a 1 of n high signal synced to the slow clock, e.g.
-  -- clk40    
-  -- clk200   
-  -- strobe   
+  -- clk40
+  -- clk200
+  -- strobe
   --
   -- These are necessary for e.g. the lpgbt cores, which use a strobe signal to
   -- indicate alignment relative to the 40MHz clock.
@@ -536,7 +536,7 @@ reset_clk40 <= '0' when lhc_locked else '1';
   clock_and_control_o.clk <= clk320; --clock_userlogic;
   clock_and_control_o.bx  <= strobe_320; --strobe_userclk;
 
-  
+
   --------------------------------------------------------------------------------
   -- Common Multi-gigabit transceivers
   --------------------------------------------------------------------------------
@@ -661,9 +661,9 @@ reset_clk40 <= '0' when lhc_locked else '1';
     fm_mon: if CSM = 0 generate
       fm_csm_mon_r.fm_csm_uplink_data.fm_data <= fm_csm_uplink_data.fm_data ;
       fm_csm_mon_r.fm_csm_uplink_data.fm_vld   <= strobe_320;
-    
+
     end generate;
-  
+
     csm_ifgen : if (CSM < c_NUM_CSMS_ACTIVE and tdc_cnt > 0) generate
 
     begin
@@ -772,7 +772,7 @@ reset_clk40 <= '0' when lhc_locked else '1';
 
       inner : if (STATION = 0) generate
         tdc_hits_inner(POLMUX) <= tdc_hits_o;
-        --Fast Monitoring 
+        --Fast Monitoring
         fm_csm_mon_r.fm_csm_to_polmux(POLMUX).fm_data <= (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') &  tdc_hits_o;
         fm_csm_mon_r.fm_csm_to_polmux(POLMUX).fm_vld   <= tdc_hits_o(tdcpolmux2tar_vt'w-1);
       end generate;
@@ -913,30 +913,79 @@ reset_clk40 <= '0' when lhc_locked else '1';
 
               , clk40_ttc_vo           => flx_clk40_ttc_v(c_DAQ_LINKS-1 downto 0)         -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
               , clk40_ttc_ready_vo     => flx_clk40_ttc_ready_v(c_DAQ_LINKS-1 downto 0)); -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0));
-  
+
   GEN_FLX_RX_TEST : for ii in 0 to c_DAQ_LINKS-1 generate
+    signal flx_mt                : std_logic;
+    signal flx_pt                : std_logic;
+    signal flx_partition         : std_logic_vector(1 downto 0);
+    signal flx_bcid              : std_logic_vector(11 downto 0);
+    signal flx_sync_user_data    : std_logic_vector(15 downto 0);
+    signal flx_sync_global_data  : std_logic_vector(15 downto 0);
+    signal flx_ts                : std_logic;
+    signal flx_error_flags       : std_logic_vector(3 downto 0);
+    signal flx_sl0id             : std_logic;
+    signal flx_sorb              : std_logic;
+    signal flx_sync              : std_logic;
+    signal flx_grst              : std_logic;
+    signal flx_l0a               : std_logic;
+    signal flx_l0id              : std_logic_vector(37 downto 0);
+    signal flx_orbid             : std_logic_vector(31 downto 0);
+    signal flx_trigger_type      : std_logic_vector(15 downto 0);
+    signal flx_lbid              : std_logic_vector(15 downto 0);
+    signal flx_async_user_data   : std_logic_vector(63 downto 0);
+    signal flx_lti_dec_aligned   : std_logic;
+    signal flx_lti_crc_valid     : std_logic;
+  begin
+
+    process (flx_clk40_ttc_v(ii))
+    begin
+      if rising_edge(flx_clk40_ttc_v(ii)) then
+        flx_mt               <= flx_mt_v(ii)               when flx_mt_v(ii)               /= '0'             else flx_mt;
+        flx_pt               <= flx_pt_v(ii)               when flx_pt_v(ii)               /= '0'             else flx_pt;
+        flx_partition        <= flx_partition_v(ii)        when flx_partition_v(ii)        /= (others => '0') else flx_partition;
+        flx_bcid             <= flx_bcid_v(ii)             when flx_bcid_v(ii)             /= (others => '0') else flx_bcid
+        flx_sync_user_data   <= flx_sync_user_data_v(ii)   when flx_sync_user_data_v(ii)   /= (others => '0') else flx_sync_user_data;
+        flx_sync_global_data <= flx_sync_global_data_v(ii) when flx_sync_global_data_v(ii) /= (others => '0') else flx_sync_global_data;
+        flx_ts               <= flx_ts_v(ii)               when flx_ts_v(ii)               /= '0'             else flx_ts;
+        flx_error_flags      <= flx_error_flags_v(ii)      when flx_error_flags_v(ii)      /= (others => '0') else flx_error_flags;
+        flx_sl0id            <= flx_sl0id_v(ii)            when flx_sl0id_v(ii)            /= '0'             else flx_sl0id;
+        flx_sorb             <= flx_sorb_v(ii)             when flx_sorb_v(ii)             /= '0'             else flx_sorb;
+        flx_sync             <= flx_sync_v(ii)             when flx_sync_v(ii)             /= '0'             else flx_sync;
+        flx_grst             <= flx_grst_v(ii)             when flx_grst_v(ii)             /= '0'             else flx_grst;
+        flx_l0a              <= flx_l0a_v(ii)              when flx_l0a_v(ii)              /= '0'             else flx_l0a;
+        flx_l0id             <= flx_l0id_v(ii)             when flx_l0id_v(ii)             /= (others => '0') else flx_l0id;
+        flx_orbid            <= flx_orbid_v(ii)            when flx_orbid_v(ii)            /= (others => '0') else flx_orbid;
+        flx_trigger_type     <= flx_trigger_type_v(ii)     when flx_trigger_type_v(ii)     /= (others => '0') else flx_trigger_type;
+        flx_lbid             <= flx_lbid_v(ii)             when flx_lbid_v(ii)             /= (others => '0') else flx_lbid;
+        flx_async_user_data  <= flx_async_user_data_v(ii)  when flx_async_user_data_v(ii)  /= (others => '0') else flx_async_user_data;
+        flx_lti_dec_aligned  <= flx_lti_dec_aligned_v(ii)  when flx_lti_dec_aligned_v(ii)  /= '0'             else flx_lti_dec_aligned;
+        flx_lti_crc_valid    <= flx_lti_crc_valid_v(ii));  when flx_lti_crc_valid_v(ii));  /= '0'             else flx_lti_crc_valid;
+      end if;
+    end process;
+
     your_instance_name : flx_rx_vio
-      PORT MAP (clk             => flx_clk40_ttc_v(ii)
-                , probe_in0(0)  => flx_mt_v(ii)              
-                , probe_in1(0)  => flx_pt_v(ii)              
-                , probe_in2     => flx_partition_v(ii)       
-                , probe_in3     => flx_bcid_v(ii)            
-                , probe_in4     => flx_sync_user_data_v(ii)  
-                , probe_in5     => flx_sync_global_data_v(ii)
-                , probe_in6(0)  => flx_ts_v(ii)              
-                , probe_in7     => flx_error_flags_v(ii)     
-                , probe_in8(0)  => flx_sl0id_v(ii)           
-                , probe_in9(0)  => flx_sorb_v(ii)            
-                , probe_in10(0) => flx_sync_v(ii)            
-                , probe_in11(0) => flx_grst_v(ii)            
-                , probe_in12(0) => flx_l0a_v(ii)             
-                , probe_in13    => flx_l0id_v(ii)            
-                , probe_in14    => flx_orbid_v(ii)           
-                , probe_in15    => flx_trigger_type_v(ii)    
-                , probe_in16    => flx_lbid_v(ii)            
-                , probe_in17    => flx_async_user_data_v(ii) 
-                , probe_in18(0) => flx_lti_dec_aligned_v(ii) 
-                , probe_in19(0) => flx_lti_crc_valid_v(ii));
+      port map (clk             => flx_clk40_ttc
+                , probe_in0(0)  => flx_mt
+                , probe_in1(0)  => flx_pt
+                , probe_in2     => flx_partition
+                , probe_in3     => flx_bcid
+                , probe_in4     => flx_sync_user_data
+                , probe_in5     => flx_sync_global_data
+                , probe_in6(0)  => flx_ts
+                , probe_in7     => flx_error_flags
+                , probe_in8(0)  => flx_sl0id
+                , probe_in9(0)  => flx_sorb
+                , probe_in10(0) => flx_sync
+                , probe_in11(0) => flx_grst
+                , probe_in12(0) => flx_l0a
+                , probe_in13    => flx_l0id
+                , probe_in14    => flx_orbid
+                , probe_in15    => flx_trigger_type
+                , probe_in16    => flx_lbid
+                , probe_in17    => flx_async_user_data
+                , probe_in18(0) => flx_lti_dec_aligned
+                , probe_in19(0) => flx_lti_crc_valid);
+    
   end generate GEN_FLX_RX_TEST;
 
   flx_mt_o                  <= flx_mt_v(c_FELIX_RECCLK_SRC-1);
