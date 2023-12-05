@@ -35,8 +35,8 @@ entity pipeline is
     clock_and_control : in  l0mdt_control_rt;
     ttc_commands      : in  l0mdt_ttc_rt;
     --
-    ctrl_v            : in std_logic_vector; -- : in  MPL_CTRL_t;
-    mon_v             : out std_logic_vector;-- : out MPL_MON_t;
+    ctrl_v            : in std_logic_vector(MPL_CTRL_t'w -1 downto 0); -- : in  MPL_CTRL_t;
+    mon_v             : out std_logic_vector(MPL_MON_t'w -1 downto 0);-- : out MPL_MON_t;
     -- Sector Logic Candidates from uCM
     i_ucm2pl_av       : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
     -- Sector Logic Candidates to Track fitting
@@ -47,7 +47,7 @@ entity pipeline is
 end entity pipeline;
 
 architecture beh of pipeline is
-  signal glob_en : std_logic;
+  signal glob_en : std_logic := '1' ;
 begin
 
   glob_en <= '1';

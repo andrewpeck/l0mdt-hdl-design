@@ -71,7 +71,7 @@ architecture beh of mpl_supervisor is
   signal local_rst : std_logic;
   signal local_en  : std_logic;
   --
-  signal int_en   : std_logic;
+  signal int_en   : std_logic := '1';
   signal int_rst  : std_logic := '1';
 
   signal int_freeze : std_logic;
