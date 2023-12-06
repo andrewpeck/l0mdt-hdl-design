@@ -44,6 +44,8 @@ library ctrl_lib;
 use ctrl_lib.hal_ctrl.all;
 
 library xil_defaultlib;
+use xil_defaultlib.all;
+
 
 entity sector_logic_link_wrapper is
   generic (
@@ -104,6 +106,21 @@ architecture Behavioral of sector_logic_link_wrapper is
   -- convert between the two representations
 
   signal reset_int : std_logic;
+
+  component sync_cdc
+    generic (
+      NSTAGES_RCLK : integer := 2;
+      NSTAGES_WCLK: integer :=2;
+      WIDTH : integer := 193
+      );
+    port (
+      rst : in std_logic;
+      wr_clk : in std_logic;
+      rd_clk : in std_logic;
+      data_wr_in : in std_logic_vector(WIDTH-1 downto 0);
+      data_rd_out : out std_logic_vector(WIDTH-1 downto 0)
+      );
+    end component
   
   function signed_mag_to_signed (data : std_logic_vector) return signed is
     alias sv                 : std_logic_vector (data'length-1 downto 0) is data;
@@ -419,7 +436,7 @@ begin
         --    );
        
 
-        sync_sl_tx : entity xil_defaultlib.sync_cdc
+        sync_sl_tx : component sync_cdc
           generic map (
             NSTAGES_WCLK => 2,
             NSTAGES_RCLK  => 2,
@@ -604,7 +621,7 @@ begin
 
           --  );
 
-        sync_sl_rx_data : entity xil_defaultlib.sync_cdc
+        sync_sl_rx_data : component sync_cdc
           generic map (
             NSTAGES_WCLK => 2,
             NSTAGES_RCLK  => 2,
