@@ -120,7 +120,7 @@ architecture Behavioral of sector_logic_link_wrapper is
       data_wr_in : in std_logic_vector(WIDTH-1 downto 0);
       data_rd_out : out std_logic_vector(WIDTH-1 downto 0)
       );
-    end component
+    end component;
   
   function signed_mag_to_signed (data : std_logic_vector) return signed is
     alias sv                 : std_logic_vector (data'length-1 downto 0) is data;
