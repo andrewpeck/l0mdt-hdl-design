@@ -189,7 +189,7 @@ xil_axi_ulong                                            mtestWADDR_array[];
 
 //Playback write mode
 	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
-          mtestWADDR = (32'hd400 << 2);  //priya 0;
+          mtestWADDR = (32'hda00 << 2);  //priya 0;
           mtestWBurstLength = 0; //0;
           mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
           mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED;
@@ -243,7 +243,7 @@ xil_axi_ulong                                            mtestWADDR_array[];
 
 	  
        	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
-          mtestWADDR = (32'hd400 << 2 ); //(32'h000);  //priya 0;
+          mtestWADDR = (32'hda00 << 2 ); //(32'h000);  //priya 0;
           mtestWBurstLength = 0;
           mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
           mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED; //INCR;
@@ -316,7 +316,7 @@ xil_axi_ulong                                            mtestWADDR_array[];
 	    end // for (int i = 0; i < 32; i++)
 
 
-	    mtestRADDR = 32'hd600 << 2 ; //start bram reads
+	    mtestRADDR = 32'hdc00 << 2 ; //start bram reads
 	  for (int i = 0; i < 32; i++)
 	    begin
                single_read_transaction_api("single read with api",

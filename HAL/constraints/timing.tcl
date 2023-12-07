@@ -107,6 +107,10 @@ set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_
 set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] \
     -to [get_pins -filter {REF_PIN_NAME=~*D} -of_objects [get_cells -hierarchical -filter \
     {NAME =~ top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_comma_detector_inst/*}]]
+
+set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] \
+    -to [get_pins -filter {REF_PIN_NAME=~*CE} -of_objects [get_cells -hierarchical -filter \
+    {NAME =~ top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_comma_detector_inst/*}]]
     
 set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] \
     -to [get_pins -filter {REF_PIN_NAME=~*R} -of_objects [get_cells -hierarchical -filter \
@@ -114,6 +118,10 @@ set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_
 
 set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] \
     -to [get_pins -filter {REF_PIN_NAME=~*R} -of_objects [get_cells -hierarchical -filter \
+    {NAME =~ top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.sector_logic_rx_packet_former_inst/*}]]
+    
+set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] \
+    -to [get_pins -filter {REF_PIN_NAME=~*D} -of_objects [get_cells -hierarchical -filter \
     {NAME =~ top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.sector_logic_rx_packet_former_inst/*}]]
     
 ################################################################################

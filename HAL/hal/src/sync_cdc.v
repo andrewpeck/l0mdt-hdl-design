@@ -57,7 +57,7 @@ module sync_cdc #(
 	
 	else
 	  begin
-	     data_rd[0] <= fifo_data_rd;
+	     data_rd[0] <= (empty == 1'b1 | fifo_data_rd[WIDTH-1] == 0)? 'b0 : fifo_data_rd;
 	     
 	     for( i=1; i<NSTAGES_RCLK; i=i+1)
 	       data_rd[i] <= data_rd[i-1];	     
