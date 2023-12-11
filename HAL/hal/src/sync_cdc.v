@@ -18,7 +18,8 @@ module sync_cdc #(
    
    reg [WIDTH-1:0] 			     data_wr[0:NSTAGES_WCLK-1];
    reg [WIDTH-1:0] 			     data_rd[0:NSTAGES_RCLK-1];
-   wire [WIDTH-1:0] 		     fifo_data_rd;
+   wire [WIDTH-1:0] 			     fifo_data_rd;
+   wire 				     fifo_data_vld;
    
    integer 			     i;
    
@@ -27,14 +28,14 @@ module sync_cdc #(
 					   .rst(rst),                  // input wire rst
 					   .wr_clk(wr_clk),            // input wire wr_clk
 					   .rd_clk(rd_clk),            // input wire rd_clk
-					   .din(data_wr[NSTAGES_WCLK-1][WIDTH-2:0]),                  // input wire [WIDTH-2 : 0] din
+					   .din(data_wr[NSTAGES_WCLK-1]),                  // input wire [WIDTH-2 : 0] din
 					   .wr_en(data_wr[NSTAGES_WCLK-1][WIDTH-1]),              // input wire wr_en
 					   .rd_en(rd_en),              // input wire rd_en
-					   .dout(fifo_data_rd[WIDTH-2:0]),                // output wire [WIDTH-2 : 0] dout
+					   .dout(fifo_data_rd),                // output wire [WIDTH-2 : 0] dout
 					   .full(full),                // output wire full
 					   .empty(empty),              // output wire emptyq
 					   .almost_full(),
-					   .valid(fifo_data_rd[WIDTH-1]),              // output wire valid
+					   .valid(fifo_data_vld),              // output wire valid
 					   .prog_full(prog_full),      // output wire prog_full
 					   .wr_rst_busy(wr_rst_busy),  // output wire wr_rst_busy
 					   .rd_rst_busy(rd_rst_busy)  // output wire rd_rst_busy
@@ -57,7 +58,7 @@ module sync_cdc #(
 	
 	else
 	  begin
-	     data_rd[0] <= (empty == 1'b1 | fifo_data_rd[WIDTH-1] == 0)? 'b0 : fifo_data_rd;
+	     data_rd[0] <= (fifo_data_vld == 0)? {1'b0,fifo_data_rd[WIDTH-2:0]} : fifo_data_rd;
 	     
 	     for( i=1; i<NSTAGES_RCLK; i=i+1)
 	       data_rd[i] <= data_rd[i-1];	     
