@@ -38,7 +38,7 @@ entity ult_fm is
   end entity ult_fm;
 
   architecture beh of ult_fm is
-    type fm_avt is array(0 to total_l0mdt_sb-1) of std_logic_vector(fm_rt'w-1 downto 0);
+
 
 
     signal ult_fm_data_avt : fm_avt;

@@ -74,6 +74,8 @@ package fm_types is
    function convert(x: std_logic_vector; tpl: fm_rt) return fm_rt;
    function zero(tpl: fm_rt) return fm_rt;
 
+   type fm_avt is array(0 to total_l0mdt_sb-1) of std_logic_vector(fm_rt'w-1 downto 0);        
+   
    type fm_art is array(integer range <>) of fm_rt;
    function width(x: fm_art) return integer;
    function convert(x: fm_art; tpl: std_logic_vector) return std_logic_vector;

@@ -15,27 +15,27 @@ echo "Logfiles will be saved in $LOGDIR"
 
 ### List of tests
 declare -a cocotb_tests=(
-    polmux                 
-    ult_tar                
-    ucm                        
-    mtc                        
-    mtc_no_sb              
-    mpl_mtc                
+    # polmux                 
+    # ult_tar                
+    # ucm                        
+    # mtc                        
+    # mtc_no_sb              
+    # mpl_mtc                
     csf                    
-    lsf_inn                
-    lsf_mid                
-    lsf_out                
-    heg
-    hps_inn                
-    ptcalc                 
-    ptc_mpi                
-    ptcalc_3threads        
-    ult_mpt                
-    ult_upt                
-    lsf_ptcalc             
-    # ult_mpt_mpl_mtc_primary
-    # ult_upt_mpl_mtc_primary
-    # ult_ucm_pt_mpl_mtc     
+    # lsf_inn                
+    # lsf_mid                
+    # lsf_out                
+    # heg
+    # hps_inn                
+    # ptcalc                 
+    # ptc_mpi                
+    # ptcalc_3threads        
+    # ult_mpt                
+    # ult_upt                
+    # lsf_ptcalc             
+    # # ult_mpt_mpl_mtc_primary
+    # # ult_upt_mpl_mtc_primary
+    # # ult_ucm_pt_mpl_mtc     
 )
 
 

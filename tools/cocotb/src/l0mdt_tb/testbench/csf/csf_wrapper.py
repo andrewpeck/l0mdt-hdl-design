@@ -17,7 +17,8 @@
 import cocotb
 from cocotb.triggers import Event, Combine, with_timeout, Timer
 
-from l0mdt_tb.testbench.csf.csf_ports import CsfPorts
+from l0mdt_tb.testbench.csf import csf_ports
+CsfPorts=csf_ports.CsfPorts()
 
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils import block_wrapper
@@ -43,7 +44,7 @@ class CsfWrapper(block_wrapper.BlockWrapper):
         port_index      = 0
         interface_port  = 0
 
-        for port_num in range(CsfPorts.n_input_ports(CsfPorts)):
+        for port_num in range(CsfPorts.n_input_ports()):
             if port_num == (port_index + CsfPorts.get_input_interface_ports(input_interface)) :
                 port_index      = (port_index + CsfPorts.get_input_interface_ports(input_interface))
                 input_interface = input_interface + 1
