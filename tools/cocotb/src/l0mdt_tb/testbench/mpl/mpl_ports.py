@@ -14,26 +14,27 @@ from l0mdt_tb.utils import port_descriptor
 
 class MplPorts(port_descriptor.PortDescriptor):
 	def __init__(self):
-		super().__init__()
+            print("called MplPorts constructor",flush=True)
+            super().__init__()
 
 
 	n_input_interfaces = 1
 
 	n_output_interfaces = 2
 
-	def get_input_interface_ports(interface):
+	def get_input_interface_ports(self,interface):
 		input_ports = [3]
 		return input_ports[interface]
 
-	def get_all_input_interface_ports():
+	def get_all_input_interface_ports(self):
 		input_ports = [3]
 		return input_ports
 
-	def get_output_interface_ports(interface):
+	def get_output_interface_ports(self,interface):
 		output_ports = [3, 3]
 		return output_ports[interface]
 
-	def get_all_output_interface_ports():
+	def get_all_output_interface_ports(self):
 		output_ports = [3, 3]
 		return output_ports
 

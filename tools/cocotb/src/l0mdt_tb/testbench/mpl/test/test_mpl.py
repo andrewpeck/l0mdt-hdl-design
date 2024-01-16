@@ -20,7 +20,9 @@ from cocotb.triggers import ClockCycles, RisingEdge, Combine, Timer, with_timeou
 from cocotb.result import TestFailure, TestSuccess
 
 import l0mdt_tb.testbench.mpl.mpl_wrapper as wrapper
-from l0mdt_tb.testbench.mpl.mpl_ports import MplPorts
+from l0mdt_tb.testbench.mpl import mpl_ports
+MplPorts = mpl_ports.MplPorts()
+
 
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.mpl.mpl_block as mpl_block
 
@@ -111,38 +113,39 @@ def mpl_test(dut):
     output_dir_name                  = run_config["output_directory_name"]
     output_dir                       = f"{os.getcwd()}/../../../../../test_output/{output_dir_name}"
     master_tv_file                   = test_config.get_testvector_file_from_config(config)
-    testvector_config                = config["testvectors"]
-    testvector_config_inputs         = testvector_config["inputs"]
-    testvector_config_outputs        = testvector_config["outputs"]
-    inputs_tv_df_type= [["" for x in range(MplPorts.get_input_interface_ports(y))]for y in range(MplPorts.n_input_interfaces)]
-    outputs_tv_df_type= [["" for x in range(MplPorts.get_output_interface_ports(y))]for y in range(MplPorts.n_output_interfaces)]
-    inputs_station_id= [["" for x in range(MplPorts.get_input_interface_ports(y))]for y in range(MplPorts.n_input_interfaces)]
-    inputs_thread_n= [[0 for x in range(MplPorts.get_input_interface_ports(y))]for y in range(MplPorts.n_input_interfaces)]
-    outputs_station_id= [["" for x in range(MplPorts.get_output_interface_ports(y))]for y in range(MplPorts.n_output_interfaces)]
-    tolerance= [["" for x in range(MplPorts.get_output_interface_ports(y))]for y in range(MplPorts.n_output_interfaces)]
-    outputs_thread_n= [[0 for x in range(MplPorts.get_output_interface_ports(y))]for y in range(MplPorts.n_output_interfaces)]
-    for i in range(MplPorts.n_input_interfaces):
-        if "station_ID" in testvector_config_inputs[i] :
-            inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        if "thread_n" in testvector_config_inputs[i]:
-            inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
-        if "tv_df_type" in testvector_config_inputs[i]:
-            inputs_tv_df_type[i] = testvector_config_inputs[i]["tv_df_type"]
-        else:
-            inputs_tv_df_type[i] = "SL"
-    for i in range(MplPorts.n_output_interfaces):
-        if "station_ID" in testvector_config_outputs[i] :
-            outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        if "thread_n" in testvector_config_outputs[i]:
-            outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]        
-        if "tolerance" in testvector_config_outputs[i] :
-            tolerance[i] = testvector_config_outputs[i]["tolerance"]
-        else:
-            tolerance[i] = {"": ["",""]}
-        if "tv_df_type" in testvector_config_outputs[i]:
-            outputs_tv_df_type[i] = testvector_config_outputs[i]["tv_df_type"]
-        else:
-            outputs_tv_df_type[i] = "SL"
+    test_config.read_io_config(config['testvectors'], MplPorts)
+
+    # testvector_config_inputs         = testvector_config["inputs"]
+    # testvector_config_outputs        = testvector_config["outputs"]
+    # inputs_tv_df_type= [["" for x in range(MplPorts.get_input_interface_ports(y))]for y in range(MplPorts.n_input_interfaces)]
+    # outputs_tv_df_type= [["" for x in range(MplPorts.get_output_interface_ports(y))]for y in range(MplPorts.n_output_interfaces)]
+    # inputs_station_id= [["" for x in range(MplPorts.get_input_interface_ports(y))]for y in range(MplPorts.n_input_interfaces)]
+    # inputs_thread_n= [[0 for x in range(MplPorts.get_input_interface_ports(y))]for y in range(MplPorts.n_input_interfaces)]
+    # outputs_station_id= [["" for x in range(MplPorts.get_output_interface_ports(y))]for y in range(MplPorts.n_output_interfaces)]
+    # tolerance= [["" for x in range(MplPorts.get_output_interface_ports(y))]for y in range(MplPorts.n_output_interfaces)]
+    # outputs_thread_n= [[0 for x in range(MplPorts.get_output_interface_ports(y))]for y in range(MplPorts.n_output_interfaces)]
+    # for i in range(MplPorts.n_input_interfaces):
+    #     if "station_ID" in testvector_config_inputs[i] :
+    #         inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
+    #     if "thread_n" in testvector_config_inputs[i]:
+    #         inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
+    #     if "tv_df_type" in testvector_config_inputs[i]:
+    #         inputs_tv_df_type[i] = testvector_config_inputs[i]["tv_df_type"]
+    #     else:
+    #         inputs_tv_df_type[i] = "SL"
+    # for i in range(MplPorts.n_output_interfaces):
+    #     if "station_ID" in testvector_config_outputs[i] :
+    #         outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
+    #     if "thread_n" in testvector_config_outputs[i]:
+    #         outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]        
+    #     if "tolerance" in testvector_config_outputs[i] :
+    #         tolerance[i] = testvector_config_outputs[i]["tolerance"]
+    #     else:
+    #         tolerance[i] = {"": ["",""]}
+    #     if "tv_df_type" in testvector_config_outputs[i]:
+    #         outputs_tv_df_type[i] = testvector_config_outputs[i]["tv_df_type"]
+    #     else:
+    #         outputs_tv_df_type[i] = "SL"
 
 
     # CREATORSOFTWAREBLOCK##
@@ -254,10 +257,10 @@ def mpl_test(dut):
             tvformat=input_tvformats[n_ip_intf],
             n_ports = MplPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
-            station_ID=inputs_station_id[n_ip_intf],
+            station_ID=MplPorts.config_inputs["station_id"][n_ip_intf],
             tv_type=input_tvtype[n_ip_intf],
-            tv_df_type=inputs_tv_df_type[n_ip_intf],
-            cnd_thrd_id = inputs_thread_n[n_ip_intf]
+            tv_df_type=MplPorts.config_inputs["tv_df_type"][n_ip_intf],
+            cnd_thrd_id = MplPorts.config_inputs["thread_n"][n_ip_intf]
             ))
         for io in range(MplPorts.get_input_interface_ports(n_ip_intf)): #Outputs):            
             input_tv_list.append(single_interface_list[io])
@@ -344,12 +347,12 @@ def mpl_test(dut):
             MplPorts.get_output_interface_ports(n_op_intf) , 
             num_events_to_process , 
             recvd_events_intf[n_op_intf],
-            tolerance[n_op_intf],
+            MplPorts.config_outputs['tolerance'][n_op_intf],
             output_dir,
-            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf]),
-            tv_thread_mapping=outputs_thread_n[n_op_intf],
+            stationNum=events.station_list_name_to_id(MplPorts.config_outputs["station_id"][n_op_intf]),
+            tv_thread_mapping=MplPorts.config_outputs["thread_n"][n_op_intf],
             tv_type=output_tvtype[n_op_intf],
-            tv_df_type=outputs_tv_df_type[n_op_intf]
+            tv_df_type=MplPorts.config_outputs["tv_df_type"][n_op_intf]
         )
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i

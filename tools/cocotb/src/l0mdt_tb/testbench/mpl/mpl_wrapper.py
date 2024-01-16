@@ -17,7 +17,8 @@
 import cocotb
 from cocotb.triggers import Event, Combine, with_timeout, Timer
 
-from l0mdt_tb.testbench.mpl.mpl_ports import MplPorts
+from l0mdt_tb.testbench.mpl import mpl_ports 
+MplPorts=mpl_ports.MplPorts()
 
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils import block_wrapper
@@ -43,7 +44,7 @@ class MplWrapper(block_wrapper.BlockWrapper):
         port_index      = 0
         interface_port  = 0
 
-        for port_num in range(MplPorts.n_input_ports(MplPorts)):
+        for port_num in range(MplPorts.n_input_ports()):
             if port_num == (port_index + MplPorts.get_input_interface_ports(input_interface)) :
                 port_index      = (port_index + MplPorts.get_input_interface_ports(input_interface))
                 input_interface = input_interface + 1

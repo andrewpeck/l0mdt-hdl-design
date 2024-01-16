@@ -3,6 +3,7 @@ import enum
 
 class PortDescriptor:
     def __init__(self):
+        print("called PortDescriptor constructor")
         self.config_inputs={}
         self.config_outputs={}
         pass

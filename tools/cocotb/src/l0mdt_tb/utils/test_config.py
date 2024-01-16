@@ -337,36 +337,48 @@ def read_io_config(tv_config, DUTports):
     DUTports  : port descriptor (usually found under {test_name}/{test_name}_ports.py
     """
 
-    DUTports.config_inputs['station_id']= [["" for x in range(DUTports.get_input_interface_ports(y))]for y in range(DUTports.n_input_interfaces)]
-    DUTports.config_inputs['thread_n']= [[0 for x in range(DUTports.get_input_interface_ports(y))]for y in range(DUTports.n_input_interfaces)]
-    DUTports.config_outputs['station_id']= [["" for x in range(DUTports.get_output_interface_ports(y))]for y in range(DUTports.n_output_interfaces)]
-    DUTports.config_outputs['thread_n']= [[0 for x in range(DUTports.get_output_interface_ports(y))]for y in range(DUTports.n_output_interfaces)]
-    DUTports.config_output['tolerance']= [["" for x in range(DUTports.get_output_interface_ports(y))]for y in range(DUTports.n_output_interfaces)]
+    ### Defaults values for input
+    DUTports.config_inputs['station_id']= [ ["" for x in range(DUTports.get_input_interface_ports(y))]\
+                                            for y in range(DUTports.n_input_interfaces)]
+    DUTports.config_inputs['thread_n']= [ [0 for x in range(DUTports.get_input_interface_ports(y))]\
+                                          for y in range(DUTports.n_input_interfaces)]
+    DUTports.config_inputs['tv_df_type']= [ ["" for x in range(DUTports.get_input_interface_ports(y))]\
+                                            for y in range(DUTports.n_input_interfaces)]
 
-    
+    ### Defaults values for output
+    DUTports.config_outputs['station_id']= [ ["" for x in range(DUTports.get_output_interface_ports(y))]\
+                                             for y in range(DUTports.n_output_interfaces)]
+    DUTports.config_outputs['thread_n']= [ [0 for x in range(DUTports.get_output_interface_ports(y))]\
+                                           for y in range(DUTports.n_output_interfaces)]
+    DUTports.config_outputs['tolerance']= [ ["" for x in range(DUTports.get_output_interface_ports(y))]\
+                                            for y in range(DUTports.n_output_interfaces)]
+    DUTports.config_outputs['tv_df_type']= [ ["" for x in range(DUTports.get_output_interface_ports(y))]\
+                                            for y in range(DUTports.n_output_interfaces)]
+
     for i in range(DUTports.n_input_interfaces):
         if "station_ID" in tv_config["inputs"][i] :
-            DUTports.config_inputs['station_id[i]'] = tv_config["inputs"][i]["station_ID"]
+            DUTports.config_inputs['station_id'][i] = tv_config["inputs"][i]["station_ID"]
         if "thread_n" in tv_config["inputs"][i]:
-            DUTports.config_inputs['thread_n[i]']   = tv_config["inputs"][i]["thread_n"]
-        if "tv_df_type" in tv_config["inputs"][i]:
-            DUTports.config_inputs['tv_df_type[i]'] = tv_config["inputs"][i]["tv_df_type"]
+            DUTports.config_inputs['thread_n'][i]   = tv_config["inputs"][i]["thread_n"]
+        if "tv_df_type" in tv_config["inputs"][i]:            
+            DUTports.config_inputs['tv_df_type'][i] = tv_config["inputs"][i]["tv_df_type"]
         else:
-            DUTports.config_inputs['tv_df_type[i]'] = "SL"
+            DUTports.config_inputs['tv_df_type'][i] = "SL"
+
     for i in range(DUTports.n_output_interfaces):
         if "station_ID" in tv_config["outputs"][i] :
-            DUTports.config_outputs['station_id[i]'] = tv_config["outputs"][i]["station_ID"]
+            DUTports.config_outputs['station_id'][i] = tv_config["outputs"][i]["station_ID"]
         if "thread_n" in tv_config["outputs"][i]:
-            DUTports.config_outputs['thread_n[i]']   = tv_config["outputs"][i]["thread_n"]        
+            DUTports.config_outputs['thread_n'][i]   = tv_config["outputs"][i]["thread_n"]        
         if "tolerance" in tv_config["outputs"][i] :
-            DUTports.config_output['tolerance'][i] = tv_config["outputs"][i]["tolerance"]
+            DUTports.config_outputs['tolerance'][i] = tv_config["outputs"][i]["tolerance"]
         else:
-            DUTports.config_output['tolerance'][i] = {"": ["",""]}
+            DUTports.config_outputs['tolerance'][i] = {"": ["",""]}
         if "tv_df_type" in tv_config["outputs"][i]:
-            DUTports.config_outputs['tv_df_type[i]'] = tv_config["outputs"][i]["tv_df_type"]
+            DUTports.config_outputs['tv_df_type'][i] = tv_config["outputs"][i]["tv_df_type"]
         else:
-            DUTports.config_outputs['tv_df_type[i]'] = "SL"
+            DUTports.config_outputs['tv_df_type'][i] = "SL"
 
 
-    DUTports.
+
     
