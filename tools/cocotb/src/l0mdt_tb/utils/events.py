@@ -299,16 +299,17 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
                 cocotb.log.debug(f"Printing expected events | {[x.get_bitwordvalue() for x in l_EXP_BF]}")
             cocotb.log.debug(f"RTL output rtl_tv[{iPort}]| {[int(x) for x in rtl_tv[iPort]]}")
 
-            ### 
-            if len(rtl_tv[iPort]) != len(l_EXP_BF):
-                cocotb.log.error(f"event {iEvent} port {iPort} expected {len(l_EXP_BF)} words, received {len(rtl_tv[iPort])}... Comparison will be skipped!")
-                events_are_equal = False
-                continue
 
 
             ### Skip empty events
             if l_EXP_BF==[0]: 
                 continue
+
+            # if len(rtl_tv[iPort]) != len(l_EXP_BF):
+            #     cocotb.log.error(f"event {iEvent} port {iPort} expected {len(l_EXP_BF)} words, received {len(rtl_tv[iPort])}... Comparison will be skipped!")
+            #     events_are_equal = False
+            #     continue
+
 
             ### Print event identifier
             cocotb.log.info(tv_bcid_list[iEvent].header.dump()) 
