@@ -306,11 +306,15 @@ def lsf_test(dut):
             f"ERROR Event sending timed out! Number of expected inputs with events = {len(send_finished_signal)}"
         )
     try:
-        yield with_timeout(Combine(*send_finished_signal), num_events_to_process*2, "us")
+        yield with_timeout(Combine(*send_finished_signal), num_events_to_process*heg2sfslc_ii*2, "us")
     except Exception as ex:
         raise cocotb.result.TestFailure(
             f"ERROR Timed out waiting for events to send: {ex}")
     dut._log.info("Sending finished!")
+
+    n_cycles_to_wait = 500+num_events_to_process*2*heg2sfslc_ii
+    cocotb.log.info(f"Waiting {n_cycles_to_wait} clock cycles")
+    yield ClockCycles(dut.clock, n_cycles_to_wait)
 
 
 
