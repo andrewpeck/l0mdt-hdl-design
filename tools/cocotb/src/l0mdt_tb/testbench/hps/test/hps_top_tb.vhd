@@ -36,6 +36,10 @@ use hps_lib.hps_pkg.all;
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
 
+library fm_lib;
+use fm_lib.fm_types.all;
+
+
 entity hps_top_tb is
   generic(
     -- mdt type
@@ -70,6 +74,7 @@ architecture beh of hps_top_tb is
     -- control
 
   -- signal mdt_polmux_data_av : hps_mdt_input_avt(g_HPS_NUM_MDT_CH -1 downto 0)
+    signal fm_hps_sf_mon_inn_v : std_logic_vector(fm_hps_sf_mon'w-1 downto 0);
 
 begin
    ctrl_len <=  HPS_CTRL_t'w;
@@ -97,7 +102,8 @@ begin
 
       ctrl_v => ctrl_v,
       mon_v => mon_v,
-
+      fm_hps_mon_v => fm_hps_sf_mon_inn_v,
+      
       -- SLc
       i_uCM2hps_av        => i_uCM2hps_av,
       -- MDT hit
