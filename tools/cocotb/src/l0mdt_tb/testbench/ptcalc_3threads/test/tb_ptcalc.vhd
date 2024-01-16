@@ -30,8 +30,6 @@ entity tb_ptcalc is
     i_mid_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
     i_out_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
     i_ext_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
-    i_minus_neighbor_segments : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_plus_neighbor_segments  : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
     i_pl2pt_av                : in  pl2ptcalc_avt(c_NUM_THREADS-1 downto 0);
 
     o_pt2mtc                  : out ptcalc2mtc_avt(c_NUM_THREADS -1 downto 0);
@@ -48,8 +46,8 @@ architecture behavioral of tb_ptcalc is
   -- signal outer_segments_sump          : std_logic_vector (c_NUM_THREADS -1 downto 0);
   -- signal extra_segments_sump          : std_logic_vector (c_NUM_THREADS -1 downto 0);
   -- signal i_pl2pt_av_sump              : std_logic_vector (c_NUM_THREADS -1 downto 0);
-  -- signal minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_INPUTS -1 downto 0);
-  -- signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_INPUTS -1 downto 0);
+  signal i_minus_neighbor_segments : sf2ptcalc_vt;
+  signal i_plus_neighbor_segments  : sf2ptcalc_vt;
 begin
 
   -- mon_v <= 

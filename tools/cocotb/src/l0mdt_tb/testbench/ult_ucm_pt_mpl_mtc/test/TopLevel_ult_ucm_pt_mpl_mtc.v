@@ -116,8 +116,6 @@ module TopLevel_ult_ucm_pt_mpl_mtc #(
       .mid_segments_av(mid_segments_av),
       .out_segments_av(out_segments_av),
       .ext_segments_av(dummy_in),
-      .i_plus_neighbor_segments (),
-      .i_minus_neighbor_segments(),
       .o_MTC(o_MTC),
       .o_NSP(),
       .inn_slc_to_h2s_plin_av(ucm2hps_inn),

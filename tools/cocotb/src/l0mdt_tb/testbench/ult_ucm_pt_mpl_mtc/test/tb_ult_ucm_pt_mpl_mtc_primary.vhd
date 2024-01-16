@@ -26,8 +26,6 @@ use ctrl_lib.FM_CTRL.all;
 
 library vamc_lib;
 
-library fm_lib;
-use fm_lib.fm_ult_pkg.all;
 
 entity tb_ult_ucm_pt_mpl_mtc_primary is
   port (
@@ -44,10 +42,6 @@ entity tb_ult_ucm_pt_mpl_mtc_primary is
     mid_segments_av           : in sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
     out_segments_av           : in sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
     ext_segments_av           : in sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
-
-    -- Segments in from neighbor
-    i_plus_neighbor_segments  : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_minus_neighbor_segments : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     o_MTC                     : out mtc_out_avt(c_NUM_MTC-1 downto 0);
     o_NSP                     : out mtc2nsp_avt(c_NUM_NSP-1 downto 0);
@@ -77,6 +71,9 @@ architecture behavioral of tb_ult_ucm_pt_mpl_mtc_primary  is
   signal mtc_sump              : std_logic := '1';
   signal pt_sump               : std_logic := '1';  
   signal clock_and_control : l0mdt_control_rt;   
+
+  signal i_plus_neighbor_segments  : sf2ptcalc_vt;
+  signal i_minus_neighbor_segments : sf2ptcalc_vt;
 
 
 

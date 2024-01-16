@@ -115,8 +115,8 @@ module TopLevel_ptcalc_3threads #(
       .ctrl_v(dummy_in),
       .mon_v(dummy_out),
 //        --  segments from neighbors
-      .i_plus_neighbor_segments(),
-      .i_minus_neighbor_segments(),
+      // .i_plus_neighbor_segments(),
+      // .i_minus_neighbor_segments(),
 //        -- segments from hps
       .i_inn_segments(sf2pt_INN),
       .i_mid_segments(sf2pt_MID),
