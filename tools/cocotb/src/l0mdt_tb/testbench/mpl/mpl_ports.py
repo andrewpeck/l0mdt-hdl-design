@@ -14,7 +14,6 @@ from l0mdt_tb.utils import port_descriptor
 
 class MplPorts(port_descriptor.PortDescriptor):
 	def __init__(self):
-            print("called MplPorts constructor",flush=True)
             super().__init__()
 
 

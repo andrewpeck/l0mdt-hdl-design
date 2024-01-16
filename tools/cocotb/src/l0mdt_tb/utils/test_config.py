@@ -334,7 +334,7 @@ def read_io_config(tv_config, DUTports):
     --------------
     Arguments:
     tv_config : sub-dictionary "testvectors" from .json file
-    DUTports  : port descriptor (usually found under {test_name}/{test_name}_ports.py
+    DUTports  : port descriptor object (usually found under {test_name}/{test_name}_ports.py
     """
 
     ### Defaults values for input
