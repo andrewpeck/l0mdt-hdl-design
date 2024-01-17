@@ -264,6 +264,7 @@ cocotb_csf:
     - alma9
   variables:
     <<: *chk_variables
+    HOG_PATH: "/opt/questa/questasim/linux_x86_64/"
   stage: generation_and_simulation
   allow_failure: true
   interruptible: true
