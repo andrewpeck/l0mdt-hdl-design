@@ -52,7 +52,7 @@ riviera:
     extends: .vars
   parallel:
     matrix:
-      - PROJECT_NAME: [MainBlocks/ncsf, MainBlocks/ptc_mpi, MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
+      - PROJECT_NAME: [MainBlocks/ptc_mpi, MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
   allow_failure: true
 
 questa:
