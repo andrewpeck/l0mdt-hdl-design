@@ -268,6 +268,11 @@ cocotb_csf:
   allow_failure: true
   interruptible: true
   script:
+    - mkdir build
+    - cd build 
+    - cmake ../tools/TestVectorMaker
+    - make -j
+    - cd ..
     - mkdir -p sim_build
     - cp UserLogic/csf/src/*.mem sim_build/
     - python3 UserLogic/csf/cocotb/csf_cocotb.py
