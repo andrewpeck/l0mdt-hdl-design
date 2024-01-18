@@ -56,7 +56,7 @@ check_submodule_status:
   script:
     - cd HAL/c2c/bd_helper && git checkout fix_interconnect_strategy && git pull 
     - cd -
-    - cd HAL/ctrl/src/axi-vhdl-package && git checkout develop && git pull 
+    - cd HAL/ctrl/src/axi-vhdl-package && git checkout master && git pull 
     - cd -
     - cd HAL/hal/src/mgt/tx_phase_aligner && git checkout master && git pull 
     - cd -
