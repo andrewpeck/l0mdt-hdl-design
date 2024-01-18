@@ -54,7 +54,7 @@ check_submodule_status:
     <<: *chk_variables
   stage: user_pre
   script:
-    - cd HAL/c2c/bd_helper && git checkout master && git pull 
+    - cd HAL/c2c/bd_helper && git checkout fix_interconnect_strategy && git pull 
     - cd -
     - cd HAL/ctrl/src/axi-vhdl-package && git checkout develop && git pull 
     - cd -
