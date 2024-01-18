@@ -69,7 +69,7 @@
 	url = ../detector-parameters.git
 [submodule "HAL/sl/src/gty122-for-sl"]
 	path = HAL/sl/src/gty122-for-sl
-	url = ../misc-tools/gty122-for-sl.git
+	url = ../l0mdt-tests/gty122-for-sl.git
 [submodule "tools/TestVectorMaker"]
 	path = tools/TestVectorMaker
 	url = ../../atlas_hllhc_muon_trigger/TestVectorMaker.git
