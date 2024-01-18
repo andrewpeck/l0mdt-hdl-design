@@ -11,7 +11,7 @@ variables:
 include:
   - project: 'hog/Hog'
     file: '/hog.yml'
-    ref: 'v7.23.0'
+    ref: 'v7.27.0'
   - local: "/.user_jobs.yml"
   - local: '/.devel_to_master.yml'
 
@@ -52,7 +52,7 @@ riviera:
     extends: .vars
   parallel:
     matrix:
-      - PROJECT_NAME: [MainBlocks/ncsf, MainBlocks/ptc_mpi, MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
+      - PROJECT_NAME: [MainBlocks/ptc_mpi, MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
   allow_failure: true
 
 questa:

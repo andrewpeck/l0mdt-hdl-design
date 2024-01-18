@@ -258,6 +258,30 @@ check_auto_generated_code:
   allow_failure: true
   interruptible: true
 
+cocotb_csf: 
+  <<: *only-default
+  tags:
+    - alma9
+  variables:
+    <<: *chk_variables
+    HOG_PATH: "/opt/questa/questasim/linux_x86_64/"
+  stage: generation_and_simulation
+  allow_failure: true
+  interruptible: true
+  script:
+    - mkdir build
+    - cd build 
+    - cmake ../tools/TestVectorMaker
+    - make -j
+    - cd ..
+    - mkdir -p sim_build
+    - cp UserLogic/csf/src/*.mem sim_build/
+    - python3 UserLogic/csf/cocotb/csf_cocotb.py
+  artifacts:
+    name: cocotb
+    paths:
+      - plots_CSF
+    expire_in: 30 day
 
 .cocotb_test: &cocotb_job
   <<: *only-default
