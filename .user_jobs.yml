@@ -83,8 +83,8 @@ check_submodule_status:
   stage: user_post
   variables:
     IS_PROTO: 0
+    HOG_PATH: "/opt/BUTool/bin:/opt/BUTool/bin/BUTool:/opt/mcu_tools/bin/:/opt/uio-daemon:/opt/l0mdt-sm-sw-core/bin:/opt/test_stand:/opt/mdttp-cm-proto-mcu/Software/HwTest/pyMcu"
   script:
-    - export PATH=${PATH}:/opt/BUTool/bin:/opt/BUTool/bin/BUTool:/opt/mcu_tools/bin/:/opt/uio-daemon:/opt/l0mdt-sm-sw-core/bin:/opt/test_stand
     # Retrieve loaded firmware uids, if any
     - fw_uid=$(uio_send.py list-uids)
     - if [ "$fw_uid" != "No client IDs found that loaded firmware." ]; then
