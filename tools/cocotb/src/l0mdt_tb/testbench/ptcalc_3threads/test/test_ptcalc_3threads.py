@@ -20,7 +20,9 @@ from cocotb.triggers import ClockCycles, RisingEdge, Combine, Timer, with_timeou
 from cocotb.result import TestFailure, TestSuccess
 
 import l0mdt_tb.testbench.ptcalc_3threads.ptcalc_3threads_wrapper as wrapper
-from l0mdt_tb.testbench.ptcalc_3threads.ptcalc_3threads_ports import Ptcalc3threadsPorts
+from l0mdt_tb.testbench.ptcalc_3threads import ptcalc_3threads_ports
+Ptcalc3threadsPorts=ptcalc_3threads_ports.Ptcalc3threadsPorts()
+
 
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.ptcalc_3threads.ptcalc_3threads_block as ptcalc_3threads_block
 
@@ -111,52 +113,8 @@ def ptcalc_3threads_test(dut):
     testvector_config                = config["testvectors"]
     testvector_config_inputs         = testvector_config["inputs"]
     testvector_config_outputs        = testvector_config["outputs"]
-    inputs_station_id= [["" for x in range(Ptcalc3threadsPorts.get_input_interface_ports(y))]for y in range(Ptcalc3threadsPorts.n_input_interfaces)]
-    inputs_thread_n= [[0 for x in range(Ptcalc3threadsPorts.get_input_interface_ports(y))]for y in range(Ptcalc3threadsPorts.n_input_interfaces)]
-    outputs_station_id= [["" for x in range(Ptcalc3threadsPorts.get_output_interface_ports(y))]for y in range(Ptcalc3threadsPorts.n_output_interfaces)]
-    tolerance= [["" for x in range(Ptcalc3threadsPorts.get_output_interface_ports(y))]for y in range(Ptcalc3threadsPorts.n_output_interfaces)]
-    outputs_thread_n= [[0 for x in range(Ptcalc3threadsPorts.get_output_interface_ports(y))]for y in range(Ptcalc3threadsPorts.n_output_interfaces)]
-    for i in range(Ptcalc3threadsPorts.n_input_interfaces):
-        if "station_ID" in testvector_config_inputs[i] :
-            inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        if "thread_n" in testvector_config_inputs[i]:
-            inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
-    for i in range(Ptcalc3threadsPorts.n_output_interfaces):
-        if "station_ID" in testvector_config_outputs[i] :
-            outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        else :
-            outputs_station_id[i] = ['NONE']
 
-        if "thread_n" in testvector_config_outputs[i]:
-            outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]
- 
-
-        if "tolerance" in testvector_config_outputs[i] :
-            tolerance[i] = testvector_config_outputs[i]["tolerance"]
-        else:
-            tolerance[i] = {"": ["",""]}
-
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCK## start the software block instance
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCKptcalc_3threads_block_instance = ptcalc_3threads_block.ptcalc_3threadsBlock(dut.clock, "ptcalc_3threadsBlock")
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(Ptcalc3threadsPorts.Inputs):
-    # CREATORSOFTWAREBLOCK    ptcalc_3threads_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.input_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{ptcalc_3threads_block_instance.name}_Input_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="in",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(Ptcalc3threadsPorts.Outputs):
-    # CREATORSOFTWAREBLOCK    ptcalc_3threads_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.output_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{ptcalc_3threads_block_instance.name}_Output_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="out",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKptcalc_3threads_block_instance.start()
+    test_config.read_io_config(config['testvectors'],Ptcalc3threadsPorts)
 
 
 
@@ -251,9 +209,9 @@ def ptcalc_3threads_test(dut):
             tvformat=input_tvformats[n_ip_intf],
             n_ports = Ptcalc3threadsPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
-            station_ID=inputs_station_id[n_ip_intf],
+            station_ID=Ptcalc3threadsPorts.config_inputs['station_id'][n_ip_intf],
             tv_type=input_tvtype[n_ip_intf],
-            cnd_thrd_id = inputs_thread_n[n_ip_intf]
+            cnd_thrd_id = Ptcalc3threadsPorts.config_inputs['thread_n'][n_ip_intf]
             ))
         for io in range(Ptcalc3threadsPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list.append(single_interface_list[io])
@@ -265,24 +223,24 @@ def ptcalc_3threads_test(dut):
             Ptcalc3threadsPorts.n_input_interfaces, 
             Ptcalc3threadsPorts.get_all_input_interface_ports(),
             num_events_to_process,
-            inputs_station_id
+            Ptcalc3threadsPorts.config_inputs['station_id']
         )
     )
 
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
-    for n_op_intf in range(Ptcalc3threadsPorts.n_output_interfaces): # Add concept of interface
-        single_interface_list = (events.parse_tvlist(
-            tv_bcid_list,
-            tvformat=output_tvformats[n_op_intf],
-            n_ports = Ptcalc3threadsPorts.get_output_interface_ports(n_op_intf),
-            n_to_load=num_events_to_process,
-            station_ID=outputs_station_id[n_op_intf],
-            tv_type="value",
-            cnd_thrd_id = outputs_thread_n[n_op_intf]
-            ))
-        output_tv_list.append(single_interface_list)
+    # for n_op_intf in range(Ptcalc3threadsPorts.n_output_interfaces): # Add concept of interface
+    #     single_interface_list = (events.parse_tvlist(
+    #         tv_bcid_list,
+    #         tvformat=output_tvformats[n_op_intf],
+    #         n_ports = Ptcalc3threadsPorts.get_output_interface_ports(n_op_intf),
+    #         n_to_load=num_events_to_process,
+    #         station_ID=outputs_station_id[n_op_intf],
+    #         tv_type="value",
+    #         cnd_thrd_id = outputs_thread_n[n_op_intf]
+    #         ))
+    #     output_tv_list.append(single_interface_list)
 
 
 
@@ -367,9 +325,9 @@ def ptcalc_3threads_test(dut):
             Ptcalc3threadsPorts.get_output_interface_ports(n_op_intf) , 
             num_events_to_process , 
             recvd_events_intf[n_op_intf],
-            tolerance[n_op_intf],
+            Ptcalc3threadsPorts.config_outputs['tolerance'][n_op_intf],
             output_dir,
-            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
+            stationNum=events.station_list_name_to_id(Ptcalc3threadsPorts.config_outputs['station_id'][n_op_intf])
         );
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
@@ -387,7 +345,7 @@ def ptcalc_3threads_test(dut):
         Ptcalc3threadsPorts.n_output_interfaces,
         field_fail_cnt_header,
         field_fail_cnt,
-        total_ports=Ptcalc3threadsPorts.n_output_ports(Ptcalc3threadsPorts)
+        total_ports=Ptcalc3threadsPorts.n_output_ports()
     )
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[

@@ -20,7 +20,9 @@ from cocotb.triggers import ClockCycles, RisingEdge, Combine, Timer, with_timeou
 from cocotb.result import TestFailure, TestSuccess
 
 import l0mdt_tb.testbench.polmux.polmux_wrapper as wrapper
-from l0mdt_tb.testbench.polmux.polmux_ports import PolmuxPorts
+from l0mdt_tb.testbench.polmux import polmux_ports
+PolmuxPorts=polmux_ports.PolmuxPorts()
+
 
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.polmux.polmux_block as polmux_block
 
@@ -114,59 +116,16 @@ def polmux_test(dut):
     testvector_config                = config["testvectors"]
     testvector_config_inputs         = testvector_config["inputs"]
     testvector_config_outputs        = testvector_config["outputs"]
-    inputs_station_id= [["" for x in range(PolmuxPorts.get_input_interface_ports(y))]for y in range(PolmuxPorts.n_input_interfaces)]
-    inputs_thread_n= [[0 for x in range(PolmuxPorts.get_input_interface_ports(y))]for y in range(PolmuxPorts.n_input_interfaces)]
-    outputs_station_id= [["" for x in range(PolmuxPorts.get_output_interface_ports(y))]for y in range(PolmuxPorts.n_output_interfaces)]
-    tolerance= [["" for x in range(PolmuxPorts.get_output_interface_ports(y))]for y in range(PolmuxPorts.n_output_interfaces)]
-    outputs_thread_n= [[0 for x in range(PolmuxPorts.get_output_interface_ports(y))]for y in range(PolmuxPorts.n_output_interfaces)]
-    for i in range(PolmuxPorts.n_input_interfaces):
-        if "station_ID" in testvector_config_inputs[i] :
-            inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-            if inputs_station_id[i]=="mezz_idx_to_station":
-                inputs_station_id[i] = 120*["INN"] + 120*["MID"] + 120*["OUT"] + 120*["EXT"]
-                
-                if len(inputs_station_id[i])!=PolmuxPorts.get_input_interface_ports(i):
-                    cocotb.log.fatal(f"len(inputs_station_id[i]) {len(inputs_station_id[i])} different from PolmuxPorts.get_input_interface_ports(i) {PolmuxPorts.get_input_interface_ports(i)}")
-                    raise Exception
-        if "thread_n" in testvector_config_inputs[i]:
-            inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
-    for i in range(PolmuxPorts.n_output_interfaces):
-        if "station_ID" in testvector_config_outputs[i] :
-            outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-      
-        if "thread_n" in testvector_config_outputs[i]:
-            outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]
- 
 
-        if "tolerance" in testvector_config_outputs[i] :
-            tolerance[i] = testvector_config_outputs[i]["tolerance"]
-        else:
-            tolerance[i] = {"": ["",""]}
+    test_config.read_io_config(config['testvectors'],PolmuxPorts)
 
+    ### Special config from JSON
 
     pad_size = config['testvectors']['inputs'][0]['padding_size']
+    for i in range(PolmuxPorts.n_input_interfaces):
+        if PolmuxPorts.config_inputs['station_id'][i]=="mezz_idx_to_station":
+            PolmuxPorts.config_inputs['station_id'][i] = 120*["INN"] + 120*["MID"] + 120*["OUT"] + 120*["EXT"]
 
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCK## start the software block instance
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCKpolmux_block_instance = polmux_block.polmuxBlock(dut.clock, "polmuxBlock")
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(PolmuxPorts.Inputs):
-    # CREATORSOFTWAREBLOCK    polmux_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.input_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{polmux_block_instance.name}_Input_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="in",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(PolmuxPorts.Outputs):
-    # CREATORSOFTWAREBLOCK    polmux_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.output_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{polmux_block_instance.name}_Output_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="out",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKpolmux_block_instance.start()
 
 
 
@@ -271,10 +230,10 @@ def polmux_test(dut):
             tvformat=input_tvformats[n_ip_intf],
             n_ports = PolmuxPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
-            station_ID=inputs_station_id[n_ip_intf],
+            station_ID=PolmuxPorts.config_inputs['station_id'][n_ip_intf],
             tv_type=input_tvtype[n_ip_intf],
             tv_df_type= "MDT",
-            cnd_thrd_id = inputs_thread_n[n_ip_intf],
+            cnd_thrd_id = PolmuxPorts.config_inputs['thread_n'][n_ip_intf],
             zero_padding_size=pad_size
             ))
         for io in range(PolmuxPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
@@ -383,9 +342,9 @@ def polmux_test(dut):
             PolmuxPorts.get_output_interface_ports(n_op_intf) , 
             num_events_to_process , 
             recvd_events_intf[n_op_intf],
-            tolerance[n_op_intf],
+            PolmuxPorts.config_outputs['tolerance'][n_op_intf],
             output_dir,
-            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf]),
+            stationNum=events.station_list_name_to_id(PolmuxPorts.config_outputs['station_id'][n_op_intf]),
             tv_thread_mapping=[0 for _ in range(PolmuxPorts.get_output_interface_ports(n_op_intf))],
             tv_df_type='MDT',
             tv_type=output_tvtype[n_op_intf],
@@ -406,7 +365,7 @@ def polmux_test(dut):
         PolmuxPorts.n_output_interfaces,
         field_fail_cnt_header,
         field_fail_cnt,
-        total_ports=PolmuxPorts.n_output_ports(PolmuxPorts)
+        total_ports=PolmuxPorts.n_output_ports()
     )
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[

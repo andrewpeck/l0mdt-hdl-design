@@ -18,7 +18,9 @@ from cocotb.result import TestFailure, TestSuccess
 
 from tabulate import tabulate
 import l0mdt_tb.testbench.mpl_mtc.mpl_mtc_wrapper as wrapper
-from l0mdt_tb.testbench.mpl_mtc.mpl_mtc_ports import MplMtcPorts
+from l0mdt_tb.testbench.mpl_mtc import mpl_mtc_ports
+MplMtcPorts=mpl_mtc_ports.MplMtcPorts()
+
 
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.mpl_mtc.mpl_mtc_block as mpl_mtc_block
 
@@ -110,10 +112,11 @@ def mpl_mtc_test(dut):
     pl_latency                       = inputs[1]["pl_latency"]
     cocotb_outputs                   = 0
 
-    outputs_station_id= [["" for x in range(MplMtcPorts.get_output_interface_ports(y))]for y in range(MplMtcPorts.n_output_interfaces)]
     for i in range(MplMtcPorts.n_output_interfaces):
         cocotb_outputs = MplMtcPorts.get_output_interface_ports(i) + cocotb_outputs
 
+
+    test_config.read_io_config(config['testvectors'],MplMtcPorts)
 
     pl_mtc_tol = {
         "phimod": ["abs", 100],
@@ -320,7 +323,7 @@ def mpl_mtc_test(dut):
             recvd_events_intf[n_op_intf],
             tolerances=pl_mtc_tol,
             output_path=output_dir,
-            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
+            stationNum=events.station_list_name_to_id(MplMtcPorts.config_outputs['station_id'][n_op_intf])
         );
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i

@@ -20,7 +20,9 @@ from cocotb.triggers import ClockCycles, RisingEdge, Combine, Timer, with_timeou
 from cocotb.result import TestFailure, TestSuccess
 
 import l0mdt_tb.testbench.heg_3threads.heg_3threads_wrapper as wrapper
-from l0mdt_tb.testbench.heg_3threads.heg_3threads_ports import Heg3threadsPorts
+from l0mdt_tb.testbench.heg_3threads import heg_3threads_ports 
+Heg3threadsPorts=heg_3threads_ports.Heg3threadsPorts()
+
 
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.heg_3threads.heg_3threads_block as heg_3threads_block
 
@@ -116,38 +118,9 @@ def heg_3threads_test(dut):
     testvector_config                = config["testvectors"]
     testvector_config_inputs         = testvector_config["inputs"]
     testvector_config_outputs        = testvector_config["outputs"]
-    inputs_tv_df_type= [["" for x in range(Heg3threadsPorts.get_input_interface_ports(y))]for y in range(Heg3threadsPorts.n_input_interfaces)]
-    outputs_tv_df_type= [["" for x in range(Heg3threadsPorts.get_output_interface_ports(y))]for y in range(Heg3threadsPorts.n_output_interfaces)]
-    inputs_station_id= [["" for x in range(Heg3threadsPorts.get_input_interface_ports(y))]for y in range(Heg3threadsPorts.n_input_interfaces)]
-    inputs_thread_n= [[0 for x in range(Heg3threadsPorts.get_input_interface_ports(y))]for y in range(Heg3threadsPorts.n_input_interfaces)]
-    outputs_station_id= [["" for x in range(Heg3threadsPorts.get_output_interface_ports(y))]for y in range(Heg3threadsPorts.n_output_interfaces)]
-    tolerance= [["" for x in range(Heg3threadsPorts.get_output_interface_ports(y))]for y in range(Heg3threadsPorts.n_output_interfaces)]
-    outputs_thread_n= [[0 for x in range(Heg3threadsPorts.get_output_interface_ports(y))]for y in range(Heg3threadsPorts.n_output_interfaces)]
-    for i in range(Heg3threadsPorts.n_input_interfaces):
-        if "tv_df_type" in testvector_config_inputs[i]:
-            inputs_tv_df_type[i] = testvector_config_inputs[i]["tv_df_type"]
-        else:
-            inputs_tv_df_type[i] = "SL"
-        if "station_ID" in testvector_config_inputs[i] :
-            inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        if "thread_n" in testvector_config_inputs[i]:
-            inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
-    for i in range(Heg3threadsPorts.n_output_interfaces):
-        if "tv_df_type" in testvector_config_outputs[i]:
-            outputs_tv_df_type[i] = testvector_config_outputs[i]["tv_df_type"]
-        else:
-            outputs_tv_df_type[i] = "SL"
-        if "station_ID" in testvector_config_outputs[i] :
-            outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-      
-        if "thread_n" in testvector_config_outputs[i]:
-            outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]
- 
 
-        if "tolerance" in testvector_config_outputs[i] :
-            tolerance[i] = testvector_config_outputs[i]["tolerance"]
-        else:
-            tolerance[i] = {"": ["",""]}
+    test_config.read_io_config(config['testvectors'],Heg3threadsPorts)
+
 
     # CREATORSOFTWAREBLOCK##
     # CREATORSOFTWAREBLOCK## start the software block instance
@@ -264,10 +237,10 @@ def heg_3threads_test(dut):
             tvformat=input_tvformats[n_ip_intf],
             n_ports = Heg3threadsPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
-            station_ID=inputs_station_id[n_ip_intf],
+            station_ID=Heg3threadsPorts.config_inputs['station_id'][n_ip_intf],
             tv_type=input_tvtype[n_ip_intf],
-            tv_df_type = inputs_tv_df_type[n_ip_intf],
-            cnd_thrd_id = inputs_thread_n[n_ip_intf]
+            tv_df_type = Heg3threadsPorts.config_inputs['tv_df_type'][n_ip_intf],
+            cnd_thrd_id = Heg3threadsPorts.config_inputs['thread_n'][n_ip_intf]
             ))
         for io in range(Heg3threadsPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list.append(single_interface_list[io])
@@ -380,7 +353,7 @@ def heg_3threads_test(dut):
             Heg3threadsPorts.get_output_interface_ports(n_op_intf) , 
             num_events_to_process , 
             recvd_events_intf[n_op_intf],
-            tolerance[n_op_intf],
+            Heg3threadsPorts.config_output['tolerance'][n_op_intf],
             output_dir,
             stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf]),
             tv_thread_mapping=outputs_thread_n[n_op_intf],

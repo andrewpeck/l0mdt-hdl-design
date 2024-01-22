@@ -15,7 +15,9 @@ from cocotb.triggers import ClockCycles, RisingEdge, Combine, Timer, with_timeou
 from cocotb.result import TestFailure, TestSuccess
 
 import l0mdt_tb.testbench.mtc.mtc_wrapper as wrapper
-from l0mdt_tb.testbench.mtc.mtc_ports import MtcPorts
+from l0mdt_tb.testbench.mtc import mtc_ports
+MtcPorts=mtc_ports.MtcPorts()
+
 
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.mtc.mtc_block as mtc_block
 
@@ -110,13 +112,6 @@ def mtc_test(dut):
     inputs_station_id= [["" for x in range(MtcPorts.get_input_interface_ports(y))]for y in range(MtcPorts.n_input_interfaces)]
     outputs_station_id= [["" for x in range(MtcPorts.get_output_interface_ports(y))]for y in range(MtcPorts.n_output_interfaces)]
 
-    for i in range(MtcPorts.n_input_interfaces):
-        if "station_ID" in testvector_config_inputs[i] :
-            inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-    for i in range(MtcPorts.n_output_interfaces):
-        if "station_ID" in testvector_config_outputs[i] :
-            outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-            
 
     mtc2sl_lsf_tol = {
         "mdt_pt": ["abs", 100],
@@ -206,8 +201,8 @@ def mtc_test(dut):
         )
 
     ###Get Input Test Vector List for Ports across all input interfaces##
-    input_tv_list         =  [["" for x in range(num_events_to_process)] for y in range (MtcPorts.n_input_ports(MtcPorts))]
-    input_tv_list_i       =  [["" for x in range(num_events_to_process)] for y in range (MtcPorts.n_input_ports(MtcPorts))]
+    input_tv_list         =  [["" for x in range(num_events_to_process)] for y in range (MtcPorts.n_input_ports())]
+    input_tv_list_i       =  [["" for x in range(num_events_to_process)] for y in range (MtcPorts.n_input_ports())]
     sb_port_index = 0
     for n_ip_intf in range(MtcPorts.n_input_interfaces): # Add concept of interface
         single_interface_list = [["" for x in range(num_events_to_process)] for y in range(MtcPorts.get_input_interface_ports(n_ip_intf))]
@@ -355,7 +350,7 @@ def mtc_test(dut):
         MtcPorts.n_output_interfaces,
         field_fail_cnt_header,
         field_fail_cnt,
-        total_ports=MtcPorts.n_output_ports(MtcPorts)
+        total_ports=MtcPorts.n_output_ports()
     )
 
 

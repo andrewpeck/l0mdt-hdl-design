@@ -17,7 +17,9 @@ from cocotb.triggers import ClockCycles, RisingEdge, Combine, Timer, with_timeou
 from cocotb.result import TestFailure, TestSuccess
 
 import l0mdt_tb.testbench.lsf.lsf_wrapper as wrapper
-from l0mdt_tb.testbench.lsf.lsf_ports import LsfPorts
+from l0mdt_tb.testbench.lsf import lsf_ports 
+LsfPorts=lsf_ports.LsfPorts()
+
 
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.lsf.lsf_block as lsf_block
 
@@ -124,15 +126,8 @@ def lsf_test(dut):
     testvector_config = config["testvectors"]
     testvector_config_inputs  = testvector_config["inputs"]
     testvector_config_outputs  = testvector_config["outputs"]
-    inputs_station_id= [["" for x in range(LsfPorts.get_input_interface_ports(y))]for y in range(LsfPorts.n_input_interfaces)]
-    outputs_station_id= [["" for x in range(LsfPorts.get_output_interface_ports(y))]for y in range(LsfPorts.n_output_interfaces)]
-    sf2ptcalc_tol= [["" for x in range(LsfPorts.get_output_interface_ports(y))]for y in range(LsfPorts.n_output_interfaces)]
-    for i in range(LsfPorts.n_input_interfaces):
-        if "station_ID" in testvector_config_inputs[i] :
-            inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-    for i in range(LsfPorts.n_output_interfaces):
-        outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        sf2ptcalc_tol[i] = testvector_config_outputs[i]["tolerance"]
+    
+    test_config.read_io_config(config['testvectors'],LsfPorts)
 
     ##
     ## setup the clock and start it
@@ -233,7 +228,7 @@ def lsf_test(dut):
                 tvformat=input_tvformats[n_ip_intf],
                 n_ports=LsfPorts.get_input_interface_ports(n_ip_intf),
                 n_to_load=num_events_to_process,
-                station_ID=inputs_station_id[n_ip_intf],
+                station_ID=LsfPorts.config_inputs['station_id'][n_ip_intf],
                 tv_type=input_tvtype[n_ip_intf]
             ))
         else:
@@ -279,17 +274,17 @@ def lsf_test(dut):
 ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list = []
     single_interface_list = []
-    for n_op_intf in range(LsfPorts.n_output_interfaces):  # Add concept of interface
-        single_interface_list = (events.parse_tvlist(
-            tv_bcid_list,
-            tvformat=output_tvformats[n_op_intf],
-            n_ports=LsfPorts.get_output_interface_ports(n_op_intf),
-            n_to_load=num_events_to_process,
-            station_ID=inputs_station_id[n_ip_intf],
-            tv_type="value"
-        ))
-        #print("single_interface_list",single_interface_list)
-        output_tv_list.append(single_interface_list)
+    # for n_op_intf in range(LsfPorts.n_output_interfaces):  # Add concept of interface
+    #     single_interface_list = (events.parse_tvlist(
+    #         tv_bcid_list,
+    #         tvformat=output_tvformats[n_op_intf],
+    #         n_ports=LsfPorts.get_output_interface_ports(n_op_intf),
+    #         n_to_load=num_events_to_process,
+    #         station_ID=inputs_station_id[n_ip_intf],
+    #         tv_type="value"
+    #     ))
+    #     #print("single_interface_list",single_interface_list)
+    #     output_tv_list.append(single_interface_list)
     #print("output_tv_list",output_tv_list[0])
 
     ##
@@ -403,9 +398,9 @@ def lsf_test(dut):
             LsfPorts.get_output_interface_ports(n_op_intf) , 
             num_events_to_process , 
             recvd_events_intf[n_op_intf], 
-            sf2ptcalc_tol[n_op_intf],
+            LsfPorts.config_outputs['tolerance'][n_op_intf],
             output_path=output_dir,
-            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
+            stationNum=events.station_list_name_to_id(LsfPorts.config_outputs['station_id'][n_op_intf])
         );
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i

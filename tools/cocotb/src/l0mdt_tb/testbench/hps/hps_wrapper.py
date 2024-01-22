@@ -17,7 +17,8 @@
 import cocotb
 from cocotb.triggers import Event, Combine, with_timeout, Timer
 
-from l0mdt_tb.testbench.hps.hps_ports import HpsPorts
+from l0mdt_tb.testbench.hps import hps_ports
+HpsPorts=hps_ports.HpsPorts()
 
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils import block_wrapper
@@ -43,7 +44,7 @@ class HpsWrapper(block_wrapper.BlockWrapper):
         port_index      = 0
         interface_port  = 0
 
-        for port_num in range(HpsPorts.n_input_ports(HpsPorts)):
+        for port_num in range(HpsPorts.n_input_ports()):
             if port_num == (port_index + HpsPorts.get_input_interface_ports(input_interface)) :
                 port_index      = (port_index + HpsPorts.get_input_interface_ports(input_interface))
                 input_interface = input_interface + 1

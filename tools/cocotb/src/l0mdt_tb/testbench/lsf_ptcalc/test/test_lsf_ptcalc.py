@@ -20,7 +20,9 @@ from cocotb.triggers import ClockCycles, RisingEdge, Combine, Timer, with_timeou
 from cocotb.result import TestFailure, TestSuccess
 
 import l0mdt_tb.testbench.lsf_ptcalc.lsf_ptcalc_wrapper as wrapper
-from l0mdt_tb.testbench.lsf_ptcalc.lsf_ptcalc_ports import LsfPtcalcPorts
+from l0mdt_tb.testbench.lsf_ptcalc import lsf_ptcalc_ports
+LsfPtcalcPorts=lsf_ptcalc_ports.LsfPtcalcPorts()
+
 
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.lsf_ptcalc.lsf_ptcalc_block as lsf_ptcalc_block
 
@@ -111,31 +113,9 @@ def lsf_ptcalc_test(dut):
     testvector_config                = config["testvectors"]
     testvector_config_inputs         = testvector_config["inputs"]
     testvector_config_outputs        = testvector_config["outputs"]
-    inputs_station_id= [["" for x in range(LsfPtcalcPorts.get_input_interface_ports(y))]for y in range(LsfPtcalcPorts.n_input_interfaces)]
-    inputs_thread_n= [[0 for x in range(LsfPtcalcPorts.get_input_interface_ports(y))]for y in range(LsfPtcalcPorts.n_input_interfaces)]
-    outputs_station_id= [["" for x in range(LsfPtcalcPorts.get_output_interface_ports(y))]for y in range(LsfPtcalcPorts.n_output_interfaces)]
-    tolerance= [["" for x in range(LsfPtcalcPorts.get_output_interface_ports(y))]for y in range(LsfPtcalcPorts.n_output_interfaces)]
-    outputs_thread_n= [[0 for x in range(LsfPtcalcPorts.get_output_interface_ports(y))]for y in range(LsfPtcalcPorts.n_output_interfaces)]
-    for i in range(LsfPtcalcPorts.n_input_interfaces):
-        if "station_ID" in testvector_config_inputs[i] :
-            inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        if "thread_n" in testvector_config_inputs[i]:
-            inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
-    for i in range(LsfPtcalcPorts.n_output_interfaces):
-        if "station_ID" in testvector_config_outputs[i] :
-            outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        else :
-            outputs_station_id[i] = ['NONE']
 
-        if "thread_n" in testvector_config_outputs[i]:
-            outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]
- 
 
-        if "tolerance" in testvector_config_outputs[i] :
-            tolerance[i] = testvector_config_outputs[i]["tolerance"]
-        else:
-            tolerance[i] = {"": ["",""]}
-
+    test_config.read_io_config(config['testvectors'],LsfPtcalcPorts)
 
     ### LSF_PTCALC specific configuration##
     heg2sfslc_ii_tmp = test_vectors["inputs"][0]
@@ -148,28 +128,6 @@ def lsf_ptcalc_test(dut):
     hb_acc           = heg2sfhit_ii_tmp["hb_acc"]
     max_hits         = lsf_ctrl["max_hits"]   
     lsf_compute_results_latency = pl2ptcalc["lsf_compute_results_latency"]
-    #############################
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCK## start the software block instance
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCKlsf_ptcalc_block_instance = lsf_ptcalc_block.lsf_ptcalcBlock(dut.clock, "lsf_ptcalcBlock")
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(LsfPtcalcPorts.Inputs):
-    # CREATORSOFTWAREBLOCK    lsf_ptcalc_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.input_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{lsf_ptcalc_block_instance.name}_Input_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="in",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(LsfPtcalcPorts.Outputs):
-    # CREATORSOFTWAREBLOCK    lsf_ptcalc_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.output_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{lsf_ptcalc_block_instance.name}_Output_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="out",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKlsf_ptcalc_block_instance.start()
 
 
 
@@ -270,9 +228,9 @@ def lsf_ptcalc_test(dut):
                 tvformat=input_tvformats[n_ip_intf],
                 n_ports = LsfPtcalcPorts.get_input_interface_ports(n_ip_intf),
                 n_to_load=num_events_to_process,
-                station_ID=inputs_station_id[n_ip_intf],
+                station_ID=LsfPtcalcPorts.config_inputs['station_id'][n_ip_intf],
                 tv_type=input_tvtype[n_ip_intf],
-                cnd_thrd_id = inputs_thread_n[n_ip_intf]
+                cnd_thrd_id = LsfPtcalcPorts.config_inputs['thread_n'][n_ip_intf]
             ))
         else:
             single_interface_list = []
@@ -419,9 +377,9 @@ def lsf_ptcalc_test(dut):
             LsfPtcalcPorts.get_output_interface_ports(n_op_intf) , 
             num_events_to_process , 
             recvd_events_intf[n_op_intf],
-            tolerance[n_op_intf],
+            LsfPtcalcPorts.config_outputs['tolerance'][n_op_intf],
             output_dir,
-            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
+            stationNum=events.station_list_name_to_id(LsfPtcalcPorts.config_outputs['station_id'][n_op_intf])
         );
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
@@ -440,7 +398,7 @@ def lsf_ptcalc_test(dut):
         LsfPtcalcPorts.n_output_interfaces,
         field_fail_cnt_header,
         field_fail_cnt,
-        total_ports=LsfPtcalcPorts.n_output_ports(LsfPtcalcPorts)
+        total_ports=LsfPtcalcPorts.n_output_ports()
     )
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[

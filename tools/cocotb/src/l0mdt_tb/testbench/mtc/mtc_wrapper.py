@@ -8,7 +8,8 @@
 import cocotb
 from cocotb.triggers import Event, Combine, with_timeout, Timer
 
-from l0mdt_tb.testbench.mtc.mtc_ports import MtcPorts
+from l0mdt_tb.testbench.mtc import mtc_ports
+MtcPorts=mtc_ports.MtcPorts()
 
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils import block_wrapper
@@ -39,7 +40,7 @@ class MtcWrapper(block_wrapper.BlockWrapper):
         port_index      = 0
         interface_port  = 0
 
-        for port_num in range(MtcPorts.n_input_ports(MtcPorts)):
+        for port_num in range(MtcPorts.n_input_ports()):
             if port_num == (port_index + MtcPorts.get_input_interface_ports(input_interface)) :
                 port_index      = (port_index + MtcPorts.get_input_interface_ports(input_interface))
                 input_interface = input_interface + 1

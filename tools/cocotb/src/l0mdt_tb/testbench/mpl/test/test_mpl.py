@@ -115,37 +115,6 @@ def mpl_test(dut):
     master_tv_file                   = test_config.get_testvector_file_from_config(config)
     test_config.read_io_config(config['testvectors'], MplPorts)
 
-    # testvector_config_inputs         = testvector_config["inputs"]
-    # testvector_config_outputs        = testvector_config["outputs"]
-    # inputs_tv_df_type= [["" for x in range(MplPorts.get_input_interface_ports(y))]for y in range(MplPorts.n_input_interfaces)]
-    # outputs_tv_df_type= [["" for x in range(MplPorts.get_output_interface_ports(y))]for y in range(MplPorts.n_output_interfaces)]
-    # inputs_station_id= [["" for x in range(MplPorts.get_input_interface_ports(y))]for y in range(MplPorts.n_input_interfaces)]
-    # inputs_thread_n= [[0 for x in range(MplPorts.get_input_interface_ports(y))]for y in range(MplPorts.n_input_interfaces)]
-    # outputs_station_id= [["" for x in range(MplPorts.get_output_interface_ports(y))]for y in range(MplPorts.n_output_interfaces)]
-    # tolerance= [["" for x in range(MplPorts.get_output_interface_ports(y))]for y in range(MplPorts.n_output_interfaces)]
-    # outputs_thread_n= [[0 for x in range(MplPorts.get_output_interface_ports(y))]for y in range(MplPorts.n_output_interfaces)]
-    # for i in range(MplPorts.n_input_interfaces):
-    #     if "station_ID" in testvector_config_inputs[i] :
-    #         inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-    #     if "thread_n" in testvector_config_inputs[i]:
-    #         inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
-    #     if "tv_df_type" in testvector_config_inputs[i]:
-    #         inputs_tv_df_type[i] = testvector_config_inputs[i]["tv_df_type"]
-    #     else:
-    #         inputs_tv_df_type[i] = "SL"
-    # for i in range(MplPorts.n_output_interfaces):
-    #     if "station_ID" in testvector_config_outputs[i] :
-    #         outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-    #     if "thread_n" in testvector_config_outputs[i]:
-    #         outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]        
-    #     if "tolerance" in testvector_config_outputs[i] :
-    #         tolerance[i] = testvector_config_outputs[i]["tolerance"]
-    #     else:
-    #         tolerance[i] = {"": ["",""]}
-    #     if "tv_df_type" in testvector_config_outputs[i]:
-    #         outputs_tv_df_type[i] = testvector_config_outputs[i]["tv_df_type"]
-    #     else:
-    #         outputs_tv_df_type[i] = "SL"
 
 
     # CREATORSOFTWAREBLOCK##

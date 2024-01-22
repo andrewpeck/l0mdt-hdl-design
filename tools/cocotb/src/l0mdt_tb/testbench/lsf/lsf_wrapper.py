@@ -15,7 +15,8 @@
 import cocotb
 from cocotb.triggers import Event, Combine, with_timeout, Timer
 
-from l0mdt_tb.testbench.lsf.lsf_ports import LsfPorts
+from l0mdt_tb.testbench.lsf import lsf_ports 
+LsfPorts=lsf_ports.LsfPorts()
 
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils import block_wrapper
@@ -46,7 +47,7 @@ class LsfWrapper(block_wrapper.BlockWrapper):
         port_index      = 0
         interface_port  = 0
 
-        for port_num in range(LsfPorts.n_input_ports(LsfPorts)):
+        for port_num in range(LsfPorts.n_input_ports()):
             if port_num == (port_index + LsfPorts.get_input_interface_ports(input_interface)) :
                 input_interface = input_interface + 1
                 port_index      = (port_index + LsfPorts.get_input_interface_ports(input_interface))

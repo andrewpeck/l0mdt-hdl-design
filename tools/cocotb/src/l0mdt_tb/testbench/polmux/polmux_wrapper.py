@@ -17,7 +17,8 @@
 import cocotb
 from cocotb.triggers import Event, Combine, with_timeout, Timer
 
-from l0mdt_tb.testbench.polmux.polmux_ports import PolmuxPorts
+from l0mdt_tb.testbench.polmux import polmux_ports
+PolmuxPorts=polmux_ports.PolmuxPorts()
 
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils import block_wrapper
@@ -43,7 +44,7 @@ class PolmuxWrapper(block_wrapper.BlockWrapper):
         port_index      = 0
         interface_port  = 0
 
-        for port_num in range(PolmuxPorts.n_input_ports(PolmuxPorts)):
+        for port_num in range(PolmuxPorts.n_input_ports()):
             if port_num == (port_index + PolmuxPorts.get_input_interface_ports(input_interface)) :
                 port_index      = (port_index + PolmuxPorts.get_input_interface_ports(input_interface))
                 input_interface = input_interface + 1
