@@ -15,7 +15,8 @@
 import cocotb
 from cocotb.triggers import Event, Combine, with_timeout, Timer
 
-from l0mdt_tb.testbench.ucm.ucm_ports import UcmPorts
+from l0mdt_tb.testbench.ucm import ucm_ports
+UcmPorts=ucm_ports.UcmPorts()
 
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils import block_wrapper
@@ -41,7 +42,7 @@ class UcmWrapper(block_wrapper.BlockWrapper):
         port_index      = 0
         interface_port  = 0
 
-        for port_num in range(UcmPorts.n_input_ports(UcmPorts)):
+        for port_num in range(UcmPorts.n_input_ports()):
             if port_num == (port_index + UcmPorts.get_input_interface_ports(input_interface)) :
                 port_index      = (port_index + UcmPorts.get_input_interface_ports(input_interface))
                 input_interface = input_interface + 1

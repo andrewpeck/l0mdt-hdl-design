@@ -20,7 +20,8 @@ from cocotb.triggers import ClockCycles, RisingEdge, Combine, Timer, with_timeou
 from cocotb.result import TestFailure, TestSuccess
 
 import l0mdt_tb.testbench.ptc_mpi.ptc_mpi_wrapper as wrapper
-from l0mdt_tb.testbench.ptc_mpi.ptc_mpi_ports import PtcMpiPorts
+from l0mdt_tb.testbench.ptc_mpi import ptc_mpi_ports
+PtcMpiPorts=ptc_mpi_ports.PtcMpiPorts()
 
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.ptc_mpi.ptc_mpi_block as ptc_mpi_block
 
@@ -113,46 +114,7 @@ def ptc_mpi_test(dut):
     testvector_config_inputs         = testvector_config["inputs"]
     testvector_config_outputs        = testvector_config["outputs"]
 
-    inputs_station_id= [["" for x in range(PtcMpiPorts.get_input_interface_ports(y))]for y in range(PtcMpiPorts.n_input_interfaces)]
-    outputs_station_id= [["" for x in range(PtcMpiPorts.get_output_interface_ports(y))]for y in range(PtcMpiPorts.n_output_interfaces)]
-    tolerance= [["" for x in range(PtcMpiPorts.get_output_interface_ports(y))]for y in range(PtcMpiPorts.n_output_interfaces)]
-    for i in range(PtcMpiPorts.n_input_interfaces):
-        if "station_ID" in testvector_config_inputs[i] :
-            inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-    for i in range(PtcMpiPorts.n_output_interfaces):
-        if "station_ID" in testvector_config_outputs[i] :
-            outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        else :
-            outputs_station_id[i] = ['NONE']
-
-        if "tolerance" in testvector_config_outputs[i] :
-            tolerance[i] = testvector_config_outputs[i]["tolerance"]
-        else:
-            tolerance[i] = {"": ["",""]}
-
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCK## start the software block instance
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCKptc_mpi_block_instance = ptc_mpi_block.ptc_mpiBlock(dut.clock, "ptc_mpiBlock")
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(PtcMpiPorts.Inputs):
-    # CREATORSOFTWAREBLOCK    ptc_mpi_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.input_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{ptc_mpi_block_instance.name}_Input_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="in",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(PtcMpiPorts.Outputs):
-    # CREATORSOFTWAREBLOCK    ptc_mpi_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.output_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{ptc_mpi_block_instance.name}_Output_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="out",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKptc_mpi_block_instance.start()
-
-
+    test_config.read_io_config(config['testvectors'],PtcMpiPorts)
 
     ##
     ## setup the clock and start it
@@ -246,28 +208,27 @@ def ptc_mpi_test(dut):
             tvformat=input_tvformats[n_ip_intf],
             n_ports = PtcMpiPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
-            station_ID=inputs_station_id[n_ip_intf],
+            station_ID=PtcMpiPorts.config_inputs['station_id'][n_ip_intf],
             tv_type="value"
             ))
         single_interface_list_ii_delay = events.modify_tv(single_interface_list, mpi_ptcalc_ii)
         for io in range(PtcMpiPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list.append(single_interface_list_ii_delay[io])
 
-    print("input_tv_list =",input_tv_list)
 
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
-    for n_op_intf in range(PtcMpiPorts.n_output_interfaces): # Add concept of interface
-        single_interface_list = (events.parse_tvlist(
-            tv_bcid_list,
-            tvformat=output_tvformats[n_op_intf],
-            n_ports = PtcMpiPorts.get_output_interface_ports(n_op_intf),
-            n_to_load=num_events_to_process,
-            station_ID=outputs_station_id[n_op_intf],
-            tv_type="value"
-            ))
-        output_tv_list.append(single_interface_list)
+    # for n_op_intf in range(PtcMpiPorts.n_output_interfaces): # Add concept of interface
+    #     single_interface_list = (events.parse_tvlist(
+    #         tv_bcid_list,
+    #         tvformat=output_tvformats[n_op_intf],
+    #         n_ports = PtcMpiPorts.get_output_interface_ports(n_op_intf),
+    #         n_to_load=num_events_to_process,
+    #         station_ID=outputs_station_id[n_op_intf],
+    #         tv_type="value"
+    #         ))
+    #     output_tv_list.append(single_interface_list)
 
 
 
@@ -340,13 +301,20 @@ def ptc_mpi_test(dut):
 
 
     for n_op_intf in range (PtcMpiPorts.n_output_interfaces):
-        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],PtcMpiPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerance[n_op_intf],output_dir,stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf]));
+        events_are_equal, pass_count_i ,  fail_count_i,  field_fail_count_i  = events.compare_BitFields(tv_bcid_list,
+                                                       output_tvformats[n_op_intf],
+                                                       PtcMpiPorts.get_output_interface_ports(n_op_intf) ,
+                                                       num_events_to_process ,
+                                                       recvd_events_intf[n_op_intf],
+                                                       PtcMpiPorts.config_outputs['tolerance'][n_op_intf],
+                                                       output_dir,
+                                                       stationNum=events.station_list_name_to_id(PtcMpiPorts.config_outputs['station_id'][n_op_intf]));
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
         fail_count       = fail_count + fail_count_i
 
         for key in field_fail_count_i.keys():
-            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ outputs_station_id[n_op_intf][0], "FAIL COUNT"])
+            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ PtcMpiPorts.config_outputs['station_id'][n_op_intf][0], "FAIL COUNT"])
 
         field_fail_cnt.append(field_fail_count_i)
 
@@ -357,7 +325,7 @@ def ptc_mpi_test(dut):
         PtcMpiPorts.n_output_interfaces,
         field_fail_cnt_header,
         field_fail_cnt,
-        total_ports=PtcMpiPorts.n_output_ports(PtcMpiPorts)
+        total_ports=PtcMpiPorts.n_output_ports()
     )
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[

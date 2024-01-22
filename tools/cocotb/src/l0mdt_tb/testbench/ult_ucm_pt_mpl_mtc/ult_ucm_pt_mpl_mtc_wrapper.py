@@ -17,7 +17,8 @@
 import cocotb
 from cocotb.triggers import Event, Combine, with_timeout, Timer
 
-from l0mdt_tb.testbench.ult_ucm_pt_mpl_mtc.ult_ucm_pt_mpl_mtc_ports import UltUcmPtMplMtcPorts
+from l0mdt_tb.testbench.ult_ucm_pt_mpl_mtc import ult_ucm_pt_mpl_mtc_ports
+UltUcmPtMplMtcPorts=ult_ucm_pt_mpl_mtc_ports.UltUcmPtMplMtcPorts()
 
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils import block_wrapper
@@ -43,7 +44,7 @@ class UltUcmPtMplMtcWrapper(block_wrapper.BlockWrapper):
         port_index      = 0
         interface_port  = 0
 
-        for port_num in range(UltUcmPtMplMtcPorts.n_input_ports(UltUcmPtMplMtcPorts)):
+        for port_num in range(UltUcmPtMplMtcPorts.n_input_ports()):
             if port_num == (port_index + UltUcmPtMplMtcPorts.get_input_interface_ports(input_interface)) :
                 port_index      = (port_index + UltUcmPtMplMtcPorts.get_input_interface_ports(input_interface))
                 input_interface = input_interface + 1

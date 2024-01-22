@@ -17,7 +17,8 @@
 import cocotb
 from cocotb.triggers import Event, Combine, with_timeout, Timer
 
-from l0mdt_tb.testbench.ptc_mpi.ptc_mpi_ports import PtcMpiPorts
+from l0mdt_tb.testbench.ptc_mpi import ptc_mpi_ports
+PtcMpiPorts=ptc_mpi_ports.PtcMpiPorts()
 
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils import block_wrapper
@@ -43,7 +44,7 @@ class PtcMpiWrapper(block_wrapper.BlockWrapper):
         port_index      = 0
         interface_port  = 0
 
-        for port_num in range(PtcMpiPorts.n_input_ports(PtcMpiPorts)):
+        for port_num in range(PtcMpiPorts.n_input_ports()):
             if port_num == (port_index + PtcMpiPorts.get_input_interface_ports(input_interface)) :
                 port_index      = (port_index + PtcMpiPorts.get_input_interface_ports(input_interface))
                 input_interface = input_interface + 1

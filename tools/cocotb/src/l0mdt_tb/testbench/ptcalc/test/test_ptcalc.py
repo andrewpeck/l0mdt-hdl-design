@@ -24,7 +24,9 @@ from cocotb.triggers import ClockCycles, RisingEdge, Combine, Timer, with_timeou
 from cocotb.result import TestFailure, TestSuccess
 
 import l0mdt_tb.testbench.ptcalc.ptcalc_wrapper as wrapper
-from l0mdt_tb.testbench.ptcalc.ptcalc_ports import PtcalcPorts
+from l0mdt_tb.testbench.ptcalc import ptcalc_ports
+PtcalcPorts=ptcalc_ports.PtcalcPorts()
+
 
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.ptcalc.ptcalc_block as ptcalc_block
 
@@ -114,20 +116,8 @@ def ptcalc_test(dut):
     master_tv_file                   = test_config.get_testvector_file_from_config(config)
     testvector_config                = config["testvectors"]
     testvector_config_inputs         = testvector_config["inputs"]
-    inputs_station_id= [["" for x in range(PtcalcPorts.get_input_interface_ports(y))]for y in range(PtcalcPorts.n_input_interfaces)]
-    inputs_thread_n= [[0 for x in range(PtcalcPorts.get_input_interface_ports(y))]for y in range(PtcalcPorts.n_input_interfaces)]
-    ptcalc2mtc_lsf_tol = [["" for x in range(PtcalcPorts.get_output_interface_ports(y))]for y in range(PtcalcPorts.n_output_interfaces)]
-    ptcalc2mtc_lsf_thread_n= [[0 for x in range(PtcalcPorts.get_output_interface_ports(y))]for y in range(PtcalcPorts.n_output_interfaces)]
 
-    for i in range(PtcalcPorts.n_input_interfaces):
-        inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]
-        inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
-
-    testvector_config_outputs         = testvector_config["outputs"]
-    for i in range(PtcalcPorts.n_output_interfaces):
-        ptcalc2mtc_lsf_tol[i]         =  testvector_config_outputs[i]["tolerance"]
-
-  
+    test_config.read_io_config(config['testvectors'],PtcalcPorts)
 
 
 
@@ -221,8 +211,8 @@ def ptcalc_test(dut):
             tvformat=input_tvformats[n_ip_intf],
             n_ports = PtcalcPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
-            station_ID=inputs_station_id[n_ip_intf],
-            cnd_thrd_id = inputs_thread_n[n_ip_intf]
+            station_ID=PtcalcPorts.config_inputs['station_id'][n_ip_intf],
+            cnd_thrd_id = PtcalcPorts.config_inputs['thread_n'][n_ip_intf]
             ))
 
         single_interface_list_ii_delay = events.modify_tv(single_interface_list, ptcalc_ii)
@@ -241,14 +231,14 @@ def ptcalc_test(dut):
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
-    for n_op_intf in range(PtcalcPorts.n_output_interfaces): # Add concept of interface
-        single_interface_list = (events.parse_tvlist(
-            tv_bcid_list,
-            tvformat=output_tvformats[n_op_intf],
-            n_ports = PtcalcPorts.get_output_interface_ports(n_op_intf),
-            n_to_load=num_events_to_process
-            ))
-        output_tv_list.append(single_interface_list)
+    # for n_op_intf in range(PtcalcPorts.n_output_interfaces): # Add concept of interface
+    #     single_interface_list = (events.parse_tvlist(
+    #         tv_bcid_list,
+    #         tvformat=output_tvformats[n_op_intf],
+    #         n_ports = PtcalcPorts.get_output_interface_ports(n_op_intf),
+    #         n_to_load=num_events_to_process
+    #         ))
+    #     output_tv_list.append(single_interface_list)
     #HLS TB OUTPUT
     #output_tv_list[0] = 9011494602712095
     #print("OUTPUT_TV_LIST:",output_tv_list,"########")
@@ -330,7 +320,7 @@ def ptcalc_test(dut):
             PtcalcPorts.get_output_interface_ports(n_op_intf) ,
             num_events_to_process ,
             recvd_events_intf[n_op_intf],
-            ptcalc2mtc_lsf_tol[n_op_intf],
+            PtcalcPorts.config_outputs['tolerance'][n_op_intf],
             output_path=output_dir
         );
         all_tests_passed = (all_tests_passed and events_are_equal)
@@ -344,7 +334,7 @@ def ptcalc_test(dut):
         PtcalcPorts.n_output_interfaces,
         field_fail_cnt_header,
         field_fail_cnt,
-        total_ports=PtcalcPorts.n_output_ports(PtcalcPorts)
+        total_ports=PtcalcPorts.n_output_ports()
     )
 
 

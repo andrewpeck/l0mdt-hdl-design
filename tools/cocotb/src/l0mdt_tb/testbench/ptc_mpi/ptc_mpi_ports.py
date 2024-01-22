@@ -21,19 +21,19 @@ class PtcMpiPorts(port_descriptor.PortDescriptor):
 
 	n_output_interfaces = 1
 
-	def get_input_interface_ports(interface):
+	def get_input_interface_ports(self, interface):
 		input_ports = [3, 1]
 		return input_ports[interface]
 
-	def get_all_input_interface_ports():
+	def get_all_input_interface_ports(self):
 		input_ports = [3, 1]
 		return input_ports
 
-	def get_output_interface_ports(interface):
+	def get_output_interface_ports(self, interface):
 		output_ports = [1]
 		return output_ports[interface]
 
-	def get_all_output_interface_ports():
+	def get_all_output_interface_ports(self):
 		output_ports = [1]
 		return output_ports
 

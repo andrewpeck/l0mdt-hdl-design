@@ -53,8 +53,8 @@ entity tb_ult_pt_mpl_mtc_primary is
     out_segments_av   : in sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
     ext_segments_av   : in sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
 
-    i_plus_neighbor_segments  : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_minus_neighbor_segments : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_plus_neighbor_segments  : in  sf2ptcalc_vt;
+    i_minus_neighbor_segments : in  sf2ptcalc_vt;
 
   
 

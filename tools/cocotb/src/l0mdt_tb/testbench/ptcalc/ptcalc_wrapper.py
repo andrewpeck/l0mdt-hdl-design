@@ -15,7 +15,8 @@
 import cocotb
 from cocotb.triggers import Event, Combine, with_timeout, Timer
 
-from l0mdt_tb.testbench.ptcalc.ptcalc_ports import PtcalcPorts
+from l0mdt_tb.testbench.ptcalc import ptcalc_ports
+PtcalcPorts=ptcalc_ports.PtcalcPorts()
 
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils import block_wrapper
@@ -46,7 +47,7 @@ class PtcalcWrapper(block_wrapper.BlockWrapper):
         port_index      = 0
         interface_port  = 0
 
-        for port_num in range(PtcalcPorts.n_input_ports(PtcalcPorts)):
+        for port_num in range(PtcalcPorts.n_input_ports()):
             if port_num == (port_index + PtcalcPorts.get_input_interface_ports(input_interface)) :
                 port_index      = (port_index + PtcalcPorts.get_input_interface_ports(input_interface))
                 input_interface = input_interface + 1

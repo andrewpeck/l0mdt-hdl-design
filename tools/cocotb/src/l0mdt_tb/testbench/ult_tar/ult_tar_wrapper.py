@@ -17,7 +17,8 @@
 import cocotb
 from cocotb.triggers import Event, Combine, with_timeout, Timer
 
-from l0mdt_tb.testbench.ult_tar.ult_tar_ports import UltTarPorts
+from l0mdt_tb.testbench.ult_tar import ult_tar_ports
+UltTarPorts=ult_tar_ports.UltTarPorts()
 
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils import block_wrapper
@@ -43,7 +44,7 @@ class UltTarWrapper(block_wrapper.BlockWrapper):
         port_index      = 0
         interface_port  = 0
 
-        for port_num in range(UltTarPorts.n_input_ports(UltTarPorts)):        
+        for port_num in range(UltTarPorts.n_input_ports()):        
             if port_num == (port_index + UltTarPorts.get_input_interface_ports(input_interface)) :
                 # process next interface
                 port_index      = (port_index + UltTarPorts.get_input_interface_ports(input_interface))

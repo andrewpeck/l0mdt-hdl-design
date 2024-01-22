@@ -17,7 +17,8 @@ from cocotb.triggers import ClockCycles, RisingEdge, Combine, Timer, with_timeou
 from cocotb.result import TestFailure, TestSuccess
 
 import l0mdt_tb.testbench.ucm.ucm_wrapper as wrapper
-from l0mdt_tb.testbench.ucm.ucm_ports import UcmPorts
+from l0mdt_tb.testbench.ucm import ucm_ports
+UcmPorts=ucm_ports.UcmPorts()
 
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.ucm.ucm_block as ucm_block
 
@@ -128,29 +129,7 @@ def ucm_test(dut):
     ucm_latency                      = testvector_config["ucm_latency"]
     testvector_config_inputs         = testvector_config["inputs"]
     testvector_config_outputs        = testvector_config["outputs"]
-    inputs_station_id= [["" for x in range(UcmPorts.get_input_interface_ports(y))]for y in range(UcmPorts.n_input_interfaces)]
-    inputs_thread_n= [[0 for x in range(UcmPorts.get_input_interface_ports(y))]for y in range(UcmPorts.n_input_interfaces)]
-    outputs_station_id= [["" for x in range(UcmPorts.get_output_interface_ports(y))]for y in range(UcmPorts.n_output_interfaces)]
-    tolerance= [["" for x in range(UcmPorts.get_output_interface_ports(y))]for y in range(UcmPorts.n_output_interfaces)]
-    outputs_thread_n= [[0 for x in range(UcmPorts.get_output_interface_ports(y))]for y in range(UcmPorts.n_output_interfaces)]
-    for i in range(UcmPorts.n_input_interfaces):
-        if "station_ID" in testvector_config_inputs[i] :
-            inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        if "thread_n" in testvector_config_inputs[i]:
-            inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
-    for i in range(UcmPorts.n_output_interfaces):
-        if "station_ID" in testvector_config_outputs[i] :
-            outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        
-
-        if "thread_n" in testvector_config_outputs[i]:
-            outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]
-
-        if "tolerance" in testvector_config_outputs[i] :
-            tolerance[i] = testvector_config_outputs[i]["tolerance"]
-        else:
-            tolerance[i] = {"": ["",""]}
-
+    test_config.read_io_config(config['testvectors'],UcmPorts)
 
 
     # CREATORSOFTWAREBLOCK##
@@ -274,7 +253,7 @@ def ucm_test(dut):
             n_ports = UcmPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
             tv_type="value",
-            cnd_thrd_id = inputs_thread_n[n_ip_intf]
+            cnd_thrd_id = UcmPorts.config_inputs['thread_n'][n_ip_intf]
             ))
         
 
@@ -294,27 +273,27 @@ def ucm_test(dut):
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
-    cocotb.log.debug("\n\n\n\n\nGet Output Test Vector List for Ports across all output interfaces")
-    for n_op_intf in range(UcmPorts.n_output_interfaces): # Add concept of interface
-        if "EXT" in outputs_station_id[n_op_intf]:
-            continue
-        single_interface_list = (events.parse_tvlist(
-            tv_bcid_list,
-            tvformat=output_tvformats[n_op_intf],
-            n_ports = UcmPorts.get_output_interface_ports(n_op_intf),
-            n_to_load=num_events_to_process,
-            station_ID=outputs_station_id[n_op_intf],
-            tv_type="list"
-            ))
-        output_tv_list.append(single_interface_list)
+    # cocotb.log.debug("\n\n\n\n\nGet Output Test Vector List for Ports across all output interfaces")
+    # for n_op_intf in range(UcmPorts.n_output_interfaces): # Add concept of interface
+    #     if "EXT" in outputs_station_id[n_op_intf]:
+    #         continue
+    #     single_interface_list = (events.parse_tvlist(
+    #         tv_bcid_list,
+    #         tvformat=output_tvformats[n_op_intf],
+    #         n_ports = UcmPorts.get_output_interface_ports(n_op_intf),
+    #         n_to_load=num_events_to_process,
+    #         station_ID=outputs_station_id[n_op_intf],
+    #         tv_type="list"
+    #         ))
+    #     output_tv_list.append(single_interface_list)
 
 
     print(f"Dumping input events (post-padding) ", input_tv_list)
 
 
-    print("Dumping EXP output events")
-    for i in range(len(output_tv_list)):
-        pprint( listtohex(output_tv_list[i]))    
+    # print("Dumping EXP output events")
+    # for i in range(len(output_tv_list)):
+    #     pprint( listtohex(output_tv_list[i]))    
 
 
 
@@ -411,10 +390,10 @@ def ucm_test(dut):
             UcmPorts.get_output_interface_ports(n_op_intf) , 
             num_events_to_process , 
             recvd_events_intf[n_op_intf],
-            tolerance[n_op_intf],
+            UcmPorts.config_outputs['tolerance'][n_op_intf],
             output_path=output_dir,
             stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf]), 
-            tv_thread_mapping=outputs_thread_n[n_op_intf]
+            tv_thread_mapping=UcmPorts.config_outputs['thread_n'][n_op_intf]
         );
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
@@ -433,7 +412,7 @@ def ucm_test(dut):
         UcmPorts.n_output_interfaces,
         field_fail_cnt_header,
         field_fail_cnt,
-        total_ports=UcmPorts.n_output_ports(UcmPorts)
+        total_ports=UcmPorts.n_output_ports()
     )
 
 

@@ -26,6 +26,9 @@ use ctrl_lib.FM_CTRL.all;
 
 library vamc_lib;
 
+library fm_lib;
+  use fm_lib.fm_types.all;
+
 
 entity tb_ult_ucm_pt_mpl_mtc_primary is
   port (
@@ -72,6 +75,9 @@ architecture behavioral of tb_ult_ucm_pt_mpl_mtc_primary  is
   signal pt_sump               : std_logic := '1';  
   signal clock_and_control : l0mdt_control_rt;   
 
+
+  signal dummy_ucm_fm_mon_v : std_logic_vector(fm_ucm_mon_data'w-1 downto 0);
+  signal dummy_i_ucm_fm_slc_rx_pb_v  : slc_rx_avt(2 downto 0);
   signal i_plus_neighbor_segments  : sf2ptcalc_vt;
   signal i_minus_neighbor_segments : sf2ptcalc_vt;
 
@@ -101,7 +107,9 @@ architecture behavioral of tb_ult_ucm_pt_mpl_mtc_primary  is
         o_uCM2hps_mid_av        => mid_slc_to_h2s_plin_av,
         o_uCM2hps_out_av        => out_slc_to_h2s_plin_av,
         o_uCM2hps_ext_av        => ext_slc_to_h2s_plin_av,
-        o_uCM2pl_av             => ucm2pl_av
+        o_uCM2pl_av             => ucm2pl_av,
+        o_ucm_fm_mon_v => dummy_ucm_fm_mon_v,
+        i_ucm_fm_slc_rx_pb_v => dummy_i_ucm_fm_slc_rx_pb_v
       );
 
     ULT_MPL : entity ult_lib.pipeline

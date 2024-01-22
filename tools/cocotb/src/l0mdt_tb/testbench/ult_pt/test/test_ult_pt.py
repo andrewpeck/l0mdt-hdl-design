@@ -20,7 +20,8 @@ from cocotb.triggers import ClockCycles, RisingEdge, Combine, Timer, with_timeou
 from cocotb.result import TestFailure, TestSuccess
 
 import l0mdt_tb.testbench.ult_pt.ult_pt_wrapper as wrapper
-from l0mdt_tb.testbench.ult_pt.ult_pt_ports import UltPtPorts
+from l0mdt_tb.testbench.ult_pt import ult_pt_ports
+UltPtPorts=ult_pt_ports.UltPtPorts()
 
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.ult_pt.ult_pt_block as ult_pt_block
 
@@ -111,30 +112,9 @@ def ult_pt_test(dut):
     testvector_config                = config["testvectors"]
     testvector_config_inputs         = testvector_config["inputs"]
     testvector_config_outputs        = testvector_config["outputs"]
-    inputs_station_id= [["" for x in range(UltPtPorts.get_input_interface_ports(y))]for y in range(UltPtPorts.n_input_interfaces)]
-    inputs_thread_n= [[0 for x in range(UltPtPorts.get_input_interface_ports(y))]for y in range(UltPtPorts.n_input_interfaces)]
-    outputs_station_id= [["" for x in range(UltPtPorts.get_output_interface_ports(y))]for y in range(UltPtPorts.n_output_interfaces)]
-    tolerance= [["" for x in range(UltPtPorts.get_output_interface_ports(y))]for y in range(UltPtPorts.n_output_interfaces)]
-    outputs_thread_n= [[0 for x in range(UltPtPorts.get_output_interface_ports(y))]for y in range(UltPtPorts.n_output_interfaces)]
-    for i in range(UltPtPorts.n_input_interfaces):
-        if "station_ID" in testvector_config_inputs[i] :
-            inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        if "thread_n" in testvector_config_inputs[i]:
-            inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
-    for i in range(UltPtPorts.n_output_interfaces):
-        if "station_ID" in testvector_config_outputs[i] :
-            outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        else :
-            outputs_station_id[i] = ['NONE']
 
-        if "thread_n" in testvector_config_outputs[i]:
-            outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]
- 
 
-        if "tolerance" in testvector_config_outputs[i] :
-            tolerance[i] = testvector_config_outputs[i]["tolerance"]
-        else:
-            tolerance[i] = {"": ["",""]}
+    test_config.read_io_config(config['testvectors'],UltPtPorts)
 
     if run_config["pt_type"] == "mpt":
         pt_ii = run_config["mpt_ii"]
@@ -258,9 +238,9 @@ def ult_pt_test(dut):
             tvformat=input_tvformats[n_ip_intf],
             n_ports = UltPtPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
-            station_ID=inputs_station_id[n_ip_intf],
+            station_ID=UltPtPorts.config_inputs['station_id'][n_ip_intf],
             tv_type=input_tvtype[n_ip_intf],
-            cnd_thrd_id = inputs_thread_n[n_ip_intf]
+            cnd_thrd_id = UltPtPorts.config_inputs['thread_n'][n_ip_intf]
             ))
         single_interface_list_ii = events.modify_tv(single_interface_list, pt_ii)       
         for io in range(UltPtPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
@@ -269,17 +249,17 @@ def ult_pt_test(dut):
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
-    for n_op_intf in range(UltPtPorts.n_output_interfaces): # Add concept of interface
-        single_interface_list = (events.parse_tvlist(
-            tv_bcid_list,
-            tvformat=output_tvformats[n_op_intf],
-            n_ports = UltPtPorts.get_output_interface_ports(n_op_intf),
-            n_to_load=num_events_to_process,
-            station_ID=outputs_station_id[n_op_intf],
-            tv_type="value",
-            cnd_thrd_id = outputs_thread_n[n_op_intf]
-            ))
-        output_tv_list.append(single_interface_list)
+    # for n_op_intf in range(UltPtPorts.n_output_interfaces): # Add concept of interface
+    #     single_interface_list = (events.parse_tvlist(
+    #         tv_bcid_list,
+    #         tvformat=output_tvformats[n_op_intf],
+    #         n_ports = UltPtPorts.get_output_interface_ports(n_op_intf),
+    #         n_to_load=num_events_to_process,
+    #         station_ID=outputs_station_id[n_op_intf],
+    #         tv_type="value",
+    #         cnd_thrd_id = outputs_thread_n[n_op_intf]
+    #         ))
+    #     output_tv_list.append(single_interface_list)
 
 
 
@@ -350,11 +330,6 @@ def ult_pt_test(dut):
 
 
 
-    #DEBUG i PRINTING ALL EVENTS
-    #events.print_tv_list(input_tvformats, input_tv_list, UltPtPorts.n_input_interfaces, UltPtPorts.n_ip_ports_in_intf, num_events_to_process,  station_id=inputs_station_id)
-    #DEBUG i PRINTING EVENT 2
-    #Since inputs have been lined up based on pt_ii, make sure event number is correctly calculated
-    events.print_tv_list(input_tvformats, input_tv_list, UltPtPorts.n_input_interfaces, UltPtPorts.n_ip_ports_in_intf, num_events_to_process * pt_ii, station_id=inputs_station_id, event_number=1*pt_ii)
     
 
     pass_count = 0
@@ -372,9 +347,9 @@ def ult_pt_test(dut):
             UltPtPorts.get_output_interface_ports(n_op_intf) , 
             num_events_to_process , 
             recvd_events_intf[n_op_intf],
-            tolerance[n_op_intf],
+            UltPtPorts.config_outputs['tolerance'][n_op_intf],
             output_dir,
-            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
+            stationNum=events.station_list_name_to_id(UltPtPorts.config_outputs['station_id'][n_op_intf])
         );
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
@@ -391,8 +366,7 @@ def ult_pt_test(dut):
         UltPtPorts.n_output_interfaces,
         field_fail_cnt_header,
         field_fail_cnt,
-        total_ports=UltPtPorts.n_output_ports(UltPtPorts)
-    )
+        total_ports=UltPtPorts.n_output_ports()    )
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[
         all_tests_passed

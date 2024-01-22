@@ -17,7 +17,7 @@
 import cocotb
 from cocotb.triggers import Event, Combine, with_timeout, Timer
 
-from l0mdt_tb.testbench.ptcalc_3threads import ptcalc_3threads_ports 
+from l0mdt_tb.testbench.ptcalc_3threads import ptcalc_3threads_ports
 Ptcalc3threadsPorts=ptcalc_3threads_ports.Ptcalc3threadsPorts()
 
 from l0mdt_tb.utils import events
