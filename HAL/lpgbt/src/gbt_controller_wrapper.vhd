@@ -109,27 +109,38 @@ END COMPONENT;
 
   signal lpgbt_version : std_logic_vector (1 downto 0);
  
-  signal tx_rd_reg          : std_logic;
-  signal tx_start_read_reg  : std_logic;
-  signal tx_start_write_m     : std_logic;
-  signal tx_start_write_s     : std_logic;
-  signal tx_start_read_m     : std_logic;
-  signal tx_start_read_s     : std_logic;
-  signal tx_start_read_reg_m     : std_logic;
-  signal tx_start_read_reg_s     : std_logic;  
-  signal tx_start_write_reg_m : std_logic;
-  signal tx_start_write_reg_s : std_logic;
-  signal tx_start_write_reg : std_logic;
-  signal tx_wr_reg_m : std_logic;
-  signal tx_wr_reg_s : std_logic;
-  signal tx_wr_m : std_logic;
-  signal tx_wr_s : std_logic;
-  signal sca_reset : std_logic;
-  signal sca_reset_reg : std_logic;
-  signal sca_command : std_logic;
-  signal sca_command_reg : std_logic;
-  signal sca_connect : std_logic;
-  signal sca_connect_reg : std_logic;
+  signal tx_rd_reg             : std_logic;
+  signal tx_start_read_reg     : std_logic;
+  signal tx_start_write_m      : std_logic;
+  signal tx_start_write_s      : std_logic;
+  signal tx_start_read_m       : std_logic;
+  signal tx_start_read_s       : std_logic;
+  signal tx_start_read_reg_m   : std_logic;
+  signal tx_start_read_reg2_m  : std_logic;
+  signal tx_start_read_reg_s   : std_logic; 
+  signal tx_start_read_reg2_s  : std_logic;
+  signal tx_start_write_reg_m  : std_logic;
+  signal tx_start_write_reg2_m : std_logic;
+  signal tx_start_write_reg_s  : std_logic;
+  signal tx_start_write_reg2_s : std_logic; 
+  signal tx_wr_reg_m           : std_logic;
+  signal tx_wr_reg2_m          : std_logic;
+  signal tx_wr_reg_s           : std_logic;
+  signal tx_wr_reg2_s          : std_logic;
+  signal tx_wr_m               : std_logic;
+  signal tx_wr_s               : std_logic;
+  signal sca_reset             : std_logic;
+  signal sca_reset_reg         : std_logic;
+  signal sca_reset_reg2        : std_logic;
+  signal sca_command           : std_logic;
+  signal sca_command_reg       : std_logic;
+  signal sca_command_reg2      : std_logic;  
+  signal sca_connect           : std_logic;
+  signal sca_connect_reg       : std_logic;
+  signal sca_connect_reg2      : std_logic;
+  signal reply_received        : std_logic;
+  signal rx_valid_single_m     : std_logic;
+  signal rx_valid_single_s     : std_logic;
 
   signal vio_rx_reset : std_logic;
   signal vio_tx_reset : std_logic;
@@ -186,34 +197,60 @@ begin
       sca3_data_i_int <= sca3_data_i;
       
       tx_wr_reg_m   <= ctrl.master.ic.tx_wr;
-      tx_wr_m       <= ctrl.master.ic.tx_wr and (not tx_wr_reg_m);
+      tx_wr_reg2_m  <= tx_wr_reg_m;
+      tx_wr_m       <= tx_wr_reg_m and (not tx_wr_reg2_m);
       
       tx_wr_reg_s   <= ctrl.slave.ic.tx_wr;
-      tx_wr_s       <= ctrl.slave.ic.tx_wr and (not tx_wr_reg_s);
+      tx_wr_reg2_s  <= tx_wr_reg_s;
+      tx_wr_s       <= tx_wr_reg_s and (not tx_wr_reg2_s);
            
-      tx_start_write_reg_m <= ctrl.master.ic.tx_start_write;
-      tx_start_write_m     <= ctrl.master.ic.tx_start_write and (not tx_start_write_reg_m);
+      tx_start_write_reg_m  <= ctrl.master.ic.tx_start_write;
+      tx_start_write_reg2_m <= tx_start_write_reg_m;
+      tx_start_write_m      <= tx_start_write_reg_m and (not tx_start_write_reg2_m);
       
-      tx_start_write_reg_s <= ctrl.slave.ic.tx_start_write;
-      tx_start_write_s     <= ctrl.slave.ic.tx_start_write and (not tx_start_write_reg_s);      
+      tx_start_write_reg_s  <= ctrl.slave.ic.tx_start_write;
+      tx_start_write_reg2_s <= tx_start_write_reg_s;
+      tx_start_write_s      <= tx_start_write_reg_s and (not tx_start_write_reg2_s);      
       
       tx_start_read_reg_m  <= ctrl.master.ic.tx_start_read;
-      tx_start_read_m      <= ctrl.master.ic.tx_start_read and (not tx_start_read_reg_m);
+      tx_start_read_reg2_m <= tx_start_read_reg_m;
+      tx_start_read_m      <= tx_start_read_reg_m and (not tx_start_read_reg2_m);
       
       tx_start_read_reg_s  <= ctrl.slave.ic.tx_start_read;
-      tx_start_read_s      <= ctrl.slave.ic.tx_start_read and (not tx_start_read_reg_s);
+      tx_start_read_reg2_s <= tx_start_read_reg_s;
+      tx_start_read_s      <= tx_start_read_reg_s and (not tx_start_read_reg2_s);
       
-      sca_command_reg       <= ctrl.master.start_command;     
-      sca_command           <= ctrl.master.start_command and (not sca_command_reg);
+      sca_command_reg       <= ctrl.master.start_command;   
+      sca_command_reg2      <= sca_command_reg;
+      sca_command           <= sca_command_reg and (not sca_command_reg2);
       
       sca_reset_reg         <= ctrl.master.start_reset;
-      sca_reset             <= ctrl.master.start_reset and (not sca_reset_reg);
+      sca_reset_reg2        <= sca_reset_reg;
+      sca_reset             <= sca_reset_reg and (not sca_reset_reg2);
       
       sca_connect_reg       <= ctrl.master.start_connect;
-      sca_connect           <= ctrl.master.start_connect and (not sca_connect_reg);
+      sca_connect_reg2      <= sca_connect_reg;
+      sca_connect           <= sca_connect_reg and (not sca_connect_reg2);
+      
+      if(reply_received = '1') then
+            mon.master.sca_rx.rx(0).rx_received <= '1';
+      end if;
+      
+      if(sca_command = '1' ) then
+            mon.master.sca_rx.rx(0).rx_received <= '0';
+      end if;
 
---      ctrl_reg              <= ctrl;
---      ctrl                <= ctrl_reg;
+      if(tx_start_read_m = '1') then
+            mon.master.ic.rx_valid <= '0';
+      elsif(rx_valid_single_m = '1') then
+            mon.master.ic.rx_valid <= '1';
+      end if;
+      
+      if(tx_start_read_s = '1') then
+            mon.slave.ic.rx_valid <= '0';
+      elsif(rx_valid_single_s = '1') then
+            mon.slave.ic.rx_valid <= '1';
+      end if;
 
     end if;
   end process;
@@ -400,7 +437,7 @@ begin
       rx_len_o(1)      => mon.master.sca_rx.rx(1).rx_len,
       rx_len_o(2)      => mon.master.sca_rx.rx(2).rx_len,
       rx_len_o(3)      => mon.master.sca_rx.rx(3).rx_len,
-      rx_received_o(0) => mon.master.sca_rx.rx(0).rx_received,
+      rx_received_o(0) => reply_received, --mon.master.sca_rx.rx(0).rx_received,
       rx_received_o(1) => mon.master.sca_rx.rx(1).rx_received,
       rx_received_o(2) => mon.master.sca_rx.rx(2).rx_received,
       rx_received_o(3) => mon.master.sca_rx.rx(3).rx_received,
@@ -427,7 +464,7 @@ begin
       uplink_parity_ok_o   => mon.master.ic.rx_up_parity_ok,--1 
       downlink_parity_ok_o => mon.master.ic.rx_down_parity_ok,--1
       err_o                => mon.master.ic.rx_err,
-      valid_o              => mon.master.ic.rx_valid --1
+      valid_o              => rx_valid_single_m --1 --mon.master.ic.rx_valid   --> fix the single pulse to be able to be capture by C2C 
       );
 
   gbt_ic_rx_s : entity work.gbt_ic_rx
@@ -444,7 +481,7 @@ begin
       uplink_parity_ok_o   => mon.slave.ic.rx_up_parity_ok,
       downlink_parity_ok_o => mon.slave.ic.rx_down_parity_ok,
       err_o                => mon.slave.ic.rx_err,
-      valid_o              => mon.slave.ic.rx_valid
+      valid_o              => rx_valid_single_s --mon.slave.ic.rx_valid   --> fix the single pulse to be able to be capture by C2C
       );
       
 ilagen: if c_ENABLE_ILA = '1' and g_CSM_ID = 0 generate
