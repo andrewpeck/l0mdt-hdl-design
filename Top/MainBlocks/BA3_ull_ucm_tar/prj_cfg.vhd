@@ -42,7 +42,6 @@ package body prj_cfg is
 
     -- Blocks
     proj_cfg.ENABLE_TAR               := '1';
-    --proj_cfg.INSEL_MDT_nTAR           := '1';
     proj_cfg.ENABLE_UCM               := '1';
     proj_cfg.ENABLE_MPL               := '1';
     proj_cfg.ENABLE_H2S               := '0';
@@ -51,6 +50,7 @@ package body prj_cfg is
     proj_cfg.ENABLE_PT                := '0';
     proj_cfg.ENABLE_DAQ               := '0';
     proj_cfg.ENABLE_MTC               := '0';
+    proj_cfg.ENABLE_FM                := '0';
 
  
     return proj_cfg;
