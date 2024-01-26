@@ -33,7 +33,7 @@ use shared_lib.sl2mdt_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 
 use shared_lib.vhdl_tb_utils_pkg.all;
 
@@ -322,7 +322,8 @@ begin
               tcsent      => std_logic(to_unsigned(TC_sent,1)(0)),
               poseta      => to_signed(integer(Eta / SL2MDT_SLC_COMMON_POSETA_RES ), SLC_COMMON_POSETA_LEN) ,
               -- poseta      => to_signed(integer(Eta * SLC_COMMON_POSETA_MULT), SLC_COMMON_POSETA_LEN) ,
-              posphi      => to_unsigned(integer((Phi * SL2MDT_SLC_COMMON_POSPHI_RES/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+              posphi      => to_unsigned(integer(((Phi * SLC_COMMON_POSPHI_MULT )/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+              -- posphi      => to_unsigned(integer((Phi / SL2MDT _SLC_COMMON_POSPHI_RES/1000.0)), SLC_COMMON_POSPHI_LEN) , 
                   -- posphi      => to_unsigned(integer((Phi * SLC_COMMON_POSPHI_MULT/1000.0)), SLC_COMMON_POSPHI_LEN) , 
               sl_pt       => ( others => '0'),
               sl_ptthresh => to_unsigned(pT_thr, SLC_COMMON_SL_PTTHRESH_LEN) , 
@@ -453,7 +454,8 @@ begin
                   tcsent      => std_logic(to_unsigned(TC_sent,1)(0)),
                   poseta      => to_signed(integer(Eta / SL2MDT_SLC_COMMON_POSETA_RES ), SLC_COMMON_POSETA_LEN) ,
               -- poseta      => to_signed(integer(Eta * SLC_COMMON_POSETA_MULT), SLC_COMMON_POSETA_LEN) ,
-                  posphi      => to_unsigned(integer((Phi * SL2MDT_SLC_COMMON_POSPHI_RES/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+                  posphi      => to_unsigned(integer(((Phi * SLC_COMMON_POSPHI_MULT )/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+                  -- posphi      => to_unsigned(integer((Phi * SL2MDT _SLC_COMMON_POSPHI_RES/1000.0)), SLC_COMMON_POSPHI_LEN) , 
                   -- posphi      => to_unsigned(integer((Phi * SLC_COMMON_POSPHI_MULT/1000.0)), SLC_COMMON_POSPHI_LEN) , 
                   sl_pt       => ( others => '0'),
                   sl_ptthresh => to_unsigned(pT_thr, SLC_COMMON_SL_PTTHRESH_LEN) , 

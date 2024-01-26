@@ -20,7 +20,7 @@ use ieee.math_real.all;
 library shared_lib;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.common_constants_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 use shared_lib.config_pkg.all;
 
 library dp_repo_lib;
@@ -317,7 +317,7 @@ package fct_tdc_mezz_mapping_pkg is
   -- function get_num_chamb( ) return integer;
 
   subtype mezz_b_chamber_dist_chamber_t is dp_mezz_b_chamber_dist_chamber_t;
-  -- type mezz_b_chamber_dist_chamber_t is array (0 to MAX_NUM_CHAMBER_POS - 1) of integer;
+  -- type mezz_b_chamber_dist_chamber_t is array (0 to MAX _NUM_CHAMBER_POS - 1) of integer;
   -- type mezz_b_chamber_dist_side_t is array ( 0 to 1) of mezz_b_chamber_dist_chamber_t;
   -- type mezz_b_chamber_dist_t is array (0 to 15) of mezz_b_chamber_dist_side_t;
 
@@ -551,15 +551,15 @@ package body fct_tdc_mezz_mapping_pkg is
     variable out_mem : mezz_b_chamber_dist_chamber_t;
   begin
     if station = 0 then
-      for ch_i in 0 to MAX_NUM_CHAMBER_POS -1 loop
+      for ch_i in 0 to get_b_chamber_num_station(c_SECTOR_ID,station) -1 loop
         out_mem(ch_i) := accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(ch_i) * 3;
       end loop;
     elsif station = 1 then
-      for ch_i in 0 to MAX_NUM_CHAMBER_POS -1 loop
+      for ch_i in 0 to get_b_chamber_num_station(c_SECTOR_ID,station) -1 loop
         out_mem(ch_i) := accum_mezz_barrel_mid_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(ch_i) * 4;
         end loop;
     elsif station = 2 then
-      for ch_i in 0 to MAX_NUM_CHAMBER_POS -1 loop
+      for ch_i in 0 to get_b_chamber_num_station(c_SECTOR_ID,station) -1 loop
         out_mem(ch_i) := accum_mezz_barrel_out_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(ch_i) * 4;
         end loop;
     elsif station = 4 then

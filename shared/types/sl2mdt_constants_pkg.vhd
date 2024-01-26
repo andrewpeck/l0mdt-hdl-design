@@ -103,13 +103,10 @@ package sl2mdt_constants_pkg is
    constant SL2MDT_SLC_COMMON_POSPHI_LEN : integer := 9;
    attribute w of SL2MDT_SLC_COMMON_POSPHI_LEN : constant is 32;
 
-   constant SL2MDT_SLC_COMMON_POSPHI_MULT : real := 0.0625;
+   constant SL2MDT_SLC_COMMON_POSPHI_MULT : real := 81.48733086;
    attribute w of SL2MDT_SLC_COMMON_POSPHI_MULT : constant is 32;
 
-   constant SL2MDT_SLC_COMMON_POSPHI_RES : real := 0.012;
-   attribute w of SL2MDT_SLC_COMMON_POSPHI_RES : constant is 32;
-
-   constant SL2MDT_SLC_COMMON_SL_PT_LEN : integer := 8;
+   constant SL2MDT_SLC_COMMON_SL_PT_LEN : integer := 9;
    attribute w of SL2MDT_SLC_COMMON_SL_PT_LEN : constant is 32;
 
    constant SL2MDT_SLC_COMMON_SL_PT_MULT : real := 2.0;

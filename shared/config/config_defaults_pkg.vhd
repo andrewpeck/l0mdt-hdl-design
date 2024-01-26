@@ -148,7 +148,7 @@ package cfg_global_default_pkg is
     -- VERSION_HP                    => "1.0",
     -- Segment Finder
     ENABLE_SF                     => '1', -- 0: disabled  1: enabled -- default enabled
-    SF_TYPE                       => '0', -- default CSF
+    SF_TYPE                       => '0', -- 0: CSF 1:LSF -- default CSF
     SF_BYPASS                     => '0', -- 0: disabled
     -- pt-calc
     ENABLE_PT                     => '1', -- 0: disabled  1: enabled -- default enabled

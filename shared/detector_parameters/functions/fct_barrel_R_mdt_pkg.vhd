@@ -23,7 +23,7 @@ use ieee.math_real.all;
 library shared_lib;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.common_constants_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 
 library dp_repo_lib;
 use dp_repo_lib.barrel_R_mdt_pkg.all;

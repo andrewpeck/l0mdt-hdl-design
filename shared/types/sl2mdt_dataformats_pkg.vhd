@@ -56,7 +56,7 @@ package sl2mdt_dataformats_pkg is
       cointype : std_logic_vector(SL2MDT_SLC_COMMON_COINTYPE_LEN-1 downto 0);
       trailer : SL2MDT_trailer_rt;
    end record SL2MDT_slc_common_rt;
-   attribute w of SL2MDT_slc_common_rt : type is 107;
+   attribute w of SL2MDT_slc_common_rt : type is 108;
    function width(x: SL2MDT_slc_common_rt) return natural;
    function convert(x: SL2MDT_slc_common_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: SL2MDT_slc_common_rt) return SL2MDT_slc_common_rt;
@@ -95,7 +95,7 @@ package sl2mdt_dataformats_pkg is
       common : SL2MDT_slc_common_rt;
       specific : std_logic_vector(SL2MDT_SLC_RX_SPECIFIC_LEN-1 downto 0);
    end record SL2MDT_slc_rx_rt;
-   attribute w of SL2MDT_slc_rx_rt : type is 193;
+   attribute w of SL2MDT_slc_rx_rt : type is 194;
    function width(x: SL2MDT_slc_rx_rt) return natural;
    function convert(x: SL2MDT_slc_rx_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: SL2MDT_slc_rx_rt) return SL2MDT_slc_rx_rt;
@@ -150,7 +150,7 @@ package sl2mdt_dataformats_pkg is
       mdt_quality : std_logic_vector(PTCALC2MTC_MDT_QUALITY_LEN-1 downto 0);
       m_reserved : std_logic_vector(SL2MDT_MTC2SL_M_RESERVED_LEN-1 downto 0);
    end record sl2mdt_mtc2sl_rt;
-   attribute w of sl2mdt_mtc2sl_rt : type is 193;
+   attribute w of sl2mdt_mtc2sl_rt : type is 194;
    function width(x: sl2mdt_mtc2sl_rt) return natural;
    function convert(x: sl2mdt_mtc2sl_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt;

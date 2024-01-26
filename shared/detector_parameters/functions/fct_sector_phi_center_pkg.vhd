@@ -45,8 +45,9 @@ package body fct_sector_phi_center_pkg is
     variable a , b : real;
   begin
     a := sector_phi_center_default(sector  - 1);
-    -- b := 1/SL2MDT_SLC_COMMON_POSPHI_RES;
-    mem_out := to_unsigned( integer(a / SL2MDT_SLC_COMMON_POSPHI_RES),len);
+    -- b := 1/SL2MDT _SLC_COMMON_POSPHI_RES;
+    mem_out := to_unsigned( integer(a * SLC_COMMON_POSPHI_MULT),len);
+    -- mem_out := to_unsigned( integer(a / SL2MDT _SLC_COMMON_POSPHI_RES),len);
     return mem_out;
   end function;
   

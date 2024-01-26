@@ -25,7 +25,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 
 library dp_repo_lib;
 use dp_repo_lib.barrel_chamb_r2center_pkg.all;
@@ -45,7 +45,8 @@ package body fct_barrel_chamb_r2center_pkg is
   return b_chamber_center_radius_unsigned_aut is
     variable y : b_chamber_center_radius_unsigned_aut(open)(output_len -1 downto 0);
   begin
-    for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
+    -- for ch_i in  0 to MAX _NUM_CHAMBER_POS -1 loop
+    for ch_i in  0 to get_b_chamber_num_station(sector,station) -1 loop
       y(ch_i) := to_unsigned(integer(b_chamber_center_radius(sector - 1)(station)(ch_i) * scaler) , output_len);
       -- y(ch_i) := to_unsigned(integer(b_chamber_center_radius(sector - 1)(station)(ch_i) * SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN);
     end loop;
@@ -53,3 +54,4 @@ package body fct_barrel_chamb_r2center_pkg is
   end function get_b_chamber_center_radius;
   
 end package body fct_barrel_chamb_r2center_pkg;
+

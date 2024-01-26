@@ -5,7 +5,7 @@ shared/detector_parameters/dp_repo/chambers/mechanics/barrel_chamb_z2origin_pkg.
 shared/detector_parameters/dp_repo/chambers/mechanics/barrel_R_mdt_pkg.vhd
 shared/detector_parameters/dp_repo/chambers/mechanics/barrel_R_rpc_pkg.vhd
 shared/detector_parameters/dp_repo/chambers/mechanics/barrel_chamb_r2center_pkg.vhd
-shared/detector_parameters/dp_repo/chambers/mechanics/chamber_type_pkg.vhd
+shared/detector_parameters/dp_repo/chambers/mechanics/chamber_main_pkg.vhd
 shared/detector_parameters/dp_repo/chambers/mechanics/barrel_zholes_chamber_pkg.vhd
 shared/detector_parameters/dp_repo/chambers/mechanics/barrel_eta2chamber_pkg.vhd
 
