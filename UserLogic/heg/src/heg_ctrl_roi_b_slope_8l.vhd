@@ -26,7 +26,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;

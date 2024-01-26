@@ -159,14 +159,14 @@ package ucm_pkg is
       nswseg_posphi : unsigned(SLC_ENDCAP_NSWSEG_POSPHI_LEN-1 downto 0);
       nswseg_poseta : unsigned(SLC_ENDCAP_NSWSEG_POSETA_LEN-1 downto 0);
    end record ucm_cde2pl_rt;
-   attribute w of ucm_cde2pl_rt : type is 142;
+   attribute w of ucm_cde2pl_rt : type is 143;
    function width(x: ucm_cde2pl_rt) return natural;
    function convert(x: ucm_cde2pl_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: ucm_cde2pl_rt) return ucm_cde2pl_rt;
    function zero(tpl: ucm_cde2pl_rt) return ucm_cde2pl_rt;
 
    subtype ucm_cde2pl_vt is std_logic_vector(ucm_cde2pl_rt'w-1 downto 0);
-   attribute w of ucm_cde2pl_vt : subtype is 142;
+   attribute w of ucm_cde2pl_vt : subtype is 143;
 
    type ucm_cde2pl_art is array(integer range <>) of ucm_cde2pl_rt;
    function width(x: ucm_cde2pl_art) return integer;

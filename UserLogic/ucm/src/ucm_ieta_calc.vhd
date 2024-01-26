@@ -26,8 +26,9 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 use shared_lib.fct_barrel_chamb_z2origin_pkg.all;
+use shared_lib.fct_chamber_main_pkg.all;
 
  
 library ucm_lib;
@@ -61,10 +62,8 @@ end entity ucm_ieta_calc;
 
 architecture beh of ucm_ieta_calc is
 
-  signal chamber_z_org_a : b_chamber_z_origin_aut;
-  -- (open)(g_INPUT_WIDTH -1 downto 0) := 
-  --       get_b_chamber_origin_z_u(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE,g_INPUT_WIDTH);
-  -- signal i_z_i : integer;
+  signal chamber_z_org_a : b_chamber_z_origin_aut(0 to get_b_chamber_num_max(c_SECTOR_ID) - 1);
+
   signal wr_addr : integer := 0;
 
   signal found_u : unsigned(3 downto 0);
@@ -109,7 +108,7 @@ begin
         if i_z_dv = '1' then
           found := '0';
           o_ieta <= to_unsigned(15,VEC_MDTID_CHAMBER_IETA_LEN);
-          for i_ch in 1 to MAX_NUM_CHAMBER_POS -1 loop
+          for i_ch in 1 to get_b_chamber_num_station(c_SECTOR_ID,g_STATION) -1 loop
             if to_integer(i_z) < to_integer(chamber_z_org_a(i_ch)) then
               if found = '0' then
                 o_ieta <= to_unsigned(i_ch - 1,VEC_MDTID_CHAMBER_IETA_LEN);
