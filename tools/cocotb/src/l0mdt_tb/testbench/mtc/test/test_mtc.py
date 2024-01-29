@@ -19,12 +19,13 @@ from l0mdt_tb.testbench.mtc import mtc_ports
 MtcPorts=mtc_ports.MtcPorts()
 
 
-# CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.mtc.mtc_block as mtc_block
-
 from l0mdt_tb.utils import test_config
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
+import logging
+cocotb.log.setLevel(logging.INFO)
+cocotb.log.getChild('driver.FifoDriver').setLevel(logging.WARNING)
 
 def initialize_spybuffers(fifos=[]):
 
@@ -231,18 +232,18 @@ def mtc_test(dut):
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
-    for n_op_intf in range(MtcPorts.n_output_interfaces): # Add concept of interface
-        single_interface_list = (events.parse_tvlist(
-            tv_bcid_list,
-            tvformat=output_tvformats[n_op_intf],
-            n_ports = MtcPorts.get_output_interface_ports(n_op_intf),
-            n_to_load=num_events_to_process
-            ))
-        output_tv_list.append(single_interface_list)
+    # for n_op_intf in range(MtcPorts.n_output_interfaces): # Add concept of interface
+    #     single_interface_list = (events.parse_tvlist(
+    #         tv_bcid_list,
+    #         tvformat=output_tvformats[n_op_intf],
+    #         n_ports = MtcPorts.get_output_interface_ports(n_op_intf),
+    #         n_to_load=num_events_to_process
+    #         ))
+    #     output_tv_list.append(single_interface_list)
 
 
 
-    #print("################\n input_tv_list = ",input_tv_list)
+    
     #print("################\n output_tv_list = ",output_tv_list)
     ##
     ## send input events
@@ -297,6 +298,7 @@ def mtc_test(dut):
         #recvd_lineup = events.timebased_lineup(recvd_events, recvd_time,num_events_to_process,MtcPorts.get_output_interface_ports(n_op_intf))
         #recvd_events_intf.append(recvd_lineup)
         o_recvd_events = events.time_ordering(recvd_events, recvd_time, num_events_to_process)
+        cocotb.log.debug(f"Output events for interface {n_op_intf} :"+str(events.listtoint(o_recvd_events)))
         recvd_events_intf.append(o_recvd_events)
       
 
@@ -325,11 +327,11 @@ def mtc_test(dut):
     #DEBUG i PRINTING ALL EVENTS
     #events.print_tv_list(input_tvformats, input_tv_list, MtcPorts.n_input_interfaces, MtcPorts.n_ports, num_events_to_process)
     #DEBUG i PRINTING EVENT 2
-    events.print_tv_list(input_tvformats, input_tv_list, MtcPorts.n_input_interfaces, MtcPorts.n_ports, num_events_to_process, event_number=2)
+    #events.print_tv_list(input_tvformats, input_tv_list, MtcPorts.n_input_interfaces, MtcPorts.n_ports, num_events_to_process, event_number=2)
     
 
     for n_op_intf in range (MtcPorts.n_output_interfaces):
-        events_are_equal,pass_count , fail_count, field_fail_count_i = events.compare_BitFields(
+        events_are_equal,pass_count , fail_count, field_fail_count_i = events.compare_BitFields_new(
             tv_bcid_list, 
             output_tvformats[n_op_intf],
             MtcPorts.get_output_interface_ports(n_op_intf) , 
@@ -337,8 +339,9 @@ def mtc_test(dut):
             recvd_events_intf[n_op_intf], 
             tolerances=mtc2sl_lsf_tol,
             output_path=output_dir,
-            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
-        );
+            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf]),
+            tv_thread_mapping=[i for i in range(MtcPorts.get_output_interface_ports(n_op_intf))]
+        )
         all_tests_passed = (all_tests_passed and events_are_equal)
         field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])
         field_fail_cnt.append(field_fail_count_i)

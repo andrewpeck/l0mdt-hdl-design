@@ -260,7 +260,7 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
         tolerances        : dictionary for tolerances - used for comparison
         output_path       : output dir where to store comparison data csv files
         stationNum        : map from port to [0,1,2,3] (i.e. [inn, mid, out, ext])
-        tv_thread_mapping : only used by multi-threading rtl, otherwise [ 0 for _ in range(len(n_candidates)) ]
+        tv_thread_mapping : only used by multi-threading rtl, otherwise put [ 0 for _ in range(len(n_candidates)) ]
         tv_type           : type of testvector, can be value, list, list_nested_tdc, etc
         tv_df_type        : type of DataFormat that should be considered, either SL" or "MDT"
     """
@@ -293,16 +293,14 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
             ### Add one layer, to behave identically in case of lists or scalars
             if not (tv_type == "list" or tv_type=="list_nested_tdc" or tv_type=="list_nested_tdc_per_mezz"):
                 l_EXP_BF = [l_EXP_BF]                
-
-            cocotb.log.debug(f"event {iEvent} port {iPort} expected {len(l_EXP_BF)} events")
+            cocotb.log.debug(f"event {iEvent} port {iPort} expected {len(l_EXP_BF)} words in this event")
             if not l_EXP_BF==[0]:
                 cocotb.log.debug(f"Printing expected events | {[x.get_bitwordvalue() for x in l_EXP_BF]}")
-            cocotb.log.debug(f"RTL output rtl_tv[{iPort}]| {[int(x) for x in rtl_tv[iPort]]}")
-
-
+            cocotb.log.debug(f"RTL output for this port (all events) rtl_tv[{iPort}]| {[int(x) for x in rtl_tv[iPort]]}")
 
             ### Skip empty events
-            if l_EXP_BF==[0]: 
+            if [x.get_bitwordvalue() for x in l_EXP_BF]==[0] or l_EXP_BF==[0]: 
+                cocotb.log.debug("No EXP word for this event, skipping")
                 continue
 
             # if len(rtl_tv[iPort]) != len(l_EXP_BF):
@@ -541,6 +539,7 @@ def parse_tvlist(
         zero_padding_size = 0,
         prepend_zeros = 0,
         keep_bitfieldword = False,
+        skip_events=0
 ):
     """
     Read tv list, parse input for SpyBuffers
@@ -561,9 +560,12 @@ def parse_tvlist(
                          This is relevant when multiple words should be processed in an event.
      prepend_zeros     : Number of zeros to prepend before the actual words of the event are sent
                          useful if a delay between two TV interfaces is needed (e.g. HPS)
+     skip_events       : Skip this number of events (BC) at the beginning of the file
     """
         
+    cocotb.log.debug("skip_events",skip_events)
     events_list = tv_bcid_list
+    
 
     cocotb.log.info(f"\n\n\n{80*'-'}\n Called parse_tvlist tvformat-{tvformat} / tv type {tv_type} / df_type {tv_df_type} \n{80*'-'}")
 
@@ -582,6 +584,9 @@ def parse_tvlist(
     cocotb.log.debug(f"Before reading events, total events: {len(events_list)}, to load {n_to_load}")
     
     for ievent in range(len(events_list)):  # range(n_to_load):
+        if skip_events > 0 and ievent < skip_events:
+            cocotb.log.debug(f"Skipping event {ievent} as skip_events is {skip_events}")
+            continue
 
         if valid_events < n_to_load:
             cocotb.log.info(f"\n\n\n{40*'-'}\n Event {ievent} started\n{40*'-'}")
@@ -803,6 +808,25 @@ def get_hex_list(int_list):
     
     hex_list = [hex(int(item)) for item in int_list]
     return hex_list
+
+def listtohex(listofint):
+    new = []    
+    for j in listofint:
+        if type(j) is list:
+            new.append(listtohex(j))
+        else:
+            new.append(hex(j))
+    return new
+
+def listtoint(listofint):
+    new = []    
+    for j in listofint:
+        if type(j) is list:
+            new.append(listtoint(j))
+        else:
+            new.append(int(j))
+    return new
+
 
 
 def get_n_dim_hex_list(int_list):

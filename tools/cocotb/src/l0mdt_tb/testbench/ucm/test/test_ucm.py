@@ -392,7 +392,7 @@ def ucm_test(dut):
             recvd_events_intf[n_op_intf],
             UcmPorts.config_outputs['tolerance'][n_op_intf],
             output_path=output_dir,
-            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf]), 
+            stationNum=events.station_list_name_to_id(UcmPorts.config_outputs['station_id'][n_op_intf]), 
             tv_thread_mapping=UcmPorts.config_outputs['thread_n'][n_op_intf]
         );
         all_tests_passed = (all_tests_passed and events_are_equal)
