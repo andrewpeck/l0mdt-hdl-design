@@ -301,14 +301,18 @@ def ptc_mpi_test(dut):
 
 
     for n_op_intf in range (PtcMpiPorts.n_output_interfaces):
-        events_are_equal, pass_count_i ,  fail_count_i,  field_fail_count_i  = events.compare_BitFields(tv_bcid_list,
-                                                       output_tvformats[n_op_intf],
-                                                       PtcMpiPorts.get_output_interface_ports(n_op_intf) ,
-                                                       num_events_to_process ,
-                                                       recvd_events_intf[n_op_intf],
-                                                       PtcMpiPorts.config_outputs['tolerance'][n_op_intf],
-                                                       output_dir,
-                                                       stationNum=events.station_list_name_to_id(PtcMpiPorts.config_outputs['station_id'][n_op_intf]));
+        events_are_equal, pass_count_i ,  fail_count_i,  field_fail_count_i  = events.compare_BitFields_new(tv_bcid_list,
+                                                                                                            output_tvformats[n_op_intf],
+                                                                                                            PtcMpiPorts.get_output_interface_ports(n_op_intf) ,
+                                                                                                            num_events_to_process ,
+                                                                                                            recvd_events_intf[n_op_intf],
+                                                                                                            PtcMpiPorts.config_outputs['tolerance'][n_op_intf],
+                                                                                                            output_dir,
+                                                                                                            stationNum=events.station_list_name_to_id(PtcMpiPorts.config_outputs['station_id'][n_op_intf]),
+                                                                                                    tv_thread_mapping=[i for i in range(PtcMpiPorts.get_output_interface_ports(n_op_intf))],                    
+                                                                                                            
+                                                                                                            
+);
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
         fail_count       = fail_count + fail_count_i

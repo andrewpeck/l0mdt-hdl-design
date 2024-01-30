@@ -314,14 +314,15 @@ def ptcalc_test(dut):
     field_fail_cnt.clear()
 
     for n_op_intf in range (PtcalcPorts.n_output_interfaces):
-        events_are_equal,pass_count, fail_count, field_fail_count_i = events.compare_BitFields(
+        events_are_equal,pass_count, fail_count, field_fail_count_i = events.compare_BitFields_new(
             tv_bcid_list,
             output_tvformats[n_op_intf],
             PtcalcPorts.get_output_interface_ports(n_op_intf) ,
             num_events_to_process ,
             recvd_events_intf[n_op_intf],
-            PtcalcPorts.config_outputs['tolerance'][n_op_intf],
-            output_path=output_dir
+            tolerances=PtcalcPorts.config_outputs['tolerance'][n_op_intf],
+            output_path=output_dir,
+            tv_thread_mapping=[i for i in range(PtcalcPorts.get_output_interface_ports(n_op_intf))]
         );
         all_tests_passed = (all_tests_passed and events_are_equal)
         field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])

@@ -319,7 +319,7 @@ def ult_ucm_pt_mpl_mtc_test(dut):
 
 
     for n_op_intf in range (UltUcmPtMplMtcPorts.n_output_interfaces):
-        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields(
+        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields_new(
             tv_bcid_list, output_tvformats[n_op_intf],
             UltUcmPtMplMtcPorts.get_output_interface_ports(n_op_intf) , 
             num_events_to_process , 
@@ -336,7 +336,7 @@ def ult_ucm_pt_mpl_mtc_test(dut):
 
         
         for key in field_fail_count_i.keys():
-            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ key , "FAIL COUNT"])
+            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: " , "FAIL COUNT"])
 
         
 

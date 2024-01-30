@@ -371,7 +371,7 @@ def lsf_ptcalc_test(dut):
 
 
     for n_op_intf in range (LsfPtcalcPorts.n_output_interfaces):
-        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields(
+        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields_new(
             tv_bcid_list, 
             output_tvformats[n_op_intf],
             LsfPtcalcPorts.get_output_interface_ports(n_op_intf) , 
@@ -379,15 +379,16 @@ def lsf_ptcalc_test(dut):
             recvd_events_intf[n_op_intf],
             LsfPtcalcPorts.config_outputs['tolerance'][n_op_intf],
             output_dir,
-            stationNum=events.station_list_name_to_id(LsfPtcalcPorts.config_outputs['station_id'][n_op_intf])
-        );
+            stationNum=events.station_list_name_to_id(LsfPtcalcPorts.config_outputs['station_id'][n_op_intf]),
+            tv_thread_mapping=LsfPtcalcPorts.config_outputs['thread_n'][n_op_intf])
+
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
         fail_count       = fail_count + fail_count_i
         field_fail_cnt.append(field_fail_count_i)
 
         for key in field_fail_count_i.keys():
-            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ key, "FAIL COUNT"])
+            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: ", "FAIL COUNT"])
         
             
 

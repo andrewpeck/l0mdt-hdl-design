@@ -21,7 +21,10 @@ from l0mdt_tb.testbench.lsf import lsf_ports
 LsfPorts=lsf_ports.LsfPorts()
 
 
-# CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.lsf.lsf_block as lsf_block
+import logging
+cocotb.log.setLevel(logging.INFO)
+cocotb.log.getChild('driver.FifoDriver').setLevel(logging.WARNING)
+
 
 from l0mdt_tb.utils import test_config
 from l0mdt_tb.utils import events
@@ -357,34 +360,6 @@ def lsf_test(dut):
         output_testvector_file = master_tv_file
         expected_output_events = output_tv_list
 
-#     #Ordering based on events (Required by TV package)
-#     event_ordering = [[
-#         "" for x in range(LsfPorts.get_output_interface_ports(0))
-#     ] for y in range(num_events_to_process)]
-
-#     # hexlist = [hex(int(str(x),2)) for x in recvd_events_intf]
-#     # print("recvd_events_intf",recvd_events_intf)
-
-#     for n_op_intf in range(LsfPorts.n_output_interfaces):
-#         for e_idx in range(num_events_to_process):
-#             for o_port in range(
-#                     LsfPorts.get_output_interface_ports(n_op_intf)):
-#                 event_ordering[e_idx][o_port] = recvd_events_intf[n_op_intf][
-#                     o_port][e_idx]
-
-#             # print(output_tvformats[n_op_intf],"event_ordering[e_idx]",event_ordering[e_idx]);
-#             events_are_equal = events.compare_BitFields(
-#                 master_tv_file, output_tvformats[n_op_intf],
-#                 LsfPorts.get_output_interface_ports(n_op_intf), e_idx,
-#                 event_ordering[e_idx],
-#                 outputs_station_id[n_op_intf][0]
-#                 )
-
-#             all_tests_passed = (all_tests_passed and events_are_equal)
-#             # define requirements for the bitfield package for comparisons
-#             # use sf2ptcalc_tolerances to find falures
-#             # bitfield function (SF2PTCALC_LSF) that compares all the fields and returns percentage of disagreement for each field
-#             #need to be able to pass rtl_tv to the bitfieldword class and make the comparison there
     pass_count = 0
     fail_count = 0
     field_fail_cnt_header = []
@@ -392,7 +367,7 @@ def lsf_test(dut):
     field_fail_cnt_header.clear()
     field_fail_cnt.clear()
     for n_op_intf in range (LsfPorts.n_output_interfaces):
-        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields(
+        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields_new(
             tv_bcid_list, 
             output_tvformats[n_op_intf],
             LsfPorts.get_output_interface_ports(n_op_intf) , 
@@ -400,8 +375,9 @@ def lsf_test(dut):
             recvd_events_intf[n_op_intf], 
             LsfPorts.config_outputs['tolerance'][n_op_intf],
             output_path=output_dir,
-            stationNum=events.station_list_name_to_id(LsfPorts.config_outputs['station_id'][n_op_intf])
-        );
+            stationNum=events.station_list_name_to_id(LsfPorts.config_outputs['station_id'][n_op_intf]),
+            tv_thread_mapping=[i for i in range(LsfPorts.get_output_interface_ports(n_op_intf))]
+        )
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
         fail_count       = fail_count + fail_count_i

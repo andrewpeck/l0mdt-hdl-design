@@ -299,7 +299,7 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
             cocotb.log.debug(f"RTL output for this port (all events) rtl_tv[{iPort}]| {[int(x) for x in rtl_tv[iPort]]}")
 
             ### Skip empty events
-            if [x.get_bitwordvalue() for x in l_EXP_BF]==[0] or l_EXP_BF==[0]: 
+            if l_EXP_BF==[0] or [x.get_bitwordvalue() for x in l_EXP_BF]==[0]: 
                 cocotb.log.debug("No EXP word for this event, skipping")
                 continue
 
@@ -326,10 +326,12 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
                 ### Create RTL BitFieldWord and fill it with output value
                 RTL_BF = EXP_BF.copy()  
                 ii_rtl = ii + rtl_iEvent_offset[iPort]
-                rtl_bits = rtl_tv[iPort][ii_rtl]
-                #print(f'Event {iEvent} port {iPort} rtl offset is {rtl_iEvent_offset[iPort]} this bit is checking word {ii} so {ii_rtl}')
-
-                RTL_BF.set_bitwordvalue(rtl_bits)
+                if ii_rtl > len(rtl_tv[iPort])-1:
+                    cocotb.log.fatal(f"Attempted to compare the BF n. {ii} from event {iEvent} port {iPort} but no corresponding RTL output is received - will make comparison with 0!!!")
+                    RTL_BF.set_bitwordvalue(0)
+                else:      
+                    rtl_bits = rtl_tv[iPort][ii_rtl]
+                    RTL_BF.set_bitwordvalue(rtl_bits)
                 
                 ### Comparison and table printouts
                 results = EXP_BF.compare_bitwordvalue( RTL_BF, tolerances )
@@ -538,9 +540,7 @@ def parse_tvlist(
         cnd_thrd_id =[0xabcd],
         zero_padding_size = 0,
         prepend_zeros = 0,
-        keep_bitfieldword = False,
-        skip_events=0
-):
+        keep_bitfieldword = False):
     """
     Read tv list, parse input for SpyBuffers
     will call get bitfield for each port
@@ -560,14 +560,12 @@ def parse_tvlist(
                          This is relevant when multiple words should be processed in an event.
      prepend_zeros     : Number of zeros to prepend before the actual words of the event are sent
                          useful if a delay between two TV interfaces is needed (e.g. HPS)
-     skip_events       : Skip this number of events (BC) at the beginning of the file
     """
         
-    cocotb.log.debug("skip_events",skip_events)
     events_list = tv_bcid_list
     
 
-    cocotb.log.info(f"\n\n\n{80*'-'}\n Called parse_tvlist tvformat-{tvformat} / tv type {tv_type} / df_type {tv_df_type} \n{80*'-'}")
+    cocotb.log.debug(f"\n\n\n{80*'-'}\n Called parse_tvlist tvformat-{tvformat} / tv type {tv_type} / df_type {tv_df_type} \n{80*'-'}")
 
     tv = [["" for x in range(n_to_load)] for y in range(n_ports)]
     my_cnd_thrd_id = [0 for x in range(n_ports)] 
@@ -584,13 +582,10 @@ def parse_tvlist(
     cocotb.log.debug(f"Before reading events, total events: {len(events_list)}, to load {n_to_load}")
     
     for ievent in range(len(events_list)):  # range(n_to_load):
-        if skip_events > 0 and ievent < skip_events:
-            cocotb.log.debug(f"Skipping event {ievent} as skip_events is {skip_events}")
-            continue
 
         if valid_events < n_to_load:
-            cocotb.log.info(f"\n\n\n{40*'-'}\n Event {ievent} started\n{40*'-'}")
-            cocotb.log.info(f"Printing BXData of {ievent} {events_list[ievent]}")
+            cocotb.log.debug(f"\n\n\n{40*'-'}\n Event {ievent} started\n{40*'-'}")
+            cocotb.log.debug(f"Printing BXData of {ievent} {events_list[ievent]}")
             #cocotb.log.debug(f"ievent.DF_SL {events_list[ievent].DF_SL}")
             #cocotb.log.debug("ievent.DF_MDT {events_list[ievent].DF_MDT}")
 
@@ -617,8 +612,8 @@ def parse_tvlist(
                                                              port=my_port, 
                                                              keep_bitfieldword=keep_bitfieldword)
                     event_found_for_port_interface = 1
-                    if type(tv[my_port][valid_events]) is str:
-                        print(f"SECTOR OK - TVFORMAT = {tvformat} tv[{my_port}][{valid_events}]={tv[my_port][valid_events]} is string type")
+                    # if type(tv[my_port][valid_events]) is str:
+                    #     cocotb.log.debug(f"SECTOR OK - TVFORMAT = {tvformat} tv[{my_port}][{valid_events}]={tv[my_port][valid_events]} is string type")
                     # Increase dimensionality if scalar type and need to do padding
                     if tv_type == 'value' and (zero_padding_size > 0 or prepend_zeros > 0):
                         tv[my_port][valid_events] = [tv[my_port][valid_events]]

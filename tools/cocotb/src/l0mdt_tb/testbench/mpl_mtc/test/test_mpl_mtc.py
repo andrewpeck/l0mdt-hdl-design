@@ -315,7 +315,7 @@ def mpl_mtc_test(dut):
     field_fail_cnt_header.clear()
     field_fail_cnt.clear()
     for n_op_intf in range (MplMtcPorts.n_output_interfaces):
-        events_are_equal,pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields(
+        events_are_equal,pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields_new(
             tv_bcid_list, 
             output_tvformats[n_op_intf],
             MplMtcPorts.get_output_interface_ports(n_op_intf) , 
@@ -323,8 +323,8 @@ def mpl_mtc_test(dut):
             recvd_events_intf[n_op_intf],
             tolerances=pl_mtc_tol,
             output_path=output_dir,
-            stationNum=events.station_list_name_to_id(MplMtcPorts.config_outputs['station_id'][n_op_intf])
-        );
+            stationNum=events.station_list_name_to_id(MplMtcPorts.config_outputs['station_id'][n_op_intf]),
+            tv_thread_mapping=MplMtcPorts.config_outputs['thread_n'][n_op_intf])
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
         fail_count       = fail_count + fail_count_i
