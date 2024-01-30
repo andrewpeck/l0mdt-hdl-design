@@ -703,7 +703,7 @@ begin
         port map (
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
-          ttc_commands      => ttc_commands,
+          -- ttc_commands      => ttc_commands,
           ctrl_v            => mpl_ctrl_v,
           mon_v             => mpl_mon_v,
 
