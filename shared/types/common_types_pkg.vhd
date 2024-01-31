@@ -67,7 +67,7 @@ package common_types_pkg is
    attribute w of l0mdt_ttc_vt : subtype is 81;
 
    subtype slc_rx_vt is std_logic_vector(slc_rx_rt'w-1 downto 0);
-   attribute w of slc_rx_vt : subtype is 157;
+   attribute w of slc_rx_vt : subtype is 156;
 
    type slc_rx_art is array(integer range <>) of slc_rx_rt;
    function width(x: slc_rx_art) return integer;
@@ -257,7 +257,7 @@ package common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: sf2ptcalc_avt) return sf2ptcalc_avt;
 
    subtype ucm2pl_vt is std_logic_vector(ucm2pl_rt'w-1 downto 0);
-   attribute w of ucm2pl_vt : subtype is 148;
+   attribute w of ucm2pl_vt : subtype is 147;
 
    type ucm2pl_art is array(integer range <>) of ucm2pl_rt;
    function width(x: ucm2pl_art) return integer;
@@ -295,7 +295,7 @@ package common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: pl2ptcalc_avt) return pl2ptcalc_avt;
 
    subtype pl2mtc_vt is std_logic_vector(pl2mtc_rt'w-1 downto 0);
-   attribute w of pl2mtc_vt : subtype is 114;
+   attribute w of pl2mtc_vt : subtype is 113;
 
    type pl2mtc_art is array(integer range <>) of pl2mtc_rt;
    function width(x: pl2mtc_art) return integer;
@@ -333,7 +333,7 @@ package common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: ptcalc2mtc_avt) return ptcalc2mtc_avt;
 
    subtype mtc2sl_vt is std_logic_vector(mtc2sl_rt'w-1 downto 0);
-   attribute w of mtc2sl_vt : subtype is 194;
+   attribute w of mtc2sl_vt : subtype is 193;
 
    type mtc_out_art is array(integer range <>) of mtc2sl_rt;
    function width(x: mtc_out_art) return integer;
