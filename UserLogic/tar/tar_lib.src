@@ -1,5 +1,0 @@
-UserLogic/tar/pkg/tar_pkg.vhd
-UserLogic/tar/src/tar.vhd
-UserLogic/tar/src/tar_supervisor.vhd
-UserLogic/tar/src/tar_station.vhd
-UserLogic/tar/src/tar_remap.vhd
