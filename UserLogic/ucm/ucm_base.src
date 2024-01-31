@@ -14,7 +14,7 @@ UserLogic/ucm/pkg/ucm_time_pkg.vhd
 # UserLogic/ucm/src/ucm_prepro.vhd
 
 UserLogic/ucm/src/ucm_supervisor.vhd
-UserLogic/ucm/src/ucm_ctrl_top.vhd
+# UserLogic/ucm/src/ucm_ctrl_top.vhd
 
 UserLogic/ucm/src/ucm_ctrl_slc_top.vhd
 UserLogic/ucm/src/ucm_ctrl_slc_main.vhd
