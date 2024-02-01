@@ -33,7 +33,7 @@ generate:
         PROJECT_NAME: [l0mdt/ku15p/l0mdt_ku15p_ull_ucm, ull/vu13p/ull_vu13_b3a_ucm_mpl]
         HOG_ONLY_SYNTH: 1
       - PROVIDER: "2022.2"
-        PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm_1.2_vu13, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
+        PROJECT_NAME: [MainBlocks/BA3_ucm_1.0_ku15, MainBlocks/BA3_ucm_1.0_vu13, MainBlocks/BA3_ucm_1.2_ku15, MainBlocks/BA3_ucm_1.2_vu13, MainBlocks/BA3_tar, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
         HOG_ONLY_SYNTH: 1
   tags:
     - ${PROVIDER}
