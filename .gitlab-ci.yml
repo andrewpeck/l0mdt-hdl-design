@@ -76,9 +76,9 @@ sim_comp:
       - PROJECT_NAME: MainBlocks/BA3_tar
         PROJECT_Q_NAME: MainBlocks/BA3_tar_questa
         PROJECT_R_NAME: MainBlocks/BA3_tar_riviera
-      - PROJECT_NAME: MainBlocks/BA3_ucm
-        PROJECT_Q_NAME: MainBlocks/BA3_ucm_questa
-        PROJECT_R_NAME: MainBlocks/BA3_ucm_riviera
+      - PROJECT_NAME: MainBlocks/BA3_ucm_1.2_vu13
+        PROJECT_Q_NAME: MainBlocks/BA3_ucm_1.2_vu13_questa
+        PROJECT_R_NAME: MainBlocks/BA3_ucm_1.2_vu13_riviera
       - PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
         PROJECT_Q_NAME: MainBlocks/BA3_hps_csf_bp_questa
         PROJECT_R_NAME: MainBlocks/BA3_hps_csf_bp_riviera
@@ -102,9 +102,9 @@ sim_check:
       - PROJECT_NAME: [MainBlocks/BA3_tar]
         SIMULATOR: questa
         BLOCK: BA3_tar
-      - PROJECT_NAME: [MainBlocks/BA3_ucm]
+      - PROJECT_NAME: [MainBlocks/BA3_ucm_1.2_vu13]
         SIMULATOR: questa
-        BLOCK: BA3_ucm
+        BLOCK: BA3_ucm_1.2_vu13
       - PROJECT_NAME: [MainBlocks/BA3_hps_csf_bp]
         SIMULATOR: questa
         BLOCK: BA3_hps_csf_bp
