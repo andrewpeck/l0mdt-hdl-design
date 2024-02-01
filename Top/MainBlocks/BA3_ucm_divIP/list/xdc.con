@@ -1,4 +1,0 @@
-shared/constraints/gldl_dev_con.xdc
-Top/MainBlocks/BA3_ucm_divIP/cons/region_constraints_toolbox.tcl nosynth
-Top/MainBlocks/BA3_ucm_divIP/cons/area_constraints.tcl nosynth
-
