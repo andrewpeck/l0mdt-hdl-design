@@ -150,7 +150,7 @@ package sl2mdt_dataformats_pkg is
       mdt_quality : std_logic_vector(PTCALC2MTC_MDT_QUALITY_LEN-1 downto 0);
       m_reserved : std_logic_vector(SL2MDT_MTC2SL_M_RESERVED_LEN-1 downto 0);
    end record sl2mdt_mtc2sl_rt;
-   attribute w of sl2mdt_mtc2sl_rt : type is 194;
+   attribute w of sl2mdt_mtc2sl_rt : type is 193;
    function width(x: sl2mdt_mtc2sl_rt) return natural;
    function convert(x: sl2mdt_mtc2sl_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt;

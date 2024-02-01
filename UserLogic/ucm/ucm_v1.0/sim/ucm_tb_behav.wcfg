@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="ucm_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="cfg_global_pkg" />
+            <top_module name="common_constants_pkg" />
+            <top_module name="common_types_pkg" />
+            <top_module name="config_pkg" />
+            <top_module name="detector_param_pkg" />
+            <top_module name="prj_cfg" />
+            <top_module name="vhdl2008_functions_pkg" />
+            <top_module name="ucm_pkg" />
+            <top_module name="ucm_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="28141fs"></ZoomStartTime>
+      <ZoomEndTime time="49462fs"></ZoomEndTime>
+      <Cursor1Time time="40281fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="267"></NameColumnWidth>
+      <ValueColumnWidth column_width="72"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="12" />
+   <wave_markers>
+      <marker label="" time="29169" />
+      <marker label="" time="31947" />
+   </wave_markers>
+   <wvobject type="other" fp_name="/ucm_tb/clk_period">
+      <obj_property name="ElementShortName">clk_period</obj_property>
+      <obj_property name="ObjectShortName">clk_period</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/ucm_tb/reset_init_cycles">
+      <obj_property name="ElementShortName">reset_init_cycles</obj_property>
+      <obj_property name="ObjectShortName">reset_init_cycles</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ucm_tb/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ucm_tb/rst">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ucm_tb/glob_en">
+      <obj_property name="ElementShortName">glob_en</obj_property>
+      <obj_property name="ObjectShortName">glob_en</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group104">
+      <obj_property name="label">tb</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="array" fp_name="/ucm_tb/tb_motor">
+         <obj_property name="ElementShortName">tb_motor[3:0]</obj_property>
+         <obj_property name="ObjectShortName">tb_motor[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/cand1">
+         <obj_property name="ElementShortName">cand1</obj_property>
+         <obj_property name="ObjectShortName">cand1</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/barrel1">
+         <obj_property name="ElementShortName">barrel1</obj_property>
+         <obj_property name="ObjectShortName">barrel1</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/o_uCM2hps_inn_av">
+         <obj_property name="ElementShortName">o_uCM2hps_inn_av[2:0][45:0]</obj_property>
+         <obj_property name="ObjectShortName">o_uCM2hps_inn_av[2:0][45:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/o_uCM2hps_mid_av">
+         <obj_property name="ElementShortName">o_uCM2hps_mid_av[2:0][45:0]</obj_property>
+         <obj_property name="ObjectShortName">o_uCM2hps_mid_av[2:0][45:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/o_uCM2hps_out_av">
+         <obj_property name="ElementShortName">o_uCM2hps_out_av[2:0][45:0]</obj_property>
+         <obj_property name="ObjectShortName">o_uCM2hps_out_av[2:0][45:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/o_uCM2hps_ext_av">
+         <obj_property name="ElementShortName">o_uCM2hps_ext_av[2:0][45:0]</obj_property>
+         <obj_property name="ObjectShortName">o_uCM2hps_ext_av[2:0][45:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/o_uCM2pl_av">
+         <obj_property name="ElementShortName">o_uCM2pl_av[2:0][128:0]</obj_property>
+         <obj_property name="ObjectShortName">o_uCM2pl_av[2:0][128:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group127">
+      <obj_property name="label">ucm</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/i_slc_data_av">
+         <obj_property name="ElementShortName">i_slc_data_av[2:0][123:0]</obj_property>
+         <obj_property name="ObjectShortName">i_slc_data_av[2:0][123:0]</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/o_uCM2hps_inn_av">
+         <obj_property name="ElementShortName">o_uCM2hps_inn_av[2:0][45:0]</obj_property>
+         <obj_property name="ObjectShortName">o_uCM2hps_inn_av[2:0][45:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/o_uCM2hps_mid_av">
+         <obj_property name="ElementShortName">o_uCM2hps_mid_av[2:0][45:0]</obj_property>
+         <obj_property name="ObjectShortName">o_uCM2hps_mid_av[2:0][45:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/o_uCM2hps_out_av">
+         <obj_property name="ElementShortName">o_uCM2hps_out_av[2:0][45:0]</obj_property>
+         <obj_property name="ObjectShortName">o_uCM2hps_out_av[2:0][45:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/o_uCM2hps_ext_av">
+         <obj_property name="ElementShortName">o_uCM2hps_ext_av[2:0][45:0]</obj_property>
+         <obj_property name="ObjectShortName">o_uCM2hps_ext_av[2:0][45:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/o_uCM2pl_av">
+         <obj_property name="ElementShortName">o_uCM2pl_av[2:0][128:0]</obj_property>
+         <obj_property name="ObjectShortName">o_uCM2pl_av[2:0][128:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/ucm_prepro_av">
+         <obj_property name="ElementShortName">ucm_prepro_av[2:0][123:0]</obj_property>
+         <obj_property name="ObjectShortName">ucm_prepro_av[2:0][123:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/csw_main_in_av">
+         <obj_property name="ElementShortName">csw_main_in_av[2:0][123:0]</obj_property>
+         <obj_property name="ObjectShortName">csw_main_in_av[2:0][123:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/csw_main_out_ar">
+         <obj_property name="ElementShortName">csw_main_out_ar[2:0]</obj_property>
+         <obj_property name="ObjectShortName">csw_main_out_ar[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/csw_main_out_av">
+         <obj_property name="ElementShortName">csw_main_out_av[2:0][123:0]</obj_property>
+         <obj_property name="ObjectShortName">csw_main_out_av[2:0][123:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/o_uCM2pl_ar">
+         <obj_property name="ElementShortName">o_uCM2pl_ar[2:0]</obj_property>
+         <obj_property name="ObjectShortName">o_uCM2pl_ar[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/cpam_in_av">
+         <obj_property name="ElementShortName">cpam_in_av[2:0][123:0]</obj_property>
+         <obj_property name="ObjectShortName">cpam_in_av[2:0][123:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/cpam_out_av">
+         <obj_property name="ElementShortName">cpam_out_av[2:0][123:0]</obj_property>
+         <obj_property name="ObjectShortName">cpam_out_av[2:0][123:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/uCM2pl_av">
+         <obj_property name="ElementShortName">uCM2pl_av[2:0][128:0]</obj_property>
+         <obj_property name="ObjectShortName">uCM2pl_av[2:0][128:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/csw_control">
+         <obj_property name="ElementShortName">csw_control[2:0]</obj_property>
+         <obj_property name="ObjectShortName">csw_control[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/pam_CSW_control">
+         <obj_property name="ElementShortName">pam_CSW_control[2:0]</obj_property>
+         <obj_property name="ObjectShortName">pam_CSW_control[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/proc_info">
+         <obj_property name="ElementShortName">proc_info[2:0]</obj_property>
+         <obj_property name="ObjectShortName">proc_info[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/cvp_control">
+         <obj_property name="ElementShortName">cvp_control[2:0]</obj_property>
+         <obj_property name="ObjectShortName">cvp_control[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/uCM2hps_data">
+         <obj_property name="ElementShortName">uCM2hps_data[2:0][3:0][45:0]</obj_property>
+         <obj_property name="ObjectShortName">uCM2hps_data[2:0][3:0][45:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group138">
+      <obj_property name="label">ucm_ctrl</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/i_data">
+         <obj_property name="ElementShortName">i_data[2:0][123:0]</obj_property>
+         <obj_property name="ObjectShortName">i_data[2:0][123:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/MAIN_CTRL/i_data_ar">
+         <obj_property name="ElementShortName">i_data_ar[2:0]</obj_property>
+         <obj_property name="ObjectShortName">i_data_ar[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/num_cand">
+         <obj_property name="ElementShortName">num_cand[3:0]</obj_property>
+         <obj_property name="ObjectShortName">num_cand[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/ucm_tb/UCM/SLC_CTRL/pam_update">
+         <obj_property name="ElementShortName">pam_update</obj_property>
+         <obj_property name="ObjectShortName">pam_update</obj_property>
+      </wvobject>
+      <wvobject type="group" fp_name="group167">
+         <obj_property name="label">main_ctrl</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/MAIN_CTRL/i_data">
+            <obj_property name="ElementShortName">i_data[2:0][123:0]</obj_property>
+            <obj_property name="ObjectShortName">i_data[2:0][123:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/MAIN_CTRL/o_csw_ctrl">
+            <obj_property name="ElementShortName">o_csw_ctrl[2:0]</obj_property>
+            <obj_property name="ObjectShortName">o_csw_ctrl[2:0]</obj_property>
+            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/MAIN_CTRL/o_num_cand">
+            <obj_property name="ElementShortName">o_num_cand[3:0]</obj_property>
+            <obj_property name="ObjectShortName">o_num_cand[3:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/ucm_tb/UCM/SLC_CTRL/MAIN_CTRL/o_pam_update">
+            <obj_property name="ElementShortName">o_pam_update</obj_property>
+            <obj_property name="ObjectShortName">o_pam_update</obj_property>
+         </wvobject>
+         <wvobject type="other" fp_name="/ucm_tb/UCM/SLC_CTRL/MAIN_CTRL/alg_status">
+            <obj_property name="ElementShortName">alg_status</obj_property>
+            <obj_property name="ObjectShortName">alg_status</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/MAIN_CTRL/i_data_ar">
+            <obj_property name="ElementShortName">i_data_ar[2:0]</obj_property>
+            <obj_property name="ObjectShortName">i_data_ar[2:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/MAIN_CTRL/data_ar">
+            <obj_property name="ElementShortName">data_ar[2:0]</obj_property>
+            <obj_property name="ObjectShortName">data_ar[2:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/MAIN_CTRL/input_valids">
+            <obj_property name="ElementShortName">input_valids[2:0]</obj_property>
+            <obj_property name="ObjectShortName">input_valids[2:0]</obj_property>
+            <obj_property name="Radix">BINARYRADIX</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject type="group" fp_name="group179">
+         <obj_property name="label">pam_ctrl</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/PAM_CTRL/o_pam_ctrl">
+            <obj_property name="ElementShortName">o_pam_ctrl[2:0]</obj_property>
+            <obj_property name="ObjectShortName">o_pam_ctrl[2:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/PAM_CTRL/o_proc_info">
+            <obj_property name="ElementShortName">o_proc_info[2:0]</obj_property>
+            <obj_property name="ObjectShortName">o_proc_info[2:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/PAM_CTRL/o_cvp_ctrl">
+            <obj_property name="ElementShortName">o_cvp_ctrl[2:0]</obj_property>
+            <obj_property name="ObjectShortName">o_cvp_ctrl[2:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/PAM_CTRL/i_num_cand">
+            <obj_property name="ElementShortName">i_num_cand[3:0]</obj_property>
+            <obj_property name="ObjectShortName">i_num_cand[3:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/ucm_tb/UCM/SLC_CTRL/PAM_CTRL/i_pam_update">
+            <obj_property name="ElementShortName">i_pam_update</obj_property>
+            <obj_property name="ObjectShortName">i_pam_update</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/PAM_CTRL/ch_busy">
+            <obj_property name="ElementShortName">ch_busy[2:0]</obj_property>
+            <obj_property name="ObjectShortName">ch_busy[2:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/PAM_CTRL/ch_count">
+            <obj_property name="ElementShortName">ch_count[2:0][11:0]</obj_property>
+            <obj_property name="ObjectShortName">ch_count[2:0][11:0]</obj_property>
+         </wvobject>
+         <wvobject type="other" fp_name="/ucm_tb/UCM/SLC_CTRL/PAM_CTRL/processing">
+            <obj_property name="ElementShortName">processing</obj_property>
+            <obj_property name="ObjectShortName">processing</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject type="other" fp_name="/ucm_tb/UCM/SLC_CTRL/MAIN_CTRL/alg_status">
+         <obj_property name="ElementShortName">alg_status</obj_property>
+         <obj_property name="ObjectShortName">alg_status</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/o_csw_ctrl">
+         <obj_property name="ElementShortName">o_csw_ctrl[2:0]</obj_property>
+         <obj_property name="ObjectShortName">o_csw_ctrl[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/o_pam_ctrl">
+         <obj_property name="ElementShortName">o_pam_ctrl[2:0]</obj_property>
+         <obj_property name="ObjectShortName">o_pam_ctrl[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/o_proc_info">
+         <obj_property name="ElementShortName">o_proc_info[2:0]</obj_property>
+         <obj_property name="ObjectShortName">o_proc_info[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/o_cvp_ctrl">
+         <obj_property name="ElementShortName">o_cvp_ctrl[2:0]</obj_property>
+         <obj_property name="ObjectShortName">o_cvp_ctrl[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/MAIN_CTRL/data_ar">
+         <obj_property name="ElementShortName">data_ar[2:0]</obj_property>
+         <obj_property name="ObjectShortName">data_ar[2:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CTRL/MAIN_CTRL/input_valids">
+         <obj_property name="ElementShortName">input_valids[2:0]</obj_property>
+         <obj_property name="ObjectShortName">input_valids[2:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group145">
+      <obj_property name="label">ucm_csw</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CSW/i_control">
+         <obj_property name="ElementShortName">i_control[2:0]</obj_property>
+         <obj_property name="ObjectShortName">i_control[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CSW/i_data">
+         <obj_property name="ElementShortName">i_data[2:0][123:0]</obj_property>
+         <obj_property name="ObjectShortName">i_data[2:0][123:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_CSW/o_data">
+         <obj_property name="ElementShortName">o_data[2:0][123:0]</obj_property>
+         <obj_property name="ObjectShortName">o_data[2:0][123:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group152">
+      <obj_property name="label">ucm_csw_pam</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_PAM_CSW/i_control">
+         <obj_property name="ElementShortName">i_control[2:0]</obj_property>
+         <obj_property name="ObjectShortName">i_control[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_PAM_CSW/i_data">
+         <obj_property name="ElementShortName">i_data[2:0][123:0]</obj_property>
+         <obj_property name="ObjectShortName">i_data[2:0][123:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_PAM_CSW/o_data">
+         <obj_property name="ElementShortName">o_data[2:0][123:0]</obj_property>
+         <obj_property name="ObjectShortName">o_data[2:0][123:0]</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group105">
+      <obj_property name="label">slope(2)</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/i_data_v">
+         <obj_property name="ElementShortName">i_data_v[50:0]</obj_property>
+         <obj_property name="ObjectShortName">i_data_v[50:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/i_data_valid">
+         <obj_property name="ElementShortName">i_data_valid</obj_property>
+         <obj_property name="ObjectShortName">i_data_valid</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/o_slope">
+         <obj_property name="ElementShortName">o_slope[11:0]</obj_property>
+         <obj_property name="ObjectShortName">o_slope[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/o_data_valid">
+         <obj_property name="ElementShortName">o_data_valid</obj_property>
+         <obj_property name="ObjectShortName">o_data_valid</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/barrel_r">
+         <obj_property name="ElementShortName">barrel_r</obj_property>
+         <obj_property name="ObjectShortName">barrel_r</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/rpc_a">
+         <obj_property name="ElementShortName">rpc_a[0:3][9:0]</obj_property>
+         <obj_property name="ObjectShortName">rpc_a[0:3][9:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/rad_a">
+         <obj_property name="ElementShortName">rad_a[0:3][9:0]</obj_property>
+         <obj_property name="ObjectShortName">rad_a[0:3][9:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject type="other" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/num_h">
+         <obj_property name="ElementShortName">num_h</obj_property>
+         <obj_property name="ObjectShortName">num_h</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/sum_zy">
+         <obj_property name="ElementShortName">sum_zy[23:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_zy[23:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/sum_y">
+         <obj_property name="ElementShortName">sum_y[11:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_y[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/sum_z">
+         <obj_property name="ElementShortName">sum_z[11:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_z[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/sum_zz">
+         <obj_property name="ElementShortName">sum_zz[23:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_zz[23:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/sqr_sum_z">
+         <obj_property name="ElementShortName">sqr_sum_z[23:0]</obj_property>
+         <obj_property name="ObjectShortName">sqr_sum_z[23:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/b_nom">
+         <obj_property name="ElementShortName">b_nom[47:0]</obj_property>
+         <obj_property name="ObjectShortName">b_nom[47:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/b_den">
+         <obj_property name="ElementShortName">b_den[47:0]</obj_property>
+         <obj_property name="ObjectShortName">b_den[47:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/int_slope">
+         <obj_property name="ElementShortName">int_slope[95:0]</obj_property>
+         <obj_property name="ObjectShortName">int_slope[95:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/e_z">
+         <obj_property name="ElementShortName">e_z[11:0]</obj_property>
+         <obj_property name="ObjectShortName">e_z[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/e_y">
+         <obj_property name="ElementShortName">e_y[11:0]</obj_property>
+         <obj_property name="ObjectShortName">e_y[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/int_offset">
+         <obj_property name="ElementShortName">int_offset[107:0]</obj_property>
+         <obj_property name="ObjectShortName">int_offset[107:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/dv_chain">
+         <obj_property name="ElementShortName">dv_chain[7:0]</obj_property>
+         <obj_property name="ObjectShortName">dv_chain[7:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group139">
+      <obj_property name="label">slope(1)</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/i_data_v">
+         <obj_property name="ElementShortName">i_data_v[50:0]</obj_property>
+         <obj_property name="ObjectShortName">i_data_v[50:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/i_data_valid">
+         <obj_property name="ElementShortName">i_data_valid</obj_property>
+         <obj_property name="ObjectShortName">i_data_valid</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/o_slope">
+         <obj_property name="ElementShortName">o_slope[11:0]</obj_property>
+         <obj_property name="ObjectShortName">o_slope[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/o_data_valid">
+         <obj_property name="ElementShortName">o_data_valid</obj_property>
+         <obj_property name="ObjectShortName">o_data_valid</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/barrel_r">
+         <obj_property name="ElementShortName">barrel_r</obj_property>
+         <obj_property name="ObjectShortName">barrel_r</obj_property>
+      </wvobject>
+      <wvobject type="other" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/coin">
+         <obj_property name="ElementShortName">coin</obj_property>
+         <obj_property name="ObjectShortName">coin</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/rpc_a">
+         <obj_property name="ElementShortName">rpc_a[0:3][9:0]</obj_property>
+         <obj_property name="ObjectShortName">rpc_a[0:3][9:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/rad_a">
+         <obj_property name="ElementShortName">rad_a[0:3][9:0]</obj_property>
+         <obj_property name="ObjectShortName">rad_a[0:3][9:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject type="other" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/num_h">
+         <obj_property name="ElementShortName">num_h</obj_property>
+         <obj_property name="ObjectShortName">num_h</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/sum_zy">
+         <obj_property name="ElementShortName">sum_zy[23:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_zy[23:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/sum_y">
+         <obj_property name="ElementShortName">sum_y[11:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_y[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/sum_z">
+         <obj_property name="ElementShortName">sum_z[11:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_z[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/sum_zz">
+         <obj_property name="ElementShortName">sum_zz[23:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_zz[23:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/sqr_sum_z">
+         <obj_property name="ElementShortName">sqr_sum_z[23:0]</obj_property>
+         <obj_property name="ObjectShortName">sqr_sum_z[23:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/b_nom">
+         <obj_property name="ElementShortName">b_nom[47:0]</obj_property>
+         <obj_property name="ObjectShortName">b_nom[47:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/b_den">
+         <obj_property name="ElementShortName">b_den[47:0]</obj_property>
+         <obj_property name="ObjectShortName">b_den[47:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/e_z">
+         <obj_property name="ElementShortName">e_z[11:0]</obj_property>
+         <obj_property name="ObjectShortName">e_z[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/e_y">
+         <obj_property name="ElementShortName">e_y[11:0]</obj_property>
+         <obj_property name="ObjectShortName">e_y[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/int_offset">
+         <obj_property name="ElementShortName">int_offset[107:0]</obj_property>
+         <obj_property name="ObjectShortName">int_offset[107:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/int_slope">
+         <obj_property name="ElementShortName">int_slope[95:0]</obj_property>
+         <obj_property name="ObjectShortName">int_slope[95:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/dv_chain">
+         <obj_property name="ElementShortName">dv_chain[7:0]</obj_property>
+         <obj_property name="ObjectShortName">dv_chain[7:0]</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

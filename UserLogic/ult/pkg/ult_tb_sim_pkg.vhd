@@ -74,7 +74,7 @@ package ult_tb_sim_pkg is
       event : unsigned(32-1 downto 0);
       slc : slc_rx_rt;
    end record input_slc_rt;
-   attribute w of input_slc_rt : type is 253;
+   attribute w of input_slc_rt : type is 252;
    function width(x: input_slc_rt) return natural;
    function convert(x: input_slc_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: input_slc_rt) return input_slc_rt;
@@ -84,7 +84,7 @@ package ult_tb_sim_pkg is
    attribute w of TB_SLC_FIFO_WIDTH : constant is 32;
 
    type input_slc_art is array(TB_SLC_FIFO_WIDTH-1 downto 0) of input_slc_rt;
-   attribute w of input_slc_art : type is 8096;
+   attribute w of input_slc_art : type is 8064;
    function width(x: input_slc_art) return integer;
    function convert(x: input_slc_art; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: input_slc_art) return input_slc_art;
@@ -93,7 +93,7 @@ package ult_tb_sim_pkg is
    function convert(x: std_logic_vector_array; tpl: input_slc_art) return input_slc_art;
 
    type slc_tb_art is array(TB_SLC_FIFO_WIDTH-1 downto 0) of slc_rx_rt;
-   attribute w of slc_tb_art : type is 5024;
+   attribute w of slc_tb_art : type is 4992;
    function width(x: slc_tb_art) return integer;
    function convert(x: slc_tb_art; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: slc_tb_art) return slc_tb_art;
@@ -177,7 +177,7 @@ package ult_tb_sim_pkg is
       thread : unsigned(4-1 downto 0);
       data : pl2mtc_rt;
    end record in_mtc_mpl_sim_rt;
-   attribute w of in_mtc_mpl_sim_rt : type is 182;
+   attribute w of in_mtc_mpl_sim_rt : type is 181;
    function width(x: in_mtc_mpl_sim_rt) return natural;
    function convert(x: in_mtc_mpl_sim_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: in_mtc_mpl_sim_rt) return in_mtc_mpl_sim_rt;

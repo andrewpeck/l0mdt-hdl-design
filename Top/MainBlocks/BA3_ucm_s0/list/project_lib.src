@@ -19,7 +19,7 @@ HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 # modules included
 # UserLogic/mpl/mpl_lib.src lib=mpl_lib
 # UserLogic/ult/ult_lib.src lib=ult_lib
-UserLogic/ucm/ucm_lib_vu13.src lib=ucm_lib
+UserLogic/ucm/ucm_v1.0_lib_vu13.src lib=ucm_lib
 # UserLogic/hp/hp_lib.src lib=hp_lib
 # UserLogic/heg/heg_lib.src lib=heg_lib
 # UserLogic/hps/hps_lib.src lib=hps_lib
