@@ -1,8 +1,8 @@
 
-UserLogic/ucm/pkg/ucm_pkg.vhd
-UserLogic/ucm/pkg/ucm_vhdl_pkg.vhd
-UserLogic/ucm/pkg/ucm_function_pkg.vhd
-UserLogic/ucm/pkg/ucm_time_pkg.vhd
+UserLogic/ucm/ucm_v1.2/pkg/ucm_pkg.vhd
+UserLogic/ucm/ucm_v1.2/pkg/ucm_vhdl_pkg.vhd
+# UserLogic/ucm/ucm_v1.2/pkg/ucm_function_pkg.vhd
+UserLogic/ucm/ucm_v1.2/pkg/ucm_time_pkg.vhd
 
 UserLogic/ucm/ucm_v1.2/src/ucm_supervisor.vhd
 # UserLogic/ucm/ucm_v1.2/src/ucm_ctrl_top.vhd
