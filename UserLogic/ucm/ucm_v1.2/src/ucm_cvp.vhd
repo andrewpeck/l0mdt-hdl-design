@@ -35,7 +35,7 @@ use shared_lib.fct_chamber_main_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 use ucm_lib.ucm_vhdl_pkg.all;
-use ucm_lib.ucm_function_pkg.all;
+-- use ucm_lib.ucm_function_pkg.all;
 
 library  vamc_lib;
 
