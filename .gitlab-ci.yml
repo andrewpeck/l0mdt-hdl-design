@@ -33,7 +33,7 @@ generate:
         PROJECT_NAME: [l0mdt/ku15p/l0mdt_ku15p_ull_ucm, ull/vu13p/ull_vu13_b3a_ucm_mpl]
         HOG_ONLY_SYNTH: 1
       - PROVIDER: "2022.2"
-        PROJECT_NAME: [MainBlocks/BA3_ucm_1.0_ku15, MainBlocks/BA3_ucm_1.0_vu13, MainBlocks/BA3_ucm_1.2_ku15, MainBlocks/BA3_ucm_1.2_vu13, MainBlocks/BA3_tar, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
+        PROJECT_NAME: [MainBlocks/BA3_ucm010_ku15, MainBlocks/BA3_ucm010_vu13, MainBlocks/BA3_ucm012_ku15, MainBlocks/BA3_ucm012_vu13, MainBlocks/BA3_tar, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
         HOG_ONLY_SYNTH: 1
   tags:
     - ${PROVIDER}
@@ -52,7 +52,7 @@ riviera:
     extends: .vars
   parallel:
     matrix:
-      - PROJECT_NAME: [MainBlocks/ptc_mpi, MainBlocks/BA3_tar, MainBlocks/BA3_ucm_1.2_vu13, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
+      - PROJECT_NAME: [MainBlocks/ptc_mpi, MainBlocks/BA3_tar, MainBlocks/BA3_ucm012_vu13, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
   allow_failure: true
 
 questa:
@@ -61,7 +61,7 @@ questa:
     extends: .vars
   parallel:
     matrix:
-      - PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm_1.2_vu13, MainBlocks/BA3_heg, ull/vu13p/ull_vu13_b3a_ucm_mpl, ull/vu13p/ull_vu13_b3a_tar]
+      - PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm012_vu13, MainBlocks/BA3_heg, ull/vu13p/ull_vu13_b3a_ucm_mpl, ull/vu13p/ull_vu13_b3a_tar]
         PROVIDER: questa
   allow_failure: false
   tags:
@@ -76,9 +76,9 @@ sim_comp:
       - PROJECT_NAME: MainBlocks/BA3_tar
         PROJECT_Q_NAME: MainBlocks/BA3_tar_questa
         PROJECT_R_NAME: MainBlocks/BA3_tar_riviera
-      - PROJECT_NAME: MainBlocks/BA3_ucm_1.2_vu13
-        PROJECT_Q_NAME: MainBlocks/BA3_ucm_1.2_vu13_questa
-        PROJECT_R_NAME: MainBlocks/BA3_ucm_1.2_vu13_riviera
+      - PROJECT_NAME: MainBlocks/BA3_ucm012_vu13
+        PROJECT_Q_NAME: MainBlocks/BA3_ucm012_vu13_questa
+        PROJECT_R_NAME: MainBlocks/BA3_ucm012_vu13_riviera
       - PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
         PROJECT_Q_NAME: MainBlocks/BA3_hps_csf_bp_questa
         PROJECT_R_NAME: MainBlocks/BA3_hps_csf_bp_riviera
@@ -102,9 +102,9 @@ sim_check:
       - PROJECT_NAME: [MainBlocks/BA3_tar]
         SIMULATOR: questa
         BLOCK: BA3_tar
-      - PROJECT_NAME: [MainBlocks/BA3_ucm_1.2_vu13]
+      - PROJECT_NAME: [MainBlocks/BA3_ucm012_vu13]
         SIMULATOR: questa
-        BLOCK: BA3_ucm_1.2_vu13
+        BLOCK: BA3_ucm012_vu13
       - PROJECT_NAME: [MainBlocks/BA3_hps_csf_bp]
         SIMULATOR: questa
         BLOCK: BA3_hps_csf_bp

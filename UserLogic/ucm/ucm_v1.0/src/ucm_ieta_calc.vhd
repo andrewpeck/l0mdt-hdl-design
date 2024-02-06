@@ -23,8 +23,9 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 use shared_lib.fct_barrel_chamb_z2origin_pkg.all;
+use shared_lib.fct_chamber_main_pkg.all;
 
  
 library ucm_lib;
@@ -106,7 +107,7 @@ begin
         if i_z_dv = '1' then
           found := '0';
           o_ieta <= to_unsigned(15,VEC_MDTID_CHAMBER_IETA_LEN);
-          for i_ch in 1 to MAX_NUM_CHAMBER_POS -1 loop
+          for i_ch in 1 to get_b_chamber_num_station(c_SECTOR_ID,g_STATION) -1 loop
             if to_integer(i_z) < to_integer(chamber_z_org_a(i_ch)) then
               if found = '0' then
                 o_ieta <= to_unsigned(i_ch - 1,VEC_MDTID_CHAMBER_IETA_LEN);

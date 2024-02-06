@@ -8,10 +8,10 @@ shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 shared/shared_lib.src lib=shared_lib
 
 #_project local configuration files
-Top/MainBlocks/BA3_ucm_1.2_vu13/prj_cfg.vhd
+Top/MainBlocks/BA3_ucm010_vu13/prj_cfg.vhd
 
 #### top  ####
-UserLogic/ucm/ucm_v1.2/top_ucm_imp.vhd top=top_ucm
+UserLogic/ucm/ucm_v1.0/top_ucm_imp.vhd top=top_ucm
 
 #### hal ####
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
@@ -19,7 +19,7 @@ HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 # modules included
 # UserLogic/mpl/mpl_lib.src lib=mpl_lib
 # UserLogic/ult/ult_lib.src lib=ult_lib
-UserLogic/ucm/ucm_v1.2_vu13_lib.src lib=ucm_lib
+UserLogic/ucm/ucm_v1.0_vu13_lib.src lib=ucm_lib
 # UserLogic/hp/hp_lib.src lib=hp_lib
 # UserLogic/heg/heg_lib.src lib=heg_lib
 # UserLogic/hps/hps_lib.src lib=hps_lib

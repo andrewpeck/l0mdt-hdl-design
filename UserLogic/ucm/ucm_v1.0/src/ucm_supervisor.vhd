@@ -30,7 +30,7 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.fct_barrel_chamb_z2origin_pkg.all;
 
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 use shared_lib.detector_time_param_pkg.all;
 use shared_lib.fct_sector_phi_center_pkg.all;
 
