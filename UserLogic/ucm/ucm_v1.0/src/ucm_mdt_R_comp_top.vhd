@@ -35,7 +35,7 @@ entity ucm_mdt_R_comp_top is
     g_MODE                : string := "MDT";
     -- g_STATION_RADIUS      : integer := 0; 
     g_STATION_LAYERS       : integer := 3; -- only for RPC
-    g_OUTPUT_WIDTH        : integer := UCM_Z_ROI_LEN
+    g_OUTPUT_WIDTH        : integer := UCM_R_MDT_LEN
   );
   port (
     clk           : in std_logic;
@@ -45,7 +45,7 @@ entity ucm_mdt_R_comp_top is
     ctrl_v        : in std_logic_vector;
     mon_v         : out std_logic_vector;
     --
-    i_phimod      : in std_logic_vector(5 - 1 downto 0);
+    i_phimod      : in std_logic_vector(UCM_CDE2CVP_PHIMOD_LEN - 1 downto 0);
     i_dv          : in std_logic;
     --
     o_radius      : out ucm_mdt_r_alt(g_STATION_LAYERS - 1 downto 0);

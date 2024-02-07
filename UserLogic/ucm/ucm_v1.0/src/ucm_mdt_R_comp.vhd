@@ -45,7 +45,7 @@ entity ucm_mdt_R_comp is
     ctrl_v        : in std_logic_vector;
     mon_v         : out std_logic_vector;
     --
-    i_phimod      : in std_logic_vector(5 - 1 downto 0);
+    i_phimod      : in std_logic_vector(UCM_CDE2CVP_PHIMOD_LEN - 1 downto 0);
     i_dv          : in std_logic;
     --
     o_radius      : out std_logic_vector(g_OUTPUT_WIDTH - 1 downto 0);
@@ -58,7 +58,8 @@ architecture beh of ucm_mdt_R_comp is
   signal ctrl_r : UCM_R_PHI_COMP_MDT_CTRL_t;
   signal mon_r  : UCM_R_PHI_COMP_MDT_MON_t; 
 
-  signal rad_mem : barrel_R_mdt_avt := get_barrel_R_mdt(c_SECTOR_ID,c_SECTOR_SIDE,g_STATION_RADIUS,g_STATION_LAYER,SLC_Z_RPC_MULT,UCM_Z_ROI_LEN,32);
+  --signal rad_mem : barrel_R_mdt_avt := get_barrel_R_mdt(c_SECTOR_ID,c_SECTOR_SIDE,g_STATION_RADIUS,g_STATION_LAYER,SLC_Z_RPC_MULT,UCM_Z_ROI_LEN,32);
+  signal rad_mem : barrel_R_mdt_avt := get_barrel_R_mdt(c_SECTOR_ID,c_SECTOR_SIDE,g_STATION_RADIUS,g_STATION_LAYER,1.0,g_OUTPUT_WIDTH,32);
 
 begin
 

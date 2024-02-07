@@ -3,7 +3,7 @@
 -- Project: ATLAS L0MDT Trigger
 -- File: top_ucm_sim.vhd
 -- Module: <<moduleName>>
--- File PATH: /UserLogic/ucm/top_ucm_sim.vhd
+-- File PATH: /UserLogic/ucm/ucm_v1.2/top_ucm_sim.vhd
 -- -----
 -- File Created: Monday, 11th April 2022 3:31:05 pm
 -- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)

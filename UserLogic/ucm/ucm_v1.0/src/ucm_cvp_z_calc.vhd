@@ -24,7 +24,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 use shared_lib.vhdl2008_functions_pkg.all;
  
 library ucm_lib;
@@ -46,7 +46,7 @@ entity ucm_cvp_z_calc is
     rst           : in std_logic;
     ena           : in std_logic;
     --
-    i_mdt_R       : in std_logic_vector(UCM_Z_ROI_LEN-1 downto 0);
+    i_mdt_R       : in std_logic_vector(UCM_R_MDT_LEN-1 downto 0);
     i_mdt_R_dv    : in std_logic;
     -- i_chamb_ieta  : in unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
     i_offset      : in signed(31 downto 0);--signed(126 -1 downto 0);
@@ -63,7 +63,7 @@ architecture beh of ucm_cvp_z_calc is
 
   constant mult : std_logic_vector := std_logic_vector(to_unsigned(integer(UCM_Z_ROI_MULT/SLC_Z_RPC_MULT),5));
   -- constant int_size : integer := 32;
-  signal mdt_R    : std_logic_vector(1 + UCM_Z_ROI_LEN-1 downto 0);
+  signal mdt_R    : std_logic_vector(1 + UCM_R_MDT_LEN-1 downto 0);
   signal mdt_R_sc : std_logic_vector(11 + mdt_R'length -1 downto 0);
   
   signal slope    : signed(i_slope'length  -1 downto 0);--signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
@@ -131,7 +131,7 @@ begin
     end if;
   end process storage;
 
---   off_res : entity shared_lib.generic_pipelined_MATH
+--   off_res : entity shared_lib.VU_generic_pipelined_MATH
 --   generic map(
 --     g_OPERATION => "*",
 --     g_IN_PIPE_STAGES  => 1,
@@ -152,7 +152,7 @@ begin
 -- );
               
   mdt_R_sc <= mdt_R & "00000000000";
-  mult_int : entity shared_lib.generic_pipelined_MATH
+  mult_int : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "-",
       g_IN_PIPE_STAGES  => 1,

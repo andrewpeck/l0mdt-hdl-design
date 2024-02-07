@@ -1,0 +1,33 @@
+#### project mapping files ####
+# prj_mapping_links.vhd
+# prj_mapping_tar.vhd
+
+#### default config parameters ####
+shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
+#### shared ####
+shared/shared_lib.src lib=shared_lib
+
+#_project local configuration files
+Top/MainBlocks/BA3_ucm012_ku15/prj_cfg.vhd
+
+#### top  ####
+UserLogic/ucm/ucm_v1.2/top_ucm_imp.vhd top=top_ucm
+
+#### hal ####
+HAL/ctrl/ctrl_lib.src lib=ctrl_lib
+
+# modules included
+# UserLogic/mpl/mpl_lib.src lib=mpl_lib
+# UserLogic/ult/ult_lib.src lib=ult_lib
+UserLogic/ucm/ucm_v1.2_ku15_lib.src lib=ucm_lib
+# UserLogic/hp/hp_lib.src lib=hp_lib
+# UserLogic/heg/heg_lib.src lib=heg_lib
+# UserLogic/hps/hps_lib.src lib=hps_lib
+# UserLogic/csf/ncsf_lib.src lib=csf_lib
+# UserLogic/tar/tar_v1.1_lib.src lib=tar_lib
+# UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib
+# UserLogic/upt/upt_lib_empty.src lib=upt_lib
+# UserLogic/mtc/mtc_lib.src lib=mtc_lib
+# UserLogic/lsf/lsf_lib_empty.src lib=lsf_lib
+# UserLogic/daq/daq_lib.src lib=daq_lib
+# UserLogic/fm/fm_lib.src lib=fm_lib

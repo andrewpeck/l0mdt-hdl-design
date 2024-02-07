@@ -24,7 +24,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 use shared_lib.fct_barrel_chamb_z2origin_pkg.all;
 
 library ucm_lib;
@@ -174,7 +174,7 @@ begin
       -- end process;
 
 
-      -- PHIMOD_SCALE : entity shared_lib.generic_pipelined_MATH
+      -- PHIMOD_SCALE : entity shared_lib.VU_generic_pipelined_MATH
       --   generic map(
       --     g_OPERATION => "*",
       --     g_IN_PIPE_STAGES  => 2,
