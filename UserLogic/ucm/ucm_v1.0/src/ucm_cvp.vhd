@@ -30,11 +30,13 @@ use shared_lib.config_pkg.all;
 -- use shared_lib.detector_param_pkg.all;
 use shared_lib.fct_barrel_chamb_z2origin_pkg.all;
 use shared_lib.fct_barrel_R_rpc_pkg.all;
-use shared_lib.fct_chamber_type_pkg.all;
+use shared_lib.fct_chamber_main_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
-use ucm_lib.ucm_function_pkg.all;
+-- use ucm_lib.ucm_vhdl_pkg.all;
+
+-- use ucm_lib.ucm_function_pkg.all;
 
 library  vamc_lib;
 
@@ -133,7 +135,7 @@ architecture beh of ucm_cvp is
   signal vec_pos_array  : vec_pos_array_t;
   signal vec_z_pos_dv : std_logic_vector(g_MAX_POSSIBLE_HPS -1 downto 0);
 
-  signal vec_ang_pl : unsigned(UCM2HPS_VEC_ANG_LEN-1 downto 0);
+  signal vec_ang_pl : std_logic_vector(UCM2HPS_VEC_ANG_LEN-1 downto 0);
   
 begin
 
@@ -213,7 +215,7 @@ begin
     generic map(
       g_MODE =>  "MDT",
       g_STATION_LAYERS => 3,
-      g_OUTPUT_WIDTH => UCM_Z_ROI_LEN
+      g_OUTPUT_WIDTH => UCM_R_MDT_LEN
     )
     port map(
       clk         => clk,
@@ -346,7 +348,7 @@ begin
     rst           => local_rst,
     ena       => ena,
     --
-    i_slope       => atan_slope,
+    i_slope       => signed(atan_slope),
     i_dv          => slope_dv,
     o_mbar        => vec_ang_pl,
     o_dv          => atan_dv

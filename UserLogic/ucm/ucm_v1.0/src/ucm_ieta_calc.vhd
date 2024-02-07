@@ -59,7 +59,7 @@ end entity ucm_ieta_calc;
 
 architecture beh of ucm_ieta_calc is
 
-  signal chamber_z_org_a : b_chamber_z_origin_aut;
+  signal chamber_z_org_a : b_chamber_z_origin_aut(0 to get_b_chamber_num_max(c_SECTOR_ID) - 1);
   -- (open)(g_INPUT_WIDTH -1 downto 0) := 
   --       get_b_chamber_origin_z_u(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE,g_INPUT_WIDTH);
   -- signal i_z_i : integer;

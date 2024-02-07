@@ -99,7 +99,7 @@ architecture beh of ucm_phimod is
 
 begin
 
-      -- PHIMOD : entity shared_lib.generic_pipelined_MATH
+      -- PHIMOD : entity shared_lib.VU_generic_pipelined_MATH
       --   generic map(
       --     g_OPERATION => "-",
       --     g_IN_PIPE_STAGES  => 1,
@@ -163,7 +163,7 @@ begin
       -- o_phimod_abs <= int_phimod_abs_pl;
 
 
-      PHIMOD_SCALE : entity shared_lib.generic_pipelined_MATH
+      PHIMOD_SCALE : entity shared_lib.VU_generic_pipelined_MATH
         generic map(
           g_OPERATION => "*",
           g_IN_PIPE_STAGES  => 2,
