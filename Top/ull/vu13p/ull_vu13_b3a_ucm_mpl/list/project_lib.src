@@ -14,8 +14,9 @@ UserLogic/ult/top_ult_imp.vhd top=top_ult
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 
 #### modules included ####
-UserLogic/mpl/mpl_lib.src lib=mpl_lib
 UserLogic/ucm/ucm_v1.0_vu13_lib.src lib=ucm_lib
+
+UserLogic/mpl/mpl_lib.src lib=mpl_lib
 UserLogic/hp/hp_lib.src lib=hp_lib
 UserLogic/heg/heg_lib.src lib=heg_lib
 UserLogic/hps/hps_lib.src lib=hps_lib
@@ -27,4 +28,5 @@ UserLogic/mtc/mtc_lib.src lib=mtc_lib
 UserLogic/lsf/lsf_lib_empty.src lib=lsf_lib
 UserLogic/fm/fm_lib.src lib=fm_lib
 UserLogic/daq/daq.src lib=daq_lib
+
 UserLogic/ult/ult_lib.src lib=ult_lib
