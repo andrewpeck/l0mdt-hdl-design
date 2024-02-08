@@ -131,6 +131,7 @@ clean_ip:
 	git clean -dfX HAL/IP
 	git clean -dfX HAL/c2c
 	git clean -dfX IP
+	git clean -dfX UserLogic
 
 clean_bin:
 	rm -rf bin
