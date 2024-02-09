@@ -4,7 +4,7 @@ Top/ult_lsf_upt/prj_cfg.vhd
 ult/top_ult.vhd
 # modules included
 shared/shared_lib.src lib=shared_lib
-UserLogic/mpl/mpl_lib.src lib=mpl_lib
+UserLogic/mpl/mpl_v0.1_lib.src lib=mpl_lib
 UserLogic/ult/ult_lib.src lib=ult_lib
 UserLogic/ucm/UserLogic/ucm/ucm_v1.0_vu13_lib.src lib=ucm_lib
 UserLogic/hp/hp_lib.src lib=hp_lib
