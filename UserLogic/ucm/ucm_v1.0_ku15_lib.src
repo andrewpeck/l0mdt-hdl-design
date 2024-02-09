@@ -1,7 +1,4 @@
 
-UserLogic/ucm/ucm_v1.0/pkg/ucm_pkg.vhd
-# UserLogic/ucm/ucm_v1.0/pkg/ucm_function_pkg.vhd
-UserLogic/ucm/ucm_v1.0/pkg/ucm_time_pkg.vhd
 
 UserLogic/ucm/ucm_v1.0/IPs/ku15/div_gen_r2s_v1/div_gen_r2s_v1.xci
 # UserLogic/ucm/IPs/ku15/e_z_div/e_z_div.xci

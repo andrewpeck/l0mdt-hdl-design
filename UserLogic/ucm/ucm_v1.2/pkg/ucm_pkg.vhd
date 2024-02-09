@@ -21,7 +21,7 @@ package ucm_pkg is
    constant SLC_SPECIFIC_LEN : integer := 48;
    attribute w of SLC_SPECIFIC_LEN : constant is 32;
 
-   constant UCM_CDE2CVP_PHIMOD_LEN : integer := 7;
+   constant UCM_CDE2CVP_PHIMOD_LEN : integer := 8;
    attribute w of UCM_CDE2CVP_PHIMOD_LEN : constant is 32;
 
    constant UCM_CDE2CVP_PHIMOD_MULT : real := 64.0;
@@ -126,14 +126,14 @@ package ucm_pkg is
       specific : std_logic_vector(SLC_SPECIFIC_LEN -1 downto 0);
       data_valid : std_logic;
    end record ucm_cde_rt;
-   attribute w of ucm_cde_rt : type is 94;
+   attribute w of ucm_cde_rt : type is 95;
    function width(x: ucm_cde_rt) return natural;
    function convert(x: ucm_cde_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: ucm_cde_rt) return ucm_cde_rt;
    function zero(tpl: ucm_cde_rt) return ucm_cde_rt;
 
    subtype ucm_cde_vt is std_logic_vector(ucm_cde_rt'w-1 downto 0);
-   attribute w of ucm_cde_vt : subtype is 94;
+   attribute w of ucm_cde_vt : subtype is 95;
 
    type ucm_cde_art is array(integer range <>) of ucm_cde_rt;
    function width(x: ucm_cde_art) return integer;
