@@ -181,7 +181,7 @@ package common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: ucm2tar_avt) return ucm2tar_avt;
 
    subtype ucm2hps_vt is std_logic_vector(ucm2hps_rt'w-1 downto 0);
-   attribute w of ucm2hps_vt : subtype is 65;
+   attribute w of ucm2hps_vt : subtype is 66;
 
    type ucm2hps_art is array(integer range <>) of ucm2hps_rt;
    function width(x: ucm2hps_art) return integer;
@@ -257,7 +257,7 @@ package common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: sf2ptcalc_avt) return sf2ptcalc_avt;
 
    subtype ucm2pl_vt is std_logic_vector(ucm2pl_rt'w-1 downto 0);
-   attribute w of ucm2pl_vt : subtype is 147;
+   attribute w of ucm2pl_vt : subtype is 148;
 
    type ucm2pl_art is array(integer range <>) of ucm2pl_rt;
    function width(x: ucm2pl_art) return integer;
@@ -276,7 +276,7 @@ package common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: ucm2pl_avt) return ucm2pl_avt;
 
    subtype pl2ptcalc_vt is std_logic_vector(pl2ptcalc_rt'w-1 downto 0);
-   attribute w of pl2ptcalc_vt : subtype is 57;
+   attribute w of pl2ptcalc_vt : subtype is 58;
 
    type pl2ptcalc_art is array(integer range <>) of pl2ptcalc_rt;
    function width(x: pl2ptcalc_art) return integer;
