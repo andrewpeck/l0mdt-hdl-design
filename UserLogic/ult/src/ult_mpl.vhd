@@ -33,7 +33,7 @@ entity pipeline is
   port (
     -- clock and control
     clock_and_control : in  l0mdt_control_rt;
-    ttc_commands      : in  l0mdt_ttc_rt;
+    -- ttc_commands      : in  l0mdt_ttc_rt;
     --
     ctrl_v            : in std_logic_vector; -- : in  MPL_CTRL_t;
     mon_v             : out std_logic_vector;-- : out MPL_MON_t;

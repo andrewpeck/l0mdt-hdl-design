@@ -11,3 +11,4 @@ shared/sim/waves/ull_vu13_b3a_ucm_mpl_ta.do
 
 #IV
 shared/sim/vhdl_input_vect/BA3_20220915_120534/csm_A3_Barrel.csv
+shared/sim/vhdl_input_vect/BA3_20220915_120534/slc_A3_Barrel.csv

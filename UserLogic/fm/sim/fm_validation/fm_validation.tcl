@@ -195,7 +195,7 @@ proc checkRequiredFiles { origin_dir xilinx_tools_dir} {
  "[file normalize "$origin_dir/../../../../shared/types/common_types_pkg.vhd"]"\
  "[file normalize "$origin_dir/../../../../shared/config/config_defaults_pkg.vhd"]"\
  "[file normalize "$origin_dir/../../../../shared/vhdl_utilities/pkg/vhdl2008_functions_pkg.vhd"]"\
- "[file normalize "$origin_dir/../../../../shared/detector_parameters/dp_repo/detector_param_pkg.vhd"]"\
+#  "[file normalize "$origin_dir/../../../../shared/detector_parameters/dp_repo/detector_param_pkg.vhd"]"\
  "[file normalize "$origin_dir/../../../../shared/detector_parameters/fw_parameters/detector_time_param_pkg.vhd"]"\
  "[file normalize "$origin_dir/../../../../shared/detector_parameters/functions/fct_barrel_R_rpc_pkg.vhd"]"\
  "[file normalize "$origin_dir/../../../../Top/l0mdt/ku15p/l0mdt_ku15p_ull_fm/prj_cfg.vhd"]"\
@@ -408,7 +408,7 @@ set files [list \
  [file normalize "${origin_dir}/../../../../shared/types/common_types_pkg.vhd"] \
  [file normalize "${origin_dir}/../../../../shared/config/config_defaults_pkg.vhd"] \
  [file normalize "${origin_dir}/../../../../shared/vhdl_utilities/pkg/vhdl2008_functions_pkg.vhd"] \
- [file normalize "${origin_dir}/../../../../shared/detector_parameters/dp_repo/detector_param_pkg.vhd"] \
+#  [file normalize "${origin_dir}/../../../../shared/detector_parameters/dp_repo/detector_param_pkg.vhd"] \
  [file normalize "${origin_dir}/../../../../shared/detector_parameters/fw_parameters/detector_time_param_pkg.vhd"] \
  [file normalize "${origin_dir}/../../../../shared/detector_parameters/functions/fct_barrel_R_rpc_pkg.vhd"] \
  [file normalize "${origin_dir}/../../../../Top/l0mdt/ku15p/l0mdt_ku15p_ull_fm/prj_cfg.vhd"] \
@@ -630,7 +630,7 @@ set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
 set_property -name "library" -value "shared_lib" -objects $file_obj
 
-set file "$origin_dir/../../../../shared/detector_parameters/dp_repo/detector_param_pkg.vhd"
+# set file "$origin_dir/../../../../shared/detector_parameters/dp_repo/detector_param_pkg.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
@@ -1408,9 +1408,9 @@ if { [get_files config_defaults_pkg.vhd] == "" } {
 if { [get_files vhdl2008_functions_pkg.vhd] == "" } {
   import_files -quiet -fileset sources_1 $origin_dir/../../../../shared/vhdl_utilities/pkg/vhdl2008_functions_pkg.vhd
 }
-if { [get_files detector_param_pkg.vhd] == "" } {
-  import_files -quiet -fileset sources_1 $origin_dir/../../../../shared/detector_parameters/dp_repo/detector_param_pkg.vhd
-}
+# if { [get_files detector_param_pkg.vhd] == "" } {
+#   import_files -quiet -fileset sources_1 $origin_dir/../../../../shared/detector_parameters/dp_repo/detector_param_pkg.vhd
+# }
 if { [get_files detector_time_param_pkg.vhd] == "" } {
   import_files -quiet -fileset sources_1 $origin_dir/../../../../shared/detector_parameters/fw_parameters/detector_time_param_pkg.vhd
 }

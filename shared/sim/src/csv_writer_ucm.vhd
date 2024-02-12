@@ -31,7 +31,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 
 use shared_lib.vhdl_tb_utils_pkg.all;
 
@@ -52,6 +52,8 @@ entity csv_writer_ucm is
   generic(
     g_PRJ_INFO            : string  := "not_defined";
     g_IN_FILES            : string  := "not_defined.csv";
+    g_SLC_2_HPS_DELAY : integer := 0;
+    g_SLC_2_MPL_DELAY : integer := 0;
     g_verbose         : integer := 1
   );
   port (
@@ -68,10 +70,19 @@ entity csv_writer_ucm is
     --
     slc_event_ai          : in event_xaut;
     --
-    inn_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    mid_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    out_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    ext_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    in_offset_cvp         : in offset_art(c_NUM_ACCEPTS -1 downto 0) := (others => (others => '0'));
+    in_slope_cvp          : in slope_art(c_NUM_ACCEPTS -1 downto 0) := (others => (others => '0'));
+    -- to TAR
+    o_uCM2tar_inn_av      : in ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2tar_mid_av      : in ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2tar_out_av      : in ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2tar_ext_av      : in ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+    --
+    inn_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+    mid_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+    out_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+    ext_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+    --
     ucm2pl_av             : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0)
 
   );
@@ -103,10 +114,10 @@ architecture sim of csv_writer_ucm is
   signal slc_event_u2m_au        : event_xat(c_MAX_NUM_SL -1 downto 0);
   signal slc_event_u2h_au        : event_xat(c_MAX_NUM_SL -1 downto 0);
 
-  signal inn_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
-  signal mid_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
-  signal out_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
-  signal ext_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
+  signal inn_ucm2hps_bus_ar : ucm2hps_art(c_NUM_ACCEPTS-1 downto 0);
+  signal mid_ucm2hps_bus_ar : ucm2hps_art(c_NUM_ACCEPTS-1 downto 0);
+  signal out_ucm2hps_bus_ar : ucm2hps_art(c_NUM_ACCEPTS-1 downto 0);
+  signal ext_ucm2hps_bus_ar : ucm2hps_art(c_NUM_ACCEPTS-1 downto 0);
 
 
 
@@ -145,7 +156,10 @@ begin
     csv_file_1.write_word("vec_pos[1mm]");
     -- vec_ang
     csv_file_1.write_word("vec_ang[1mrad]");
+    -- csv_file_1.write_word("vec_off[1mm]");
+    csv_file_1.write_word("phimod[4mrad]");
     csv_file_1.writeline;
+    ----------------------------------------------------------------------------
     puts("opening UCM2PL CSV file : " & g_OUT_FILE_2);
     csv_file_2.initialize(g_OUT_FILE_2,"wr");
     csv_file_2.write_string("# --------------------------");
@@ -202,7 +216,7 @@ begin
       g_SIMULATION => '1',
       -- pragma translate_on
       g_PIPELINE_TYPE => "ring_buffer",
-      g_DELAY_CYCLES  => 54,
+      g_DELAY_CYCLES  => g_SLC_2_HPS_DELAY,
       g_PIPELINE_WIDTH    => 32
     )
     port map(
@@ -215,7 +229,7 @@ begin
     );
   end generate;
 
-    th_loop : for i in c_NUM_THREADS-1 downto 0 generate
+    th_loop : for i in c_NUM_ACCEPTS-1 downto 0 generate
       inn_ucm2hps_bus_ar(i) <= convert(inn_slc_to_h2s_av(i),inn_ucm2hps_bus_ar(i));
       mid_ucm2hps_bus_ar(i) <= convert(mid_slc_to_h2s_av(i),mid_ucm2hps_bus_ar(i));
       out_ucm2hps_bus_ar(i) <= convert(out_slc_to_h2s_av(i),out_ucm2hps_bus_ar(i));
@@ -236,7 +250,7 @@ begin
       else     
         if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
           thread_counter := 0;
-          for th_i in c_NUM_THREADS -1 downto 0 loop
+          for th_i in c_NUM_ACCEPTS -1 downto 0 loop
             -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
             if inn_ucm2hps_bus_ar(th_i).data_valid = '1' then
               -- puts(" hello ",th_i);
@@ -261,7 +275,8 @@ begin
               -- vec_pos
               csv_file_1.write_integer(to_integer(inn_ucm2hps_bus_ar(th_i).vec_pos));
               -- vec_ang
-              csv_file_1.write_integer(to_integer(inn_ucm2hps_bus_ar(th_i).vec_ang));
+              csv_file_1.write_integer(to_integer(signed(inn_ucm2hps_bus_ar(th_i).vec_ang)));
+              csv_file_1.write_integer(to_integer(signed(inn_ucm2hps_bus_ar(th_i).phimod)));
               csv_file_1.writeline;
 
               if g_verbose > 1 then
@@ -278,7 +293,8 @@ begin
                 " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
                 " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
                 " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_pos)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_ang)));
+                " : " & integer'image(to_integer(signed(inn_ucm2hps_bus_ar(th_i).vec_ang))) &
+                " : " & integer'image(to_integer(signed(inn_ucm2hps_bus_ar(th_i).phimod))));
               end if;
               
             end if;
@@ -287,7 +303,7 @@ begin
 
         if c_STATIONS_IN_SECTOR(1) = '1' then -- INN
           thread_counter := 0;
-          for th_i in c_NUM_THREADS -1 downto 0 loop
+          for th_i in c_NUM_ACCEPTS -1 downto 0 loop
             -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
             if mid_ucm2hps_bus_ar(th_i).data_valid = '1' then
               -- puts(" hello ",th_i);
@@ -313,7 +329,8 @@ begin
               -- vec_pos
               csv_file_1.write_integer(to_integer(mid_ucm2hps_bus_ar(th_i).vec_pos));
               -- vec_ang
-              csv_file_1.write_integer(to_integer(mid_ucm2hps_bus_ar(th_i).vec_ang));
+              csv_file_1.write_integer(to_integer(signed(mid_ucm2hps_bus_ar(th_i).vec_ang)));
+              csv_file_1.write_integer(to_integer(signed(mid_ucm2hps_bus_ar(th_i).phimod)));
               csv_file_1.writeline;
 
               if g_verbose > 1 then
@@ -330,7 +347,8 @@ begin
                 " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
                 " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
                 " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).vec_pos)) &
-                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).vec_ang)));
+                " : " & integer'image(to_integer(signed(mid_ucm2hps_bus_ar(th_i).vec_ang))) &
+                " : " & integer'image(to_integer(signed(mid_ucm2hps_bus_ar(th_i).phimod))));
               end if;
 
             end if;
@@ -340,7 +358,7 @@ begin
         if c_STATIONS_IN_SECTOR(2) = '1' then -- INN
           thread_counter := 0;
 
-          for th_i in c_NUM_THREADS -1 downto 0 loop
+          for th_i in c_NUM_ACCEPTS -1 downto 0 loop
             -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
             if out_ucm2hps_bus_ar(th_i).data_valid = '1' then
               -- puts(" hello ",th_i);
@@ -358,14 +376,15 @@ begin
               csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(th_i).muid.slid));
               csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(th_i).muid.bcid));
               -- mdtseg_Dest
-              csv_file_1.write_integer(to_integer(unsigned(out_ucm2hps_bus_ar(th_i).mdtseg_dest)));
+              csv_file_1.write_integer(unsigned(out_ucm2hps_bus_ar(th_i).mdtseg_dest));
               -- mdtid
               csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(th_i).mdtid.chamber_id));
               csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta));
               -- vec_pos
               csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(th_i).vec_pos));
               -- vec_ang
-              csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(th_i).vec_ang));
+              csv_file_1.write_integer(signed(out_ucm2hps_bus_ar(th_i).vec_ang));
+              csv_file_1.write_integer(signed(out_ucm2hps_bus_ar(th_i).phimod));
               csv_file_1.writeline;
 
               if g_verbose > 1 then
@@ -382,7 +401,8 @@ begin
                 " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
                 " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
                 " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).vec_pos)) &
-                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).vec_ang)));
+                " : " & integer'image(to_integer(signed(out_ucm2hps_bus_ar(th_i).vec_ang))) &
+                " : " & integer'image(to_integer(signed(out_ucm2hps_bus_ar(th_i).phimod))));
               end if;
 
             end if;
@@ -392,7 +412,7 @@ begin
         if c_STATIONS_IN_SECTOR(3) = '1' then -- INN
           thread_counter := 0;
 
-          for th_i in c_NUM_THREADS -1 downto 0 loop
+          for th_i in c_NUM_ACCEPTS -1 downto 0 loop
             -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
             if ext_ucm2hps_bus_ar(th_i).data_valid = '1' then
               -- puts(" hello ",th_i);
@@ -418,7 +438,8 @@ begin
               -- vec_pos
               csv_file_1.write_integer(to_integer(ext_ucm2hps_bus_ar(th_i).vec_pos));
               -- vec_ang
-              csv_file_1.write_integer(to_integer(ext_ucm2hps_bus_ar(th_i).vec_ang));
+              csv_file_1.write_integer(to_integer(signed(ext_ucm2hps_bus_ar(th_i).vec_ang)));
+              csv_file_1.write_integer(to_integer(signed(ext_ucm2hps_bus_ar(th_i).phimod)));
               csv_file_1.writeline;
 
               if g_verbose > 1 then
@@ -435,7 +456,8 @@ begin
                 " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
                 " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
                 " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).vec_pos)) &
-                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).vec_ang)));
+                " : " & integer'image(to_integer(signed(ext_ucm2hps_bus_ar(th_i).vec_ang))) &
+                " : " & integer'image(to_integer(signed(ext_ucm2hps_bus_ar(th_i).phimod))));
               end if;
 
             end if;
@@ -452,7 +474,7 @@ begin
       g_SIMULATION => '1',
       -- pragma translate_on
       g_PIPELINE_TYPE => "ring_buffer",
-      g_DELAY_CYCLES  => 10,
+      g_DELAY_CYCLES  => g_SLC_2_MPL_DELAY,
       g_PIPELINE_WIDTH    => 32
     )
     port map(

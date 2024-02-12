@@ -24,7 +24,7 @@ use shared_lib.common_constants_pkg.all;
 
 package detector_time_param_pkg is
 
-  -- constant MAX_NUM_CHAMBER_POS : integer := 8;
+  -- constant MAX_ NUM_CHAMBER_POS : integer := 8;
 
   -------------------------------------------------------------------------
   -- Time & cycles constants

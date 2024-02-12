@@ -220,8 +220,13 @@ package body heg_sim_pkg is
    end function zero;
 
    function width(x: eve_pc2heg_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: eve_pc2heg_art; tpl: std_logic_vector) return std_logic_vector is
@@ -392,8 +397,13 @@ package body heg_sim_pkg is
    end function zero;
 
    function width(x: eve_ucm2hps_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: eve_ucm2hps_art; tpl: std_logic_vector) return std_logic_vector is

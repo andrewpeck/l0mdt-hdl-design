@@ -308,13 +308,13 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../../shared/detector_parameters/dp_repo/detector_param_pkg.vhd">
+      <!-- <File Path="$PPRDIR/../../../../shared/detector_parameters/dp_repo/detector_param_pkg.vhd">
         <FileInfo SFType="VHDL2008">
           <Attr Name="Library" Val="shared_lib"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
-      </File>
+      </File> -->
       <File Path="$PPRDIR/../../../../shared/detector_parameters/fw_parameters/detector_time_param_pkg.vhd">
         <FileInfo SFType="VHDL2008">
           <Attr Name="Library" Val="shared_lib"/>

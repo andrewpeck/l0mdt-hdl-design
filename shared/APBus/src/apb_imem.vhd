@@ -31,6 +31,7 @@ library ctrl_lib;
 use ctrl_lib.APB_MEM_SIG_CTRL.all;
 use ctrl_lib.MEM_INT_10A148D_CTRL.all;
 use ctrl_lib.MEM_INT_12A42D_CTRL.all;
+-- use ctrl_lib.MEM_INT_10A147D_CTRL.all;
 use ctrl_lib.MEM_INT_12A148D_CTRL.all;
 use ctrl_lib.MEM_INT_9A19D_CTRL.all;
 use ctrl_lib.MEM_INT_10A9D_CTRL.all;

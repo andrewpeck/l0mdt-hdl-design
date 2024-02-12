@@ -10,7 +10,7 @@ types:
    - heg_pc2heg_art: {'array': 'open', 'type': 'hp_hpsPc2hp_rt'}
    - heg_pc2heg_avt: {'array': 'open', 'type': 'heg_pc2heg_vt'}
 
-   - heg_roi_center_ut: {type: unsigned , range: [MDT_TUBE_LEN - 1, 0]}
+   - heg_roi_center_ut: {'type': 'unsigned' , 'range': ['MDT_TUBE_LEN - 1', 0]}
    - heg_roi_center_aut: {'array': 'open', 'type': 'heg_roi_center_ut'}
 
    - heg_ctrl2hp_rt:

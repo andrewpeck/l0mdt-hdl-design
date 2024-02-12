@@ -398,7 +398,7 @@ vu13p_ba3_ucm_mpl_tar_hps:
       hog_no_bitstream: 1
       en_fm: 0
       en_tar: 1
-      en_h2s: 1
+      en_h2s: 0
       en_ucm: 1
       en_mpl: 1
       en_sf: 0

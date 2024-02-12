@@ -15,7 +15,7 @@ shared/detector_parameters/functions/fct_tdc_mezz_mapping_pkg.vhd
 shared/detector_parameters/functions/fct_barrel_zholes_chamber_pkg.vhd
 shared/detector_parameters/functions/fct_sector_phi_center_pkg.vhd
 shared/detector_parameters/functions/fct_barrel_chamb_r2center_pkg.vhd
-shared/detector_parameters/functions/fct_chamber_type_pkg.vhd
+shared/detector_parameters/functions/fct_chamber_main_pkg.vhd
 
 # shared/detector_parameters/dp_repo/mdt_dt2R/mdt_dt2r_large.vhd
 # shared/detector_parameters/dp_repo/mdt_dt2R/mdt_dt2r_small.vhd

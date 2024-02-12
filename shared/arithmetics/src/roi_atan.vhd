@@ -37,9 +37,9 @@ entity roi_atan is
     rst : in    std_logic;
     ena : in    std_logic;
     --
-    i_slope : in    unsigned(g_input_len - 1 downto 0);
+    i_slope : in    signed(g_input_len - 1 downto 0);
     i_dv    : in    std_logic;
-    o_mbar  : out   unsigned(g_output_len - 1 downto 0);
+    o_mbar  : out   std_logic_vector(g_output_len - 1 downto 0);
     o_dv    : out   std_logic
   );
 end entity roi_atan;
@@ -47,7 +47,8 @@ end entity roi_atan;
 architecture beh of roi_atan is
 
   signal int_data_valid : std_logic;
-  signal addr_mem       : unsigned(g_input_len - 1 downto 0);
+  signal addr_mem       : unsigned(ROI_ATAN_MEM_WIDTH - 1 downto 0);
+  signal slope          : unsigned(ROI_ATAN_MEM_WIDTH - 1 downto 0);
 
   signal mem : roi_atan_lut_t(0 to ROM_ATAN_MAX_SIZE - 1) := ROI_ATAN_MEM;
 
@@ -72,6 +73,8 @@ begin
 
   begin
 
+    -- slope <= resize(when to_integer(unsigned(slope)) < 732387 else to_unsigned(732387,ATAN_SLOPE_LEN);
+
     if rising_edge(clk) then
       if (rst= '1') then
         o_mbar         <= (others => '0');
@@ -79,15 +82,27 @@ begin
         int_data_valid <= '0';
         o_dv           <= '0';
       else
+
+        if i_slope >= ROI_ATAN_MEM_MIN and to_integer(i_slope) <= ROI_ATAN_MEM_MAX then
+          slope <= to_unsigned(to_integer(signed(i_slope)) - ROI_ATAN_MEM_MIN,ROI_ATAN_MEM_WIDTH);
+        -- else
+        end if; 
+
         if (ena = '1') then
           int_data_valid <= i_dv;
           if (i_dv = '1') then
-            addr_mem <= i_slope;
+            if i_slope >= ROI_ATAN_MEM_MIN and to_integer(i_slope) <= ROI_ATAN_MEM_MAX then
+              addr_mem <= to_unsigned(to_integer(signed(i_slope)) - ROI_ATAN_MEM_MIN,ROI_ATAN_MEM_WIDTH);
+            -- else
+            end if; 
+            
+            -- addr_mem <= slope;
+
           end if;
 
           o_dv <= int_data_valid;
           if (int_data_valid = '1') then
-            o_mbar <= to_unsigned(integer(mem(to_integer(addr_mem))), g_output_len);
+            o_mbar <= std_logic_vector(to_unsigned(integer(mem(to_integer(addr_mem))), g_output_len));
           else
             o_mbar <= (others => '0');
           end if;

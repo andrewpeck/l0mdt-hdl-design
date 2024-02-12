@@ -29,7 +29,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 -- use shared_lib.common_types_vectors_pkg.all;
 use shared_lib.config_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 
 use shared_lib.fct_gtube2chamber_pkg.all;
 
@@ -122,7 +122,7 @@ begin
     rst           => rst,
     glob_en       => glob_en,
     --
-    i_mbar        => i_uCM_data_r.vec_ang,
+    i_mbar        => unsigned(i_uCM_data_r.vec_ang),
     i_dv          => i_uCM_data_r.data_valid,
     o_slope       => csf_slope,
     o_dv          => csf_slope_dv
@@ -210,7 +210,7 @@ begin
               o_uCM2sf_data_r.mdtid       <= i_uCM_data_r.mdtid;
               o_uCM2sf_data_r.vec_pos     <= i_uCM_data_r.vec_pos;
               if c_SF_TYPE = '1' then
-                o_uCM2sf_data_r.vec_ang     <= i_uCM_data_r.vec_ang;
+                o_uCM2sf_data_r.vec_ang     <= unsigned(i_uCM_data_r.vec_ang);
               end if;
 
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop

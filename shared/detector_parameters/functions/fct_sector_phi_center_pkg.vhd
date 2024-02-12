@@ -22,6 +22,7 @@ library shared_lib;
 use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.sl2mdt_constants_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
@@ -32,6 +33,8 @@ use dp_repo_lib.sector_phi_center_pkg.all;
 package fct_sector_phi_center_pkg is
   
   function get_sector_phi_center( sector : integer; len : integer) return sector_phi_center_t;
+
+  -- constant phi_center_default : real := sector_phi_center_default(sector  - 1);
   
 end package fct_sector_phi_center_pkg;
 
@@ -42,8 +45,9 @@ package body fct_sector_phi_center_pkg is
     variable a , b : real;
   begin
     a := sector_phi_center_default(sector  - 1);
-    b := SLC_COMMON_POSPHI_MULT;
-    mem_out := to_unsigned( integer(a * b),len);
+    -- b := 1/SL2MDT _SLC_COMMON_POSPHI_RES;
+    mem_out := to_unsigned( integer(a * SLC_COMMON_POSPHI_MULT),len);
+    -- mem_out := to_unsigned( integer(a / SL2MDT _SLC_COMMON_POSPHI_RES),len);
     return mem_out;
   end function;
   

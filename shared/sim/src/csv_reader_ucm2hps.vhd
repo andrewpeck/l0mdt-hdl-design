@@ -29,7 +29,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 
 use shared_lib.vhdl_tb_utils_pkg.all;
 
@@ -87,6 +87,7 @@ architecture sim of csv_reader_ucm2hps is
     chamber_ieta  : integer;
     vec_pos       : integer;
     vec_ang       : integer;
+    phimod        : integer;
   end record sim_ucm2hps_rt;
   constant ucm_event_r0 : eve_ucm2hps_rt := (
     ToS => (others => '0'),
@@ -107,7 +108,8 @@ architecture sim of csv_reader_ucm2hps is
         chamber_ieta => (others => '0')
       ),
       vec_pos => (others => '0'),
-      vec_ang => (others => '0')
+      vec_ang => (others => '0'),
+      phimod => (others => '0')
     )
   );
   shared variable csv_file  : csv_file_type;
@@ -238,6 +240,7 @@ begin
           ucm2hps_vr.chamber_ieta  :=csv_file.read_integer;
           ucm2hps_vr.vec_pos       :=csv_file.read_integer;
           ucm2hps_vr.vec_ang       :=csv_file.read_integer;
+          ucm2hps_vr.phimod        :=csv_file.read_integer;
           if g_verbose > 1 then
             puts("##### UCM2HPS( " & integer'image(row_counter) &
             " ): "& integer'image(ucm2hps_vr.ToS          ) &
@@ -252,7 +255,8 @@ begin
             " : " & integer'image(ucm2hps_vr.chamber_id   ) &
             " : " & integer'image(ucm2hps_vr.chamber_ieta ) &
             " : " & integer'image(ucm2hps_vr.vec_pos      ) &
-            " : " & integer'image(ucm2hps_vr.vec_ang      )
+            " : " & integer'image(ucm2hps_vr.vec_ang      ) &
+            " : " & integer'image(ucm2hps_vr.phimod       )
             );
           end if;
           ucm_event_vr :=(
@@ -274,7 +278,8 @@ begin
                 chamber_ieta => to_unsigned(ucm2hps_vr.chamber_ieta,VEC_MDTID_CHAMBER_IETA_LEN)
               ),
               vec_pos => to_unsigned(ucm2hps_vr.vec_pos,UCM2HPS_VEC_POS_LEN),
-              vec_ang => to_unsigned(ucm2hps_vr.vec_ang,UCM2HPS_VEC_ANG_LEN)
+              vec_ang => std_logic_vector(to_unsigned(ucm2hps_vr.vec_ang,UCM2HPS_VEC_ANG_LEN)),
+              phimod => std_logic_vector(to_unsigned(ucm2hps_vr.phimod,UCM2PL_PHIMOD_LEN))
             )
           );
 
@@ -305,7 +310,8 @@ begin
                 ucm2hps_vr.chamber_ieta  :=csv_file.read_integer;
                 ucm2hps_vr.vec_pos       :=csv_file.read_integer;
                 ucm2hps_vr.vec_ang       :=csv_file.read_integer;
-                if g_verbose > 1 then
+                ucm2hps_vr.phimod        :=csv_file.read_integer;
+          if g_verbose > 1 then
                   puts("##### UCM2HPS( " & integer'image(row_counter) &
                   " ): "& integer'image(ucm2hps_vr.ToS          ) &
                   " : " & integer'image(ucm2hps_vr.ToA          ) &
@@ -319,7 +325,8 @@ begin
                   " : " & integer'image(ucm2hps_vr.chamber_id   ) &
                   " : " & integer'image(ucm2hps_vr.chamber_ieta ) &
                   " : " & integer'image(ucm2hps_vr.vec_pos      ) &
-                  " : " & integer'image(ucm2hps_vr.vec_ang      )
+                  " : " & integer'image(ucm2hps_vr.vec_ang      ) &
+                  " : " & integer'image(ucm2hps_vr.phimod       )
                   );
                 end if;
                 ucm_event_vr :=(
@@ -341,7 +348,8 @@ begin
                       chamber_ieta => to_unsigned(ucm2hps_vr.chamber_ieta,VEC_MDTID_CHAMBER_IETA_LEN)
                     ),
                     vec_pos => to_unsigned(ucm2hps_vr.vec_pos,UCM2HPS_VEC_POS_LEN),
-                    vec_ang => to_unsigned(ucm2hps_vr.vec_ang,UCM2HPS_VEC_ANG_LEN)
+                    vec_ang => std_logic_vector(to_unsigned(ucm2hps_vr.vec_ang,UCM2HPS_VEC_ANG_LEN)),
+                    phimod => std_logic_vector(to_unsigned(ucm2hps_vr.phimod,UCM2PL_PHIMOD_LEN))
                   )
                 );
       

@@ -65,9 +65,9 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short en_ila} {
 
     if {[string compare "ku15p" $fpga_short]==0} {
       # disable vu13
-      Sed  "s/^UserLogic.*ucm_lib_vu13.src/#&/g" $lib
+      Sed  "s/^UserLogic.*ucm_v1.0_vu13_lib.src/#&/g" $lib
       # enable ku15
-      Sed  "s/^#\\(UserLogic.*ucm_lib_ku15.src\\)/\\1/g" $lib
+      Sed  "s/^#\\(UserLogic.*ucm_v1.0_ku15_lib.src\\)/\\1/g" $lib
       
     }
 

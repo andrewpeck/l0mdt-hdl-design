@@ -26,7 +26,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -48,7 +48,7 @@ entity b_slope2roi_8l is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    i_ang               : in unsigned(UCM_VEC_ANG_LEN-1 downto 0);
+    i_ang               : in std_logic_vector(UCM_VEC_ANG_LEN-1 downto 0);
     i_dv                : in std_logic;
     --
     o_roi_edges         : out hp_win_tubes_limits_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
@@ -93,7 +93,7 @@ begin
     -- if ( to_integer(unsigned(i_mbar)) > 5) then
     --   addr_mem <= (others => '0');
     -- else
-      addr_mem <= i_ang;--(DT2R_LARGE_ADDR_LEN -1 downto 0);
+      addr_mem <= unsigned(i_ang);--(DT2R_LARGE_ADDR_LEN -1 downto 0);
     -- end if;
   -- end process;
 

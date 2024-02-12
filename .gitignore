@@ -32,8 +32,8 @@ HAL/IP/*/*/*
 UserLogic/*/IP/**/*
 UserLogic/*/IP/*/*/*
 !UserLogic/*/IP/*/*/*.xci
-UserLogic/ucm/IPs/*/*/*
-!UserLogic/ucm/IPs/*/*/*.xci
+UserLogic/**/IPs/*/*/*
+!UserLogic/**/IPs/*/*/*.xci
 !IP/**/*.xci
 !IP/**.xci
 *.dbg
@@ -75,6 +75,8 @@ configs/
 make.log
 
 Doc/
+.questa.gcc*
+modelsim.ini.bak
 
 project_1.gen
 FM_VU13P.gen

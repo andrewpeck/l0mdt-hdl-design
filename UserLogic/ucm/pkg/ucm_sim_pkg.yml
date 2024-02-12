@@ -1,9 +1,0 @@
-# yml2hdl v0.
-config:
-   basic_functions: False
-   packages:
-      - ieee: [std_logic_1164, numeric_std, math_real]
-      - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg, common_types_pkg]
-      - ucm_lib: [ucm_pkg]
-
-types:

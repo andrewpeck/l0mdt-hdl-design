@@ -33,7 +33,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 use shared_lib.vhdl_tb_utils_pkg.all;
 use shared_lib.l0mdt_sim_cstm_pkg.all;
 -- use project_lib.vhdl_tb_utils_pkg.all;

@@ -60,7 +60,7 @@
       <node id="sel_thread"    address="0x0" mask="0x0000000f" parameters="default=0" permission="rw"   description="selected thread"/>
       <node id="sel_station"   address="0x0" mask="0x000000f0" parameters="default=0" permission="rw"   description="selected station"/>
       <node id="sel_layer"     address="0x0" mask="0x00000f00" parameters="default=0" permission="rw"   description="selected position 0x:rpc_layer 1x:center chamber"/>
-      <node id="MEM_INTERFACE" address="0x00000001" module="file://MEM_RAM_5A14D.xml"/>
+      <node id="MEM_INTERFACE" address="0x00000001" module="file://MEM_RAM_5A15D.xml"/>
     </node>
   </node>
 

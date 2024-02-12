@@ -30,7 +30,7 @@ USE shared_lib.l0mdt_dataformats_pkg.ALL;
 USE shared_lib.common_constants_pkg.ALL;
 USE shared_lib.common_types_pkg.ALL;
 USE shared_lib.config_pkg.ALL;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 
 LIBRARY ptc_lib;
 USE ptc_lib.pt_pkg.ALL;

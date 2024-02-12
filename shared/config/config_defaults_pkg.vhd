@@ -1,15 +1,18 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
---
---  Project: ATLAS L0MDT Trigger
---  Module: configuration file
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---    05/02/2020    0.1     File created
+-- UMass , Physics Department
+-- Project: config
+-- File: config_defaults_pkg.vhd
+-- Module: <<moduleName>>
+-- File PATH: /config_defaults_pkg.vhd
+-- -----
+-- File Created: 05/02/2020 12:51:09 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Thursday, 16th November 2023 8:47:47 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
+-- 2023-11-16	GLdL	-  Adding versions of blocks as configurables & separating threads and accepted candidates
 --------------------------------------------------------------------------------
 
 library ieee;
@@ -37,37 +40,25 @@ package cfg_global_default_pkg is
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
-    -- hardware modules
-    UL_PRESENT                    : std_logic;  -- enables or disables the user logic modul on compilation
-    HW_PRESENT                    : std_logic;  -- enables or disables the hardware modules on compilation
-    -- Processing channels
-    ENABLE_ST_INN                 : std_logic;  -- enable or disable inner processing station
-    EN_MDT_CH_INN                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
-    -- NUM_MDT_CH_INN                : integer;    -- set the number of hir processors on the station
-
-    ENABLE_ST_EXT                 : std_logic;  -- enable or disable extra processing station
-    EN_MDT_CH_EXT                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
-    -- NUM_MDT_CH_EXT                : integer;    -- set the number of hir processors on the station
-
-    ENABLE_ST_MID                 : std_logic;  -- enable or disable middle processing station
-    EN_MDT_CH_MID                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
-    -- NUM_MDT_CH_MID                : integer;    -- set the number of hir processors on the station
-
-    ENABLE_ST_OUT                 : std_logic;  -- enable or disable outer processing station
-    EN_MDT_CH_OUT                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
-    -- NUM_MDT_CH_OUT                : integer;    -- set the number of hir processors on the station
-    -- stations in current fpga
-    FPGA_EN_ST_INN                 : std_logic;
-    FPGA_EN_ST_EXT                 : std_logic;
-    FPGA_EN_ST_MID                 : std_logic;
-    FPGA_EN_ST_OUT                 : std_logic;
-    -- tube address remap
-    ENABLE_TAR                    : std_logic;
-    -- INSEL_MDT_nTAR                : std_logic;
+    
+    
     -- muon control manager
-    ENABLE_UCM                    : std_logic;  -- enable or disable the muon control manager
+    ENABLE_UCM                    : std_logic;  -- enable or disable the muon 
+    -- VERSION_UCM                   : string(1 to 3);
     -- main pipeline
     ENABLE_MPL                    : std_logic;
+    -- VERSION_MPL                   : string;
+    -- candiadte synchronizer
+    ENABLE_CPS                    : std_logic;
+    -- VERSION_CPS                   : string;
+    -- tube address remap
+    ENABLE_TAR                    : std_logic;
+    -- VERSION_TAR                   : string;
+    -- Hit 2 Segment MacroBlock
+    ENABLE_H2S                    : std_logic;
+    -- VERSION_HPS                   : string;
+    -- VERSION_HEG                   : string; 
+    -- VERSION_HP                    : string;
     -- Segment Finder
     ENABLE_SF                     : std_logic;  -- enable or disable the segment finder block
     SF_TYPE                       : std_logic;  -- select the type of segment finder
@@ -81,19 +72,41 @@ package cfg_global_default_pkg is
     ENABLE_MTC                    : std_logic;
     --FAST MONITORING
     ENABLE_FM                     : std_logic;
+    --------------------------------------------------------------------------------
+    -- operation configuration
+    --------------------------------------------------------------------------------
+    -- hardware modules
+    UL_PRESENT                    : std_logic;  -- enables or disables the user logic modul on compilation
+    HW_PRESENT                    : std_logic;  -- enables or disables the hardware modules on compilation
+    -- Processing channels
+    ENABLE_ST_INN                 : std_logic;  -- enable or disable inner processing station
+    EN_MDT_CH_INN                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
+    -- NUM_MDT_CH_INN                : integer;    -- set the number of hir processors on the station
+    ENABLE_ST_EXT                 : std_logic;  -- enable or disable extra processing station
+    EN_MDT_CH_EXT                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
+    -- NUM_MDT_CH_EXT                : integer;    -- set the number of hir processors on the station
+    ENABLE_ST_MID                 : std_logic;  -- enable or disable middle processing station
+    EN_MDT_CH_MID                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
+    -- NUM_MDT_CH_MID                : integer;    -- set the number of hir processors on the station
+    ENABLE_ST_OUT                 : std_logic;  -- enable or disable outer processing station
+    EN_MDT_CH_OUT                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
+    -- NUM_MDT_CH_OUT                : integer;    -- set the number of hir processors on the station
+    -- stations in current fpga
+    FPGA_EN_ST_INN                : std_logic;
+    FPGA_EN_ST_MID                : std_logic;
+    FPGA_EN_ST_OUT                : std_logic;
+    FPGA_EN_ST_EXT                : std_logic;
     -- number of parallel processing threads
     NUM_THREADS                   : integer;
+    NUM_SUBTHREADS                : integer;
+    -- number of parallel candidates to process
+    NUM_ACCEPTS                   : integer;
     -- MTC configuration based on links to primary, neighboring sectors
     -- (barrel, endcap)
     NUM_MTC                       : integer;
     --
-    ENABLE_H2S                    : std_logic;
     UPT_LATENCY                   : integer;
     MPT_LATENCY                   : integer;  
-
-    --------------------------------------------------------------------------------
-    -- mdt hardware interface config
-    --------------------------------------------------------------------------------
 
   end record;
 
@@ -115,6 +128,40 @@ package cfg_global_default_pkg is
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
+    -- Candidate path
+    -- muon control manager
+    ENABLE_UCM                    => '1', -- 0: disabled  1: enabled -- default enabled
+    -- VERSION_UCM                   => "1.0",
+    -- Candidate Main Pipeline
+    ENABLE_MPL                    => '1',
+    -- VERSION_MPL                   => "1.0",
+    -- Candidate 
+    ENABLE_CPS                    => '1',
+    -- VERSION_CPS                   => "1.0",
+    -- tube address remap
+    ENABLE_TAR                    => '1',
+    -- VERSION_TAR                   => "1.0",
+    -- Hit 2 Segment
+    ENABLE_H2S                    => '1',
+    -- VERSION_HPS                   => "1.0",
+    -- VERSION_HEG                   => "1.0",
+    -- VERSION_HP                    => "1.0",
+    -- Segment Finder
+    ENABLE_SF                     => '1', -- 0: disabled  1: enabled -- default enabled
+    SF_TYPE                       => '0', -- 0: CSF 1:LSF -- default CSF
+    SF_BYPASS                     => '0', -- 0: disabled
+    -- pt-calc
+    ENABLE_PT                     => '1', -- 0: disabled  1: enabled -- default enabled
+    PT_TYPE                       => '0', -- default 0
+    -- DAQ
+    ENABLE_DAQ                    => '1', -- 0: disabled  1: enabled -- default enabled
+    -- MTC
+    ENABLE_MTC                    => '1',
+    --FAST MONITORING
+    ENABLE_FM                     => '1',
+    --------------------------------------------------------------------------------
+    -- operation configuration
+    --------------------------------------------------------------------------------
     UL_PRESENT                    => '1', -- 0: disabled  1: enabled -- default enabled
     HW_PRESENT                    => '0', -- 0: disabled  1: enabled -- default disabled
     -- Processing channels
@@ -132,38 +179,16 @@ package cfg_global_default_pkg is
     -- NUM_MDT_CH_OUT                => 6,   -- default 6
     -- stations enabled in hte fpga
     FPGA_EN_ST_INN                => '1',
-    FPGA_EN_ST_EXT                => '0',
     FPGA_EN_ST_MID                => '1',
     FPGA_EN_ST_OUT                => '1',
-    -- tube address remap
-    ENABLE_TAR                    => '1',
-    -- INSEL_MDT_nTAR                => '0',
-    -- muon control manager
-    ENABLE_UCM                    => '1', -- 0: disabled  1: enabled -- default enabled
-    ENABLE_MPL                    => '1',
-    -- Segment Finder
-    ENABLE_SF                     => '1', -- 0: disabled  1: enabled -- default enabled
-    SF_TYPE                       => '0', -- default CSF
-    SF_BYPASS                     => '0', -- 0: disabled
-    -- pt-calc
-    ENABLE_PT                     => '1', -- 0: disabled  1: enabled -- default enabled
-    PT_TYPE                       => '0', -- default 0
-    -- DAQ
-    ENABLE_DAQ                    => '1', -- 0: disabled  1: enabled -- default enabled
-    -- MTC
-    ENABLE_MTC                    => '1',
-    --FAST MONITORING
-    ENABLE_FM                     => '1',
-
-    -- H2S
-    ENABLE_H2S                    => '1',
-    --------------------------------------------------------------------------------
-    --  Thread configuration
-    --------------------------------------------------------------------------------
-    NUM_THREADS                   => 3 ,   -- default 3
+    FPGA_EN_ST_EXT                => '0',
+    -- 
+    NUM_THREADS                   => 3,   -- default 3 - number of muons can be processed simultaneiusly
+    NUM_SUBTHREADS                => 18,  -- default 16 - Number of HP in 1 station
+    NUM_ACCEPTS                   => 3,   -- default 3 - max number of candidates that UCM can accept to process
     -- MTC configuration based on links to primary, neighboring sectors
     -- (barrel, endcap)
-    NUM_MTC                       => 3 ,   -- default 3, connecting to primary SL
+    NUM_MTC                       => 3,   -- default 3, connecting to primary SL
     MPT_LATENCY                   => 17,
     UPT_LATENCY                   => 24
   );

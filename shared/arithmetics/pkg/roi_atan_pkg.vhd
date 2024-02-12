@@ -22,6 +22,11 @@ package roi_atan_pkg is
     constant ROM_ATAN_MAX_SIZE : integer := 732388;
     type roi_atan_lut_t is array (integer range <>) of integer;
 
+    constant ROI_ATAN_MEM_MIN : integer := 0;
+    constant ROI_ATAN_MEM_MAX : integer := 732388;
+    constant ROI_ATAN_MEM_OFF : integer := 0;
+    constant ROI_ATAN_MEM_WIDTH : integer := 20;
+
 
     constant ROI_ATAN_MEM : roi_atan_lut_t(0 to ROM_ATAN_MAX_SIZE - 1) := (
 

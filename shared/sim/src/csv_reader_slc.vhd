@@ -1,17 +1,21 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: src
+-- File: csv_reader_slc.vhd
+-- Module: <<moduleName>>
+-- File PATH: /csv_reader_slc.vhd
+-- -----
+-- File Created: 2020.11.24 3:06:53 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Friday, 10th November 2023 10:08:37 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
+-- 2023-11-10	GLdL	adapting to new simCheck framework
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger
---  Module: Test Bench Module for Logic Trigger Path
---  Description: SLC input vector reader and injector
---
---------------------------------------------------------------------------------
---  Revisions:
---      2020.11.24 Creation 
---
---------------------------------------------------------------------------------
+
+
 
 library ieee;
 use ieee.std_logic_misc.all;
@@ -25,10 +29,11 @@ use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.sl2mdt_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 
 use shared_lib.vhdl_tb_utils_pkg.all;
 
@@ -43,7 +48,7 @@ use shared_lib.vhdl_textio_csv_pkg.all;
 
 entity csv_reader_slc is
   generic (
-    IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.csv";
+    IN_SLC_FILE         : string  := "empty";
     g_verbose         : integer := 1
   );
   port (
@@ -223,7 +228,7 @@ begin
               -- o_main_primary_slc(wr_i) <= convert(slc_main_prim_fifo(wr_i)(0));
               o_main_primary_slc(wr_i) <= convert(event_main_prim_fifo(wr_i)(0).slc,o_main_primary_slc(wr_i));
               --
-              slc_event_ai(wr_i + 2) <= event_main_prim_fifo(wr_i)(0).event;
+              slc_event_ai(wr_i + c_NUM_NEIGHBORS) <= event_main_prim_fifo(wr_i)(0).event;
               -- for test input read
               -- o_main_primary_slc_ar(wr_i) <= slc_main_prim_fifo(wr_i)(0);
               --
@@ -232,7 +237,7 @@ begin
               end loop;
               v_slc_main_prim_counts(wr_i) := v_slc_main_prim_counts(wr_i) - 1;
             else
-              slc_event_ai(wr_i + 2) <= (others => '0');
+              slc_event_ai(wr_i + c_NUM_NEIGHBORS) <= (others => '0');
               o_main_primary_slc(wr_i) <= zero(o_main_primary_slc(wr_i));
               -- o_main_primary_slc_ar(wr_i) <= zero(o_main_primary_slc_ar(wr_i));
             end if;
@@ -261,7 +266,7 @@ begin
             Phi         := csv_file.read_real;
             pT_thr      := csv_file.read_integer;
             Charge      := csv_file.read_integer;
-            Coincidence := csv_file.read_integer;
+            Coincidence := csv_file.read_integer; 
             z_RPC0      := csv_file.read_integer;
             z_RPC1      := csv_file.read_integer;
             z_RPC2      := csv_file.read_integer;
@@ -315,8 +320,11 @@ begin
               header      => header,
               slcid       => to_unsigned(TC_id, SL_HEADER_NSLC_LEN),
               tcsent      => std_logic(to_unsigned(TC_sent,1)(0)),
-              poseta      => to_signed(integer(Eta * SLC_COMMON_POSETA_MULT), SLC_COMMON_POSETA_LEN) ,
-              posphi      => to_unsigned(integer((Phi * SLC_COMMON_POSPHI_MULT/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+              poseta      => to_signed(integer(Eta / SL2MDT_SLC_COMMON_POSETA_RES ), SLC_COMMON_POSETA_LEN) ,
+              -- poseta      => to_signed(integer(Eta * SLC_COMMON_POSETA_MULT), SLC_COMMON_POSETA_LEN) ,
+              posphi      => to_unsigned(integer(((Phi * SLC_COMMON_POSPHI_MULT )/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+              -- posphi      => to_unsigned(integer((Phi / SL2MDT _SLC_COMMON_POSPHI_RES/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+                  -- posphi      => to_unsigned(integer((Phi * SLC_COMMON_POSPHI_MULT/1000.0)), SLC_COMMON_POSPHI_LEN) , 
               sl_pt       => ( others => '0'),
               sl_ptthresh => to_unsigned(pT_thr, SLC_COMMON_SL_PTTHRESH_LEN) , 
               sl_charge   => std_logic(to_unsigned(Charge,1)(0)), 
@@ -444,8 +452,11 @@ begin
                   header      => header,
                   slcid       => to_unsigned(TC_id, SL_HEADER_NSLC_LEN),
                   tcsent      => std_logic(to_unsigned(TC_sent,1)(0)),
-                  poseta      => to_signed(integer(Eta * SLC_COMMON_POSETA_MULT), SLC_COMMON_POSETA_LEN) ,
-                  posphi      => to_unsigned(integer((Phi * SLC_COMMON_POSPHI_MULT/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+                  poseta      => to_signed(integer(Eta / SL2MDT_SLC_COMMON_POSETA_RES ), SLC_COMMON_POSETA_LEN) ,
+              -- poseta      => to_signed(integer(Eta * SLC_COMMON_POSETA_MULT), SLC_COMMON_POSETA_LEN) ,
+                  posphi      => to_unsigned(integer(((Phi * SLC_COMMON_POSPHI_MULT )/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+                  -- posphi      => to_unsigned(integer((Phi * SL2MDT _SLC_COMMON_POSPHI_RES/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+                  -- posphi      => to_unsigned(integer((Phi * SLC_COMMON_POSPHI_MULT/1000.0)), SLC_COMMON_POSPHI_LEN) , 
                   sl_pt       => ( others => '0'),
                   sl_ptthresh => to_unsigned(pT_thr, SLC_COMMON_SL_PTTHRESH_LEN) , 
                   sl_charge   => std_logic(to_unsigned(Charge,1)(0)), 

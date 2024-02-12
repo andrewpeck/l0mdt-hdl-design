@@ -48,3 +48,5 @@ types:
    - BML_SEC3_RHO: {'qualifier': 'constant', 'type': 'real', 'value': 7138.999}
    - BOL_SEC3_RHO: {'qualifier': 'constant', 'type': 'real', 'value': 9499.998}
    - c_CLK_AXI_MULT: {'qualifier': 'constant', 'type': 'integer', 'value': 8}
+   - UCM_R_MDT_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 15}
+

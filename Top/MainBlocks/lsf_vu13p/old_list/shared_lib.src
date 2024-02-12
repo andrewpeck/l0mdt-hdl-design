@@ -5,5 +5,6 @@ shared/types/l0mdt_dataformats_pkg.vhd
 shared/types/common_constants_pkg.vhd
 shared/types/common_types_pkg.vhd
 dataformats/l0mdt_buses_constants.svh
-shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
+# shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
+shared/vhdl_utilities/pkg/vhdl2008_functions_pkg.vhd
 shared/detector_parameters/detector_param_pkg.vhd

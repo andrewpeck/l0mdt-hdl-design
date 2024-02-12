@@ -15,7 +15,7 @@ UserLogic/hp/hp_lib.src lib=hp_lib
 UserLogic/heg/heg_lib.src lib=heg_lib
 UserLogic/hps/hps_lib.src lib=hps_lib
 UserLogic/mpl/mpl_lib.src lib=mpl_lib
-UserLogic/ucm/ucm_lib_vu13.src lib=ucm_lib
+UserLogic/ucm/ucm_v1.0_vu13_lib.src lib=ucm_lib
 UserLogic/tar/tar_lib.src lib=tar_lib
 UserLogic/mtc/mtc_lib.src lib=mtc_lib
 
