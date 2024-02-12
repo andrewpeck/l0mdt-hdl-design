@@ -91,9 +91,9 @@ include ../../../creator/Makefile_vhdl_lib
 
 
 # Set the include path and compilation flags for CocoTB
-EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR)  +incdir+$(SHAREDDIR)/types +incdir+$(HAL)/ctrl/src/FM/ +incdir+$($(XILINX_HOME)/data/ip/xpm/xpm_memory/hdl) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/shared_lib  -L $(SIM_BUILD)/work +define+RUN_SIM
+EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR)  +incdir+$(SHAREDDIR)/types +incdir+$(HAL)/ctrl/src/FM/ +incdir+$($(XILINX_HOME)/data/ip/xpm/xpm_memory/hdl) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/shared_lib  -L $(SIM_BUILD)/work +define+RUN_SIM 
 VSIM_ARGS  += -debugDB -voptargs=+acc -wlf $(SIM_BUILD)/$(TESTBENCH_TEST_MODULE).wlf
-VCOM_ARGS  += -2008
+VCOM_ARGS  += -2008 
 
 ##############################################################################
 #

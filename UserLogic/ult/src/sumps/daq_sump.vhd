@@ -44,7 +44,11 @@ entity daq_sump is
     --                                               + c_HPS_NUM_MDT_CH_MID   
     --                                               + c_HPS_NUM_MDT_CH_OUT - 1 downto 0);
     -- o_daq_streams     : out felix_stream_avt(c_NUM_DAQ_STREAMS-1 downto 0);
-    o_daq_streams     : out felix_stream_avt(c_DAQ_LINKS-1 downto 0);
+    -- o_daq_streams     : out felix_stream_avt(c_DAQ_LINKS-1 downto 0);
+    
+    o_daq_stream_data_v : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+    o_daq_stream_ctrl_v : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+    o_daq_stream_wren_v : out std_logic_vector(c_DAQ_LINKS-1 downto 0);
 
     o_sump : out std_logic
   );
@@ -60,7 +64,7 @@ architecture beh of daq_sump is
 
 begin
 
-  o_daq_streams <= (others => (others => '0'));
+  -- o_daq_streams <= (others => (others => '0'));
   -- o_minus_neighbor_segments <= (others => (others => '0'));
 
   MDT_INN_SUMP: for I in 0 to c_HPS_NUM_MDT_CH_INN -1 generate

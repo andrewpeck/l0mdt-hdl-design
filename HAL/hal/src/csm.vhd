@@ -10,6 +10,7 @@ use ctrl_lib.axiRegPkg.all;
 library shared_lib;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
 
 library hal;
 use hal.all;
@@ -22,6 +23,9 @@ use hal.link_map.all;
 
 library tdc;
 use tdc.csm_pkg.all;
+
+library fm_lib;
+use fm_lib.fm_types.all;
 
 entity csm is
   generic (
@@ -37,6 +41,9 @@ entity csm is
     reset_i    : in std_logic;
     strobe_320 : in std_logic;
     clk40      : in std_logic;
+
+    --Fast Monitoring
+    fm_csm_mon : out fm_rt ;
 
     -- TTC
     trg_i : in std_logic; --trigger 
@@ -74,6 +81,8 @@ entity csm is
     tdc_hits_to_polmux_o    : out tdcpolmux2tar_avt (g_TDC_CNT-1 downto 0);
     read_done_from_polmux_i : in  std_logic_vector (g_TDC_CNT-1 downto 0);
 
+
+    -- AXI CTRL/MON signals
     ctrl : in  HAL_CSM_CSM_CTRL_t;
     mon  : out HAL_CSM_CSM_MON_t
     );
@@ -139,15 +148,18 @@ begin
 --  sca2_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA2_UP);  
 
 
-  sca0_up_8bit <= uplink_data(0).data(143 downto 136) when (ctrl.sc.frame_format='1') else uplink_data(0).data(143 downto 136);
-  sca1_up_8bit <= uplink_data(0).data(95 downto 88)   when (ctrl.sc.frame_format='1') else uplink_data(0).data(103 downto 96);
-  sca2_up_8bit <= uplink_data(0).data(111 downto 104) when (ctrl.sc.frame_format='1') else uplink_data(0).data(119 downto 112);
-  sca3_up_8bit <= uplink_data(0).data(127 downto 120) when (ctrl.sc.frame_format='1') else uplink_data(0).data(135 downto 128);
+  sca0_up_8bit <= uplink_data(0).data(143 downto 136) when c_LPGBT_VER = '1' else uplink_data(0).data(143 downto 136);
+  sca1_up_8bit <= uplink_data(0).data(95 downto 88)   when c_LPGBT_VER = '1' else uplink_data(0).data(103 downto 96);
+  sca2_up_8bit <= uplink_data(0).data(111 downto 104) when c_LPGBT_VER = '1' else uplink_data(0).data(119 downto 112);
+  sca3_up_8bit <= uplink_data(0).data(127 downto 120) when c_LPGBT_VER = '1' else uplink_data(0).data(135 downto 128);
 
 --  downlink_data(0).data(27 downto 26) <= sca0_down when (ctrl.sc.frame_format='1') else ;      --trying debugging with fixed bit assignment 
 --  downlink_data(0).data(11 downto 10) <= sca1_down when (ctrl.sc.frame_format='1') else ;
 --  downlink_data(0).data(17 downto 16) <= sca2_down when (ctrl.sc.frame_format='1') else ;
 --  downlink_data(0).data(23 downto 22) <= sca3_down when (ctrl.sc.frame_format='1') else ;
+
+  fm_csm_mon.fm_data <= (mon_dw_max-1 downto  16 => '1') & uplink_data(0).data(15 downto 0);
+  fm_csm_mon.fm_vld    <= '1';
   
   process(ctrl.sc.frame_format, sca0_down, sca1_down, sca2_down, sca3_down)
 	begin
@@ -195,7 +207,7 @@ begin
 
   -- Translates ctrl/mon record to serialised signal needed for csm
   gbt_controller_wrapper_inst : entity work.gbt_controller_wrapper
-    generic map (g_SCAS_PER_LPGBT => 4)
+    generic map (g_SCAS_PER_LPGBT => 4, g_CSM_ID => g_CSM_ID)
     port map (
 
       reset_i => reset_i,
@@ -245,7 +257,6 @@ begin
   
   lpgbt_links_inst : entity work.lpgbt_link_wrapper
     generic map (
-      g_debug                             => g_CSM_ID = 0 or g_CSM_ID = 1 or g_CSM_ID = 2 or g_CSM_ID = 3 or g_CSM_ID = 4 or g_CSM_ID = 5,    
       g_DOWNLINK_WORD_WIDTH               => c_DOWNLINK_WORD_WIDTH,
       g_DOWNLINK_MULTICYCLE_DELAY         => c_DOWNLINK_MULTICYCLE_DELAY,
       g_DOWNLINK_CLOCK_RATIO              => c_DOWNLINK_CLOCK_RATIO,
@@ -263,7 +274,8 @@ begin
       g_NUM_UPLINKS                       => g_NUM_UPLINKS,
       g_PIPELINE_BITSLIP                  => true,
       g_PIPELINE_LPGBT                    => true,
-      g_PIPELINE_MGT                      => true)
+      g_PIPELINE_MGT                      => true,
+      g_CSM_ID                            => g_CSM_ID)
     port map (
       reset => reset_i,                 -- TODO: axi OR
 
@@ -326,7 +338,7 @@ begin
     generic map (
       g_ENABLE_MASK => g_ENABLE_MASK,
       g_LEGACY_FLAG => g_LEGACY_FLAG,
-      g_CSM         => g_CSM_ID,
+      g_CSM         => c_MDT_CONFIG(g_CSM_ID).csm_id,
       g_NUM_TDCS    => g_TDC_CNT,
       g_NUM_UPLINKS => g_NUM_UPLINKS
       )

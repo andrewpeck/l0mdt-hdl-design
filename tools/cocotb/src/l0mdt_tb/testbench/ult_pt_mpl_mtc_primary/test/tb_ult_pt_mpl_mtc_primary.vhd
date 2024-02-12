@@ -13,10 +13,15 @@ use shared_lib.config_pkg.all;
 
 library ult_lib;
 
+library fm_lib;
+  use fm_lib.fm_types.all;
+
+
 library ctrl_lib;
 use ctrl_lib.MPL_CTRL.all;
 use ctrl_lib.MTC_CTRL.all;
-use ctrl_lib.TF_CTRL.all;              
+use ctrl_lib.TF_CTRL.all;
+use ctrl_lib.fm_ctrl.all;
 -- use ctrl_lib.ctrl_constants_pkg.all;
 
 
@@ -61,10 +66,7 @@ entity tb_ult_pt_mpl_mtc_primary is
     -- -- MUCTPI
     o_MTC                     : out mtc_out_avt(c_NUM_MTC-1 downto 0);
     o_NSP                     : out mtc2nsp_avt(c_NUM_NSP-1 downto 0)
- 
-
-
-   
+  
 
     );
 end entity  tb_ult_pt_mpl_mtc_primary;
@@ -89,7 +91,9 @@ architecture behavioral of  tb_ult_pt_mpl_mtc_primary is
   --signal tf_ctrl_v             : std_logic_vector(TF_CTRL_t'w * c_NUM_THREADS-1 downto 0):= (others => '0');-- : out TF_MON_t;
     signal tf_ctrl_v             : std_logic_vector(TF_CTRL_t'w-1 downto 0):= (others => '0');-- : out TF_MON_t;
 
-
+  signal mtc_fm_mon_v : std_logic_vector(fm_mtc_mon_data'w-1 downto 0);
+  signal fm_mtc2sl_pb_v                : mtc_out_avt(mtc_sb_n-1 downto 0);
+  
     signal clock_and_control : l0mdt_control_rt;
 begin
 
@@ -153,7 +157,12 @@ begin
       o_mtc                    => o_mtc,
       o_nsp                    => o_nsp,
       
-      o_sump                => mtc_sump
+      o_sump                => mtc_sump,
+
+      fm_mtc_mon_v => mtc_fm_mon_v,
+      fm_mtc2sl_pb_v => fm_mtc2sl_pb_v
+
+      
       );
 end behavioral;
     

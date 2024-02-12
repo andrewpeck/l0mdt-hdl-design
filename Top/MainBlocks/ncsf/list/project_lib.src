@@ -1,4 +1,4 @@
-Top/MainBlocks/csf.0/prj_cfg.vhd
+Top/MainBlocks/ncsf/prj_cfg.vhd
 UserLogic/csf/ncsf_lib.src lib=csf_lib
 UserLogic/csf/top_csf.vhd top=top_csf
 

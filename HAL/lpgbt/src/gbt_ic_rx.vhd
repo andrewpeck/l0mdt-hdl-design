@@ -67,6 +67,9 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
 
+library shared_lib;
+use shared_lib.config_pkg.all;
+
 entity gbt_ic_rx is
   port(
     clock_i : in std_logic;             -- 40MHz clock
@@ -114,22 +117,22 @@ architecture Behavioral of gbt_ic_rx is
   signal cnt            : integer range 0 to 5 := 0;
   signal state_fsm      : std_logic_vector(3 downto 0);
   
-  COMPONENT ila_gbt_ic_rx
+--  COMPONENT ila_gbt_ic_rx
 
-PORT (
-	clk : IN STD_LOGIC;
-	probe0 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
-	probe1 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
-	probe2 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe3 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe4 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe5 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe6 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
-	probe7 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
-	probe8 : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-	probe9 : IN STD_LOGIC_VECTOR(6 DOWNTO 0)
-);
-END COMPONENT  ;
+--PORT (
+--	clk : IN STD_LOGIC;
+--	probe0 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+--	probe1 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+--	probe2 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe3 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe4 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe5 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe6 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+--	probe7 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
+--	probe8 : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+--	probe9 : IN STD_LOGIC_VECTOR(6 DOWNTO 0)
+--);
+--END COMPONENT  ;
 
 begin
 
@@ -354,21 +357,24 @@ begin
 
     end if;
   end process;
-  
---your_instance_name : ila_gbt_ic_rx
---PORT MAP (
---	clk => clock_i,
---	probe0 => frame_i, 
---	probe1 => state_fsm, 
---	probe2(0) => valid_i, 
---	probe3(0) => uplink_parity_ok_o,
---	probe4(0) => reset_i,
---	probe5(0) => valid_o,
---	probe6     => data_o,
---	probe7     => reg_adr_o,
---	probe8     => length_o,
---	probe9     => chip_adr_o
---);  
+
+--ilagen: if c_ENABLE_ILA = '1' generate
+
+--    ila_gbt_ic_rx_inst : ila_gbt_ic_rx
+--    PORT MAP (
+--        clk => clock_i,
+--        probe0 => frame_i, 
+--        probe1 => state_fsm, 
+--        probe2(0) => valid_i, 
+--        probe3(0) => uplink_parity_ok_o,
+--        probe4(0) => reset_i,
+--        probe5(0) => valid_o,
+--        probe6     => data_o,
+--        probe7     => reg_adr_o,
+--        probe8     => length_o,
+--        probe9     => chip_adr_o
+--    );  
+--end generate;
   
 
 end Behavioral;

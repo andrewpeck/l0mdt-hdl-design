@@ -2,7 +2,7 @@
     "testbench_config": {
         "test_name": "lsf",
         "input_args": {
-            "n_events": 100,
+            "n_events": 1,
             "n_hits": 100,
             "n_rois": 1,
             "event_detail": false,

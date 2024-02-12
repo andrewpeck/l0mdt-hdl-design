@@ -5,11 +5,13 @@ variables:
   HOG_SIMULATION_LIB_PATH: "/opt/QuestaLibs"
   HOG_PATH: "/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/:/opt/dtc/:/opt/Xilinx/Vivado/2022.2/bin/:/opt/questa2022.2/questasim/bin/"
   HOG_APPTAINER_IMAGE: "/Data/images/l0mdt_Ubuntu20.04.viv2022.2.sif"
+  HOG_LOGGER: ""
+  HOG_COLORED: ""
 
 include:
   - project: 'hog/Hog'
     file: '/hog.yml'
-    ref: 'Hog2023.2-3'
+    ref: 'v7.27.0'
   - local: "/.user_jobs.yml"
   - local: '/.devel_to_master.yml'
 
@@ -26,7 +28,7 @@ generate:
         PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_lsf_upt]
         HOG_ONLY_SYNTH: 1
       - PROVIDER: argos
-        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_csf_mpt, l0mdt/vu13p/l0mdt_vu13p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_empty,l0mdt/ku15p/l0mdt_ku15p_ull_fm]
+        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_csf_mpt, l0mdt/vu13p/l0mdt_vu13p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_fm, l0mdt/vu13p/l0mdt_vu13p_hal_all_csm]
       - PROVIDER: "2022.2"
         PROJECT_NAME: [l0mdt/ku15p/l0mdt_ku15p_ull_ucm, ull/vu13p/ull_vu13_b3a_ucm_mpl]
         HOG_ONLY_SYNTH: 1
@@ -50,7 +52,7 @@ riviera:
     extends: .vars
   parallel:
     matrix:
-      - PROJECT_NAME: [MainBlocks/ncsf, MainBlocks/ptc_mpi, MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
+      - PROJECT_NAME: [MainBlocks/ptc_mpi, MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
   allow_failure: true
 
 questa:

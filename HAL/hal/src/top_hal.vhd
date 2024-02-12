@@ -20,6 +20,8 @@ use hal.board_pkg.all;
 use hal.board_pkg_common.all;
 use hal.link_map.all;
 
+library flx;
+
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
@@ -35,6 +37,9 @@ use ctrl_lib.axiRegPkg.all;
 
 library xpm;
 use xpm.vcomponents.all;
+
+library fm_lib;
+use fm_lib.fm_types.all;
 
 entity top_hal is
 
@@ -123,7 +128,9 @@ entity top_hal is
     --                                        + c_HPS_MAX_HP_MID
     --                                        + c_HPS_MAX_HP_OUT - 1 downto 0);
 
-    daq_streams : in felix_stream_avt(c_DAQ_LINKS-1 downto 0);
+    daq_stream_data_vi : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+    daq_stream_ctrl_vi : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+    daq_stream_wren_vi : in std_logic_vector(c_DAQ_LINKS-1 downto 0);
     
     --------------------------------------------------------------------------------
     -- AXI
@@ -136,6 +143,9 @@ entity top_hal is
     -- CORE takes care of basic infrastructure, running with the axi clk, e.g. transceivers
     Core_Mon  : out CORE_MON_t;
     Core_Ctrl : in  CORE_CTRL_t;
+
+    -- Fast Monitoring
+     fm_csm_mon_r :out  fm_csm_mon_data;
 
     clk50_o      : out std_logic; -- AXI user clock
     clk40_o      : out std_logic; -- 40 MHz LHC clock to AXI slaves
@@ -156,23 +166,24 @@ architecture behavioral of top_hal is
   --------------------------------------------------------------------------------
 
   signal axiclock        : std_logic; -- 50MHz AXI user clock
-  signal clk40           : std_logic; -- 40 MHz LHC clock
+  signal clk40           : std_logic; -- 40 MHz LHC clock 
+  signal clk240          : std_logic; -- 240 MHz LHC clock
   signal clk320          : std_logic; -- 320 MHz multiplied LHC clock
-  signal clock_userlogic : std_logic; -- User logic clock (nominally 320 MHz)
+  --signal clock_userlogic : std_logic; -- User logic clock (nominally 320 MHz)
   signal refclk_mirrors : std_logic_vector (c_NUM_REFCLKS-1 downto 0); --reclock mirrors from BUFG
   
   -- Synchronized resets
   signal lhc_locked    : std_logic;
   signal b2b_locked    : std_logic;
-  signal reset_userclk : std_logic;
-  signal reset_clk320  : std_logic;
+  --signal reset_userclk : std_logic;
+--  signal reset_clk320  : std_logic;
   signal reset_clk40   : std_logic;
   signal reset_axi     : std_logic;
   
   signal strobe_userclk : std_logic;
   signal strobe_320     : std_logic;
 
-  signal felix_valid : std_logic;
+  signal flx_valid : std_logic;
 
   signal ttc_commands : l0mdt_ttc_rt;
 
@@ -225,8 +236,9 @@ architecture behavioral of top_hal is
   signal ttc_bitslip  : std_logic;                       -- bitslip from felix rx core to felix transceiver
   signal lhc_recclk   : std_logic;                       -- recovered clock from felix
 
-  signal felix_uplink_mgt_word_array : std32_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
-  signal felix_mgt_txusrclk          : std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal flx_mgt_tx_word_v   : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(31 downto 0);
+  signal flx_mgt_tx_usrclk_v : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal flx_mgt_rx_word_v   : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(19 downto 0);
 
   --------------------------------------------------------------------------------
   -- Sector Logic Glue MGT <-> SL Core
@@ -278,8 +290,8 @@ architecture behavioral of top_hal is
 
   attribute MAX_FANOUT of strobe_320 : signal is "20";
 
-  attribute MAX_FANOUT of reset_userclk : signal is "32";
-  attribute MAX_FANOUT of reset_clk320  : signal is "32";
+  --attribute MAX_FANOUT of reset_userclk : signal is "32";
+--  attribute MAX_FANOUT of reset_clk320  : signal is "32";
   attribute MAX_FANOUT of reset_clk40   : signal is "32";
   attribute MAX_FANOUT of reset_axi     : signal is "32";
 
@@ -289,6 +301,7 @@ architecture behavioral of top_hal is
   attribute NUM_MGTS of mgt_wrapper_inst   : label is c_NUM_MGTS;
   attribute DONT_TOUCH of mgt_wrapper_inst : label is "true";
 
+  
 begin  -- architecture behavioral
 
   --------------------------------------------------------------------------------
@@ -304,38 +317,40 @@ begin  -- architecture behavioral
   -- several pipeline steps which can be replicated by the tools
   --
   --------------------------------------------------------------------------------
-
-  process (clk40, lhc_locked) is
-  begin
-    if (lhc_locked = '0') then
-      reset_clk40 <= '1';
-    elsif (rising_edge(clk40)) then
-      reset_clk40 <= '0';
-    end if;
-  end process;
+reset_clk40 <= '0' when lhc_locked else '1';
+  --process (clk40, lhc_locked) is
+  --begin
+  --  if (lhc_locked = '0') then
+  --    reset_clk40 <= '1';
+  --  elsif (rising_edge(clk40)) then
+  --    reset_clk40 <= '0';
+  --  end if;
+  --end process;
 
   process (axiclock, b2b_locked) is
   begin
-    if (lhc_locked = '0') then
+    --if (lhc_locked = '0') then
+    if (b2b_locked = '0') then
       reset_axi <= '1';
     elsif (rising_edge(axiclock)) then
       reset_axi <= '0';
     end if;
   end process;
 
-  rst_bit_synchronizer : xpm_cdc_sync_rst
-    generic map (DEST_SYNC_FF => 4, INIT => 1, INIT_SYNC_FF => 1)
-    port map (
-      dest_rst => reset_clk320,
-      dest_clk => clk320,
-      src_rst  => reset_clk40);
+--  rst_bit_synchronizer : xpm_cdc_sync_rst
+----   generic map (DEST_SYNC_FF => 4, INIT => 1, INIT_SYNC_FF => 1)
+--    generic map (DEST_SYNC_FF => 5, INIT => 1, INIT_SYNC_FF => 1)
+--    port map (
+--      dest_rst => reset_clk320,
+--      dest_clk => clk320,
+--      src_rst  => reset_clk40);
 
-  userclk_rst_bit_synchronizer : xpm_cdc_sync_rst
-    generic map (DEST_SYNC_FF => 5, INIT => 1, INIT_SYNC_FF => 1)
-    port map (
-      dest_rst => reset_userclk,
-      dest_clk => clock_userlogic,
-      src_rst  => reset_clk40);
+  --userclk_rst_bit_synchronizer : xpm_cdc_sync_rst
+  --  generic map (DEST_SYNC_FF => 5, INIT => 1, INIT_SYNC_FF => 1)
+  --  port map (
+  --    dest_rst => reset_userclk,
+  --    dest_clk => clock_userlogic,
+  --    src_rst  => reset_clk40);
 
   --------------------------------------------------------------------------------
   -- Signal Aliasing
@@ -391,8 +406,9 @@ begin  -- architecture behavioral
       b2b_locked_o      => b2b_locked,
       axiclock_o        => axiclock,
       clock40_o         => clk40,
+      clock240_o        => clk240,
       clock320_o        => clk320,
-      clock_userlogic_o => clock_userlogic
+      clock_userlogic_o => open  --clock_userlogic
 
       );
 
@@ -401,13 +417,9 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
   --
   -- Create a 1 of n high signal synced to the slow clock, e.g.
-  --
-  --            ???????????????????????????       ???????????????????????????       ???????????????????????????       ????????????
-  -- clk40     ??????       ???????????????????????????       ???????????????????????????       ???????????????????????????
-  --            ????????? ????????? ????????? ????????? ????????? ????????? ????????? ????????? ????????? ????????? ????????? ????????? ?????????
-  -- clk200    ?????? ????????? ????????? ????????? ????????? ????????? ????????? ????????? ????????? ????????? ????????? ????????? ????????? ??????
-  --            ???????????????           ???????????????           ???????????????           ???????????????
-  -- strobe    ??????   ???????????????????????????????????????   ???????????????????????????????????????   ???????????????????????????????????????   ?????????
+  -- clk40    
+  -- clk200   
+  -- strobe   
   --
   -- These are necessary for e.g. the lpgbt cores, which use a strobe signal to
   -- indicate alignment relative to the 40MHz clock.
@@ -431,14 +443,15 @@ begin  -- architecture behavioral
   clock_strobe_userlogic : entity work.clock_strobe
     generic map (RATIO => 8)
     port map (
-      fast_clk_i => clock_userlogic,
+      fast_clk_i => clk320, --clock_userlogic,
       slow_clk_i => clk40,
       strobe_o   => strobe_userclk);
 
-  clock_and_control_o.rst <= reset_userclk;
-  clock_and_control_o.clk <= clock_userlogic;
-  clock_and_control_o.bx  <= strobe_userclk;
+  clock_and_control_o.rst <= reset_clk40; --reset_clk320; --reset_userclk;
+  clock_and_control_o.clk <= clk320; --clock_userlogic;
+  clock_and_control_o.bx  <= strobe_320; --strobe_userclk;
 
+  
   --------------------------------------------------------------------------------
   -- Common Multi-gigabit transceivers
   --------------------------------------------------------------------------------
@@ -448,6 +461,7 @@ begin  -- architecture behavioral
 
       -- clocks
       axiclock   => axiclock,
+      clock240_i => clk240,
       clock320   => clk320,
       lhc_locked => lhc_locked,
       refclk_mirrors_out => refclk_mirrors,
@@ -490,8 +504,9 @@ begin  -- architecture behavioral
       ttc_recclk_o   => lhc_recclk,
 
       -- Felix DAQ
-      felix_uplink_mgt_word_array_i => felix_uplink_mgt_word_array,
-      felix_mgt_txusrclk_o          => felix_mgt_txusrclk
+      flx_mgt_word_vi   => flx_mgt_tx_word_v,
+      flx_mgt_usrclk_vo => flx_mgt_tx_usrclk_v,
+      flx_mgt_word_vo   => flx_mgt_rx_word_v
       );
 
   -- FIXME: this should come from an ODDR (output double data rate buffer).
@@ -554,9 +569,15 @@ begin  -- architecture behavioral
     constant mgt_idx  : integer := c_MDT_CONFIG(CSM).mgt_id_m;
     constant mgt_id_m : integer := c_MDT_CONFIG(CSM).mgt_id_m;
     constant mgt_id_s : integer := c_MDT_CONFIG(CSM).mgt_id_s;
-     
+    signal fm_csm_uplink_data : fm_rt;
   begin
 
+    fm_mon: if CSM = 0 generate
+      fm_csm_mon_r.fm_csm_uplink_data.fm_data <= fm_csm_uplink_data.fm_data ;
+      fm_csm_mon_r.fm_csm_uplink_data.fm_vld   <= strobe_320;
+    
+    end generate;
+  
     csm_ifgen : if (CSM < c_NUM_CSMS_ACTIVE and tdc_cnt > 0) generate
       
     begin
@@ -581,7 +602,7 @@ begin  -- architecture behavioral
 
         csm_inst : entity work.csm
           generic map (
-            g_CSM_ID      => c_MDT_CONFIG(CSM).csm_id,
+            g_CSM_ID      => CSM,
             g_TDC_CNT     => tdc_cnt,
             g_ENABLE_MASK => c_MDT_CONFIG(CSM).en,
             g_LEGACY_FLAG => c_MDT_CONFIG(CSM).legacy
@@ -592,6 +613,8 @@ begin  -- architecture behavioral
             strobe_320 => strobe_320,
             reset_i    => reset_clk40,
 
+            -- Fast Monitoring
+            fm_csm_mon => fm_csm_uplink_data,
             -- TTC signals
             -- TODO: axi generation of TTC signals
             trg_i => ttc_commands.l0a,
@@ -614,6 +637,8 @@ begin  -- architecture behavioral
             -- outputs to polmux
             tdc_hits_to_polmux_o    => tdc_hits_to_polmux (hi downto lo), -- Big vector of all TDC data, hi-lo give the range of the vector corresponding to a particular CSM
             read_done_from_polmux_i => read_done_from_polmux (hi downto lo),
+
+            --
             ctrl                    => csm_ctrl_r(CSM),
             mon                     => csm_mon_r(CSM)
             );
@@ -652,8 +677,8 @@ begin  -- architecture behavioral
           )
         port map (
           clock          => clk320,
-          pipeline_clock => clock_userlogic,
-          reset          => reset_clk320,
+          pipeline_clock => clk320, --clock_userlogic,
+          reset          => reset_clk40, --reset_clk320,
           tdc_hits_i     => tdc_hits_to_polmux (hi downto lo),
           read_done_o    => read_done_from_polmux (hi downto lo),
           tdc_hits_o     => tdc_hits_o
@@ -661,6 +686,9 @@ begin  -- architecture behavioral
 
       inner : if (STATION = 0) generate
         tdc_hits_inner(POLMUX) <= tdc_hits_o;
+        --Fast Monitoring 
+        fm_csm_mon_r.fm_csm_to_polmux(POLMUX).fm_data <= (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') &  tdc_hits_o;
+        fm_csm_mon_r.fm_csm_to_polmux(POLMUX).fm_vld   <= tdc_hits_o(tdcpolmux2tar_vt'w-1);
       end generate;
       middle : if (STATION = 1) generate
         tdc_hits_middle (POLMUX) <= tdc_hits_o;
@@ -686,7 +714,7 @@ begin  -- architecture behavioral
 
       tx_clk         => sl_tx_clks,
       rx_clk         => sl_rx_clks,
-      pipeline_clock => clock_userlogic,
+      pipeline_clock => clk320, --clock_userlogic,
       clk40          => clk40,
       reset          => reset_clk40,
       refclk_mirrors_in => refclk_mirrors,
@@ -718,24 +746,24 @@ begin  -- architecture behavioral
   -- Felix
   --------------------------------------------------------------------------------
 
-  -- Felix Receiver
-
-  felix_decoder_inst : entity work.felix_decoder
-    port map (
-      clock320 => clk320, -- felix downlink clock
-      clock40  => clk40, -- 40mhz system clock
-
-      reset => reset_clk320,
-
-      ttc_mgt_data_i    => ttc_mgt_word,
-      ttc_mgt_bitslip_o => ttc_bitslip,
-
-      strobe_pipeline => strobe_userclk,
-      strobe_320      => strobe_320,
-
-      l0mdt_ttc_40m => ttc_commands, -- copies of outputs stable for 25ns
-      valid_o       => felix_valid
-      );
+  -- -- Felix Receiver
+  -- 
+  -- felix_decoder_inst : entity work.felix_decoder
+  --   port map (
+  --     clock320 => clk320, -- felix downlink clock
+  --     clock40  => clk40, -- 40mhz system clock
+  -- 
+  --     reset => reset_clk320,
+  -- 
+  --     ttc_mgt_data_i    => ttc_mgt_word,
+  --     ttc_mgt_bitslip_o => ttc_bitslip,
+  -- 
+  --     strobe_pipeline => strobe_userclk,
+  --     strobe_320      => strobe_320,
+  -- 
+  --     l0mdt_ttc_40m => ttc_commands, -- copies of outputs stable for 25ns
+  --     valid_o       => felix_valid
+  --     );
 
   ttc_commands_o <= ttc_commands;
 
@@ -747,34 +775,49 @@ begin  -- architecture behavioral
                               & " c_NUM_FELIX_UPLINKS=" & integer'image(c_NUM_FELIX_UPLINKS)
                               severity error;
 
-  felix_tx_inst : entity work.felix_tx
-    generic map (
-      g_NUM_UPLINKS => c_DAQ_LINKS -- c_NUM_DAQ_STREAMS
-      )
-    port map (
-      clk320           => clk320,
-      clk40            => clk40,
-      reset_i          => reset_clk40,
 
-      -- FIXME:
-      --
-      -- daq streams is always length 18, and these are picked out incorrectly
-      --
-      -- this is due to a deliberate bug in the user logic where the constant
-      -- c_NUM_DAQ_STREAMS was commented out in favor of
-      -- c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT
-      --
-      -- so now the calculation of which daq link is which is completely wrong
-      -- this needs some kind of translation layer to map user logic daq links
-      -- onto felix links
 
-      daq_streams      => daq_streams, -- (c_NUM_DAQ_STREAMS-1 downto 0),
-      mgt_word_array_o => felix_uplink_mgt_word_array(c_DAQ_LINKS-1 downto 0),
-      -- mgt_word_array_o => felix_uplink_mgt_word_array(c_NUM_DAQ_STREAMS-1 downto 0),
-      ready_o          => open,
-      was_not_ready_o  => open,
-      strobe_320       => strobe_320
-      );
+  u_flx_tx : entity flx.flx_tx
+  generic map (NLINKS => c_DAQ_LINKS) -- : natural);
+  port map (clk240_i              => clk240 -- : in  std_logic
+            , clk320_i            => clk320 -- : in  std_logic
+            , rst_i               => reset_clk40 -- : in  std_logic
+
+            , busy_i              => '0' -- : in std_logic
+
+            , usr_data_vi => daq_stream_data_vi -- : in  std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0)
+            , usr_ctrl_vi => daq_stream_ctrl_vi -- : in  std_logic_vector_array(NLINKS-1 downto 0)(1 downto 0)
+            , usr_wren_vi => daq_stream_wren_vi -- : in  std_logic_vector(NLINKS-1 downto 0)
+            , mgt_data_vo => flx_mgt_tx_word_v(c_DAQ_LINKS-1 downto 0)); -- : out std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0));
+
+  --felix_tx_inst : entity work.felix_tx
+  --  generic map (
+  --    g_NUM_UPLINKS => c_DAQ_LINKS -- c_NUM_DAQ_STREAMS
+  --    )
+  --  port map (
+  --    clk320           => clk320,
+  --    clk40            => clk40,
+  --    reset_i          => reset_clk40,
+  --
+  --    -- FIXME:
+  --    --
+  --    -- daq streams is always length 18, and these are picked out incorrectly
+  --    --
+  --    -- this is due to a deliberate bug in the user logic where the constant
+  --    -- c_NUM_DAQ_STREAMS was commented out in favor of
+  --    -- c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT
+  --    --
+  --    -- so now the calculation of which daq link is which is completely wrong
+  --    -- this needs some kind of translation layer to map user logic daq links
+  --    -- onto felix links
+  --
+  --    daq_streams      => daq_streams, -- (c_NUM_DAQ_STREAMS-1 downto 0),
+  --    mgt_word_array_o => felix_uplink_mgt_word_array(c_DAQ_LINKS-1 downto 0),
+  --    -- mgt_word_array_o => felix_uplink_mgt_word_array(c_NUM_DAQ_STREAMS-1 downto 0),
+  --    ready_o          => open,
+  --    was_not_ready_o  => open,
+  --    strobe_320       => strobe_320
+  --    );
 
   --------------------------------------------------------------------------------
   -- Sumps to prevent trimming... TODO remove later once actual logic is connected
@@ -803,21 +846,21 @@ begin  -- architecture behavioral
   -- This was there to don't make Vivado optimise away the ULL. Now that it is actually connected
   -- we can disable it. Keep it there, just in case
   sump_gen : if (false) generate
-    signal daq_sump                     : std_logic_vector (daq_streams'length-1 downto 0);
+    signal daq_sump                     : std_logic_vector (daq_stream_data_vi'length-1 downto 0);
     signal mtc_sump                     : std_logic_vector (c_NUM_MTC-1 downto 0);
     signal nsp_sump                     : std_logic_vector (c_NUM_NSP-1 downto 0);
     signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
     signal minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
   begin
 
-    process (clock_userlogic) is
+    process (clk320) is  --clock_userlogic) is
     begin
 
-      if (rising_edge(clock_userlogic)) then
+      if (rising_edge(clk320) )then --clock_userlogic)) then
 
         daqsump_loop :
-        for I in 0 to daq_streams'length-1 loop
-          daq_sump(I) <= xor_reduce(daq_streams(I));
+        for I in 0 to daq_stream_data_vi'length-1 loop
+          daq_sump(I) <= xor_reduce(daq_stream_data_vi(I));
         end loop;
         mtc_sump_loop : for I in 0 to c_NUM_MTC-1 loop
           mtc_sump(I) <= xor_reduce(mtc_i(I));

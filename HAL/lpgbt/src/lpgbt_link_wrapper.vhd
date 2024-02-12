@@ -41,7 +41,8 @@ entity lpgbt_link_wrapper is
     -- pipeline registers
     g_PIPELINE_BITSLIP : boolean := true;
     g_PIPELINE_LPGBT   : boolean := true;
-    g_PIPELINE_MGT     : boolean := true
+    g_PIPELINE_MGT     : boolean := true;
+    g_CSM_ID           : integer := 0
     );
   port(
 
@@ -209,16 +210,17 @@ begin
       downlink_mgt_word_array_o(I) <= mgt_data;
     end generate;
     
---    lpgbt_ila_downlink : if (g_debug) generate
---        uplink_lpgbt_ila : ila_downlink 
---        port map(
---            clk => downlink_clk,
---            probe0      => mgt_data,
---            probe1      => downlink_data.data,
---            probe2      => downlink_data.ec,
---            probe3      => downlink_data.ic
---        );    
---    end generate;
+
+    lpgbt_ila_downlink : if c_ENABLE_ILA = '1' and g_CSM_ID = 0 generate
+        uplink_lpgbt_ila : ila_downlink 
+        port map(
+            clk => downlink_clk,
+            probe0      => mgt_data,
+            probe1      => downlink_data.data,
+            probe2      => downlink_data.ec,
+            probe3      => downlink_data.ic
+        );    
+    end generate;
 
   end generate;
 
@@ -283,7 +285,9 @@ begin
         rdy_o                      => uplink_ready(I)
         );
         
-    lpgbt_ila_cores : if (c_ENABLE_ILA = '1') generate
+
+    lpgbt_ila_cores : if c_ENABLE_ILA = '1' and g_CSM_ID = 0 generate
+
         uplink_lpgbt_ila : ila_lpgbt 
         port map(
             clk => uplink_clk,

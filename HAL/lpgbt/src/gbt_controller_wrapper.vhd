@@ -16,7 +16,8 @@ use shared_lib.config_pkg.all;
 entity gbt_controller_wrapper is
   generic(
     g_CLK_FREQ       : integer := 40;
-    g_SCAS_PER_LPGBT : integer := 4
+    g_SCAS_PER_LPGBT : integer := 4;
+    g_CSM_ID         : integer := 0
     );
   port(
     -- reset
@@ -56,38 +57,38 @@ architecture structural of gbt_controller_wrapper is
 
 COMPONENT ila_0
 PORT (
-	clk : IN STD_LOGIC;
-	probe0 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe1 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe2 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe3 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe4 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe5 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
-	probe6 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe7 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe8 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe9 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe10 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe11 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe12 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe13 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
-	probe14 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe15 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe16 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe17 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
-	probe18 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe19 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe20 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe21 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe22 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe23 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-	probe24 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-	probe25 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-	probe26 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-	probe27 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-	probe28 : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
+  clk : IN STD_LOGIC;
+  probe0 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+  probe1 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+  probe2 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+  probe3 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+  probe4 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+  probe5 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+  probe6 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe7 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe8 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe9 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe10 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+  probe11 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe12 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe13 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+  probe14 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe15 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe16 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe17 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+  probe18 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+  probe19 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+  probe20 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe21 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe22 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe23 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+  probe24 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+  probe25 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+  probe26 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+  probe27 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+  probe28 : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
 );
-END COMPONENT  ;
+END COMPONENT;
 
   -- master
   signal master_rx_frame, slave_rx_frame
@@ -129,10 +130,35 @@ END COMPONENT  ;
   signal sca_command_reg : std_logic;
   signal sca_connect : std_logic;
   signal sca_connect_reg : std_logic;
-  
+
+  signal vio_rx_reset : std_logic;
+  signal vio_tx_reset : std_logic;
+  signal vio_tx_start_write : std_logic;
+  signal vio_tx_start_read : std_logic;
+  signal vio_tx_gbtx_address : std_logic_vector(7 downto 0);
+  signal vio_tx_register_addr : std_logic_vector(15 downto 0);
+  signal vio_tx_num_bytes_to_read : std_logic_vector(15 downto 0);
+  signal vio_tx_wr : std_logic;
+  signal vio_tx_data_to_gbtx : std_logic_vector(7 downto 0);
+  signal ctrl_reg : HAL_CSM_CSM_SC_CTRL_t;
+  signal ctrl_s : HAL_CSM_CSM_SC_CTRL_t;
   
 
 begin
+
+--  VIO : vio_gbt
+--  PORT MAP (
+--    clk => clk40,
+--    probe_out0(0) => vio_rx_reset,
+--    probe_out1(0) => vio_tx_reset,
+--    probe_out2(0) => vio_tx_start_write,
+--    probe_out3(0) => vio_tx_start_read,
+--    probe_out4 => vio_tx_gbtx_address,
+--    probe_out5 => vio_tx_register_addr,
+--    probe_out6 => vio_tx_num_bytes_to_read,
+--    probe_out7(0) => vio_tx_wr,
+--    probe_out8 => vio_tx_data_to_gbtx
+--  );
 
   mon.master.ic.rx_data_from_gbtx   <= master_rx_frame;
   mon.slave.ic.rx_data_from_gbtx    <= slave_rx_frame;
@@ -186,6 +212,9 @@ begin
       sca_connect_reg       <= ctrl.master.start_connect;
       sca_connect           <= ctrl.master.start_connect and (not sca_connect_reg);
 
+--      ctrl_reg              <= ctrl;
+--      ctrl                <= ctrl_reg;
+
     end if;
   end process;
 
@@ -200,12 +229,13 @@ begin
     generic map (
       g_IC_FIFO_DEPTH => 8,
       g_ToLpGBT       => 1,             -- 1 = LPGBT, 0=GBTX
-      g_SCA_COUNT     => 0
+      g_SCA_COUNT     => 0,
+      g_LPGBT_VERS    => c_LPGBT_VER
       )
     port map (
 
       -- lpGBT Version
-      lpgbt_vers_i => ctrl.frame_format,
+      --lpgbt_vers_i => ctrl.frame_format,
 
       -- tx to lpgbt etc
       tx_clk_i  => clk40,
@@ -280,12 +310,10 @@ begin
     generic map (
       g_IC_FIFO_DEPTH => 8,
       g_ToLpGBT       => 1,             -- 1 = LPGBT, 0=GBTX
-      g_SCA_COUNT     => g_SCAS_PER_LPGBT
+      g_SCA_COUNT     => g_SCAS_PER_LPGBT,
+      g_LPGBT_VERS    => c_LPGBT_VER
       )
     port map (
-
-      -- lpGBT Version
-      lpgbt_vers_i => ctrl.frame_format,
 
       -- tx to lpgbt etc
       tx_clk_i  => clk40,
@@ -382,7 +410,8 @@ begin
       rx_transID_o(3)  => mon.master.sca_rx.rx(3).rx_transID
       );
 
-  lpgbt_version <= "01" when (ctrl.frame_format='0') else "10";
+
+  lpgbt_version <= "01" when c_LPGBT_VER = '0' else "10";
 
   gbt_ic_rx_m : entity work.gbt_ic_rx
     port map (
@@ -391,14 +420,14 @@ begin
       gbt_frame_format_i   => lpgbt_version,
       frame_i              => master_rx_frame,
       valid_i              => not master_rx_empty, --tx_rd, --not master_rx_empty,
-      data_o               => mon.master.ic.rx_data,
-      chip_adr_o           => mon.master.ic.rx_chip_adr,
-      length_o             => mon.master.ic.rx_length,
-      reg_adr_o            => mon.master.ic.rx_reg_adr,
-      uplink_parity_ok_o   => mon.master.ic.rx_up_parity_ok,
-      downlink_parity_ok_o => mon.master.ic.rx_down_parity_ok,
+      data_o               => mon.master.ic.rx_data, --32
+      chip_adr_o           => mon.master.ic.rx_chip_adr,--16 
+      length_o             => mon.master.ic.rx_length,--16
+      reg_adr_o            => mon.master.ic.rx_reg_adr,--16
+      uplink_parity_ok_o   => mon.master.ic.rx_up_parity_ok,--1 
+      downlink_parity_ok_o => mon.master.ic.rx_down_parity_ok,--1
       err_o                => mon.master.ic.rx_err,
-      valid_o              => mon.master.ic.rx_valid
+      valid_o              => mon.master.ic.rx_valid --1
       );
 
   gbt_ic_rx_s : entity work.gbt_ic_rx
@@ -418,40 +447,43 @@ begin
       valid_o              => mon.slave.ic.rx_valid
       );
       
-ilagen: if c_ENABLE_ILA = '1' generate
+ilagen: if c_ENABLE_ILA = '1' and g_CSM_ID = 0 generate
+
     ila_scm_ctrl_c2c : ila_0
     PORT MAP (
-        clk    => clk40,
-        probe0 => sca0_data_o_int, 
-        probe1 => sca1_data_o_int, 
-        probe2 => sca2_data_o_int, 
-        probe3 => sca0_data_i_int, 
-        probe4 => ic_data_o_int, 
-        probe5 => ctrl.master.sca_enable, 
-        probe6(0) => sca_reset, --ctrl.master.start_reset,
-        probe7(0) => sca_connect, --ctrl.master.start_connect,
-        probe8(0) => sca_command, --ctrl.master.start_command,
-        probe9(0) => reset_i,
-        probe10   => ic_data_i_int,
-        probe11(0)=> slave_rx_empty,
-        probe12(0)=> tx_start_read_s,
-        probe13   => master_rx_frame,
-        probe14(0)=> mon.master.ic.rx_err,
-        probe15(0)=> mon.slave.ic.rx_err,
-        probe16(0)=> master_rx_empty,
-        probe17   => slave_rx_frame,
-        probe18   => ec_data_i_int,
-        probe19   => ec_data_o_int,
-        probe20(0)=> tx_start_write_m,
-        probe21(0)=> tx_start_write_s,
-        probe22(0)=> tx_wr_s,
-        probe23(0)=> tx_start_read_m,
-        probe24   => sca1_data_i_int,
-        probe25   => sca2_data_i_int,
-        probe26   => ic_data_i_s,
-        probe27   => sca3_data_o_int,
-        probe28   => sca3_data_i_int
-    );
+      clk    => clk40,
+      probe0 => sca0_data_o_int, 
+      probe1 => sca1_data_o_int, 
+      probe2 => sca2_data_o_int, 
+      probe3 => sca0_data_i_int, 
+      probe4 => ic_data_o_int, 
+      probe5 => ctrl.master.sca_enable, 
+      probe6(0) => sca_reset, --ctrl.master.start_reset,
+      probe7(0) => sca_connect, --ctrl.master.start_connect,
+      probe8(0) => sca_command, --ctrl.master.start_command,
+      probe9(0) => reset_i,
+      probe10   => ic_data_i_int,
+      probe11(0)=> slave_rx_empty,
+      probe12(0)=> tx_start_read_s,
+      probe13   => master_rx_frame,
+      probe14(0)=> mon.master.ic.rx_err,
+      probe15(0)=> mon.slave.ic.rx_err,
+      probe16(0)=> master_rx_empty,
+      probe17   => slave_rx_frame,
+      probe18   => ec_data_i_int,
+      probe19   => ec_data_o_int,
+      probe20(0)=> tx_start_write_m,
+      probe21(0)=> tx_start_write_s,
+      probe22(0)=> tx_wr_s,
+      probe23(0)=> tx_start_read_m,
+      probe24   => sca1_data_i_int,
+      probe25   => sca2_data_i_int,
+      probe26   => ic_data_i_s,
+      probe27   => sca3_data_o_int,
+      probe28   => sca3_data_i_int
+    );     
+
+
 end generate;      
 
 end structural;

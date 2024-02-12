@@ -163,13 +163,13 @@ xil_axi_ulong                                            mtestWADDR_array[];
         //PRIYA multiple_read_transaction_full_rand ("single read",1);
 	  #1500
 	    mtestWID = $urandom_range(0,(1<<(0)-1)); 
-           mtestWADDR = (32'h6000 ); //(32'h000);  //priya 0;
+           mtestWADDR = (32'hff00 ); //(32'h000);  //priya 0;
           mtestWBurstLength = 0;
           mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
           mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED; //INCR;
           //Freeze and Playback masks
-	  mtestWData_array = {32'hc0000000, 32'h00000bff, 32'hc7ffffff, 32'hffffffff, 32'b0111};
-	  mtestWADDR_array = {32'h1, 32'h2, 32'h3, 32'h4, 32'h0};
+	  mtestWData_array = {32'hc0000000, 32'h00000bff, 32'b0, 32'b0,32'hc7ffffff, 32'hffffffff, 32'b0, 32'b0, 32'b0111};
+	  mtestWADDR_array = {32'h1, 32'h2, 32'h3, 32'h4, 43'h5, 32'h6, 32'h7, 32'h8,32'h0};
 	  
 	    for (int i = 0; i < $size(mtestWADDR_array); i++)
 	   begin
@@ -217,7 +217,7 @@ xil_axi_ulong                                            mtestWADDR_array[];
 
 //Playback once mode
 	     mtestWID = $urandom_range(0,(1<<(0)-1)); 
-           mtestWADDR = (32'h6000 ); //(32'h000);  //priya 0;
+           mtestWADDR = (32'hff00 ); //(32'h000);  //priya 0;
           mtestWBurstLength = 0;
           mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
           mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED; //INCR;
@@ -271,7 +271,7 @@ xil_axi_ulong                                            mtestWADDR_array[];
 
 	
 	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
-          mtestWADDR = (32'h6000 << 2);  //priya 0;
+          mtestWADDR = (32'hff00 << 2);  //priya 0;
           mtestWBurstLength = 0; //0;
           mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
           mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED;
@@ -373,7 +373,7 @@ xil_axi_ulong                                            mtestWADDR_array[];
                                     );  
 */
     mst_agent.wait_drivers_idle();           // Wait driver is idle then stop the simulation
-   	  #12800000
+   	  #10000 // 112223 => #12800000
     if(error_cnt ==0) begin
       $display("EXAMPLE TEST DONE : Test Completed Successfully");
     end else begin  

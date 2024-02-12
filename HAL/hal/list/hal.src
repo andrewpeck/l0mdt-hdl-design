@@ -45,6 +45,6 @@ HAL/sl/src/sector_logic_pkg.vhd
 HAL/sl/list/sl.src lib=sl
 
 # FELIX
-HAL/hal/src/felix_decoder.vhd
-HAL/hal/src/felix_tx.vhd
-HAL/lpgbt/src/lpgbt_10g_tx.vhd
+#HAL/hal/src/felix_decoder.vhd
+#HAL/hal/src/felix_tx.vhd
+#HAL/lpgbt/src/lpgbt_10g_tx.vhd

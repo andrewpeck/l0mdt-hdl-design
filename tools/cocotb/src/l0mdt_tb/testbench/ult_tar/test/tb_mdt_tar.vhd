@@ -17,6 +17,10 @@ use ctrl_lib.TAR_CTRL.all;
 library tar_lib;
 use tar_lib.tar_pkg.all;
 
+library fm_lib;
+use fm_lib.fm_types.all;
+
+
 library ult_lib;
 
 entity tb_mdt_tar is
@@ -81,7 +85,8 @@ architecture beh of tb_mdt_tar is
   signal tar_ext_ctrl_v : std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0) := (others=> '0');
   signal tar_ext_mon_v  : std_logic_vector(width(tar_inn_mon_r) -1 downto 0) := (others=> '0');
 
-  
+  signal o_fm_tar_mon_v : std_logic_vector(fm_tar_mon_data'w -1 downto 0);
+  signal i_fm_tar_polmux2tar_pb_v  : tdcpolmux2tar_avt(tar_sb_all_stations_n-1 downto 0);
   begin
 
     tar_inn_ctrl_r.actions.reset <= '0';
@@ -126,6 +131,13 @@ architecture beh of tb_mdt_tar is
     tar_mid_ctrl_v   <=  convert( tar_mid_ctrl_r,  tar_mid_ctrl_v );
     tar_out_ctrl_v    <=  convert( tar_out_ctrl_r,  tar_out_ctrl_v );
     tar_ext_ctrl_v    <=  convert( tar_ext_ctrl_r,  tar_ext_ctrl_v );
+
+
+    
+    
+    i_fm_tar_polmux2tar_pb_v(c_HPS_NUM_MDT_CH_INN -1 downto 0) <= i_inn_tdc_hits_av;
+    i_fm_tar_polmux2tar_pb_v(csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_MID -1 downto csm_polmux_in_sb_n) <= i_mid_tdc_hits_av;
+    i_fm_tar_polmux2tar_pb_v(2*csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_OUT -1 downto 2* csm_polmux_in_sb_n) <= i_out_tdc_hits_av;
     
     ULT_TAR : entity ult_lib.mdt_tar
       port map (
@@ -160,9 +172,10 @@ architecture beh of tb_mdt_tar is
         o_inn_tar_hits_av  => o_inn_tar_hits_av,
         o_mid_tar_hits_av  => o_mid_tar_hits_av,
         o_out_tar_hits_av  => o_out_tar_hits_av,
-        o_ext_tar_hits_av  => o_ext_tar_hits_av
+        o_ext_tar_hits_av  => o_ext_tar_hits_av,
 
         -- o_sump          => tar_sump
-
+        fm_tar_mon_v => o_fm_tar_mon_v,
+        fm_tar_polmux2tar_pb_v => i_fm_tar_polmux2tar_pb_v
       );
   end architecture beh;

@@ -401,7 +401,6 @@ $(DAQDIR)/daq-lxa-core/autogen/yml2hdl.vhd \
 $(DAQDIR)/daq-lxa-core/autogen/daq_v3.vhd \
 $(DAQDIR)/daq-lxa-core/pkg/daq_defs.vhd \
 $(DAQDIR)/daq-lxa-core/src/daq_fifo.vhd \
-$(DAQDIR)/daq-lxa-core/src/daq_node_fifo.vhd \
 $(DAQDIR)/daq-lxa-core/src/daq_data_node.vhd \
 $(DAQDIR)/daq-lxa-core/src/daq_head_node.vhd \
 $(DAQDIR)/daq-lxa-core/src/daq_win_matching.vhd \

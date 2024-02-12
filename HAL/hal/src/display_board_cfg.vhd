@@ -152,12 +152,13 @@ package body display_board_cfg_pkg is
       --------------------------------------------------------------------------------
 
       -- only then per-QUAD for these
-      felix_gen : if (felix_idx_array(I) /= -1 and (I mod 4 = 0)) then
+      -- felix_gen : if (felix_idx_array(I) /= -1 and (I mod 4 = 0)) then
+      felix_gen : if (felix_idx_array(I) /= -1) then
         idx := felix_idx_array(I);
         assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I)   & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
-        assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I+1) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
-        assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I+2) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
-        assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I+3) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
+        -- assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I+1) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
+        -- assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I+2) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
+        -- assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I+3) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
         --assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq = REF_ASYNC_320) report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
       end if;
 
