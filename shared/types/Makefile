@@ -68,7 +68,7 @@ all:
 #  ../../ucm_hps/pkg/ucm_hps.yml
 # main pipeline
 	python3 $(yml2hdl_v1) $(common) \
-	../../UserLogic/mpl/mpl_v0.1/pkg/mpl.yml
+	../../UserLogic/mpl/mpl_v1.0/pkg/mpl.yml
 # csf
 	python3 $(yml2hdl_v1) $(common) \
 	../../UserLogic/csf/pkg/csf.yml
@@ -188,7 +188,7 @@ all2:
 # 	-e common_constants.yml  \
 # 	-e l0mdt_dataformats_pkg.yml \
 # 	-e common_types.yml      \
-# 	../../mpl/mpl_v0.1/pkg/mpl.yml
+# 	../../mpl/mpl_v1.0/pkg/mpl.yml
 # 	# csf
 # 	python3 $(yml2hdl_v1)       \
 # 	-e common_ieee_pkg.yml       \

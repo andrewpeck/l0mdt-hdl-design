@@ -1,37 +1,37 @@
-#################### ull_vu13p/ull_vu13_b3a_ucm_mpl Project ###########################
-GEN:ull_vu13_b3a_ucm_mpl:
+#################### ull_vu13p/ull_vu13_3ba_ucm012_mpl012 Project ###########################
+GEN:ull_vu13_3ba_ucm012_mpl012:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ull_vu13p/ull_vu13_b3a_ucm_mpl
+      PROJECT_NAME: ull_vu13p/ull_vu13_3ba_ucm012_mpl012
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       
     tags:
       - normal-ops
 
-SIM:ull_vu13_b3a_ucm_mpl:
+SIM:ull_vu13_3ba_ucm012_mpl012:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ull_vu13p/ull_vu13_b3a_ucm_mpl
+      PROJECT_NAME: ull_vu13p/ull_vu13_3ba_ucm012_mpl012
       HOG_CHECK_PROJVER: 0
 
     tags:
       - normal-ops
     allow_failure: false
     
-# user_sim:ull_vu13_b3a_ucm_mpl:
+# user_sim:ull_vu13_3ba_ucm012_mpl012:
 #     extends: .user_sim
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: ull_vu13_b3a_ucm_mpl
+#       PROJECT_NAME: ull_vu13_3ba_ucm012_mpl012
 
 
-# RIV:ull_vu13_b3a_ucm_mpl:
+# RIV:ull_vu13_3ba_ucm012_mpl012:
 #     extends: .riviera_sim
 #     variables:
 #       extends: .riviera_vars
-#       PROJECT_NAME: ull_vu13_b3a_ucm_mpl
+#       PROJECT_NAME: ull_vu13_3ba_ucm012_mpl012
 #       HOG_CHECK_PROJVER: 0
 #       # HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/mnt/vd/Xilinx/Vivado/2019.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
 #       HOG_SIMULATION_LIB_PATH: "/home/l0mdtel/RivieraLib"
@@ -39,9 +39,9 @@ SIM:ull_vu13_b3a_ucm_mpl:
 #       - export PATH="/opt/Xilinx/Vivado/2019.2/bin:/opt/Aldec/Riviera-PRO-2021.04-x64/bin:$PATH"
 
 
-# CHK:ull_vu13_b3a_ucm_mpl:
+# CHK:ull_vu13_3ba_ucm012_mpl012:
 #   extends: .sim_check
 #   variables:
 #     extends: .vars
-#     PROJECT_NAME: ull_vu13_b3a_ucm_mpl
-#   needs: ["SIM:ull_vu13_b3a_ucm_mpl","RIV:ull_vu13_b3a_ucm_mpl"]
+#     PROJECT_NAME: ull_vu13_3ba_ucm012_mpl012
+#   needs: ["SIM:ull_vu13_3ba_ucm012_mpl012","RIV:ull_vu13_3ba_ucm012_mpl012"]

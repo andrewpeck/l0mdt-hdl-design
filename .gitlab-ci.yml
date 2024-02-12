@@ -22,7 +22,7 @@ generate:
   parallel:
     matrix:
       - PROVIDER: argos
-        PROJECT_NAME: [ull/vu13p/ull_vu13_b3a_tar, l0mdt/vu13p/l0mdt_vu13p_ba3_ucm_mpl_tar_hps]
+        PROJECT_NAME: [ull/vu13p/ull_vu13_b3a_tar, l0mdt/vu13p/l0mdt_vu13p_ba3_ucm_mpl_tar_hps,ull/vu13p/ull_vu13_3ba_ucm012_mpl012]
         HOG_ONLY_SYNTH: 1
       - PROVIDER: "2022.2"
         PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_lsf_upt]
@@ -61,7 +61,13 @@ questa:
     extends: .vars
   parallel:
     matrix:
-      - PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm012_vu13, MainBlocks/BA3_heg, ull/vu13p/ull_vu13_b3a_ucm_mpl, ull/vu13p/ull_vu13_b3a_tar]
+      - PROJECT_NAME: 
+        - MainBlocks/BA3_tar
+        - MainBlocks/BA3_ucm012_vu13
+        - MainBlocks/BA3_heg
+        - ull/vu13p/ull_vu13_b3a_ucm_mpl
+        - ull/vu13p/ull_vu13_3ba_ucm012_mpl012
+        - ull/vu13p/ull_vu13_b3a_tar
         PROVIDER: questa
   allow_failure: false
   tags:
