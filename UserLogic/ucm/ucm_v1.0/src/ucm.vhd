@@ -239,6 +239,7 @@ begin
     o_local_rst         => local_rst
   );
 
+  local_en <= '1';
   --control
   SLC_CTRL : entity ucm_lib.ucm_ctrl_top
   port map(
