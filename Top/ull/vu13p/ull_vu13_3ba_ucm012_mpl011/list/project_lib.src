@@ -1,0 +1,32 @@
+#### project mapping files ####
+# prj_mapping_links.vhd
+# prj_mapping_tar.vhd
+
+#### default config parameters ####
+shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
+#### shared ####
+shared/shared_lib.src lib=shared_lib
+#### project local configuration files ####
+Top/ull/vu13p/ull_vu13_3ba_ucm012_mpl011/prj_cfg.vhd
+#### top  ####
+UserLogic/ult/top_ult_imp.vhd top=top_ult
+#### AXI SC ####
+HAL/ctrl/ctrl_lib.src lib=ctrl_lib
+
+#### modules included ####
+UserLogic/ucm/ucm_v1.0_vu13_lib.src lib=ucm_lib
+
+UserLogic/mpl/mpl_v0.1_lib.src lib=mpl_lib
+UserLogic/hp/hp_lib.src lib=hp_lib
+UserLogic/heg/heg_lib.src lib=heg_lib
+UserLogic/hps/hps_lib.src lib=hps_lib
+UserLogic/csf/ncsf_lib.src lib=csf_lib
+UserLogic/tar/tar_lib.src lib=tar_lib
+UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib
+UserLogic/upt/upt_lib_empty.src lib=upt_lib
+UserLogic/mtc/mtc_lib.src lib=mtc_lib
+UserLogic/lsf/lsf_lib_empty.src lib=lsf_lib
+UserLogic/fm/fm_lib.src lib=fm_lib
+UserLogic/daq/daq.src lib=daq_lib
+
+UserLogic/ult/ult_lib.src lib=ult_lib
