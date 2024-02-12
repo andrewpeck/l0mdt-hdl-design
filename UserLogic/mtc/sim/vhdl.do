@@ -19,7 +19,7 @@ vcom -work shared_lib ../../shared/types/common_types_pkg.vhd
 
 vcom -work shared_lib ../../shared/functions/some_functions_pkg.vhd 
 vcom -work shared_lib ../../shared/config/config_defaults_pkg.vhd
-vcom -work shared_lib ../../shared/config/detector_param_pkg.vhd 
+# vcom -work shared_lib ../../shared/config/detector_param_pkg.vhd 
 vcom -work project_lib  ../../Top/mtc_builder/prj_cfg.vhd
 vcom -work shared_lib ../../shared/config/config_pkg.vhd 
 

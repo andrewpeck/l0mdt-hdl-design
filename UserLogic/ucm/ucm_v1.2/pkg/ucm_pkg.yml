@@ -7,7 +7,7 @@ config:
 types:
    
   - SLC_SPECIFIC_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 48}
-  - UCM_CDE2CVP_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 7}
+  - UCM_CDE2CVP_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 8}
   - UCM_CDE2CVP_PHIMOD_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 64.0}
 #  - UCM_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 5}
   - ucm_prepro2ctrl_rt:

@@ -1,3 +1,7 @@
+UserLogic/ucm/ucm_v1.0/pkg/ucm_pkg.vhd
+UserLogic/ucm/ucm_v1.0/pkg/ucm_time_pkg.vhd
+
+
 UserLogic/ucm/ucm_v1.0/src/ucm_prepro.vhd
 
 UserLogic/ucm/ucm_v1.0/src/ucm_supervisor.vhd

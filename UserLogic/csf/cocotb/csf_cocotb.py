@@ -483,7 +483,7 @@ def csf_cocotb():
             top_path / "shared/types/common_constants_pkg.vhd",
             top_path / "shared/types/common_types_pkg.vhd",
             top_path / "shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd",
-            top_path / "shared/detector_parameters/dp_repo//detector_param_pkg.vhd",
+            # top_path / "shared/detector_parameters/dp_repo//detector_param_pkg.vhd",
             top_path / "shared/detector_parameters/fw_parameters//detector_time_param_pkg.vhd",
             top_path / "shared/detector_parameters/functions/fct_barrel_R_rpc_pkg.vhd",
             top_path / "shared/config//config_pkg.vhd",
