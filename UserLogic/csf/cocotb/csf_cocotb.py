@@ -486,9 +486,8 @@ def csf_cocotb():
             # top_path / "shared/detector_parameters/dp_repo//detector_param_pkg.vhd",
             top_path / "shared/detector_parameters/fw_parameters//detector_time_param_pkg.vhd",
             top_path / "shared/detector_parameters/functions/fct_barrel_R_rpc_pkg.vhd",
-            top_path / "shared/config//config_pkg.vhd",
-            
-
+            top_path / "shared/vhdl_utilities/pkg/vhdl_tb_utils_pkg.vhd",
+            top_path / "shared/config/config_pkg.vhd"
         ]
         vhdl_sources2=[
             top_path / "HAL/ctrl/src/HPS/HPS_PKG.vhd",
