@@ -305,7 +305,7 @@ begin
   logic_gen : if (not dummy) generate
 
     tar_gen : if c_TAR_ENABLED = '1' generate    
-      ult_tar : entity ult_lib.mdt_tar
+      ult_tar : entity ult_lib.ult_tar
         port map (
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
@@ -422,7 +422,7 @@ begin
 
     ucm_gen : if c_UCM_ENABLED = '1' generate  
       -- block
-      ult_ucm : entity ult_lib.candidate_manager
+      ult_ucm : entity ult_lib.ult_ucm
         port map (
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,

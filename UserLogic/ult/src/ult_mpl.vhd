@@ -67,6 +67,12 @@ begin
       o_pl2mtc_av     => o_pl2mtc_av
     );
   end generate;
+
+  -- FM_CTRL_GEN : if c_FM_ENABLED generate
+
+  -- else generate
+    
+  -- end generate;
   
   
   

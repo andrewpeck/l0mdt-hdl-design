@@ -33,7 +33,7 @@ use tar_lib.tar_pkg.all;
 library fm_lib;
 use fm_lib.fm_types.all;
 
-entity mdt_tar is
+entity ult_tar is
   port (
     -- pipeline clock
     clock_and_control : in  l0mdt_control_rt;
@@ -75,9 +75,9 @@ entity mdt_tar is
     o_sump            : out std_logic
 
     );
-end entity mdt_tar;
+end entity ult_tar;
 
-architecture beh of mdt_tar is
+architecture beh of ult_tar is
   -- signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_INN-1 downto 0);
   -- signal tdc_hit_middle_sump : std_logic_vector (c_HPS_NUM_MDT_CH_MID-1 downto 0);
   -- signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_OUT-1 downto 0);

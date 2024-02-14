@@ -81,10 +81,26 @@ architecture beh of hps_sf_wrap is
   signal lsf_mon_r  : HPS_LSF_LSF_MON_t;
 
   signal sf_data_v : std_logic_vector(o_sf_data_v'length -1 downto 0);
-  signal  fm_sf_mon_r : fm_sf_mon;
   
 
 begin
+
+  FM_CTRL_GEN : if c_FM_ENABLED generate
+    signal  fm_sf_mon_r : fm_sf_mon;
+  begin
+    fm_sf_mon_v <= convert(fm_sf_mon_r, fm_sf_mon_v);
+  
+    fm_sf_mon_r(0).fm_data <= (mon_dw_max-1 downto  heg2sfslc_rt'w => '0') & i_slc_data_v;
+    fm_sf_mon_r(0).fm_vld   <= i_slc_data_v(heg2sfslc_rt'w-1);
+  
+    fm_sf_mon_r(1).fm_data <= (mon_dw_max-1 downto  heg2sfhit_rt'w => '0') & i_mdt_data_v;
+    fm_sf_mon_r(1).fm_vld  <= i_mdt_data_v(heg2sfhit_rt'w-1);
+  
+    fm_sf_mon_r(2).fm_data <= (mon_dw_max-1 downto  sf2ptcalc_rt'w => '0') & o_sf_data_v;
+    fm_sf_mon_r(2).fm_vld  <= o_sf_data_v(sf2ptcalc_rt'w -1);
+  -- else generate
+    
+  end generate;
 
   i_control_r <= convert(i_control_v,i_control_r);
 
@@ -96,18 +112,6 @@ begin
   lsf_mon_r <= zero(lsf_mon_r);
 --  csf_mon_r <= zero(csf_mon_r);
   --
-
-  fm_sf_mon_v <= convert(fm_sf_mon_r, fm_sf_mon_v);
-  
-  fm_sf_mon_r(0).fm_data <= (mon_dw_max-1 downto  heg2sfslc_rt'w => '0') & i_slc_data_v;
-  fm_sf_mon_r(0).fm_vld   <= i_slc_data_v(heg2sfslc_rt'w-1);
-
-  fm_sf_mon_r(1).fm_data <= (mon_dw_max-1 downto  heg2sfhit_rt'w => '0') & i_mdt_data_v;
-  fm_sf_mon_r(1).fm_vld  <= i_mdt_data_v(heg2sfhit_rt'w-1);
-
-  fm_sf_mon_r(2).fm_data <= (mon_dw_max-1 downto  sf2ptcalc_rt'w => '0') & o_sf_data_v;
-  fm_sf_mon_r(2).fm_vld  <= o_sf_data_v(sf2ptcalc_rt'w -1);
-
 
   EN_SF : if c_SF_ENABLED = '1' generate
 
@@ -135,10 +139,10 @@ begin
             )
           port map(
             clk       => clk,
-            rst     => rst,
-            glob_en => glob_en,
-            i_ctrl_v => csf_ctrl_v,
-            o_mon_v => csf_mon_v,
+            rst       => rst,
+            glob_en   => glob_en,
+            i_ctrl_v  => csf_ctrl_v,
+            o_mon_v   => csf_mon_v,
             i_seed    => i_slc_data_v,
             i_mdt_hit => i_mdt_data_v,
             i_eof     => i_control_r.eof,
@@ -153,13 +157,13 @@ begin
         LSF : entity lsf_lib.top_lsf
          
           port map(
-            clock                               => clk,
-            reset                               => rst,
-            slc_roi                             => i_slc_data_v,
-            mdt_hit                             => i_mdt_data_v,
-            lsf                                 => o_sf_data_v,
-            i_eof                               => i_control_r.eof,
-            hba_max_clocks                      => lsf_ctrl_r.hba_max_clocks            
+            clock          => clk,
+            reset          => rst,
+            slc_roi        => i_slc_data_v,
+            mdt_hit        => i_mdt_data_v,
+            lsf            => o_sf_data_v,
+            i_eof          => i_control_r.eof,
+            hba_max_clocks => lsf_ctrl_r.hba_max_clocks            
         );
 
         -- csf_mon_r <= zero(csf_mon_r);

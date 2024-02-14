@@ -109,12 +109,18 @@ architecture beh of hits_to_segments is
 
 begin
 
+  FM_CTRL_GEN : if c_FM_ENABLED generate
+    fm_hps_mon_r.fm_hps_mon_inn   <= convert(fm_hps_sf_mon_inn_v, fm_hps_mon_r.fm_hps_mon_inn );
+    fm_hps_mon_r.fm_hps_mon_mid  <= convert(fm_hps_sf_mon_mid_v, fm_hps_mon_r.fm_hps_mon_mid);
+    fm_hps_mon_r.fm_hps_mon_out  <= convert( fm_hps_sf_mon_out_v,   fm_hps_mon_r.fm_hps_mon_out );
+    
+    fm_hps_mon_v <= convert(fm_hps_mon_r, fm_hps_mon_v);
+  else generate
+    
+  end generate;
 
-  fm_hps_mon_r.fm_hps_mon_inn   <= convert(fm_hps_sf_mon_inn_v, fm_hps_mon_r.fm_hps_mon_inn );
-  fm_hps_mon_r.fm_hps_mon_mid  <= convert(fm_hps_sf_mon_mid_v, fm_hps_mon_r.fm_hps_mon_mid);
-  fm_hps_mon_r.fm_hps_mon_out  <= convert( fm_hps_sf_mon_out_v,   fm_hps_mon_r.fm_hps_mon_out );
+
   
-  fm_hps_mon_v <= convert(fm_hps_mon_r, fm_hps_mon_v);
 
   process (clock_and_control.clk) is
   begin

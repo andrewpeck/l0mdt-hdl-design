@@ -66,13 +66,6 @@ architecture beh of ult_ucm is
 begin
 
   glob_en <= '1';
-
-  fm_gen: if c_FM_ENABLED = '1' generate
-     slc_data_mainA_av <= i_ucm_fm_slc_rx_pb_v;
-  else generate
-      slc_data_mainA_av <= i_slc_data_mainA_av;
-  end generate fm_gen;
-  -- UCM : if c_UCM_ENABLED = '1' generate
   
     UCM : entity ucm_lib.ucm
     port map(
@@ -103,6 +96,7 @@ begin
 
   FM_CTRL_GEN : if c_FM_ENABLED generate
     --FM Monitoting
+    slc_data_mainA_av <= i_ucm_fm_slc_rx_pb_v;
     o_ucm_fm_mon_v <= convert(ucm_fm_mon_r, o_ucm_fm_mon_v);
       
     -- SL Candidates
@@ -131,6 +125,7 @@ begin
       ucm_fm_mon_r.fm_ucm2pl_mon(I).fm_vld   <=o_ucm2pl_av(I)(ucm2pl_rt'w-1);
     end generate;
   else generate
+    slc_data_mainA_av <= i_slc_data_mainA_av;
     
   end generate;
   
