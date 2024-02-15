@@ -1,16 +1,19 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: src
+-- File: ult_tar.vhd
+-- Module: <<moduleName>>
+-- File PATH: /ult_tar.vhd
+-- -----
+-- File Created: Thursday, 15th February 2024 9:45:20 am
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Thursday, 15th February 2024 1:42:55 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: MDT tdc data addres remap
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
@@ -40,7 +43,7 @@ entity ult_tar is
   port (
     -- pipeline clock
     clock_and_control : in  l0mdt_control_rt;
-    i_ull_slow_v : out ull_slow_vt;
+    i_ull_slow_v : in ull_slow_vt;
 
     --
     tar_inn_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;

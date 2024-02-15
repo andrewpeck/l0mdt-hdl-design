@@ -320,6 +320,7 @@ begin
         port map (
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
+          i_ull_slow_v => ull_super_slow,
           -- ttc_commands      => ttc_commands,       --
           tar_inn_ctrl_v => tar_inn_ctrl_v,
           tar_inn_mon_v  => tar_inn_mon_v,
@@ -438,6 +439,8 @@ begin
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
           ttc_commands      => ttc_commands,
+          i_ull_slow_v => ull_super_slow,
+          --
           ctrl_v            => ucm_ctrl_v,
           mon_v             => ucm_mon_v,
           -- candidates in from hal
@@ -714,6 +717,7 @@ begin
           port map (
             -- clock, control, and monitoring
             clock_and_control => clock_and_control,
+            i_ull_slow_v => ull_super_slow,
             -- ttc_commands      => ttc_commands,
             ctrl_v            => mpl_ctrl_v,
             mon_v             => mpl_mon_v,

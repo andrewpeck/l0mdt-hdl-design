@@ -1,16 +1,19 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: src
+-- File: ult_mpl.vhd
+-- Module: <<moduleName>>
+-- File PATH: /ult_mpl.vhd
+-- -----
+-- File Created: Thursday, 15th February 2024 9:45:20 am
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Thursday, 15th February 2024 1:43:52 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: MDT tdc data addres remap
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -29,10 +32,14 @@ use mpl_lib.mpl_pkg.all;
 library ctrl_lib;
 use ctrl_lib.MPL_CTRL.all;
 
+library ult_lib;
+  use ult_lib.ult_pkg.all;
+
 entity pipeline is
   port (
     -- clock and control
     clock_and_control : in  l0mdt_control_rt;
+    i_ull_slow_v : in ull_slow_vt;
     -- ttc_commands      : in  l0mdt_ttc_rt;
     --
     ctrl_v            : in std_logic_vector; -- : in  MPL_CTRL_t;
@@ -47,10 +54,17 @@ entity pipeline is
 end entity pipeline;
 
 architecture beh of pipeline is
+  signal i_ull_slow_r : ull_slow_rt;
   signal glob_en : std_logic;
+  signal glob_rst : std_logic;
+  signal glob_freezer : std_logic;
+
 begin
 
-  glob_en <= '1';
+  i_ull_slow_r <= convert(i_ull_slow_v,i_ull_slow_r);
+  glob_en <= i_ull_slow_r.global_ena;
+  glob_rst <= clock_and_control.rst or i_ull_slow_r.global_rst;
+  glob_freezer <= i_ull_slow_r.global_freeze;
   
   MPL_EN : if c_MPL_ENABLED = '1' generate
     MPL : entity mpl_lib.mpl
