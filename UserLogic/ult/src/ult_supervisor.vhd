@@ -14,31 +14,50 @@
 -- HISTORY:
 --------------------------------------------------------------------------------
 
+library ieee;
+  use ieee.std_logic_misc.all;
+  use ieee.std_logic_1164.all;
+  use ieee.numeric_std.all;
 
+library shared_lib;
+  use shared_lib.common_ieee_pkg.all;
+  use shared_lib.l0mdt_constants_pkg.all;
+  use shared_lib.l0mdt_dataformats_pkg.all;
+  use shared_lib.common_constants_pkg.all;
+  use shared_lib.common_types_pkg.all;
+  use shared_lib.config_pkg.all;
+
+library ult_lib;
+  use ult_lib.ult_pkg.all;
 
 entity ult_supervisor is
   port (
-    clk   : in std_logic;
-    rst : in std_logic;
-
-    g_ena : out std_logic;
-    g_freeze : out std_logic
-    
+    clock_and_control : in  l0mdt_control_rt;
+    o_ull_slow_v : out ull_slow_vt
   );
 end entity;
 
 architecture beh of ult_supervisor is
 
+  signal clk : std_logic;
+  signal rst : std_logic;
 
-
+  signal o_ull_slow_r : ull_slow_rt;
+  
 begin
+
+  o_ull_slow_v <= convert(o_ull_slow_r,o_ull_slow_v);
+
+  clk <= clock_and_control.clk;
+  rst <= clock_and_control.rst;
 
   process (clk)
   begin
     if rising_edge(clk) then
       if (rst = '1') then
-        g_ena <= '1';
-        g_freeze <= '0';
+        o_ull_slow_r.global_ena <= '1';
+        o_ull_slow_r.global_rst <= '0';
+        o_ull_slow_r.global_freeze <= '0';
       end if;
     end if;
   end process;

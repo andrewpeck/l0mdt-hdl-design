@@ -28,7 +28,8 @@ library shared_lib;
   use shared_lib.common_types_pkg.all;
   use shared_lib.config_pkg.all;
 
-library ult_lib;
+  library ult_lib;
+  use ult_lib.ult_pkg.all;
 
 library ctrl_lib;
   -- use ctrl_lib.ctrl_constants_pkg.all;
@@ -149,6 +150,9 @@ entity ult is
 end entity ult;
 
 architecture behavioral of ult is
+
+    signal ull_super_slow : ull_slow_vt;
+    
 
   -- ctrl/mon vectors
   -- signal h2s_ctrl_v : std_logic_vector(width(h2s_ctrl) - 1 downto 0);
@@ -301,6 +305,13 @@ begin
   -- mtc_mon <= structify(mtc_mon_v,mtc_mon);
   -- daq_ctrl_v <= convert(daq_ctrl,daq_ctrl_v);
   -- daq_mon <= structify(daq_mon_v,daq_mon);
+
+
+  ult_supervisor : entity ult_lib.ult_supervisor
+    port map(
+      clock_and_control => clock_and_control,
+      o_ull_slow_v => ull_super_slow
+    );
 
   logic_gen : if (not dummy) generate
 
@@ -699,46 +710,46 @@ begin
 
     mpl_gen : if c_MPL_ENABLED = '1' generate
 
-      ult_mpl : entity ult_lib.pipeline
-        port map (
-          -- clock, control, and monitoring
-          clock_and_control => clock_and_control,
-          -- ttc_commands      => ttc_commands,
-          ctrl_v            => mpl_ctrl_v,
-          mon_v             => mpl_mon_v,
+        ult_mpl : entity ult_lib.pipeline
+          port map (
+            -- clock, control, and monitoring
+            clock_and_control => clock_and_control,
+            -- ttc_commands      => ttc_commands,
+            ctrl_v            => mpl_ctrl_v,
+            mon_v             => mpl_mon_v,
 
-          -- Sector Logic Candidates from uCM
-          i_ucm2pl_av => ucm2pl_av,
+            -- Sector Logic Candidates from uCM
+            i_ucm2pl_av => ucm2pl_av,
 
-          -- Sector Logic Candidates to pt calculation
-          o_pl2pt_av => pl2pt_av,
-          -- Sector Logic Candidates to mTC
-          o_pl2mtc_av => pl2mtc_av
-        );
+            -- Sector Logic Candidates to pt calculation
+            o_pl2pt_av => pl2pt_av,
+            -- Sector Logic Candidates to mTC
+            o_pl2mtc_av => pl2mtc_av
+          );
 
-    else generate
-      mpl_mon_v <= (mpl_mon_v'length - 1 downto 0 => '0');
+      else generate
+        mpl_mon_v <= (mpl_mon_v'length - 1 downto 0 => '0');
 
-      sump_mpl : entity ult_lib.mpl_sump
-        port map (
-          -- clock, control, and monitoring
-          -- clock_and_control => clock_and_control,
-          -- ttc_commands      => ttc_commands,
-          -- ctrl              => mpl_ctrl,
-          -- mon               => mpl_mon,
+        sump_mpl : entity ult_lib.mpl_sump
+          port map (
+            -- clock, control, and monitoring
+            -- clock_and_control => clock_and_control,
+            -- ttc_commands      => ttc_commands,
+            -- ctrl              => mpl_ctrl,
+            -- mon               => mpl_mon,
 
-          -- Sector Logic Candidates from uCM
-          i_ucm2pl_av => ucm2pl_av,
+            -- Sector Logic Candidates from uCM
+            i_ucm2pl_av => ucm2pl_av,
 
-          -- Sector Logic Candidates to pt calculation
-          o_pl2pt_av => pl2pt_av,
-          -- Sector Logic Candidates to mTC
-          o_pl2mtc_av => pl2mtc_av,
+            -- Sector Logic Candidates to pt calculation
+            o_pl2pt_av => pl2pt_av,
+            -- Sector Logic Candidates to mTC
+            o_pl2mtc_av => pl2mtc_av,
 
-          o_sump => mpl_sump
-        );
+            o_sump => mpl_sump
+          );
 
-    end generate mpl_gen;
+      end generate mpl_gen;
 
     hps2pt_loop : for th_i in c_NUM_THREADS - 1 downto 0 generate
 
@@ -856,204 +867,204 @@ begin
 
     pt_gen : if c_PT_ENABLED = '1' generate
 
-      ult_ptcalc : entity ult_lib.ptcalc
-        port map (
-          -- clock, control, and monitoring
-          clock_and_control => clock_and_control,
-          ttc_commands      => ttc_commands,
-          ctrl_v            => tf_ctrl_v,
-          mon_v             => tf_mon_v,
-          --  segments from neighbors
-          i_plus_neighbor_segments  => i_plus_neighbor_segments,
-          i_minus_neighbor_segments => i_minus_neighbor_segments,
-          -- segments from hps
-          i_inn_segments => inn_segments_to_pt_plout_av,
-          i_mid_segments => mid_segments_to_pt_plout_av,
-          i_out_segments => out_segments_to_pt_plout_av,
-          i_ext_segments => ext_segments_to_pt_plout_av,
-          -- i_inn_segments            => inn_segments_to_pt_pipeline(SLR_PIPELINE_DEPTH),
-          -- i_mid_segments            => mid_segments_to_pt_pipeline(SLR_PIPELINE_DEPTH),
-          -- i_out_segments            => out_segments_to_pt_pipeline(SLR_PIPELINE_DEPTH),
-          -- i_ext_segments            => ext_segments_to_pt_pipeline(SLR_PIPELINE_DEPTH),
-          -- from pipeline
-          i_pl2pt_av => pl2pt_av,
-          -- to mtc
-          o_pt2mtc => pt2mtc_av,
-          -- dummy
-          o_sump => pt_sump
-        );
+        ult_ptcalc : entity ult_lib.ptcalc
+          port map (
+            -- clock, control, and monitoring
+            clock_and_control => clock_and_control,
+            ttc_commands      => ttc_commands,
+            ctrl_v            => tf_ctrl_v,
+            mon_v             => tf_mon_v,
+            --  segments from neighbors
+            i_plus_neighbor_segments  => i_plus_neighbor_segments,
+            i_minus_neighbor_segments => i_minus_neighbor_segments,
+            -- segments from hps
+            i_inn_segments => inn_segments_to_pt_plout_av,
+            i_mid_segments => mid_segments_to_pt_plout_av,
+            i_out_segments => out_segments_to_pt_plout_av,
+            i_ext_segments => ext_segments_to_pt_plout_av,
+            -- i_inn_segments            => inn_segments_to_pt_pipeline(SLR_PIPELINE_DEPTH),
+            -- i_mid_segments            => mid_segments_to_pt_pipeline(SLR_PIPELINE_DEPTH),
+            -- i_out_segments            => out_segments_to_pt_pipeline(SLR_PIPELINE_DEPTH),
+            -- i_ext_segments            => ext_segments_to_pt_pipeline(SLR_PIPELINE_DEPTH),
+            -- from pipeline
+            i_pl2pt_av => pl2pt_av,
+            -- to mtc
+            o_pt2mtc => pt2mtc_av,
+            -- dummy
+            o_sump => pt_sump
+          );
 
-    else generate
-      tf_mon_v <= (tf_mon_v'length - 1 downto 0 => '0');
+      else generate
+        tf_mon_v <= (tf_mon_v'length - 1 downto 0 => '0');
 
-      sump_pt : entity ult_lib.ptc_sump
-        port map (
-          -- clock, control, and monitoring
-          -- clock_and_control         => clock_and_control,
-          -- ttc_commands              => ttc_commands,
-          -- ctrl                      => tf_ctrl,
-          -- mon                       => tf_mon,
-          --  segments from neighbors
-          i_plus_neighbor_segments  => i_plus_neighbor_segments,
-          i_minus_neighbor_segments => i_minus_neighbor_segments,
-          -- segments from hps
-          -- i_inn_segments            => inn_segments_to_pt_pipeline(0),
-          -- i_mid_segments            => mid_segments_to_pt_pipeline(0),
-          -- i_out_segments            => out_segments_to_pt_pipeline(0),
-          -- i_ext_segments            => ext_segments_to_pt_pipeline(0),
-          i_inn_segments => inn_segments_to_pt_plout_av,
-          i_mid_segments => mid_segments_to_pt_plout_av,
-          i_out_segments => out_segments_to_pt_plout_av,
-          i_ext_segments => ext_segments_to_pt_plout_av,
-          -- from pipeline
-          i_pl2pt_av => pl2pt_av,
-          -- to mtc
-          o_pt2mtc => pt2mtc_av,
-          -- dummy
-          o_sump => pt_sump
-        );
+        sump_pt : entity ult_lib.ptc_sump
+          port map (
+            -- clock, control, and monitoring
+            -- clock_and_control         => clock_and_control,
+            -- ttc_commands              => ttc_commands,
+            -- ctrl                      => tf_ctrl,
+            -- mon                       => tf_mon,
+            --  segments from neighbors
+            i_plus_neighbor_segments  => i_plus_neighbor_segments,
+            i_minus_neighbor_segments => i_minus_neighbor_segments,
+            -- segments from hps
+            -- i_inn_segments            => inn_segments_to_pt_pipeline(0),
+            -- i_mid_segments            => mid_segments_to_pt_pipeline(0),
+            -- i_out_segments            => out_segments_to_pt_pipeline(0),
+            -- i_ext_segments            => ext_segments_to_pt_pipeline(0),
+            i_inn_segments => inn_segments_to_pt_plout_av,
+            i_mid_segments => mid_segments_to_pt_plout_av,
+            i_out_segments => out_segments_to_pt_plout_av,
+            i_ext_segments => ext_segments_to_pt_plout_av,
+            -- from pipeline
+            i_pl2pt_av => pl2pt_av,
+            -- to mtc
+            o_pt2mtc => pt2mtc_av,
+            -- dummy
+            o_sump => pt_sump
+          );
 
-    end generate pt_gen;
+      end generate pt_gen;
 
     mtc_gen : if c_MTC_ENABLED = '1' generate     
-      ult_mtcb : entity ult_lib.mtc_builder
-        port map (
-          -- clock, control, and monitoring
-          clock_and_control => clock_and_control,
-          ttc_commands      => ttc_commands,
-          ctrl_v            => mtc_ctrl_v,
-          mon_v          => mtc_mon_v,
-          --Fast Monitoring
-          fm_mtc_mon_v    => mtc_fm_mon_v,
-          fm_mtc2sl_pb_v  => fm_mtc2sl_pb_v,
-          --  inputs
-          i_ptcalc => pt2mtc_av,
-          i_pl2mtc => pl2mtc_av,
-          -- outputs
-          o_mtc => o_mtc,
-          o_nsp => o_nsp,
+        ult_mtcb : entity ult_lib.mtc_builder
+          port map (
+            -- clock, control, and monitoring
+            clock_and_control => clock_and_control,
+            ttc_commands      => ttc_commands,
+            ctrl_v            => mtc_ctrl_v,
+            mon_v          => mtc_mon_v,
+            --Fast Monitoring
+            fm_mtc_mon_v    => mtc_fm_mon_v,
+            fm_mtc2sl_pb_v  => fm_mtc2sl_pb_v,
+            --  inputs
+            i_ptcalc => pt2mtc_av,
+            i_pl2mtc => pl2mtc_av,
+            -- outputs
+            o_mtc => o_mtc,
+            o_nsp => o_nsp,
 
-          o_sump => mtc_sump
-        );
+            o_sump => mtc_sump
+          );
 
-    else generate
-      mtc_mon_v <= (mtc_mon_v'length - 1 downto 0 => '0');
+      else generate
+        mtc_mon_v <= (mtc_mon_v'length - 1 downto 0 => '0');
 
-      ult_mtcb : entity ult_lib.mtc_sump
-        port map (
-          -- clock, control, and monitoring
-          -- clock_and_control => clock_and_control,
-          -- ttc_commands      => ttc_commands,
-          -- ctrl              => mtc_ctrl,
-          -- mon               => mtc_mon,
-          --  inputs
-          i_ptcalc => pt2mtc_av,
-          i_pl2mtc => pl2mtc_av,
-          -- outputs
-          o_mtc => o_mtc,
-          o_nsp => o_nsp,
+        ult_mtcb : entity ult_lib.mtc_sump
+          port map (
+            -- clock, control, and monitoring
+            -- clock_and_control => clock_and_control,
+            -- ttc_commands      => ttc_commands,
+            -- ctrl              => mtc_ctrl,
+            -- mon               => mtc_mon,
+            --  inputs
+            i_ptcalc => pt2mtc_av,
+            i_pl2mtc => pl2mtc_av,
+            -- outputs
+            o_mtc => o_mtc,
+            o_nsp => o_nsp,
 
-          o_sump => mtc_sump
-        );
+            o_sump => mtc_sump
+          );
 
-    end generate mtc_gen;
+      end generate mtc_gen;
 
     daq_gen : if c_DAQ_ENABLED = '1' generate
 
-      ult_daq : entity ult_lib.daq
-        -- generic map(DELAY => 9600, memory_type => "ultra")
-        port map (
-          -- clock, control, and monitoring
-          clock_and_control => clock_and_control,
-          ttc_commands      => ttc_commands,
-          ctrl_v            => daq_ctrl_v,
-          mon_v             => daq_mon_v,
-          fm_daq_mon_v => daq_fm_mon_v,
-          ----------------------------------------------------------------------
-          i_flags     => (others => '0'),
-          i_ec        => '0',
-          i_sector_id => (others => '0'),
-          i_frag_id   => (others => '0'),
-          ----------------------------------------------------------------------
-          -- TDC Hits from Polmux
-          i_inn_tdc_hits_av => ult_inn_tdc_hits_in_av,
-          i_mid_tdc_hits_av => ult_mid_tdc_hits_in_av,
-          i_out_tdc_hits_av => ult_out_tdc_hits_in_av,
-          i_ext_tdc_hits_av => ult_ext_tdc_hits_in_av,
+        ult_daq : entity ult_lib.daq
+          -- generic map(DELAY => 9600, memory_type => "ultra")
+          port map (
+            -- clock, control, and monitoring
+            clock_and_control => clock_and_control,
+            ttc_commands      => ttc_commands,
+            ctrl_v            => daq_ctrl_v,
+            mon_v             => daq_mon_v,
+            fm_daq_mon_v => daq_fm_mon_v,
+            ----------------------------------------------------------------------
+            i_flags     => (others => '0'),
+            i_ec        => '0',
+            i_sector_id => (others => '0'),
+            i_frag_id   => (others => '0'),
+            ----------------------------------------------------------------------
+            -- TDC Hits from Polmux
+            i_inn_tdc_hits_av => ult_inn_tdc_hits_in_av,
+            i_mid_tdc_hits_av => ult_mid_tdc_hits_in_av,
+            i_out_tdc_hits_av => ult_out_tdc_hits_in_av,
+            i_ext_tdc_hits_av => ult_ext_tdc_hits_in_av,
 
-          -- Tracks from MTC
-          -- ???
+            -- Tracks from MTC
+            -- ???
 
-          o_daq_stream_data_v => daq_stream_data_vo, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
-          o_daq_stream_ctrl_v => daq_stream_ctrl_vo, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
-          o_daq_stream_wren_v => daq_stream_wren_vo  -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0);
+            o_daq_stream_data_v => daq_stream_data_vo, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+            o_daq_stream_ctrl_v => daq_stream_ctrl_vo, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+            o_daq_stream_wren_v => daq_stream_wren_vo  -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0);
 
-        -- o_sump => daq_sump
-        );
+          -- o_sump => daq_sump
+          );
 
-    else generate
+      else generate
 
-      daq_mon_v <= (daq_mon_v'length - 1 downto 0 => '0');
+        daq_mon_v <= (daq_mon_v'length - 1 downto 0 => '0');
 
-      sump_daq : entity ult_lib.daq_sump
-        -- generic map(DELAY => 9600, memory_type => "ultra")
-        port map (
-          -- clock, control, and monitoring
-          -- clock_and_control => clock_and_control,
-          -- ttc_commands      => ttc_commands,
-          -- ctrl              => daq_ctrl,
-          -- mon               => daq_mon,
+        sump_daq : entity ult_lib.daq_sump
+          -- generic map(DELAY => 9600, memory_type => "ultra")
+          port map (
+            -- clock, control, and monitoring
+            -- clock_and_control => clock_and_control,
+            -- ttc_commands      => ttc_commands,
+            -- ctrl              => daq_ctrl,
+            -- mon               => daq_mon,
 
-          -- TDC Hits from Polmux
-          i_inn_tdc_hits_av => ult_inn_tdc_hits_in_av,
-          i_mid_tdc_hits_av => ult_mid_tdc_hits_in_av,
-          i_out_tdc_hits_av => ult_out_tdc_hits_in_av,
-          i_ext_tdc_hits_av => ult_ext_tdc_hits_in_av,
+            -- TDC Hits from Polmux
+            i_inn_tdc_hits_av => ult_inn_tdc_hits_in_av,
+            i_mid_tdc_hits_av => ult_mid_tdc_hits_in_av,
+            i_out_tdc_hits_av => ult_out_tdc_hits_in_av,
+            i_ext_tdc_hits_av => ult_ext_tdc_hits_in_av,
 
-          -- Tracks from MTC
-          -- ???
+            -- Tracks from MTC
+            -- ???
 
-          -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT 
-          o_daq_stream_data_v => daq_stream_data_vo, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
-          o_daq_stream_ctrl_v => daq_stream_ctrl_vo, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
-          o_daq_stream_wren_v => daq_stream_wren_vo,  -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0);
-          
-          o_sump => daq_sump
-        );
+            -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT 
+            o_daq_stream_data_v => daq_stream_data_vo, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+            o_daq_stream_ctrl_v => daq_stream_ctrl_vo, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+            o_daq_stream_wren_v => daq_stream_wren_vo,  -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0);
+            
+            o_sump => daq_sump
+          );
 
-    end generate daq_gen;
+      end generate daq_gen;
 
     -- Fast Monitoring
 
     fm_gen : if c_FM_ENABLED = '1' generate
-      fm_sb_mon_r.fm_hps_mon <= convert(h2s_fm_mon_v, fm_sb_mon_r.fm_hps_mon );
-      fm_sb_mon_r.fm_ucm_mon <= convert(ucm_fm_mon_v, fm_sb_mon_r.fm_ucm_mon);
-      fm_sb_mon_r.fm_csm_mon <= convert(csm_fm_mon_v, fm_sb_mon_r.fm_csm_mon);
-      fm_sb_mon_r.fm_tar_mon <= convert(tar_fm_mon_v, fm_sb_mon_r.fm_tar_mon);
-      fm_sb_mon_r.fm_mtc_mon <= convert(mtc_fm_mon_v, fm_sb_mon_r.fm_mtc_mon);
-      fm_sb_mon_r.fm_daq_mon <= convert(daq_fm_mon_v, fm_sb_mon_r.fm_daq_mon);
-      ult_fm : entity ult_lib.ult_fm        
-        port map (
-          -- clock, control, and monitoring
-          clock_and_control => clock_and_control,
-          ttc_commands      => ttc_commands,
-          axi_reset_n            => axi_reset_n,
-          ctrl_v                      => fm_ctrl_v,
-          mon_v                    => fm_mon_v,
-          --  inputs
-          fm_mon                  => fm_sb_mon_r,
-          fm_ucm_slc_rx_pb => fm_slc_rx_pb_v,
-          fm_tar_polmux2tar_pb => fm_tar_polmux2tar_pb_v,
-          fm_mtc2sl_pb                => fm_mtc2sl_pb_v
-        );
+        fm_sb_mon_r.fm_hps_mon <= convert(h2s_fm_mon_v, fm_sb_mon_r.fm_hps_mon );
+        fm_sb_mon_r.fm_ucm_mon <= convert(ucm_fm_mon_v, fm_sb_mon_r.fm_ucm_mon);
+        fm_sb_mon_r.fm_csm_mon <= convert(csm_fm_mon_v, fm_sb_mon_r.fm_csm_mon);
+        fm_sb_mon_r.fm_tar_mon <= convert(tar_fm_mon_v, fm_sb_mon_r.fm_tar_mon);
+        fm_sb_mon_r.fm_mtc_mon <= convert(mtc_fm_mon_v, fm_sb_mon_r.fm_mtc_mon);
+        fm_sb_mon_r.fm_daq_mon <= convert(daq_fm_mon_v, fm_sb_mon_r.fm_daq_mon);
+        ult_fm : entity ult_lib.ult_fm        
+          port map (
+            -- clock, control, and monitoring
+            clock_and_control => clock_and_control,
+            ttc_commands      => ttc_commands,
+            axi_reset_n            => axi_reset_n,
+            ctrl_v                      => fm_ctrl_v,
+            mon_v                    => fm_mon_v,
+            --  inputs
+            fm_mon                  => fm_sb_mon_r,
+            fm_ucm_slc_rx_pb => fm_slc_rx_pb_v,
+            fm_tar_polmux2tar_pb => fm_tar_polmux2tar_pb_v,
+            fm_mtc2sl_pb                => fm_mtc2sl_pb_v
+          );
 
-    else generate
+      else generate
 
-      fm_mon_v <= (fm_mon_v'length - 1 downto 0 => '0');
-      fm_tar_polmux2tar_pb_v(c_HPS_NUM_MDT_CH_INN -1 downto 0) <= i_inn_tdc_hits_av;
-      fm_tar_polmux2tar_pb_v(csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_MID -1 downto csm_polmux_in_sb_n) <= i_mid_tdc_hits_av;
-      fm_tar_polmux2tar_pb_v(2*csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_OUT  -1 downto 2*csm_polmux_in_sb_n) <= i_out_tdc_hits_av;
-    end generate fm_gen;
+        fm_mon_v <= (fm_mon_v'length - 1 downto 0 => '0');
+        fm_tar_polmux2tar_pb_v(c_HPS_NUM_MDT_CH_INN -1 downto 0) <= i_inn_tdc_hits_av;
+        fm_tar_polmux2tar_pb_v(csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_MID -1 downto csm_polmux_in_sb_n) <= i_mid_tdc_hits_av;
+        fm_tar_polmux2tar_pb_v(2*csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_OUT  -1 downto 2*csm_polmux_in_sb_n) <= i_out_tdc_hits_av;
+      end generate fm_gen;
 
     sump <= tar_sump xor ucm_sump xor h2s_sump xor pt_sump xor mtc_sump xor daq_sump xor mpl_sump;
 
@@ -1083,31 +1094,18 @@ begin
 
     sump_proc : process (clock_and_control.clk) is
     begin                                                                                            -- process tdc_hit_sump_proc
-
       if (rising_edge(clock_and_control.clk)) then                                               -- rising clock edge
-
         inner_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_INN - 1 loop
-
           tdc_hit_inner_sump(I) <= xor_reduce(convert(i_inn_tdc_hits_av(I), i_inn_tdc_hits_v));
-
         end loop;
-
         middle_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_MID - 1 loop
-
           tdc_hit_middle_sump(I) <= xor_reduce(convert(i_mid_tdc_hits_av(I), i_mid_tdc_hits_v));
-
         end loop;
-
         outer_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_OUT - 1 loop
-
           tdc_hit_outer_sump(I) <= xor_reduce(convert(i_out_tdc_hits_av(I), i_out_tdc_hits_v));
-
         end loop;
-
         extra_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_EXT - 1 loop
-
           tdc_hit_extra_sump(I) <= xor_reduce(convert(i_ext_tdc_hits_av(I), i_ext_tdc_hits_v));
-
         end loop;
 
         sump <= xor_reduce(tdc_hit_inner_sump)
