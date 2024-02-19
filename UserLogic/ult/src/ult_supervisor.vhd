@@ -33,7 +33,7 @@ library ult_lib;
 entity ult_supervisor is
   port (
     clock_and_control : in  l0mdt_control_rt;
-    o_ull_slow_v : out ull_slow_vt
+    o_ull_super_globa_v : out ull_super_globa_vt
   );
 end entity;
 
@@ -42,11 +42,11 @@ architecture beh of ult_supervisor is
   signal clk : std_logic;
   signal rst : std_logic;
 
-  signal o_ull_slow_r : ull_slow_rt;
+  signal o_ull_super_globa_r : ull_super_globa_rt;
   
 begin
 
-  o_ull_slow_v <= convert(o_ull_slow_r,o_ull_slow_v);
+  o_ull_super_globa_v <= convert(o_ull_super_globa_r,o_ull_super_globa_v);
 
   clk <= clock_and_control.clk;
   rst <= clock_and_control.rst;
@@ -55,9 +55,9 @@ begin
   begin
     if rising_edge(clk) then
       if (rst = '1') then
-        o_ull_slow_r.global_ena <= '1';
-        o_ull_slow_r.global_rst <= '0';
-        o_ull_slow_r.global_freeze <= '0';
+        o_ull_super_globa_r.global_ena <= '1';
+        o_ull_super_globa_r.global_rst <= '0';
+        o_ull_super_globa_r.global_freeze <= '0';
       end if;
     end if;
   end process;

@@ -151,7 +151,7 @@ end entity ult;
 
 architecture behavioral of ult is
 
-    signal ull_super_slow : ull_slow_vt;
+  signal ull_super_globa_v : ull_super_globa_vt;
     
 
   -- ctrl/mon vectors
@@ -307,20 +307,23 @@ begin
   -- daq_mon <= structify(daq_mon_v,daq_mon);
 
 
-  ult_supervisor : entity ult_lib.ult_supervisor
-    port map(
-      clock_and_control => clock_and_control,
-      o_ull_slow_v => ull_super_slow
-    );
+  
 
   logic_gen : if (not dummy) generate
+    ult_supervisor : entity ult_lib.ult_supervisor
+      port map(
+        clock_and_control => clock_and_control,
+        o_ull_super_globa_v => ull_super_globa_v
+      );
 
+    -------------------------------------
+ 
     tar_gen : if c_TAR_ENABLED = '1' generate    
       ult_tar : entity ult_lib.ult_tar
         port map (
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
-          i_ull_slow_v => ull_super_slow,
+          i_ull_super_globa_v => ull_super_globa_v,
           -- ttc_commands      => ttc_commands,       --
           tar_inn_ctrl_v => tar_inn_ctrl_v,
           tar_inn_mon_v  => tar_inn_mon_v,
@@ -402,44 +405,39 @@ begin
 
     end generate tar_gen;
 
+    -------------------------------------
+ 
     hps_inn : if c_HPS_ENABLE_ST_INN = '1' generate
       int_inn_tdc_hits_av    <= i_inn_tdc_hits_av;
       ult_inn_tdc_hits_in_av <= ult_inn_tdc_hits_out_av;
       ult_inn_tar_hits_in_av <= ult_inn_tar_hits_out_av;
     end generate hps_inn;
-
-    -------------------------------------
-
     hps_mid : if c_HPS_ENABLE_ST_MID = '1' generate
       int_mid_tdc_hits_av    <= i_mid_tdc_hits_av;
       ult_mid_tdc_hits_in_av <= ult_mid_tdc_hits_out_av;
       ult_mid_tar_hits_in_av <= ult_mid_tar_hits_out_av;
     end generate hps_mid;
-
-    -------------------------------------
-
     hps_out : if c_HPS_ENABLE_ST_OUT = '1' generate
       int_out_tdc_hits_av    <= i_out_tdc_hits_av;
       ult_out_tdc_hits_in_av <= ult_out_tdc_hits_out_av;
       ult_out_tar_hits_in_av <= ult_out_tar_hits_out_av;
     end generate hps_out;
-
-    -------------------------------------
-
     hps_ext : if c_HPS_ENABLE_ST_EXT = '1' generate
       int_ext_tdc_hits_av    <= i_ext_tdc_hits_av;
       ult_ext_tdc_hits_in_av <= ult_ext_tdc_hits_out_av;
       ult_ext_tar_hits_in_av <= ult_ext_tar_hits_out_av;
     end generate hps_ext;
 
-    ucm_gen : if c_UCM_ENABLED = '1' generate  
+    -------------------------------------
+
+    -- ucm_gen : if c_UCM_ENABLED = '1' generate  
       -- block
       ult_ucm : entity ult_lib.ult_ucm
         port map (
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
           ttc_commands      => ttc_commands,
-          i_ull_slow_v => ull_super_slow,
+          i_ull_super_globa_v => ull_super_globa_v,
           --
           ctrl_v            => ucm_ctrl_v,
           mon_v             => ucm_mon_v,
@@ -458,37 +456,39 @@ begin
           o_ucm2pl_av => ucm2pl_av,
           --Fast Monitoring
           o_ucm_fm_mon_v => ucm_fm_mon_v, --Monitor
-          i_ucm_fm_slc_rx_pb_v => fm_slc_rx_pb_v -- Playback
+          i_ucm_fm_slc_rx_pb_v => fm_slc_rx_pb_v, -- Playback
+          --
+          o_sump_b      => ucm_sump
          
         );
 
-    else generate
-      ucm_mon_v <= (ucm_mon_v'length - 1 downto 0 => '0');
+    -- else generate
+    --   ucm_mon_v <= (ucm_mon_v'length - 1 downto 0 => '0');
 
-      sump_ucm : entity ult_lib.ucm_sump
-        port map (
-          -- clock, control, and monitoring
-          -- clock_and_control       => clock_and_control,  --
-          -- ttc_commands            => ttc_commands,       --
-          -- ctrl                    => ucm_ctrl,
-          -- mon                     => ucm_mon,
-          -- candidates in from hal
-          i_slc_data_maina_av    => i_main_primary_slc,
-          i_slc_data_mainb_av    => i_main_secondary_slc,
-          i_slc_data_neighbora_v => i_plus_neighbor_slc,
-          i_slc_data_neighborb_v => i_minus_neighbor_slc,
-          -- outputs to ucm
-          o_ucm2hps_inn_av => inn_slc_to_h2s_plin_av,
-          o_ucm2hps_mid_av => mid_slc_to_h2s_plin_av,
-          o_ucm2hps_out_av => out_slc_to_h2s_plin_av,
-          o_ucm2hps_ext_av => ext_slc_to_h2s_plin_av,
-          -- pipeline
-          o_ucm2pl_av => ucm2pl_av,
-          o_sump      => ucm_sump
+    --   sump_ucm : entity ult_lib.ucm_sump
+    --     port map (
+    --       -- clock, control, and monitoring
+    --       -- clock_and_control       => clock_and_control,  --
+    --       -- ttc_commands            => ttc_commands,       --
+    --       -- ctrl                    => ucm_ctrl,
+    --       -- mon                     => ucm_mon,
+    --       -- candidates in from hal
+    --       i_slc_data_maina_av    => i_main_primary_slc,
+    --       i_slc_data_mainb_av    => i_main_secondary_slc,
+    --       i_slc_data_neighbora_v => i_plus_neighbor_slc,
+    --       i_slc_data_neighborb_v => i_minus_neighbor_slc,
+    --       -- outputs to ucm
+    --       o_ucm2hps_inn_av => inn_slc_to_h2s_plin_av,
+    --       o_ucm2hps_mid_av => mid_slc_to_h2s_plin_av,
+    --       o_ucm2hps_out_av => out_slc_to_h2s_plin_av,
+    --       o_ucm2hps_ext_av => ext_slc_to_h2s_plin_av,
+    --       -- pipeline
+    --       o_ucm2pl_av => ucm2pl_av,
+    --       o_sump      => ucm_sump
 
-        );
+    --     );
 
-    end generate ucm_gen;
+    -- end generate ucm_gen;
 
     slc2hps_loop : for th_i in c_NUM_THREADS - 1 downto 0 generate
 
@@ -605,18 +605,18 @@ begin
     end generate slc2hps_loop;
 
     -- process (clock_and_control.clk) is
-    -- begin
-    --   if (rising_edge(clock_and_control.clk)) then
+      -- begin
+      --   if (rising_edge(clock_and_control.clk)) then
 
-    --     for I in 1 to SLR_PIPELINE_DEPTH loop
-    --       inn_slc_to_h2s_pipeline(I) <= inn_slc_to_h2s_pipeline(I-1);
-    --       mid_slc_to_h2s_pipeline(I) <= mid_slc_to_h2s_pipeline(I-1);
-    --       out_slc_to_h2s_pipeline(I) <= out_slc_to_h2s_pipeline(I-1);
-    --       ext_slc_to_h2s_pipeline(I) <= ext_slc_to_h2s_pipeline(I-1);
-    --     end loop;
+      --     for I in 1 to SLR_PIPELINE_DEPTH loop
+      --       inn_slc_to_h2s_pipeline(I) <= inn_slc_to_h2s_pipeline(I-1);
+      --       mid_slc_to_h2s_pipeline(I) <= mid_slc_to_h2s_pipeline(I-1);
+      --       out_slc_to_h2s_pipeline(I) <= out_slc_to_h2s_pipeline(I-1);
+      --       ext_slc_to_h2s_pipeline(I) <= ext_slc_to_h2s_pipeline(I-1);
+      --     end loop;
 
-    --   end if;
-    -- end process;
+      --   end if;
+      -- end process;
 
     h2s_gen : if c_H2S_ENABLED = '1' generate     
       ult_h2s : entity ult_lib.hits_to_segments
@@ -717,7 +717,7 @@ begin
           port map (
             -- clock, control, and monitoring
             clock_and_control => clock_and_control,
-            i_ull_slow_v => ull_super_slow,
+            i_ull_super_globa_v => ull_super_globa_v,
             -- ttc_commands      => ttc_commands,
             ctrl_v            => mpl_ctrl_v,
             mon_v             => mpl_mon_v,
@@ -782,9 +782,6 @@ begin
           );
 
       end generate hps_inn;
-
-      -------------------------------------
-
       hps_mid : if c_HPS_ENABLE_ST_MID = '1' generate
 
         slc2hps_mid_pl : entity vamc_lib.vamc_spl
@@ -810,9 +807,6 @@ begin
           );
 
       end generate hps_mid;
-
-      -------------------------------------
-
       hps_out : if c_HPS_ENABLE_ST_OUT = '1' generate
 
         slc2hps_out_pl : entity vamc_lib.vamc_spl
@@ -838,9 +832,6 @@ begin
           );
 
       end generate hps_out;
-
-      -------------------------------------
-
       hps_ext : if c_HPS_ENABLE_ST_EXT = '1' generate
 
         slc2hps_ext_pl : entity vamc_lib.vamc_spl
@@ -866,6 +857,8 @@ begin
           );
 
       end generate hps_ext;
+
+      -------------------------------------
 
     end generate hps2pt_loop;
 

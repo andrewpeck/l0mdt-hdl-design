@@ -43,7 +43,7 @@ entity ult_tar is
   port (
     -- pipeline clock
     clock_and_control : in  l0mdt_control_rt;
-    i_ull_slow_v : in ull_slow_vt;
+    i_ull_super_globa_v : in ull_super_globa_vt;
 
     --
     tar_inn_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
@@ -90,7 +90,7 @@ architecture beh of ult_tar is
   -- signal tdc_hit_middle_sump : std_logic_vector (c_HPS_NUM_MDT_CH_MID-1 downto 0);
   -- signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
   -- signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
-  signal i_ull_slow_r : ull_slow_rt;
+  signal i_ull_super_globa_r : ull_super_globa_rt;
   signal glob_en : std_logic;
   signal glob_rst : std_logic;
   signal glob_freezer : std_logic;
@@ -114,10 +114,10 @@ begin
   -- else generate
     
   -- end generate;
-  i_ull_slow_r <= convert(i_ull_slow_v,i_ull_slow_r);
-  glob_en <= i_ull_slow_r.global_ena;
-  glob_rst <= clock_and_control.rst or i_ull_slow_r.global_rst;
-  glob_freezer <= i_ull_slow_r.global_freeze;
+  i_ull_super_globa_r <= convert(i_ull_super_globa_v,i_ull_super_globa_r);
+  glob_en <= i_ull_super_globa_r.global_ena;
+  glob_rst <= clock_and_control.rst or i_ull_super_globa_r.global_rst;
+  glob_freezer <= i_ull_super_globa_r.global_freeze;
 
   fm_tar_mon_v <= convert(fm_tar_mon_r, fm_tar_mon_v);
    

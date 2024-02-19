@@ -39,7 +39,7 @@ entity pipeline is
   port (
     -- clock and control
     clock_and_control : in  l0mdt_control_rt;
-    i_ull_slow_v : in ull_slow_vt;
+    i_ull_super_globa_v : in ull_super_globa_vt;
     -- ttc_commands      : in  l0mdt_ttc_rt;
     --
     ctrl_v            : in std_logic_vector; -- : in  MPL_CTRL_t;
@@ -54,17 +54,17 @@ entity pipeline is
 end entity pipeline;
 
 architecture beh of pipeline is
-  signal i_ull_slow_r : ull_slow_rt;
+  signal i_ull_super_globa_r : ull_super_globa_rt;
   signal glob_en : std_logic;
   signal glob_rst : std_logic;
   signal glob_freezer : std_logic;
 
 begin
 
-  i_ull_slow_r <= convert(i_ull_slow_v,i_ull_slow_r);
-  glob_en <= i_ull_slow_r.global_ena;
-  glob_rst <= clock_and_control.rst or i_ull_slow_r.global_rst;
-  glob_freezer <= i_ull_slow_r.global_freeze;
+  i_ull_super_globa_r <= convert(i_ull_super_globa_v,i_ull_super_globa_r);
+  glob_en <= i_ull_super_globa_r.global_ena;
+  glob_rst <= clock_and_control.rst or i_ull_super_globa_r.global_rst;
+  glob_freezer <= i_ull_super_globa_r.global_freeze;
   
   MPL_EN : if c_MPL_ENABLED = '1' generate
     MPL : entity mpl_lib.mpl

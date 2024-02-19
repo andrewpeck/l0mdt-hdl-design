@@ -6,8 +6,8 @@ config:
       - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg, common_types_pkg]
 types:
 
-- ull_slow_rt:
+- ull_super_globa_rt:
   - global_ena: {'type': 'logic'}
   - global_rst: {'type': 'logic'}
   - global_freeze: {'type': 'logic'}
-- ull_slow_vt: {'type': 'logic', 'range': ['ull_slow_rt-1', 0]}
+- ull_super_globa_vt: {'type': 'logic', 'range': ['ull_super_globa_rt-1', 0]}

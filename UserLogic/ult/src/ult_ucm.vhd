@@ -43,7 +43,7 @@ entity ult_ucm is
     -- pipeline clock and control
     clock_and_control : in l0mdt_control_rt;
     ttc_commands      : in l0mdt_ttc_rt;
-    i_ull_slow_v : in ull_slow_vt;
+    i_ull_super_globa_v : in ull_super_globa_vt;
 
     ctrl_v              : in  std_logic_vector;--UCM_CTRL_t;
     mon_v               : out std_logic_vector;--UCM_MON_t;
@@ -62,13 +62,15 @@ entity ult_ucm is
 
     --Fast Monitoring
     o_ucm_fm_mon_v      : out std_logic_vector;
-    i_ucm_fm_slc_rx_pb_v : in slc_rx_avt(2 downto 0)
+    i_ucm_fm_slc_rx_pb_v : in slc_rx_avt(2 downto 0);
+
+    o_sump_b : out std_logic
 
     );
 end entity ult_ucm;
 
 architecture beh of ult_ucm is
-  signal i_ull_slow_r : ull_slow_rt;
+  signal i_ull_super_globa_r : ull_super_globa_rt;
   signal glob_en : std_logic;
   signal glob_rst : std_logic;
   signal glob_freezer : std_logic;
@@ -77,71 +79,106 @@ architecture beh of ult_ucm is
   signal slc_data_mainA_av     : slc_rx_avt(2 downto 0);
 begin
 
-  i_ull_slow_r <= convert(i_ull_slow_v,i_ull_slow_r);
-  glob_en <= i_ull_slow_r.global_ena;
-  glob_rst <= clock_and_control.rst or i_ull_slow_r.global_rst;
-  glob_freezer <= i_ull_slow_r.global_freeze;
+  i_ull_super_globa_r <= convert(i_ull_super_globa_v,i_ull_super_globa_r);
+  glob_en <= i_ull_super_globa_r.global_ena;
+  glob_rst <= clock_and_control.rst or i_ull_super_globa_r.global_rst;
+  glob_freezer <= i_ull_super_globa_r.global_freeze;
+
+
+  ucm_gen : if c_UCM_ENABLED = '1' generate  
   
-  UCM : entity ucm_lib.ucm
-    port map(
-      clk                     => clock_and_control.clk,
-      rst                     => clock_and_control.rst,
-      glob_en                 => glob_en,
-      ttc_commands            => ttc_commands, 
-      -- configuration, control & Monitoring
-      ctrl_v                    => ctrl_v,
-      mon_v                     => mon_v,
-      -- SLc in
-      i_slc_data_mainA_av     => slc_data_mainA_av, --i_slc_data_mainA_av,
-      i_slc_data_mainB_av     => i_slc_data_mainB_av,
-      i_slc_data_neighborA_v => i_slc_data_neighborA_v,
-      i_slc_data_neighborB_v => i_slc_data_neighborB_v,
-      -- pam out
-      -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
-      o_uCM2hps_inn_av        => o_uCM2hps_inn_av,
-      o_uCM2hps_mid_av        => o_uCM2hps_mid_av,
-      o_uCM2hps_out_av        => o_uCM2hps_out_av,
-      o_uCM2hps_ext_av        => o_uCM2hps_ext_av,
-      -- MDT hit
-      o_uCM2pl_av             => o_uCM2pl_av
-    );
-  -- end generate;
+    UCM : entity ucm_lib.ucm
+      port map(
+        clk                     => clock_and_control.clk,
+        rst                     => clock_and_control.rst,
+        glob_en                 => glob_en,
+        ttc_commands            => ttc_commands, 
+        -- configuration, control & Monitoring
+        ctrl_v                    => ctrl_v,
+        mon_v                     => mon_v,
+        -- SLc in
+        i_slc_data_mainA_av     => slc_data_mainA_av, --i_slc_data_mainA_av,
+        i_slc_data_mainB_av     => i_slc_data_mainB_av,
+        i_slc_data_neighborA_v  => i_slc_data_neighborA_v,
+        i_slc_data_neighborB_v  => i_slc_data_neighborB_v,
+        -- pam out
+        -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
+        o_uCM2hps_inn_av        => o_uCM2hps_inn_av,
+        o_uCM2hps_mid_av        => o_uCM2hps_mid_av,
+        o_uCM2hps_out_av        => o_uCM2hps_out_av,
+        o_uCM2hps_ext_av        => o_uCM2hps_ext_av,
+        -- MDT hit
+        o_uCM2pl_av             => o_uCM2pl_av
+      );
+    -- end generate;
 
-  
-
-  FM_CTRL_GEN : if c_FM_ENABLED generate
-    --FM Monitoting
-    slc_data_mainA_av <= i_ucm_fm_slc_rx_pb_v;
-    o_ucm_fm_mon_v <= convert(ucm_fm_mon_r, o_ucm_fm_mon_v);
-      
-    -- SL Candidates
-    FM_SL_CANDIDATES: for I in 0 to 2  generate
-      ucm_fm_mon_r.fm_ucm_slc_rx_mon(I).fm_data    <= (mon_dw_max-1 downto  slc_rx_rt'w => '0') & i_slc_data_mainA_av(I);
-      ucm_fm_mon_r.fm_ucm_slc_rx_mon(I).fm_vld   <=  i_slc_data_mainA_av(I)( slc_rx_rt'w-1);
-    end generate;
-    --UCM2HPS
-    FM_UCM2HPS_INN: for I in 0 to c_NUM_THREADS - 1 generate
-      ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_inn(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_inn_av(I);
-      ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_inn(I).fm_vld   <= o_uCM2hps_inn_av(I)( ucm2hps_rt'w -1) ;
-    end generate;
-
-    FM_UCM2HPS_MID: for I in 0 to c_NUM_THREADS - 1 generate
-      ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_mid(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_mid_av(I);
-      ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_mid(I).fm_vld   <= o_uCM2hps_mid_av(I)( ucm2hps_rt'w -1) ;
-    end generate;
-
-    FM_UCM2HPS_OUT: for I in 0 to c_NUM_THREADS - 1 generate
-      ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_out(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_out_av(I);
-      ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_out(I).fm_vld   <= o_uCM2hps_out_av(I)( ucm2hps_rt'w -1) ;
-    end generate;
-
-    FM_UCM2PL: for I in 0 to c_MAX_NUM_SL - 1 generate
-      ucm_fm_mon_r.fm_ucm2pl_mon(I).fm_data <= (mon_dw_max-1 downto  ucm2pl_rt'w => '0') & o_ucm2pl_av(I);
-      ucm_fm_mon_r.fm_ucm2pl_mon(I).fm_vld   <=o_ucm2pl_av(I)(ucm2pl_rt'w-1);
-    end generate;
-  else generate
-    slc_data_mainA_av <= i_slc_data_mainA_av;
     
+
+    FM_CTRL_GEN : if c_FM_ENABLED generate
+      --FM Monitoting
+      slc_data_mainA_av <= i_ucm_fm_slc_rx_pb_v;
+      o_ucm_fm_mon_v <= convert(ucm_fm_mon_r, o_ucm_fm_mon_v);
+        
+      -- SL Candidates
+      FM_SL_CANDIDATES: for I in 0 to 2  generate
+        ucm_fm_mon_r.fm_ucm_slc_rx_mon(I).fm_data    <= (mon_dw_max-1 downto  slc_rx_rt'w => '0') & i_slc_data_mainA_av(I);
+        ucm_fm_mon_r.fm_ucm_slc_rx_mon(I).fm_vld   <=  i_slc_data_mainA_av(I)( slc_rx_rt'w-1);
+      end generate;
+      --UCM2HPS
+      FM_UCM2HPS_INN: for I in 0 to c_NUM_THREADS - 1 generate
+        ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_inn(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_inn_av(I);
+        ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_inn(I).fm_vld   <= o_uCM2hps_inn_av(I)( ucm2hps_rt'w -1) ;
+      end generate;
+
+      FM_UCM2HPS_MID: for I in 0 to c_NUM_THREADS - 1 generate
+        ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_mid(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_mid_av(I);
+        ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_mid(I).fm_vld   <= o_uCM2hps_mid_av(I)( ucm2hps_rt'w -1) ;
+      end generate;
+
+      FM_UCM2HPS_OUT: for I in 0 to c_NUM_THREADS - 1 generate
+        ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_out(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_out_av(I);
+        ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_out(I).fm_vld   <= o_uCM2hps_out_av(I)( ucm2hps_rt'w -1) ;
+      end generate;
+
+      FM_UCM2PL: for I in 0 to c_MAX_NUM_SL - 1 generate
+        ucm_fm_mon_r.fm_ucm2pl_mon(I).fm_data <= (mon_dw_max-1 downto  ucm2pl_rt'w => '0') & o_ucm2pl_av(I);
+        ucm_fm_mon_r.fm_ucm2pl_mon(I).fm_vld   <=o_ucm2pl_av(I)(ucm2pl_rt'w-1);
+      end generate;
+    else generate
+      slc_data_mainA_av <= i_slc_data_mainA_av;
+      
+    end generate;
+
+  else generate
+
+    -- ucm_mon_v <= (ucm_mon_v'length - 1 downto 0 => '0');
+
+    sump_ucm : entity ult_lib.ucm_sump
+      port map (
+        clk                     => clock_and_control.clk,
+        rst                     => clock_and_control.rst,
+        glob_en                 => glob_en,
+        ttc_commands            => ttc_commands, 
+        -- configuration, control & Monitoring
+        ctrl_v                  => ctrl_v,
+        mon_v                   => mon_v,
+        -- SLc in
+        i_slc_data_mainA_av     => slc_data_mainA_av, --i_slc_data_mainA_av,
+        i_slc_data_mainB_av     => i_slc_data_mainB_av,
+        i_slc_data_neighborA_v  => i_slc_data_neighborA_v,
+        i_slc_data_neighborB_v  => i_slc_data_neighborB_v,
+        -- pam out
+        -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
+        o_uCM2hps_inn_av        => o_uCM2hps_inn_av,
+        o_uCM2hps_mid_av        => o_uCM2hps_mid_av,
+        o_uCM2hps_out_av        => o_uCM2hps_out_av,
+        o_uCM2hps_ext_av        => o_uCM2hps_ext_av,
+        -- MDT hit
+        o_uCM2pl_av             => o_uCM2pl_av,
+        o_sump_b                => o_sump_b
+
+      );
+
   end generate;
   
 end architecture beh;

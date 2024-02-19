@@ -17,19 +17,19 @@ package ult_pkg is
 
    -- Custom types and functions --
 
-   type ull_slow_rt is record
+   type ull_super_globa_rt is record
       global_ena : std_logic;
       global_rst : std_logic;
       global_freeze : std_logic;
-   end record ull_slow_rt;
-   attribute w of ull_slow_rt : type is 3;
-   function width(x: ull_slow_rt) return natural;
-   function convert(x: ull_slow_rt; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: ull_slow_rt) return ull_slow_rt;
-   function zero(tpl: ull_slow_rt) return ull_slow_rt;
+   end record ull_super_globa_rt;
+   attribute w of ull_super_globa_rt : type is 3;
+   function width(x: ull_super_globa_rt) return natural;
+   function convert(x: ull_super_globa_rt; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: ull_super_globa_rt) return ull_super_globa_rt;
+   function zero(tpl: ull_super_globa_rt) return ull_super_globa_rt;
 
-   subtype ull_slow_vt is std_logic_vector(ull_slow_rt'w-1 downto 0);
-   attribute w of ull_slow_vt : subtype is 3;
+   subtype ull_super_globa_vt is std_logic_vector(ull_super_globa_rt'w-1 downto 0);
+   attribute w of ull_super_globa_vt : subtype is 3;
 
 end package ult_pkg;
 
@@ -51,7 +51,7 @@ package body ult_pkg is
 
    -- Custom types and functions --
 
-   function width(x: ull_slow_rt) return natural is
+   function width(x: ull_super_globa_rt) return natural is
       variable w : natural := 0;
    begin
       w := w + width(x.global_ena);
@@ -59,7 +59,7 @@ package body ult_pkg is
       w := w + width(x.global_freeze);
       return w;
    end function width;
-   function convert(x: ull_slow_rt; tpl: std_logic_vector) return std_logic_vector is
+   function convert(x: ull_super_globa_rt; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
       variable w : integer;
       variable u : integer := tpl'left;
@@ -85,8 +85,8 @@ package body ult_pkg is
       end if;
       return y;
    end function convert;
-   function convert(x: std_logic_vector; tpl: ull_slow_rt) return ull_slow_rt is
-      variable y : ull_slow_rt;
+   function convert(x: std_logic_vector; tpl: ull_super_globa_rt) return ull_super_globa_rt is
+      variable y : ull_super_globa_rt;
       variable w : integer;
       variable u : integer := x'left;
    begin
@@ -111,7 +111,7 @@ package body ult_pkg is
       end if;
       return y;
    end function convert;
-   function zero(tpl: ull_slow_rt) return ull_slow_rt is
+   function zero(tpl: ull_super_globa_rt) return ull_super_globa_rt is
    begin
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
