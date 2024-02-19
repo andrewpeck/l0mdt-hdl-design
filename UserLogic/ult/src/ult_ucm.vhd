@@ -73,7 +73,7 @@ architecture beh of ult_ucm is
   signal i_ull_super_globa_r : ull_super_globa_rt;
   signal glob_en : std_logic;
   signal glob_rst : std_logic;
-  signal glob_freezer : std_logic;
+  signal glob_freeze : std_logic;
 
   signal ucm_fm_mon_r              : fm_ucm_mon_data;
   signal slc_data_mainA_av     : slc_rx_avt(2 downto 0);
@@ -82,7 +82,7 @@ begin
   i_ull_super_globa_r <= convert(i_ull_super_globa_v,i_ull_super_globa_r);
   glob_en <= i_ull_super_globa_r.global_ena;
   glob_rst <= clock_and_control.rst or i_ull_super_globa_r.global_rst;
-  glob_freezer <= i_ull_super_globa_r.global_freeze;
+  glob_freeze <= i_ull_super_globa_r.global_freeze;
 
 
   ucm_gen : if c_UCM_ENABLED = '1' generate  
@@ -90,8 +90,9 @@ begin
     UCM : entity ucm_lib.ucm
       port map(
         clk                     => clock_and_control.clk,
-        rst                     => clock_and_control.rst,
+        rst                     => glob_rst,
         glob_en                 => glob_en,
+        glob_freeze => glob_freeze,
         ttc_commands            => ttc_commands, 
         -- configuration, control & Monitoring
         ctrl_v                    => ctrl_v,
@@ -158,6 +159,7 @@ begin
         clk                     => clock_and_control.clk,
         rst                     => clock_and_control.rst,
         glob_en                 => glob_en,
+        glob_freeze => glob_freeze,
         ttc_commands            => ttc_commands, 
         -- configuration, control & Monitoring
         ctrl_v                  => ctrl_v,

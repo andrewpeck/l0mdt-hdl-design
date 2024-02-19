@@ -39,6 +39,7 @@ entity ucm_sump is
     clk                     : in std_logic;
     rst                     : in std_logic;
     glob_en                 : in std_logic;
+    glob_freeze            : in std_logic;
     ttc_commands            : in l0mdt_ttc_rt;
     -- configuration, control & Monitoring
     ctrl_v              : in  std_logic_vector;--UCM_CTRL_t;
@@ -95,7 +96,7 @@ begin
         else
           if glob_en then
             sump(30 downto 0) <= sump(31 downto 1);
-            sump(31) <= xor_reduce(ctrl_v) 
+            sump(31) <= glob_freeze xor xor_reduce(ctrl_v) 
                     xor xor_reduce(slc_data_mainA_av)
                     xor xor_reduce(slc_data_mainB_av)
                     xor slc_data_neighborA_b 
@@ -132,8 +133,8 @@ begin
         port map(clk => clk,rst  => rst,i_data => sump(i_sl),o_data => o_uCM2pl_av(i_sl));
     end generate;
       mon_out : entity shared_lib.vhdl_utils_deserializer 
-      generic map (g_DATA_WIDTH => mon_v'length)
-      port map(clk => clk,rst  => rst,i_data => sump(0),o_data => mon_v);
+        generic map (g_DATA_WIDTH => mon_v'length)
+        port map(clk => clk,rst  => rst,i_data => sump(0),o_data => mon_v);
   
 end architecture beh;
 

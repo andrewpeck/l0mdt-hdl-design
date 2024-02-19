@@ -318,180 +318,108 @@ begin
 
     -------------------------------------
  
-    tar_gen : if c_TAR_ENABLED = '1' generate    
-      ult_tar : entity ult_lib.ult_tar
-        port map (
-          -- clock, control, and monitoring
-          clock_and_control => clock_and_control,
-          i_ull_super_globa_v => ull_super_globa_v,
-          -- ttc_commands      => ttc_commands,       --
-          tar_inn_ctrl_v => tar_inn_ctrl_v,
-          tar_inn_mon_v  => tar_inn_mon_v,
-          tar_mid_ctrl_v => tar_mid_ctrl_v,
-          tar_mid_mon_v  => tar_mid_mon_v,
-          tar_out_ctrl_v => tar_out_ctrl_v,
-          tar_out_mon_v  => tar_out_mon_v,
-          tar_ext_ctrl_v => tar_ext_ctrl_v,
-          tar_ext_mon_v  => tar_ext_mon_v,
-
-          -- Fast Monitoring
-          fm_tar_mon_v   => tar_fm_mon_v,
-          fm_tar_polmux2tar_pb_v => fm_tar_polmux2tar_pb_v,
-          -- TDC Hits from Polmux
-          i_inn_tdc_hits_av => int_inn_tdc_hits_av,
-          i_mid_tdc_hits_av => int_mid_tdc_hits_av,
-          i_out_tdc_hits_av => int_out_tdc_hits_av,
-          i_ext_tdc_hits_av => int_ext_tdc_hits_av,
-
-          -- candidates in from hal
-          -- i_inn_tar_hits_av  => i_inner_tar_hits,
-          -- i_mid_tar_hits_av  => i_middle_tar_hits,
-          -- i_out_tar_hits  => i_outer_tar_hits,
-          -- i_ext_tar_hits_av  => i_extra_tar_hits,
-          --
-          o_inn_tdc_hits_av => ult_inn_tdc_hits_out_av,
-          o_mid_tdc_hits_av => ult_mid_tdc_hits_out_av,
-          o_out_tdc_hits_av => ult_out_tdc_hits_out_av,
-          o_ext_tdc_hits_av => ult_ext_tdc_hits_out_av,
-          -- outputs to h2s_out
-          o_inn_tar_hits_av => ult_inn_tar_hits_out_av,
-          o_mid_tar_hits_av => ult_mid_tar_hits_out_av,
-          o_out_tar_hits_av => ult_out_tar_hits_out_av,
-          o_ext_tar_hits_av => ult_ext_tar_hits_out_av
-
-        -- o_sump          => tar_sump
-
-        );
-
-    else generate
-
-      tar_inn_mon_v <= (tar_inn_mon_v'length - 1 downto 0 => '0');
-      tar_mid_mon_v <= (tar_mid_mon_v'length - 1 downto 0 => '0');
-      tar_out_mon_v <= (tar_out_mon_v'length - 1 downto 0 => '0');
-      tar_ext_mon_v <= (tar_ext_mon_v'length - 1 downto 0 => '0');
-
-      sump_tar : entity ult_lib.tar_sump
-        port map (
-          -- clock, control, and monitoring
-          -- clock_and_control => clock_and_control,  --
-          -- ttc_commands      => ttc_commands,       --
-          -- ctrl              => tar_ctrl,
-          -- mon               => tar_mon,
-          -- TDC Hits from Polmux
-          i_inn_tdc_hits_av => int_inn_tdc_hits_av,
-          i_mid_tdc_hits_av => int_mid_tdc_hits_av,
-          i_out_tdc_hits_av => int_out_tdc_hits_av,
-          i_ext_tdc_hits_av => int_ext_tdc_hits_av,
-
-          -- candidates in from hal
-          -- i_inn_tar_hits_av  => i_inner_tar_hits,
-          -- i_mid_tar_hits_av  => i_middle_tar_hits,
-          -- i_out_tar_hits  => i_outer_tar_hits,
-          -- i_ext_tar_hits_av  => i_extra_tar_hits,
-          --
-          o_inn_tdc_hits_av => ult_inn_tdc_hits_out_av,
-          o_mid_tdc_hits_av => ult_mid_tdc_hits_out_av,
-          o_out_tdc_hits_av => ult_out_tdc_hits_out_av,
-          o_ext_tdc_hits_av => ult_ext_tdc_hits_out_av,
-          -- outputs to h2s_out
-          o_inn_tar_hits_av => ult_inn_tar_hits_out_av,
-          o_mid_tar_hits_av => ult_mid_tar_hits_out_av,
-          o_out_tar_hits_av => ult_out_tar_hits_out_av,
-          o_ext_tar_hits_av => ult_ext_tar_hits_out_av,
-
-          o_sump => tar_sump
-
-        );
-
-    end generate tar_gen;
-
-    -------------------------------------
- 
     hps_inn : if c_HPS_ENABLE_ST_INN = '1' generate
       int_inn_tdc_hits_av    <= i_inn_tdc_hits_av;
-      ult_inn_tdc_hits_in_av <= ult_inn_tdc_hits_out_av;
+      ult_inn_tdc_hits_in_av <= i_inn_tdc_hits_av;
       ult_inn_tar_hits_in_av <= ult_inn_tar_hits_out_av;
     end generate hps_inn;
     hps_mid : if c_HPS_ENABLE_ST_MID = '1' generate
       int_mid_tdc_hits_av    <= i_mid_tdc_hits_av;
-      ult_mid_tdc_hits_in_av <= ult_mid_tdc_hits_out_av;
+      ult_mid_tdc_hits_in_av <= i_mid_tdc_hits_av;
       ult_mid_tar_hits_in_av <= ult_mid_tar_hits_out_av;
     end generate hps_mid;
     hps_out : if c_HPS_ENABLE_ST_OUT = '1' generate
       int_out_tdc_hits_av    <= i_out_tdc_hits_av;
-      ult_out_tdc_hits_in_av <= ult_out_tdc_hits_out_av;
+      ult_out_tdc_hits_in_av <= i_out_tdc_hits_av;
       ult_out_tar_hits_in_av <= ult_out_tar_hits_out_av;
     end generate hps_out;
     hps_ext : if c_HPS_ENABLE_ST_EXT = '1' generate
       int_ext_tdc_hits_av    <= i_ext_tdc_hits_av;
-      ult_ext_tdc_hits_in_av <= ult_ext_tdc_hits_out_av;
+      ult_ext_tdc_hits_in_av <= i_ext_tdc_hits_av;
       ult_ext_tar_hits_in_av <= ult_ext_tar_hits_out_av;
     end generate hps_ext;
 
     -------------------------------------
 
-    -- ucm_gen : if c_UCM_ENABLED = '1' generate  
-      -- block
-      ult_ucm : entity ult_lib.ult_ucm
+    ult_ucm : entity ult_lib.ult_ucm
+      port map (
+        -- clock, control, and monitoring
+        clock_and_control => clock_and_control,
+        ttc_commands      => ttc_commands,
+        i_ull_super_globa_v => ull_super_globa_v,
+        --
+        ctrl_v            => ucm_ctrl_v,
+        mon_v             => ucm_mon_v,
+        -- candidates in from hal
+        i_slc_data_maina_av    => i_main_primary_slc,
+        i_slc_data_mainb_av    => i_main_secondary_slc,
+        i_slc_data_neighbora_v => i_plus_neighbor_slc,
+        i_slc_data_neighborb_v => i_minus_neighbor_slc,
+        -- outputs to ucm
+        o_ucm2hps_inn_av => inn_slc_to_h2s_plin_av,
+        o_ucm2hps_mid_av => mid_slc_to_h2s_plin_av,
+        o_ucm2hps_out_av => out_slc_to_h2s_plin_av,
+        o_ucm2hps_ext_av => ext_slc_to_h2s_plin_av,
+        
+        -- pipeline
+        o_ucm2pl_av => ucm2pl_av,
+        --Fast Monitoring
+        o_ucm_fm_mon_v => ucm_fm_mon_v, --Monitor
+        i_ucm_fm_slc_rx_pb_v => fm_slc_rx_pb_v, -- Playback
+        --
+        o_sump_b      => ucm_sump
+        
+      );
+
+    -------------------------------------
+
+    mpl_gen : if c_MPL_ENABLED = '1' generate
+
+      ult_mpl : entity ult_lib.pipeline
         port map (
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
-          ttc_commands      => ttc_commands,
           i_ull_super_globa_v => ull_super_globa_v,
-          --
-          ctrl_v            => ucm_ctrl_v,
-          mon_v             => ucm_mon_v,
-          -- candidates in from hal
-          i_slc_data_maina_av    => i_main_primary_slc,
-          i_slc_data_mainb_av    => i_main_secondary_slc,
-          i_slc_data_neighbora_v => i_plus_neighbor_slc,
-          i_slc_data_neighborb_v => i_minus_neighbor_slc,
-          -- outputs to ucm
-          o_ucm2hps_inn_av => inn_slc_to_h2s_plin_av,
-          o_ucm2hps_mid_av => mid_slc_to_h2s_plin_av,
-          o_ucm2hps_out_av => out_slc_to_h2s_plin_av,
-          o_ucm2hps_ext_av => ext_slc_to_h2s_plin_av,
-         
-          -- pipeline
-          o_ucm2pl_av => ucm2pl_av,
-          --Fast Monitoring
-          o_ucm_fm_mon_v => ucm_fm_mon_v, --Monitor
-          i_ucm_fm_slc_rx_pb_v => fm_slc_rx_pb_v, -- Playback
-          --
-          o_sump_b      => ucm_sump
-         
+          -- ttc_commands      => ttc_commands,
+          ctrl_v            => mpl_ctrl_v,
+          mon_v             => mpl_mon_v,
+
+          -- Sector Logic Candidates from uCM
+          i_ucm2pl_av => ucm2pl_av,
+
+          -- Sector Logic Candidates to pt calculation
+          o_pl2pt_av => pl2pt_av,
+          -- Sector Logic Candidates to mTC
+          o_pl2mtc_av => pl2mtc_av
         );
 
-    -- else generate
-    --   ucm_mon_v <= (ucm_mon_v'length - 1 downto 0 => '0');
+    else generate
+      mpl_mon_v <= (mpl_mon_v'length - 1 downto 0 => '0');
 
-    --   sump_ucm : entity ult_lib.ucm_sump
-    --     port map (
-    --       -- clock, control, and monitoring
-    --       -- clock_and_control       => clock_and_control,  --
-    --       -- ttc_commands            => ttc_commands,       --
-    --       -- ctrl                    => ucm_ctrl,
-    --       -- mon                     => ucm_mon,
-    --       -- candidates in from hal
-    --       i_slc_data_maina_av    => i_main_primary_slc,
-    --       i_slc_data_mainb_av    => i_main_secondary_slc,
-    --       i_slc_data_neighbora_v => i_plus_neighbor_slc,
-    --       i_slc_data_neighborb_v => i_minus_neighbor_slc,
-    --       -- outputs to ucm
-    --       o_ucm2hps_inn_av => inn_slc_to_h2s_plin_av,
-    --       o_ucm2hps_mid_av => mid_slc_to_h2s_plin_av,
-    --       o_ucm2hps_out_av => out_slc_to_h2s_plin_av,
-    --       o_ucm2hps_ext_av => ext_slc_to_h2s_plin_av,
-    --       -- pipeline
-    --       o_ucm2pl_av => ucm2pl_av,
-    --       o_sump      => ucm_sump
+      sump_mpl : entity ult_lib.mpl_sump
+        port map (
+          -- clock, control, and monitoring
+          -- clock_and_control => clock_and_control,
+          -- ttc_commands      => ttc_commands,
+          -- ctrl              => mpl_ctrl,
+          -- mon               => mpl_mon,
 
-    --     );
+          -- Sector Logic Candidates from uCM
+          i_ucm2pl_av => ucm2pl_av,
 
-    -- end generate ucm_gen;
+          -- Sector Logic Candidates to pt calculation
+          o_pl2pt_av => pl2pt_av,
+          -- Sector Logic Candidates to mTC
+          o_pl2mtc_av => pl2mtc_av,
+
+          o_sump => mpl_sump
+        );
+
+    end generate mpl_gen;
+      
+    -------------------------------------
 
     slc2hps_loop : for th_i in c_NUM_THREADS - 1 downto 0 generate
-
       hps_inn : if c_HPS_ENABLE_ST_INN = '1' generate
 
         slc2hps_inn_pl : entity vamc_lib.vamc_spl
@@ -517,9 +445,6 @@ begin
           );
 
       end generate hps_inn;
-
-      -------------------------------------
-
       hps_mid : if c_HPS_ENABLE_ST_MID = '1' generate
 
         slc2hps_mid_pl : entity vamc_lib.vamc_spl
@@ -545,9 +470,6 @@ begin
           );
 
       end generate hps_mid;
-
-      -------------------------------------
-
       hps_out : if c_HPS_ENABLE_ST_OUT = '1' generate
 
         slc2hps_out_pl : entity vamc_lib.vamc_spl
@@ -573,9 +495,6 @@ begin
           );
 
       end generate hps_out;
-
-      -------------------------------------
-
       hps_ext : if c_HPS_ENABLE_ST_EXT = '1' generate
 
         slc2hps_ext_pl : entity vamc_lib.vamc_spl
@@ -601,8 +520,11 @@ begin
           );
 
       end generate hps_ext;
-
     end generate slc2hps_loop;
+
+    -------------------------------------
+
+    
 
     -- process (clock_and_control.clk) is
       -- begin
@@ -618,12 +540,13 @@ begin
       --   end if;
       -- end process;
 
-    h2s_gen : if c_H2S_ENABLED = '1' generate     
+    -- h2s_gen : if c_H2S_ENABLED = '1' generate     
       ult_h2s : entity ult_lib.hits_to_segments
         port map (
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
           ttc_commands      => ttc_commands,
+          i_ull_super_globa_v => ull_super_globa_v,
           --
           inn_ctrl_v => hps_inn_ctrl_v,
           inn_mon_v  => hps_inn_mon_v,
@@ -660,100 +583,62 @@ begin
           o_ext_segments_av => ext_segments_to_pt_plin_av,
           -- Segment outputs to HA  L
           o_plus_neighbor_segments_av  => o_plus_neighbor_segments_av,
-          o_minus_neighbor_segments_av => o_minus_neighbor_segments_av
-
-        -- o_sump                    => h2s_sump
-        );
-
-    else generate
-
-      hps_inn_mon_v <= (hps_inn_mon_v'length - 1 downto 0 => '0');
-      hps_mid_mon_v <= (hps_mid_mon_v'length - 1 downto 0 => '0');
-      hps_out_mon_v <= (hps_out_mon_v'length - 1 downto 0 => '0');
-      hps_ext_mon_v <= (hps_ext_mon_v'length - 1 downto 0 => '0');
-
-      sump_h2s : entity ult_lib.h2s_sump
-        port map (
-          -- clock, control, and monitoring
-          -- clock_and_control         => clock_and_control,
-          -- ttc_commands              => ttc_commands,
-          -- ctrl                      => h2s_ctrl,
-          -- mon                       => h2s_mon,
-          -- inputs from hal
-          i_inn_tar_hits_av => ult_inn_tar_hits_in_av,
-          i_mid_tar_hits_av => ult_mid_tar_hits_in_av,
-          i_out_tar_hits_av => ult_out_tar_hits_in_av,
-          i_ext_tar_hits_av => ult_ext_tar_hits_in_av,
-          -- Sector Logic Candidates from uCM
-          -- i_inn_slc_av                 => inn_slc_to_h2s_av,
-          -- i_mid_slc_av                 => mid_slc_to_h2s_av,
-          -- i_out_slc_av                 => out_slc_to_h2s_av,
-          -- i_ext_slc_av                 => ext_slc_to_h2s_av,
-          i_inn_slc_av => inn_slc_to_h2s_plout_av,
-          i_mid_slc_av => mid_slc_to_h2s_plout_av,
-          i_out_slc_av => out_slc_to_h2s_plout_av,
-          i_ext_slc_av => ext_slc_to_h2s_plout_av,
-          -- Segments Out to pt calculation
-          -- o_inn_segments_av             => inn_segments_to_pt_pipeline(0),
-          -- o_mid_segments_av             => mid_segments_to_pt_pipeline(0),
-          -- o_out_segments_av             => out_segments_to_pt_pipeline(0),
-          -- o_ext_segments_av             => ext_segments_to_pt_pipeline(0),
-          o_inn_segments_av => inn_segments_to_pt_plin_av,
-          o_mid_segments_av => mid_segments_to_pt_plin_av,
-          o_out_segments_av => out_segments_to_pt_plin_av,
-          o_ext_segments_av => ext_segments_to_pt_plin_av,
-          -- Segment outputs to HAL
-          o_plus_neighbor_segments_av  => o_plus_neighbor_segments_av,
           o_minus_neighbor_segments_av => o_minus_neighbor_segments_av,
 
-          o_sump => h2s_sump
+          o_sump                    => h2s_sump
         );
 
-    end generate h2s_gen;
+    
 
-    mpl_gen : if c_MPL_ENABLED = '1' generate
+    -- end generate h2s_gen;
 
-        ult_mpl : entity ult_lib.pipeline
-          port map (
-            -- clock, control, and monitoring
-            clock_and_control => clock_and_control,
-            i_ull_super_globa_v => ull_super_globa_v,
-            -- ttc_commands      => ttc_commands,
-            ctrl_v            => mpl_ctrl_v,
-            mon_v             => mpl_mon_v,
+    -------------------------------------
+  
+    ult_tar : entity ult_lib.ult_tar
+      port map (
+        -- clock, control, and monitoring
+        clock_and_control => clock_and_control,
+        i_ull_super_globa_v => ull_super_globa_v,
+        -- ttc_commands      => ttc_commands,       --
+        tar_inn_ctrl_v => tar_inn_ctrl_v,
+        tar_inn_mon_v  => tar_inn_mon_v,
+        tar_mid_ctrl_v => tar_mid_ctrl_v,
+        tar_mid_mon_v  => tar_mid_mon_v,
+        tar_out_ctrl_v => tar_out_ctrl_v,
+        tar_out_mon_v  => tar_out_mon_v,
+        tar_ext_ctrl_v => tar_ext_ctrl_v,
+        tar_ext_mon_v  => tar_ext_mon_v,
 
-            -- Sector Logic Candidates from uCM
-            i_ucm2pl_av => ucm2pl_av,
+        -- Fast Monitoring
+        fm_tar_mon_v   => tar_fm_mon_v,
+        fm_tar_polmux2tar_pb_v => fm_tar_polmux2tar_pb_v,
+        -- TDC Hits from Polmux
+        i_inn_tdc_hits_av => int_inn_tdc_hits_av,
+        i_mid_tdc_hits_av => int_mid_tdc_hits_av,
+        i_out_tdc_hits_av => int_out_tdc_hits_av,
+        i_ext_tdc_hits_av => int_ext_tdc_hits_av,
 
-            -- Sector Logic Candidates to pt calculation
-            o_pl2pt_av => pl2pt_av,
-            -- Sector Logic Candidates to mTC
-            o_pl2mtc_av => pl2mtc_av
-          );
+        -- candidates in from hal
+        -- i_inn_tar_hits_av  => i_inner_tar_hits,
+        -- i_mid_tar_hits_av  => i_middle_tar_hits,
+        -- i_out_tar_hits  => i_outer_tar_hits,
+        -- i_ext_tar_hits_av  => i_extra_tar_hits,
+        --
+        -- o_inn_tdc_hits_av => ult_inn_tdc_hits_out_av,
+        -- o_mid_tdc_hits_av => ult_mid_tdc_hits_out_av,
+        -- o_out_tdc_hits_av => ult_out_tdc_hits_out_av,
+        -- o_ext_tdc_hits_av => ult_ext_tdc_hits_out_av,
+        -- outputs to h2s_out
+        o_inn_tar_hits_av => ult_inn_tar_hits_out_av,
+        o_mid_tar_hits_av => ult_mid_tar_hits_out_av,
+        o_out_tar_hits_av => ult_out_tar_hits_out_av,
+        o_ext_tar_hits_av => ult_ext_tar_hits_out_av,
 
-      else generate
-        mpl_mon_v <= (mpl_mon_v'length - 1 downto 0 => '0');
+        o_sump          => tar_sump
 
-        sump_mpl : entity ult_lib.mpl_sump
-          port map (
-            -- clock, control, and monitoring
-            -- clock_and_control => clock_and_control,
-            -- ttc_commands      => ttc_commands,
-            -- ctrl              => mpl_ctrl,
-            -- mon               => mpl_mon,
+      );
 
-            -- Sector Logic Candidates from uCM
-            i_ucm2pl_av => ucm2pl_av,
-
-            -- Sector Logic Candidates to pt calculation
-            o_pl2pt_av => pl2pt_av,
-            -- Sector Logic Candidates to mTC
-            o_pl2mtc_av => pl2mtc_av,
-
-            o_sump => mpl_sump
-          );
-
-      end generate mpl_gen;
+    -------------------------------------
 
     hps2pt_loop : for th_i in c_NUM_THREADS - 1 downto 0 generate
 
@@ -984,10 +869,10 @@ begin
             i_frag_id   => (others => '0'),
             ----------------------------------------------------------------------
             -- TDC Hits from Polmux
-            i_inn_tdc_hits_av => ult_inn_tdc_hits_in_av,
-            i_mid_tdc_hits_av => ult_mid_tdc_hits_in_av,
-            i_out_tdc_hits_av => ult_out_tdc_hits_in_av,
-            i_ext_tdc_hits_av => ult_ext_tdc_hits_in_av,
+            i_inn_tdc_hits_av => i_inn_tdc_hits_av,
+            i_mid_tdc_hits_av => i_mid_tdc_hits_av,
+            i_out_tdc_hits_av => i_out_tdc_hits_av,
+            i_ext_tdc_hits_av => i_ext_tdc_hits_av,
 
             -- Tracks from MTC
             -- ???
@@ -1058,9 +943,9 @@ begin
       else generate
 
         fm_mon_v <= (fm_mon_v'length - 1 downto 0 => '0');
-        fm_tar_polmux2tar_pb_v(c_HPS_NUM_MDT_CH_INN -1 downto 0) <= i_inn_tdc_hits_av;
-        fm_tar_polmux2tar_pb_v(csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_MID -1 downto csm_polmux_in_sb_n) <= i_mid_tdc_hits_av;
-        fm_tar_polmux2tar_pb_v(2*csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_OUT  -1 downto 2*csm_polmux_in_sb_n) <= i_out_tdc_hits_av;
+        -- fm_tar_polmux2tar_pb_v(c_HPS_NUM_MDT_CH_INN -1 downto 0) <= i_inn_tdc_hits_av;
+        -- fm_tar_polmux2tar_pb_v(csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_MID -1 downto csm_polmux_in_sb_n) <= i_mid_tdc_hits_av;
+        -- fm_tar_polmux2tar_pb_v(2*csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_OUT  -1 downto 2*csm_polmux_in_sb_n) <= i_out_tdc_hits_av;
       end generate fm_gen;
 
     sump <= tar_sump xor ucm_sump xor h2s_sump xor pt_sump xor mtc_sump xor daq_sump xor mpl_sump;

@@ -70,10 +70,10 @@ entity ult_tar is
     -- i_out_tar_hits    : in  tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
     -- i_ext_tar_hits    : in  tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- to DAQ
-    o_inn_tdc_hits_av  : out tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    o_mid_tdc_hits_av  : out tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    o_out_tdc_hits_av  : out tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    o_ext_tdc_hits_av  : out tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    -- o_inn_tdc_hits_av  : out tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    -- o_mid_tdc_hits_av  : out tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    -- o_out_tdc_hits_av  : out tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    -- o_ext_tdc_hits_av  : out tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- outputs to h2s Tar
     o_inn_tar_hits_av  : out tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
     o_mid_tar_hits_av  : out tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
@@ -93,7 +93,8 @@ architecture beh of ult_tar is
   signal i_ull_super_globa_r : ull_super_globa_rt;
   signal glob_en : std_logic;
   signal glob_rst : std_logic;
-  signal glob_freezer : std_logic;
+  signal glob_freeze : std_logic;
+  signal sumps : std_logic_vector(3 downto 0) := (others => '0');
 
   signal int_inn_tdc_hits_av  : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
   signal int_mid_tdc_hits_av  : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
@@ -109,88 +110,135 @@ architecture beh of ult_tar is
 begin
 
 
-  -- FM_CTRL_GEN : if c_FM_ENABLED generate
+    
+  FM_CTRL_GEN : if c_FM_ENABLED generate
 
+  fm_tar_mon_v <= convert(fm_tar_mon_r, fm_tar_mon_v);
   -- else generate
     
-  -- end generate;
+  end generate;
   i_ull_super_globa_r <= convert(i_ull_super_globa_v,i_ull_super_globa_r);
   glob_en <= i_ull_super_globa_r.global_ena;
   glob_rst <= clock_and_control.rst or i_ull_super_globa_r.global_rst;
-  glob_freezer <= i_ull_super_globa_r.global_freeze;
+  glob_freeze <= i_ull_super_globa_r.global_freeze;
 
-  fm_tar_mon_v <= convert(fm_tar_mon_r, fm_tar_mon_v);
    
-  HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
-    TAR : entity tar_lib.tar
-    generic map(
-        g_HPS_MAX_HP => c_HPS_NUM_MDT_CH_INN,
-        g_STATION => 0
-      )
-    port map (
-      -- clock, control, and monitoring
-      clk             => clock_and_control.clk,
-      rst             => glob_rst,
-      glob_en         => glob_en,
-      --
-      ctrl_v            => tar_inn_ctrl_v,
-      mon_v             => tar_inn_mon_v ,
-      -- TDC Hits from Polmux
-      i_tdc_hits_av  => int_inn_tdc_hits_av, -- i_inn_tdc_hits_av,
-      -- to daq
-      o_tdc_hits_av  => o_inn_tdc_hits_av,
-  
-      -- outputs to h2s
-      o_tar_hits_av  => o_inn_tar_hits_av
-    );
+  TAR_INN : if c_HPS_ENABLE_ST_INN = '1' generate
+    TAR_GEN : if c_TAR_ENABLED = '1' generate 
+      TAR : entity tar_lib.tar
+      generic map(
+          g_HPS_MAX_HP => c_HPS_NUM_MDT_CH_INN,
+          g_STATION => 0
+        )
+      port map (
+        -- clock, control, and monitoring
+        clk             => clock_and_control.clk,
+        rst             => glob_rst,
+        glob_en         => glob_en,
+        glob_freeze    => glob_freeze,
+        --
+        ctrl_v            => tar_inn_ctrl_v,
+        mon_v             => tar_inn_mon_v ,
+        -- TDC Hits from Polmux
+        i_tdc_hits_av  => int_inn_tdc_hits_av, -- i_inn_tdc_hits_av,
+        -- to daq
+        -- o_tdc_hits_av  => o_inn_tdc_hits_av,
+        -- outputs to h2s
+        o_tar_hits_av  => o_inn_tar_hits_av
+      );
+    else generate
+      sump_tar : entity ult_lib.tar_sump
+        generic map(g_HPS_MAX_HP => c_HPS_NUM_MDT_CH_INN)
+        port map (
+          -- clock, control, and monitoring
+          clk             => clock_and_control.clk,
+          rst             => glob_rst,
+          glob_en         => glob_en,
+          glob_freeze    => glob_freeze,
+          --
+          ctrl_v            => tar_inn_ctrl_v,
+          mon_v             => tar_inn_mon_v ,
+          -- TDC Hits from Polmux
+          i_tdc_hits_av  => int_inn_tdc_hits_av, -- i_inn_tdc_hits_av,
+          -- to daq
+          -- o_tdc_hits_av  => o_inn_tdc_hits_av,
+          -- outputs to h2s
+          o_tar_hits_av  => o_inn_tar_hits_av,
+          --
+          o_sump_b => sumps(0)
+        );
+    end generate;
 
     FM_CTRL_GEN : if c_FM_ENABLED generate
       int_inn_tdc_hits_av <= fm_tar_polmux2tar_pb_v(c_HPS_NUM_MDT_CH_INN -1 downto 0);
       -- fm_i_mid_tdc_hits_av <= fm_tar_polmux2tar_pb_v(csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_MID -1 downto csm_polmux_in_sb_n);
       -- fm_i_out_tdc_hits_av <= fm_tar_polmux2tar_pb_v(2*csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_OUT  -1 downto 2*csm_polmux_in_sb_n); 
-      
       FM_INN_TAR: for k in 0 to csm_polmux_in_sb_n/2-1  generate
           fm_tar_mon_r(0)(k).fm_data <= (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') & i_inn_tdc_hits_av(k);
           fm_tar_mon_r(0)(k).fm_vld   <= i_inn_tdc_hits_av(k)(tdcpolmux2tar_vt'w-1);
-          fm_tar_mon_r(0)(csm_polmux_in_sb_n/2 + k).fm_data <= (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') & o_inn_tdc_hits_av(k);
-          fm_tar_mon_r(0)(csm_polmux_in_sb_n/2 + k).fm_vld   <= o_inn_tdc_hits_av(k)(tdcpolmux2tar_vt'w-1);
+          -- fm_tar_mon_r(0)(csm_polmux_in_sb_n/2 + k).fm_data <= (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') & o_inn_tdc_hits_av(k);
+          -- fm_tar_mon_r(0)(csm_polmux_in_sb_n/2 + k).fm_vld   <= o_inn_tdc_hits_av(k)(tdcpolmux2tar_vt'w-1);
         end generate;        
     else generate
       int_inn_tdc_hits_av <= i_inn_tdc_hits_av;
-    end generate;
+    end generate;   
 
-    
   end generate;
   
   HPS_MID : if c_HPS_ENABLE_ST_MID = '1' generate
-    TAR : entity tar_lib.tar
-    generic map(
-      g_HPS_MAX_HP => c_HPS_NUM_MDT_CH_MID,
-      g_STATION => 1
-    )
-    port map (
-      -- clock, control, and monitoring
-      clk             => clock_and_control.clk,
-      rst             => glob_rst,
-      glob_en         => glob_en,
-      --
-      ctrl_v            => tar_mid_ctrl_v,
-      mon_v             => tar_mid_mon_v ,
-      -- TDC Hits from Polmux
-      i_tdc_hits_av  => int_mid_tdc_hits_av , --i_mid_tdc_hits_av,
-      -- to daq
-      o_tdc_hits_av  => o_mid_tdc_hits_av,
-  
-      -- outputs to h2s
-      o_tar_hits_av  => o_mid_tar_hits_av
-    );
+    TAR_GEN : if c_TAR_ENABLED = '1' generate 
+      TAR : entity tar_lib.tar
+      generic map(
+        g_HPS_MAX_HP => c_HPS_NUM_MDT_CH_MID,
+        g_STATION => 1
+      )
+      port map (
+        -- clock, control, and monitoring
+        clk             => clock_and_control.clk,
+        rst             => glob_rst,
+        glob_en         => glob_en,
+        glob_freeze    => glob_freeze,
+        --
+        ctrl_v            => tar_mid_ctrl_v,
+        mon_v             => tar_mid_mon_v ,
+        -- TDC Hits from Polmux
+        i_tdc_hits_av  => int_mid_tdc_hits_av , --i_mid_tdc_hits_av,
+        -- to daq
+        -- o_tdc_hits_av  => o_mid_tdc_hits_av,
+    
+        -- outputs to h2s
+        o_tar_hits_av  => o_mid_tar_hits_av
+      );
+    else generate
+      sump_tar : entity ult_lib.tar_sump
+        generic map(g_HPS_MAX_HP => c_HPS_NUM_MDT_CH_MID)
+        port map (
+          -- clock, control, and monitoring
+          clk             => clock_and_control.clk,
+          rst             => glob_rst,
+          glob_en         => glob_en,
+          glob_freeze    => glob_freeze,
+          --
+          ctrl_v            => tar_mid_ctrl_v,
+          mon_v             => tar_mid_mon_v ,
+          -- TDC Hits from Polmux
+          i_tdc_hits_av  => int_mid_tdc_hits_av , --i_mid_tdc_hits_av,
+          -- to daq
+          -- o_tdc_hits_av  => o_mid_tdc_hits_av,
+      
+          -- outputs to h2s
+          o_tar_hits_av  => o_mid_tar_hits_av,
+          --
+          o_sump_b => sumps(1)
+        );
+    end generate;
     FM_CTRL_GEN : if c_FM_ENABLED generate
       int_mid_tdc_hits_av <= fm_tar_polmux2tar_pb_v(csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_MID -1 downto csm_polmux_in_sb_n);      
       FM_MID_TAR: for k in 0 to csm_polmux_in_sb_n/2-1  generate
         fm_tar_mon_r(1)(k).fm_data <= (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') &  i_mid_tdc_hits_av(k);
         fm_tar_mon_r(1)(k).fm_vld   <= i_mid_tdc_hits_av(k)(tdcpolmux2tar_vt'w-1);
-        fm_tar_mon_r(1)(csm_polmux_in_sb_n/2 + k).fm_data <=  (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') &  o_mid_tdc_hits_av(k);
-        fm_tar_mon_r(1)(csm_polmux_in_sb_n/2 + k).fm_vld   <= o_mid_tdc_hits_av(k)(tdcpolmux2tar_vt'w-1);
+        -- fm_tar_mon_r(1)(csm_polmux_in_sb_n/2 + k).fm_data <=  (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') &  o_mid_tdc_hits_av(k);
+        -- fm_tar_mon_r(1)(csm_polmux_in_sb_n/2 + k).fm_vld   <= o_mid_tdc_hits_av(k)(tdcpolmux2tar_vt'w-1);
       end generate;       
     else generate
       int_mid_tdc_hits_av <= i_mid_tdc_hits_av;
@@ -198,34 +246,60 @@ begin
     
   end generate;
   HPS_OUT : if c_HPS_ENABLE_ST_OUT = '1' generate
-    TAR : entity tar_lib.tar
-    generic map(
-      g_HPS_MAX_HP => c_HPS_NUM_MDT_CH_OUT,
-      g_STATION => 2
-    )
-    port map (
-      -- clock, control, and monitoring
-      clk             => clock_and_control.clk,
-      rst             => glob_rst,
-      glob_en         => glob_en,
-      --
-      ctrl_v            => tar_out_ctrl_v,
-      mon_v             => tar_out_mon_v ,
-      -- TDC Hits from Polmux
-      i_tdc_hits_av  =>  int_out_tdc_hits_av, --i_out_tdc_hits_av,
-      -- to daq
-      o_tdc_hits_av  => o_out_tdc_hits_av,
-  
-      -- outputs to h2s
-      o_tar_hits_av  => o_out_tar_hits_av
-    );
+    TAR_GEN : if c_TAR_ENABLED = '1' generate 
+      TAR : entity tar_lib.tar
+      generic map(
+        g_HPS_MAX_HP => c_HPS_NUM_MDT_CH_OUT,
+        g_STATION => 2
+      )
+      port map (
+        -- clock, control, and monitoring
+        clk             => clock_and_control.clk,
+        rst             => glob_rst,
+        glob_en         => glob_en,
+        glob_freeze    => glob_freeze,
+        --
+        ctrl_v            => tar_out_ctrl_v,
+        mon_v             => tar_out_mon_v ,
+        -- TDC Hits from Polmux
+        i_tdc_hits_av  =>  int_out_tdc_hits_av, --i_out_tdc_hits_av,
+        -- to daq
+        -- o_tdc_hits_av  => o_out_tdc_hits_av,
+    
+        -- outputs to h2s
+        o_tar_hits_av  => o_out_tar_hits_av
+      );
+    else generate
+      sump_tar : entity ult_lib.tar_sump
+        generic map(g_HPS_MAX_HP => c_HPS_NUM_MDT_CH_OUT)
+        port map (
+          -- clock, control, and monitoring
+          clk             => clock_and_control.clk,
+          rst             => glob_rst,
+          glob_en         => glob_en,
+          glob_freeze    => glob_freeze,
+          --
+          ctrl_v            => tar_out_ctrl_v,
+          mon_v             => tar_out_mon_v ,
+          -- TDC Hits from Polmux
+          i_tdc_hits_av  =>  int_out_tdc_hits_av, --i_out_tdc_hits_av,
+          -- to daq
+          -- o_tdc_hits_av  => o_out_tdc_hits_av,
+      
+          -- outputs to h2s
+          o_tar_hits_av  => o_out_tar_hits_av,
+          --
+          o_sump_b => sumps(2)
+        );
+    end generate;
+
     FM_CTRL_GEN : if c_FM_ENABLED generate
       int_out_tdc_hits_av <= fm_tar_polmux2tar_pb_v(2*csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_OUT  -1 downto 2*csm_polmux_in_sb_n);    
       FM_OUT_TAR: for k in 0 to csm_polmux_in_sb_n/2-1  generate
         fm_tar_mon_r(2)(k).fm_data <= (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') & i_out_tdc_hits_av(k);
         fm_tar_mon_r(2)(k).fm_vld   <= i_out_tdc_hits_av(k)(tdcpolmux2tar_vt'w-1);
-        fm_tar_mon_r(2)(csm_polmux_in_sb_n/2 + k).fm_data <=  (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') &  o_out_tdc_hits_av(k);
-        fm_tar_mon_r(2)(csm_polmux_in_sb_n/2 + k).fm_vld   <= o_out_tdc_hits_av(k)(tdcpolmux2tar_vt'w-1);
+        -- fm_tar_mon_r(2)(csm_polmux_in_sb_n/2 + k).fm_data <=  (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') &  o_out_tdc_hits_av(k);
+        -- fm_tar_mon_r(2)(csm_polmux_in_sb_n/2 + k).fm_vld   <= o_out_tdc_hits_av(k)(tdcpolmux2tar_vt'w-1);
       end generate;    
     else generate
       int_out_tdc_hits_av <= i_out_tdc_hits_av;
@@ -234,27 +308,53 @@ begin
     
   end generate;
   HPS_EXT : if c_HPS_ENABLE_ST_EXT = '1' generate
-    TAR : entity tar_lib.tar
-    generic map(
-      g_HPS_MAX_HP => c_HPS_NUM_MDT_CH_EXT,
-      g_STATION => 3
-    )
-    port map (
-      -- clock, control, and monitoring
-      clk             => clock_and_control.clk,
-      rst             => glob_rst,
-      glob_en         => glob_en,
-      --
-      ctrl_v            => tar_ext_ctrl_v,
-      mon_v             => tar_ext_mon_v ,
-      -- TDC Hits from Polmux
-      i_tdc_hits_av  => int_ext_tdc_hits_av,
-      -- to daq
-      o_tdc_hits_av  => o_ext_tdc_hits_av,
-  
-      -- outputs to h2s
-      o_tar_hits_av  => o_ext_tar_hits_av
-    );
+    TAR_GEN : if c_TAR_ENABLED = '1' generate 
+      TAR : entity tar_lib.tar
+      generic map(
+        g_HPS_MAX_HP => c_HPS_NUM_MDT_CH_EXT,
+        g_STATION => 3
+      )
+      port map (
+        -- clock, control, and monitoring
+        clk             => clock_and_control.clk,
+        rst             => glob_rst,
+        glob_en         => glob_en,
+        glob_freeze    => glob_freeze,
+        --
+        ctrl_v            => tar_ext_ctrl_v,
+        mon_v             => tar_ext_mon_v ,
+        -- TDC Hits from Polmux
+        i_tdc_hits_av  => int_ext_tdc_hits_av,
+        -- to daq
+        -- o_tdc_hits_av  => o_ext_tdc_hits_av,
+    
+        -- outputs to h2s
+        o_tar_hits_av  => o_ext_tar_hits_av
+      );
+    else generate
+      sump_tar : entity ult_lib.tar_sump
+        generic map(g_HPS_MAX_HP => c_HPS_NUM_MDT_CH_OUT)
+        port map (
+          -- clock, control, and monitoring
+          clk             => clock_and_control.clk,
+          rst             => glob_rst,
+          glob_en         => glob_en,
+          glob_freeze    => glob_freeze,
+          --
+          ctrl_v            => tar_out_ctrl_v,
+          mon_v             => tar_out_mon_v ,
+          -- TDC Hits from Polmux
+          i_tdc_hits_av  =>  int_out_tdc_hits_av, --i_out_tdc_hits_av,
+          -- to daq
+          -- o_tdc_hits_av  => o_out_tdc_hits_av,
+      
+          -- outputs to h2s
+          o_tar_hits_av  => o_out_tar_hits_av,
+          --
+          o_sump_b => sumps(3)
+        );
+      end generate;
+
     FM_CTRL_GEN : if c_FM_ENABLED generate
       -- int_inn_tdc_hits_av <= fm_tar_polmux2tar_pb_v(c_HPS_NUM_MDT_CH_INN -1 downto 0);
       -- int_ext_tdc_hits_av <= fm_tar_polmux2tar_pb_v(csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_MID -1 downto csm_polmux_in_sb_n);
@@ -271,7 +371,7 @@ begin
     end generate;
   end generate;
 
-  o_sump <= glob_en;
+  o_sump <= xor_reduce(sumps);
 
 
   --Fast Monitoring

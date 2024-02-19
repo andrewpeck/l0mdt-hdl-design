@@ -57,14 +57,14 @@ architecture beh of pipeline is
   signal i_ull_super_globa_r : ull_super_globa_rt;
   signal glob_en : std_logic;
   signal glob_rst : std_logic;
-  signal glob_freezer : std_logic;
+  signal glob_freeze : std_logic;
 
 begin
 
   i_ull_super_globa_r <= convert(i_ull_super_globa_v,i_ull_super_globa_r);
   glob_en <= i_ull_super_globa_r.global_ena;
   glob_rst <= clock_and_control.rst or i_ull_super_globa_r.global_rst;
-  glob_freezer <= i_ull_super_globa_r.global_freeze;
+  glob_freeze <= i_ull_super_globa_r.global_freeze;
   
   MPL_EN : if c_MPL_ENABLED = '1' generate
     MPL : entity mpl_lib.mpl
