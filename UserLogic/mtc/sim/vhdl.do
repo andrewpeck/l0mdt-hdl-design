@@ -11,11 +11,11 @@ vcom -work ctrl_lib ../../ctrl/src/MTC/MTC_map.vhd
 
 
 
-vcom -work shared_lib ../../shared/types/common_ieee_pkg.vhd
-vcom -work shared_lib ../../shared/types/l0mdt_constants_pkg.vhd
-vcom -work shared_lib ../../shared/types/l0mdt_dataformats_pkg.vhd
-vcom -work shared_lib ../../shared/types/common_constants_pkg.vhd
-vcom -work shared_lib ../../shared/types/common_types_pkg.vhd
+vcom -work shared_lib ../../shared/types/types010/common_ieee_pkg.vhd
+vcom -work shared_lib ../../shared/types/types010/l0mdt_constants_pkg.vhd
+vcom -work shared_lib ../../shared/types/types010/l0mdt_dataformats_pkg.vhd
+vcom -work shared_lib ../../shared/types/types010/common_constants_pkg.vhd
+vcom -work shared_lib ../../shared/types/types010/common_types_pkg.vhd
 
 vcom -work shared_lib ../../shared/functions/some_functions_pkg.vhd 
 vcom -work shared_lib ../../shared/config/config_defaults_pkg.vhd

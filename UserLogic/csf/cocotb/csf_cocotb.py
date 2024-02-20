@@ -477,11 +477,11 @@ def csf_cocotb():
     if hdl_toplevel_lang == "vhdl":
         vhdl_sources1 = [
             
-            top_path / "shared/types/common_ieee_pkg.vhd",
+            top_path / "shared/types/types010/common_ieee_pkg.vhd",
             top_path / "dataformats/l0mdt_constants_pkg.vhd",
             top_path / "dataformats/l0mdt_dataformats_pkg.vhd",
-            top_path / "shared/types/common_constants_pkg.vhd",
-            top_path / "shared/types/common_types_pkg.vhd",
+            top_path / "shared/types/types010/common_constants_pkg.vhd",
+            top_path / "shared/types/types010/common_types_pkg.vhd",
             top_path / "shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd",
             # top_path / "shared/detector_parameters/dp_repo//detector_param_pkg.vhd",
             top_path / "shared/detector_parameters/fw_parameters//detector_time_param_pkg.vhd",

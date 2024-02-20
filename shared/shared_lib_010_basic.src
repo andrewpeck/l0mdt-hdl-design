@@ -12,7 +12,7 @@ shared/config/cfg_display_pkg.vhd
 #---------------------------------
 # common constants and types
 #---------------------------------
-shared/shared_lib_types.src
+shared/shared_lib_010_types.src
 
 #---------------------------------
 # VHDL2008 functions not implemented in Vivado

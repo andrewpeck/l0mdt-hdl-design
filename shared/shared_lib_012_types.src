@@ -4,9 +4,9 @@ shared/types/common_ieee_pkg.vhd
 shared/types/common_ieee_pkg.svh
 
 ####### constant and types from dataformat folder ######
-dataformats/l0mdt_constants_pkg.vhd
-dataformats/l0mdt_dataformats_pkg.vhd
-dataformats/l0mdt_buses_constants.svh
+shared/dataformats012/l0mdt_constants_pkg.vhd
+shared/dataformats012/l0mdt_dataformats_pkg.vhd
+shared/dataformats012/l0mdt_buses_constants.svh
 
 ####### constant and types from shared folder ######
 # shared/types/l0mdt_constants_pkg.vhd
