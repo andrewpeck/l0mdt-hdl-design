@@ -69,9 +69,10 @@ package common_types_pkg is
    type ucm2tar_rt is record
       data_valid : std_logic;
       action : std_logic_vector(3 downto 0);
-      chambers : std_logic_vector(7 downto 0);
+      chambers : std_logic_vector(5 downto 0);
+      process_ch : std_logic_vector(3 downto 0);
    end record ucm2tar_rt;
-   attribute w of ucm2tar_rt : type is 13;
+   attribute w of ucm2tar_rt : type is 15;
    function width(x: ucm2tar_rt) return natural;
    function convert(x: ucm2tar_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: ucm2tar_rt) return ucm2tar_rt;
@@ -173,7 +174,7 @@ package common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: tar2hps_avt) return tar2hps_avt;
 
    subtype ucm2tar_vt is std_logic_vector(ucm2tar_rt'w-1 downto 0);
-   attribute w of ucm2tar_vt : subtype is 13;
+   attribute w of ucm2tar_vt : subtype is 15;
 
    type ucm2tar_art is array(integer range <>) of ucm2tar_rt;
    function width(x: ucm2tar_art) return integer;
@@ -711,6 +712,7 @@ package body common_types_pkg is
       w := w + width(x.data_valid);
       w := w + width(x.action);
       w := w + width(x.chambers);
+      w := w + width(x.process_ch);
       return w;
    end function width;
    function convert(x: ucm2tar_rt; tpl: std_logic_vector) return std_logic_vector is
@@ -727,6 +729,9 @@ package body common_types_pkg is
          u := u + w;
          w := width(x.chambers);
          y(u to u+w-1) := convert(x.chambers, y(u to u+w-1));
+         u := u + w;
+         w := width(x.process_ch);
+         y(u to u+w-1) := convert(x.process_ch, y(u to u+w-1));
       else
          w := width(x.data_valid);
          y(u downto u-w+1) := convert(x.data_valid, y(u downto u-w+1));
@@ -736,6 +741,9 @@ package body common_types_pkg is
          u := u - w;
          w := width(x.chambers);
          y(u downto u-w+1) := convert(x.chambers, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.process_ch);
+         y(u downto u-w+1) := convert(x.process_ch, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -753,6 +761,9 @@ package body common_types_pkg is
          u := u + w;
          w := width(tpl.chambers);
          y.chambers := convert(x(u to u+w-1), tpl.chambers);
+         u := u + w;
+         w := width(tpl.process_ch);
+         y.process_ch := convert(x(u to u+w-1), tpl.process_ch);
       else
          w := width(tpl.data_valid);
          y.data_valid := convert(x(u downto u-w+1), tpl.data_valid);
@@ -762,6 +773,9 @@ package body common_types_pkg is
          u := u - w;
          w := width(tpl.chambers);
          y.chambers := convert(x(u downto u-w+1), tpl.chambers);
+         u := u - w;
+         w := width(tpl.process_ch);
+         y.process_ch := convert(x(u downto u-w+1), tpl.process_ch);
       end if;
       return y;
    end function convert;

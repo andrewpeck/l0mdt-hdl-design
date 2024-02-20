@@ -29,8 +29,9 @@ types:
   - ucm2tar_rt:
     - data_valid : {'type' : logic}
     - action : {'type' : logic, 'range' : [3,0]}
-    - chambers : {'type' : logic, 'range' : [7,0]}
-  
+    - chambers : {'type' : logic, 'range' : [5,0]}
+    - process_ch:  {'type' : 'logic' , 'range' : [3, 0]}
+
   - slc_rx_vt: {'type': 'logic', 'range': ['slc_rx_rt-1', 0]}
   - slc_rx_art: {'array': 'open', 'type': 'slc_rx_rt'}
   - slc_rx_avt: {'array': 'open', 'type': 'slc_rx_vt'}

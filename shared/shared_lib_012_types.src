@@ -1,7 +1,7 @@
 #---------------------------------
 # #yml2hdl_v0.3
-shared/types/common_ieee_pkg.vhd
-shared/types/common_ieee_pkg.svh
+shared/types/types012/common_ieee_pkg.vhd
+shared/types/types012/common_ieee_pkg.svh
 
 ####### constant and types from dataformat folder ######
 shared/dataformats012/l0mdt_constants_pkg.vhd
@@ -13,9 +13,9 @@ shared/dataformats012/l0mdt_buses_constants.svh
 # shared/types/l0mdt_dataformats_pkg.vhd
 # shared/types/l0mdt_buses_constants.svh
 
-shared/types/sl2mdt_constants_pkg.vhd
-shared/types/sl2mdt_dataformats_pkg.vhd
+# shared/types/sl2mdt_constants_pkg.vhd
+# shared/types/sl2mdt_dataformats_pkg.vhd
 
-shared/types/common_constants_pkg.vhd
-shared/types/common_types_pkg.vhd
+shared/types/types012/common_constants_pkg.vhd
+shared/types/types012/common_types_pkg.vhd
 # shared/types/common_types_vectors_pkg.vhd

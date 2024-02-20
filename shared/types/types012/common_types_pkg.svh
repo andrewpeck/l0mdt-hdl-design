@@ -44,7 +44,8 @@ package common_types_pkg;
    typedef struct packed {
       logic  data_valid;
       logic [3:0] action;
-      logic [7:0] chambers;
+      logic [5:0] chambers;
+      logic [3:0] process_ch;
    } ucm2tar_rt ;
 
    typedef logic slc_rx_vt[155,0];
@@ -77,7 +78,7 @@ package common_types_pkg;
 
    typedef tar2hps_vt tar2hps_avt[];
 
-   typedef logic ucm2tar_vt[12,0];
+   typedef logic ucm2tar_vt[14,0];
 
    typedef ucm2tar_rt ucm2tar_art[];
 

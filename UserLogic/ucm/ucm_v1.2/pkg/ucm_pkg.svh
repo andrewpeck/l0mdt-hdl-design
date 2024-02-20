@@ -10,7 +10,6 @@
 `include <l0mdt_dataformats_pkg.svh>
 `include <common_constants_pkg.svh>
 `include <common_types_pkg.svh>
-`include <sl2mdt_constants_pkg.svh>
 
 package ucm_pkg;
 
@@ -32,7 +31,7 @@ package ucm_pkg;
 
    typedef struct packed {
       logic  data_valid;
-      logic signed [SL2MDT_SLC_COMMON_POSETA_LEN-1:0] poseta;
+      logic signed [SLC_COMMON_POSETA_LEN-1:0] poseta;
    } ucm_data2pamctrl_rt ;
 
    typedef logic ucm_data2pamctrl_vt[14,0];
@@ -56,7 +55,7 @@ package ucm_pkg;
    typedef struct packed {
       slc_muid_rt  muid;
       logic [SLC_COMMON_COINTYPE_LEN - 1:0] cointype;
-      logic signed [SL2MDT_SLC_COMMON_POSETA_LEN-1:0] poseta;
+      logic signed [SLC_COMMON_POSETA_LEN-1:0] poseta;
       logic [UCM_CDE2CVP_PHIMOD_LEN -1:0] phimod;
       logic [SLC_SPECIFIC_LEN -1:0] specific;
       logic  data_valid;
