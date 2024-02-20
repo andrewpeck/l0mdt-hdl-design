@@ -271,7 +271,7 @@ begin
     clk               => clk,
     rst               => rst,
     enable            => glob_en,
-      glob_freeze => glob_freeze,
+      -- glob_freeze => glob_freeze,
     --
     tb_curr_sim_time  => tb_curr_sim_time,
     tb_curr_tdc_time  => tb_curr_tdc_time,
