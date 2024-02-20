@@ -524,8 +524,6 @@ begin
 
     -------------------------------------
 
-    
-
     -- process (clock_and_control.clk) is
       -- begin
       --   if (rising_edge(clock_and_control.clk)) then
@@ -540,7 +538,7 @@ begin
       --   end if;
       -- end process;
 
-    -- h2s_gen : if c_H2S_ENABLED = '1' generate     
+   
       ult_h2s : entity ult_lib.hits_to_segments
         port map (
           -- clock, control, and monitoring
@@ -587,10 +585,6 @@ begin
 
           o_sump                    => h2s_sump
         );
-
-    
-
-    -- end generate h2s_gen;
 
     -------------------------------------
   
