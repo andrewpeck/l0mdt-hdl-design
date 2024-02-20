@@ -180,7 +180,7 @@ begin
       -- TDC Hits from Polmux
       i_tdc_hits_av  => i_mdt_tdc_inn_av,
       -- to daq
-      o_tdc_hits_av  => o_tdc_hits_inn_av,
+      -- o_tdc_hits_av  => o_tdc_hits_inn_av,
       -- outputs to h2s
       o_tar_hits_av  => o_tar_hits_inn_av
   
@@ -204,7 +204,7 @@ begin
       -- TDC Hits from Polmux
       i_tdc_hits_av  => i_mdt_tdc_mid_av,
       -- to daq
-      o_tdc_hits_av  => o_tdc_hits_mid_av,
+      -- o_tdc_hits_av  => o_tdc_hits_mid_av,
       -- outputs to h2s
       o_tar_hits_av  => o_tar_hits_mid_av
 
@@ -228,7 +228,7 @@ begin
       -- TDC Hits from Polmux
       i_tdc_hits_av  => i_mdt_tdc_out_av,
       -- to daq
-      o_tdc_hits_av  => o_tdc_hits_out_av,
+      -- o_tdc_hits_av  => o_tdc_hits_out_av,
       -- outputs to h2s
       o_tar_hits_av  => o_tar_hits_out_av
   
@@ -252,7 +252,7 @@ begin
       -- TDC Hits from Polmux
       i_tdc_hits_av  => i_mdt_tdc_ext_av,
       -- to daq
-      o_tdc_hits_av  => o_tdc_hits_ext_av,
+      -- o_tdc_hits_av  => o_tdc_hits_ext_av,
       -- outputs to h2s
       o_tar_hits_av  => o_tar_hits_ext_av
   

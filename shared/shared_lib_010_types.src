@@ -13,8 +13,8 @@ dataformats/l0mdt_buses_constants.svh
 # shared/types/types010/l0mdt_dataformats_pkg.vhd
 # shared/types/types010/l0mdt_buses_constants.svh
 
-shared/types/types010/sl2mdt_constants_pkg.vhd
-shared/types/types010/sl2mdt_dataformats_pkg.vhd
+# shared/types/types010/sl2mdt_constants_pkg.vhd
+# shared/types/types010/sl2mdt_dataformats_pkg.vhd
 
 shared/types/types010/common_constants_pkg.vhd
 shared/types/types010/common_types_pkg.vhd

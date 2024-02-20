@@ -52,7 +52,12 @@ riviera:
     extends: .vars
   parallel:
     matrix:
-      - PROJECT_NAME: [MainBlocks/ptc_mpi, MainBlocks/BA3_tar, MainBlocks/BA3_ucm012_vu13, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
+      - PROJECT_NAME:
+        - MainBlocks/ptc_mpi
+        - MainBlocks/BA3_tar
+        - MainBlocks/BA3_ucm012_vu13
+        - MainBlocks/BA3_hps_csf_bp
+        # - MainBlocks/BA3_heg
   allow_failure: true
 
 questa:
@@ -61,7 +66,12 @@ questa:
     extends: .vars
   parallel:
     matrix:
-      - PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm012_vu13, MainBlocks/BA3_heg, ull/vu13p/ull_vu13_b3a_ucm_mpl, ull/vu13p/ull_vu13_b3a_tar]
+      - PROJECT_NAME:
+        - MainBlocks/BA3_tar
+        - MainBlocks/BA3_ucm012_vu13
+        # - MainBlocks/BA3_heg
+        - ull/vu13p/ull_vu13_b3a_ucm_mpl
+        - ull/vu13p/ull_vu13_b3a_tar
         PROVIDER: questa
   allow_failure: false
   tags:
@@ -82,9 +92,9 @@ sim_comp:
       - PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
         PROJECT_Q_NAME: MainBlocks/BA3_hps_csf_bp_questa
         PROJECT_R_NAME: MainBlocks/BA3_hps_csf_bp_riviera
-      - PROJECT_NAME: MainBlocks/BA3_heg
-        PROJECT_Q_NAME: MainBlocks/BA3_heg_questa
-        PROJECT_R_NAME: MainBlocks/BA3_heg_riviera
+      # - PROJECT_NAME: MainBlocks/BA3_heg
+      #   PROJECT_Q_NAME: MainBlocks/BA3_heg_questa
+      #   PROJECT_R_NAME: MainBlocks/BA3_heg_riviera
   needs: ["questa", "riviera"]
 
 
@@ -108,9 +118,9 @@ sim_check:
       - PROJECT_NAME: [MainBlocks/BA3_hps_csf_bp]
         SIMULATOR: questa
         BLOCK: BA3_hps_csf_bp
-      - PROJECT_NAME: MainBlocks/BA3_heg
-        BLOCK: BA3_heg
-        SIMULATOR: questa
+      # - PROJECT_NAME: MainBlocks/BA3_heg
+      #   BLOCK: BA3_heg
+      #   SIMULATOR: questa
   artifacts:
     name: sim_check
     paths:

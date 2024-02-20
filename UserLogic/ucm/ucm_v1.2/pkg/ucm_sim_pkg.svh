@@ -10,7 +10,6 @@
 `include <l0mdt_dataformats_pkg.svh>
 `include <common_constants_pkg.svh>
 `include <common_types_pkg.svh>
-`include <sl2mdt_constants_pkg.svh>
 
 `include <ucm_pkg.svh>
 
