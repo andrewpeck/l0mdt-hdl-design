@@ -73,3 +73,6 @@
 [submodule "tools/TestVectorMaker"]
 	path = tools/TestVectorMaker
 	url = ../../atlas_hllhc_muon_trigger/TestVectorMaker.git
+[submodule "shared/dataformats012"]
+	path = shared/dataformats012
+	url = ../dataformats.git
