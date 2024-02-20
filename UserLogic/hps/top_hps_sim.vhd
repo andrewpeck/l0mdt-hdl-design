@@ -94,6 +94,7 @@ entity hps_tb is
 end entity hps_tb;
 
 architecture beh of hps_tb is
+  signal glob_freeze : std_logic := '0';
 
   -- AXI clk & rst
   signal axi_rst      : std_logic;
@@ -288,6 +289,7 @@ begin
           clk                 => clk,
           rst                 => rst,
           glob_en             => glob_en,
+          glob_freeze => glob_freeze,
           -- configuration & control
           ctrl_v              => ctrl_v(st_i),
           mon_v               => mon_v(st_i),
