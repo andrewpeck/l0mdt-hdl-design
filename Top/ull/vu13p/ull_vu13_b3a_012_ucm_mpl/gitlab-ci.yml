@@ -1,0 +1,50 @@
+#################### ull_vu13_b3a_012_ucm_mpl Project ###########################
+GEN:ull_vu13_b3a_012_ucm_mpl:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ull_vu13_b3a_012_ucm_mpl
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      
+    tags:
+      - normal-ops
+
+SIM:ull_vu13_b3a_012_ucm_mpl_questa:
+  extends: .simulate_project
+  variables:
+    extends: .vars
+    PROJECT_NAME: ull/vu13p/ull_vu13_b3a_012_ucm_mpl
+  tags:
+    - normal-ops
+  allow_failure: false
+
+RIV:ull_vu13_b3a_012_ucm_mpl_riviera:
+  extends: .riviera_sim
+  variables:
+    extends: .vars
+    PROJECT_NAME: ull/vu13p/ull_vu13_b3a_012_ucm_mpl
+  allow_failure: true
+
+COMP:ull_vu13_b3a_012_ucm_mpl:
+  extends: .sim_comp
+  variables:
+    extends: .vars
+    PROJECT_NAME: ull/vu13p/ull_vu13_b3a_012_ucm_mpl
+    PROJECT_Q_NAME: ull/vu13p/ull_vu13_b3a_012_ucm_mpl_questa
+    PROJECT_R_NAME: ull/vu13p/ull_vu13_b3a_012_ucm_mpl_riviera
+  needs: ["SIM:ull_vu13_b3a_012_ucm_mpl_questa", "RIV:ull_vu13_b3a_012_ucm_mpl_riviera"]
+
+
+CHK:ull_vu13_b3a_012_ucm_mpl:
+  extends: .sim_check
+  variables:
+    extends: .vars
+    PROJECT_NAME: ull/vu13p/ull_vu13_b3a_012_ucm_mpl
+    BLOCK: ull_vu13_b3a_012_ucm_mpl
+    SIMULATOR: questa
+  needs: ["RIV:ull_vu13_b3a_012_ucm_mpl_riviera"]
+  artifacts:
+    name: CHK_ull_vu13_b3a_012_ucm_mpl
+    paths:
+      - $CI_PROJECT_DIR/bin
+    expire_in: 30 day

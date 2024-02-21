@@ -1,0 +1,15 @@
+#################### ull_vu13_b3a_012_ucm_tar Project ###########################
+GEN:ull_vu13_b3a_012_ucm_tar:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ull_vu13_b3a_012_ucm_tar
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+
+
+SIM:ull_vu13_b3a_012_ucm_tar:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ull_vu13_b3a_012_ucm_tar
+      HOG_CHECK_PROJVER: 0

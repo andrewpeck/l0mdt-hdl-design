@@ -1,0 +1,56 @@
+#################### BA3_012_ucm_vu13 Project ###########################
+GEN:BA3_012_ucm_vu13:
+  extends: .generate_project
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_012_ucm_vu13
+    HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+  tags:
+    - normal-ops
+
+
+# SIM:BA3_012_ucm_vu13_vivado:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: MainBlocks/BA3_012_ucm_vu13
+
+SIM:BA3_012_ucm_vu13_questa:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/BA3_012_ucm_vu13
+    tags:
+      - normal-ops
+    allow_failure: false
+
+RIV:BA3_012_ucm_vu13_riviera:
+    extends: .riviera_sim
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/BA3_012_ucm_vu13
+    allow_failure: true
+
+COMP:BA3_012_ucm_vu13:
+  extends: .sim_comp
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_012_ucm_vu13
+    PROJECT_Q_NAME: MainBlocks/BA3_012_ucm_vu13_questa
+    PROJECT_R_NAME: MainBlocks/BA3_012_ucm_vu13_riviera
+  needs: ["SIM:BA3_012_ucm_vu13_questa", "RIV:BA3_012_ucm_vu13_riviera"]
+  
+CHK:BA3_012_ucm_vu13:
+  extends: .sim_check
+  variables: 
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_012_ucm_vu13
+    BLOCK: BA3_012_ucm_vu13
+    SIMULATOR: questa
+  needs: ["RIV:BA3_012_ucm_vu13_riviera"]
+  artifacts:
+    name: CHK_MainBlocks_BA3_012_ucm_vu13
+    paths:
+      - $CI_PROJECT_DIR/bin
+    expire_in: 30 day
+

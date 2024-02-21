@@ -22,18 +22,40 @@ generate:
   parallel:
     matrix:
       - PROVIDER: argos
-        PROJECT_NAME: [ull/vu13p/ull_vu13_b3a_tar, l0mdt/vu13p/l0mdt_vu13p_ba3_ucm_mpl_tar_hps]
+        PROJECT_NAME: 
+        - ull/vu13p/ull_vu13_b3a_010_tar
+        - ull/vu13p/ull_vu13_b3a_012_tar
+        - ull/vu13p/ull_vu13_b3a_012_ucm
+        - ull/vu13p/ull_vu13_b3a_012_ucm_mpl
+        - ull/vu13p/ull_vu13_b3a_012_ucm_tar
         HOG_ONLY_SYNTH: 1
       - PROVIDER: "2022.2"
-        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_lsf_upt]
+        PROJECT_NAME: 
+        - l0mdt/vu13p/l0mdt_vu13p_lsf_upt
         HOG_ONLY_SYNTH: 1
       - PROVIDER: argos
-        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_csf_mpt, l0mdt/vu13p/l0mdt_vu13p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_fm, l0mdt/vu13p/l0mdt_vu13p_hal_all_csm]
+        PROJECT_NAME: 
+        - l0mdt/vu13p/l0mdt_vu13p_ba3_ucm_mpl_tar_hps
+        - l0mdt/vu13p/l0mdt_vu13p_csf_mpt
+        - l0mdt/vu13p/l0mdt_vu13p_ull_empty
+        - l0mdt/ku15p/l0mdt_ku15p_ull_empty
+        - l0mdt/ku15p/l0mdt_ku15p_ull_fm
+        - l0mdt/vu13p/l0mdt_vu13p_hal_all_csm
       - PROVIDER: "2022.2"
-        PROJECT_NAME: [l0mdt/ku15p/l0mdt_ku15p_ull_ucm, ull/vu13p/ull_vu13_b3a_ucm_mpl]
+        PROJECT_NAME: 
+        - l0mdt/ku15p/l0mdt_ku15p_ull_ucm
+        - ull/vu13p/ull_vu13_b3a_ucm_mpl
         HOG_ONLY_SYNTH: 1
       - PROVIDER: "2022.2"
-        PROJECT_NAME: [MainBlocks/BA3_ucm010_ku15, MainBlocks/BA3_ucm010_vu13, MainBlocks/BA3_ucm012_ku15, MainBlocks/BA3_ucm012_vu13, MainBlocks/BA3_tar, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
+        PROJECT_NAME: 
+        - MainBlocks/BA3_010_ucm_ku15
+        - MainBlocks/BA3_010_ucm_vu13
+        - MainBlocks/BA3_012_ucm_ku15
+        - MainBlocks/BA3_012_ucm_vu13
+        - MainBlocks/BA3_010_tar
+        - MainBlocks/BA3_012_tar
+        # - MainBlocks/BA3_hps_csf_bp
+        # - MainBlocks/BA3_heg
         HOG_ONLY_SYNTH: 1
   tags:
     - ${PROVIDER}
@@ -54,8 +76,12 @@ riviera:
     matrix:
       - PROJECT_NAME:
         - MainBlocks/ptc_mpi
-        - MainBlocks/BA3_tar
-        - MainBlocks/BA3_ucm012_vu13
+        - MainBlocks/BA3_010_ucm_ku15
+        - MainBlocks/BA3_010_ucm_vu13
+        - MainBlocks/BA3_012_ucm_ku15
+        - MainBlocks/BA3_012_ucm_vu13
+        - MainBlocks/BA3_010_tar
+        - MainBlocks/BA3_012_tar
         # - MainBlocks/BA3_hps_csf_bp
         # - MainBlocks/BA3_heg
   allow_failure: true
@@ -67,8 +93,12 @@ questa:
   parallel:
     matrix:
       - PROJECT_NAME:
-        - MainBlocks/BA3_tar
-        - MainBlocks/BA3_ucm012_vu13
+        - MainBlocks/BA3_010_ucm_ku15
+        - MainBlocks/BA3_010_ucm_vu13
+        - MainBlocks/BA3_012_ucm_ku15
+        - MainBlocks/BA3_012_ucm_vu13
+        - MainBlocks/BA3_010_tar
+        - MainBlocks/BA3_012_tar
         # - MainBlocks/BA3_heg
         - ull/vu13p/ull_vu13_b3a_ucm_mpl
         - ull/vu13p/ull_vu13_b3a_tar
@@ -83,12 +113,15 @@ sim_comp:
     extends: .vars
   parallel:
     matrix:
-      - PROJECT_NAME: MainBlocks/BA3_tar
-        PROJECT_Q_NAME: MainBlocks/BA3_tar_questa
-        PROJECT_R_NAME: MainBlocks/BA3_tar_riviera
-      - PROJECT_NAME: MainBlocks/BA3_ucm012_vu13
-        PROJECT_Q_NAME: MainBlocks/BA3_ucm012_vu13_questa
-        PROJECT_R_NAME: MainBlocks/BA3_ucm012_vu13_riviera
+      - PROJECT_NAME: MainBlocks/BA3_010_tar
+        PROJECT_Q_NAME: MainBlocks/BA3_010_tar_questa
+        PROJECT_R_NAME: MainBlocks/BA3_010_tar_riviera
+      - PROJECT_NAME: MainBlocks/BA3_012_tar
+        PROJECT_Q_NAME: MainBlocks/BA3_012_tar_questa
+        PROJECT_R_NAME: MainBlocks/BA3_012_tar_riviera
+      - PROJECT_NAME: MainBlocks/BA3_012_ucm_vu13
+        PROJECT_Q_NAME: MainBlocks/BA3_012_ucm_vu13_questa
+        PROJECT_R_NAME: MainBlocks/BA3_012_ucm_vu13_riviera
       # - PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
       #   PROJECT_Q_NAME: MainBlocks/BA3_hps_csf_bp_questa
       #   PROJECT_R_NAME: MainBlocks/BA3_hps_csf_bp_riviera
@@ -109,12 +142,15 @@ sim_check:
       - PROJECT_NAME: [MainBlocks/ptc_mpi]
         SIMULATOR: riviera
         BLOCK: PTC
-      - PROJECT_NAME: [MainBlocks/BA3_tar]
+      - PROJECT_NAME: [MainBlocks/BA3_010_tar]
         SIMULATOR: questa
-        BLOCK: BA3_tar
-      - PROJECT_NAME: [MainBlocks/BA3_ucm012_vu13]
+        BLOCK: BA3_010_tar
+      - PROJECT_NAME: [MainBlocks/BA3_012_tar]
         SIMULATOR: questa
-        BLOCK: BA3_ucm012_vu13
+        BLOCK: BA3_012_tar
+      - PROJECT_NAME: [MainBlocks/BA3_012_ucm_vu13]
+        SIMULATOR: questa
+        BLOCK: BA3_012_ucm_vu13
       - PROJECT_NAME: [MainBlocks/BA3_hps_csf_bp]
         SIMULATOR: questa
         BLOCK: BA3_hps_csf_bp

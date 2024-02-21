@@ -1,0 +1,56 @@
+---
+#################### BA3_010_tar Project ###########################
+GEN:BA3_010_tar:
+  extends: .generate_project
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_010_tar
+    HOG_ONLY_SYNTH: 1  # if 1 runs only the synthesis
+  tags:
+    - normal-ops
+
+# SIM:BA3_010_tar_vivado:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: MainBlocks/BA3_010_tar
+
+SIM:BA3_010_tar_questa:
+  extends: .simulate_project
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_010_tar
+  tags:
+    - normal-ops
+  allow_failure: false
+
+RIV:BA3_010_tar_riviera:
+  extends: .riviera_sim
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_010_tar
+  allow_failure: true
+
+COMP:BA3_010_tar:
+  extends: .sim_comp
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_010_tar
+    PROJECT_Q_NAME: MainBlocks/BA3_010_tar_questa
+    PROJECT_R_NAME: MainBlocks/BA3_010_tar_riviera
+  needs: ["SIM:BA3_010_tar_questa", "RIV:BA3_010_tar_riviera"]
+
+
+CHK:BA3_010_tar:
+  extends: .sim_check
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_010_tar
+    BLOCK: BA3_010_tar
+    SIMULATOR: questa
+  needs: ["RIV:BA3_010_tar_riviera"]
+  artifacts:
+    name: CHK_MainBlocks_BA3_010_tar
+    paths:
+      - $CI_PROJECT_DIR/bin
+    expire_in: 30 day
