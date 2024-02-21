@@ -23,7 +23,7 @@ generate:
     matrix:
       - PROVIDER: argos
         PROJECT_NAME: 
-        - ull/vu13p/ull_vu13_b3a_010_tar
+        - ull/vu13p/ull_vu13_b3a_tar
         - ull/vu13p/ull_vu13_b3a_012_tar
         - ull/vu13p/ull_vu13_b3a_012_ucm
         - ull/vu13p/ull_vu13_b3a_012_ucm_mpl
