@@ -124,9 +124,9 @@ architecture beh of ucm_cvp is
   signal pl_atan_slope    : std_logic_vector(UCM2HPS_VEC_ANG_LEN - 1 downto 0);
   signal pl_atan_slope_dv : std_logic;
 
-  signal vec_pos_a      : vec_pos_array_ut(g_NUM_MDT_LAYERS-1 downto 0);
+  signal vec_pos_a      : vec_pos_array_aut(g_NUM_MDT_LAYERS-1 downto 0);
   signal vec_pos_a_dv   : std_logic;
-  signal pl_vec_pos_a      : vec_pos_array_ut(g_NUM_MDT_LAYERS-1 downto 0);
+  signal pl_vec_pos_a      : vec_pos_array_aut(g_NUM_MDT_LAYERS-1 downto 0);
   signal pl_vec_pos_a_dv   : std_logic;
 
   ----------------------------------
@@ -387,7 +387,7 @@ begin
               if pl_data_r.data_valid = '1' then
               -- if or_reduce(new_chamb_ieta_dv) = '1' then
                 ucm2hps_ar(hps_i).muid    <= pl_data_r.muid;
-                ucm2hps_ar(hps_i).vec_pos <= pl_vec_pos_a(hps_i);
+                ucm2hps_ar(hps_i).vec_pos <= std_logic_vector(pl_vec_pos_a(hps_i));
                 ucm2hps_ar(hps_i).vec_ang <= pl_atan_slope;
                 ucm2hps_ar(hps_i).phimod <= pl_data_r.phimod;
                 ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '1'); -- COMO SE CALCULA ESTO?

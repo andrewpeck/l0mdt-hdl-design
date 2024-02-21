@@ -3,7 +3,8 @@ config:
   basic_functions: False
   packages:
     - ieee: [std_logic_1164, numeric_std, math_real]
-    - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg, common_types_pkg,sl2mdt_constants_pkg]
+    - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg, common_types_pkg]
+    #,sl2mdt_constants_pkg]
 types:
    
   - SLC_SPECIFIC_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 48}
@@ -12,13 +13,13 @@ types:
 #  - UCM_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 5}
   - ucm_prepro2ctrl_rt:
     - data_valid: {'type': 'logic'}
-    # - poseta: {'type': 'signed', 'range': ['SL2MDT_SLC_COMMON_POSETA_LEN-1', 0]}
+    # - poseta: {'type': 'signed', 'range': ['SLC_COMMON_POSETA_LEN-1', 0]}
   - ucm_prepro2ctrl_vt: {'type': 'logic', 'range': ['ucm_prepro2ctrl_rt-1', 0]}
   - ucm_prepro2ctrl_art: {'array': 'open', 'type': 'ucm_prepro2ctrl_rt'}
   - ucm_prepro2ctrl_avt: {'array': 'open', 'type': 'ucm_prepro2ctrl_vt'}
   - ucm_data2pamctrl_rt:
     - data_valid: {'type': 'logic'}
-    - poseta: {'type': 'signed', 'range': ['SL2MDT_SLC_COMMON_POSETA_LEN-1', 0]}
+    - poseta: {'type': 'signed', 'range': ['SLC_COMMON_POSETA_LEN-1', 0]}
   - ucm_data2pamctrl_vt: {'type': 'logic', 'range': ['ucm_data2pamctrl_rt-1', 0]}
   - ucm_data2pamctrl_art: {'array': 'open', 'type': 'ucm_data2pamctrl_rt'}
   - ucm_data2pamctrl_avt: {'array': 'open', 'type': 'ucm_data2pamctrl_vt'}
@@ -32,7 +33,7 @@ types:
     - muid: {'type': 'slc_muid_rt'}
     # - chamb_ieta: {'type': 'chamb_ieta_rpc_aut'}
     - cointype: {'type': 'logic', 'range': ['SLC_COMMON_COINTYPE_LEN - 1', 0]}
-    - poseta: {'type': 'signed', 'range': ['SL2MDT_SLC_COMMON_POSETA_LEN-1', 0]}
+    - poseta: {'type': 'signed', 'range': ['SLC_COMMON_POSETA_LEN-1', 0]}
     # - posphi: {'type': 'unsigned', 'range': ['SLC_COMMON_POSPHI_LEN -1', 0]}
     - phimod: {'type': 'logic', 'range': ['UCM_CDE2CVP_PHIMOD_LEN -1', 0]}
     - specific: {'type': 'logic', 'range': ['SLC_SPECIFIC_LEN -1', 0]}
@@ -73,7 +74,7 @@ types:
   - ucm_proc_info_avt: {'array': 'open', 'type': 'ucm_proc_info_vt'}
 
   # - ucm_eta_lim_art:
-  # - ucm_eta_lim_aut: {'array': 'open', 'type': 'unsigned','range' : [SL2MDT_SLC_COMMON_POSETA_LEN-1, 0]}
+  # - ucm_eta_lim_aut: {'array': 'open', 'type': 'unsigned','range' : [SLC_COMMON_POSETA_LEN-1, 0]}
   - p2tar_ch_aut: {'array': [1,0], 'type': 'unsigned', 'range': ['4-1', 0]}
   - ch_map_avt: {'array': [3,0], 'type': 'logic', 'range': ['6-1', 0]}
   - ucm_pam2tar_rt:

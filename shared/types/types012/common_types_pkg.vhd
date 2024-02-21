@@ -66,6 +66,18 @@ package common_types_pkg is
    subtype l0mdt_ttc_vt is std_logic_vector(l0mdt_ttc_rt'w-1 downto 0);
    attribute w of l0mdt_ttc_vt : subtype is 81;
 
+   type ucm2tar_rt is record
+      data_valid : std_logic;
+      action : std_logic_vector(3 downto 0);
+      chambers : std_logic_vector(5 downto 0);
+      process_ch : std_logic_vector(3 downto 0);
+   end record ucm2tar_rt;
+   attribute w of ucm2tar_rt : type is 15;
+   function width(x: ucm2tar_rt) return natural;
+   function convert(x: ucm2tar_rt; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: ucm2tar_rt) return ucm2tar_rt;
+   function zero(tpl: ucm2tar_rt) return ucm2tar_rt;
+
    subtype slc_rx_vt is std_logic_vector(slc_rx_rt'w-1 downto 0);
    attribute w of slc_rx_vt : subtype is 156;
 
@@ -690,6 +702,84 @@ package body common_types_pkg is
       return y;
    end function convert;
    function zero(tpl: l0mdt_ttc_rt) return l0mdt_ttc_rt is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: ucm2tar_rt) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.data_valid);
+      w := w + width(x.action);
+      w := w + width(x.chambers);
+      w := w + width(x.process_ch);
+      return w;
+   end function width;
+   function convert(x: ucm2tar_rt; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.data_valid);
+         y(u to u+w-1) := convert(x.data_valid, y(u to u+w-1));
+         u := u + w;
+         w := width(x.action);
+         y(u to u+w-1) := convert(x.action, y(u to u+w-1));
+         u := u + w;
+         w := width(x.chambers);
+         y(u to u+w-1) := convert(x.chambers, y(u to u+w-1));
+         u := u + w;
+         w := width(x.process_ch);
+         y(u to u+w-1) := convert(x.process_ch, y(u to u+w-1));
+      else
+         w := width(x.data_valid);
+         y(u downto u-w+1) := convert(x.data_valid, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.action);
+         y(u downto u-w+1) := convert(x.action, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.chambers);
+         y(u downto u-w+1) := convert(x.chambers, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.process_ch);
+         y(u downto u-w+1) := convert(x.process_ch, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: ucm2tar_rt) return ucm2tar_rt is
+      variable y : ucm2tar_rt;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.data_valid);
+         y.data_valid := convert(x(u to u+w-1), tpl.data_valid);
+         u := u + w;
+         w := width(tpl.action);
+         y.action := convert(x(u to u+w-1), tpl.action);
+         u := u + w;
+         w := width(tpl.chambers);
+         y.chambers := convert(x(u to u+w-1), tpl.chambers);
+         u := u + w;
+         w := width(tpl.process_ch);
+         y.process_ch := convert(x(u to u+w-1), tpl.process_ch);
+      else
+         w := width(tpl.data_valid);
+         y.data_valid := convert(x(u downto u-w+1), tpl.data_valid);
+         u := u - w;
+         w := width(tpl.action);
+         y.action := convert(x(u downto u-w+1), tpl.action);
+         u := u - w;
+         w := width(tpl.chambers);
+         y.chambers := convert(x(u downto u-w+1), tpl.chambers);
+         u := u - w;
+         w := width(tpl.process_ch);
+         y.process_ch := convert(x(u downto u-w+1), tpl.process_ch);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: ucm2tar_rt) return ucm2tar_rt is
    begin
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;

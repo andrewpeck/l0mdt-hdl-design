@@ -111,7 +111,7 @@ vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/SpyBuffer.v"
 vlog -sv -work work +incdir+$CWD/../../dataformats/ "$SRC/lsf_spybuffer_wrapper.sv"
 
 vlib shared_lib
-vcom -work shared_lib $CWD/../../shared/types/common_ieee_pkg.vhd
+vcom -work shared_lib $CWD/../../shared/types/types010/common_ieee_pkg.vhd
 vcom -work shared_lib $CWD/../../dataformats/l0mdt_constants_pkg.vhd
 vcom -work shared_lib $CWD/../../dataformats/l0mdt_dataformats_pkg.vhd
 vcom -work lsf_lib "$SRC/lsf_wrapper.vhd"

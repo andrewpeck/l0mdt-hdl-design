@@ -273,7 +273,7 @@ begin
               csv_file_1.write_integer(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_id));
               csv_file_1.write_integer(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta));
               -- vec_pos
-              csv_file_1.write_integer(to_integer(inn_ucm2hps_bus_ar(th_i).vec_pos));
+              csv_file_1.write_integer(to_integer(signed(inn_ucm2hps_bus_ar(th_i).vec_pos)));
               -- vec_ang
               csv_file_1.write_integer(to_integer(signed(inn_ucm2hps_bus_ar(th_i).vec_ang)));
               csv_file_1.write_integer(to_integer(signed(inn_ucm2hps_bus_ar(th_i).phimod)));
@@ -292,7 +292,7 @@ begin
                 " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
                 " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
                 " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(signed(inn_ucm2hps_bus_ar(th_i).vec_pos))) &
                 " : " & integer'image(to_integer(signed(inn_ucm2hps_bus_ar(th_i).vec_ang))) &
                 " : " & integer'image(to_integer(signed(inn_ucm2hps_bus_ar(th_i).phimod))));
               end if;
@@ -327,7 +327,7 @@ begin
               csv_file_1.write_integer(to_integer(mid_ucm2hps_bus_ar(th_i).mdtid.chamber_id));
               csv_file_1.write_integer(to_integer(mid_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta));
               -- vec_pos
-              csv_file_1.write_integer(to_integer(mid_ucm2hps_bus_ar(th_i).vec_pos));
+              csv_file_1.write_integer(to_integer(signed(mid_ucm2hps_bus_ar(th_i).vec_pos)));
               -- vec_ang
               csv_file_1.write_integer(to_integer(signed(mid_ucm2hps_bus_ar(th_i).vec_ang)));
               csv_file_1.write_integer(to_integer(signed(mid_ucm2hps_bus_ar(th_i).phimod)));
@@ -346,7 +346,7 @@ begin
                 " : " & integer'image(to_integer(unsigned(mid_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
                 " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
                 " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
-                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(signed(mid_ucm2hps_bus_ar(th_i).vec_pos))) &
                 " : " & integer'image(to_integer(signed(mid_ucm2hps_bus_ar(th_i).vec_ang))) &
                 " : " & integer'image(to_integer(signed(mid_ucm2hps_bus_ar(th_i).phimod))));
               end if;
@@ -381,7 +381,7 @@ begin
               csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(th_i).mdtid.chamber_id));
               csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta));
               -- vec_pos
-              csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(th_i).vec_pos));
+              csv_file_1.write_integer(signed(out_ucm2hps_bus_ar(th_i).vec_pos));
               -- vec_ang
               csv_file_1.write_integer(signed(out_ucm2hps_bus_ar(th_i).vec_ang));
               csv_file_1.write_integer(signed(out_ucm2hps_bus_ar(th_i).phimod));
@@ -400,7 +400,7 @@ begin
                 " : " & integer'image(to_integer(unsigned(out_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
                 " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
                 " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
-                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(signed(out_ucm2hps_bus_ar(th_i).vec_pos))) &
                 " : " & integer'image(to_integer(signed(out_ucm2hps_bus_ar(th_i).vec_ang))) &
                 " : " & integer'image(to_integer(signed(out_ucm2hps_bus_ar(th_i).phimod))));
               end if;
@@ -455,7 +455,7 @@ begin
                 " : " & integer'image(to_integer(unsigned(ext_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
                 " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
                 " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
-                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(signed(ext_ucm2hps_bus_ar(th_i).vec_pos))) &
                 " : " & integer'image(to_integer(signed(ext_ucm2hps_bus_ar(th_i).vec_ang))) &
                 " : " & integer'image(to_integer(signed(ext_ucm2hps_bus_ar(th_i).phimod))));
               end if;

@@ -54,6 +54,7 @@ end entity ucm_tb;
 architecture beh of ucm_tb is
 
   signal enable_slc : std_logic := '1';
+  signal glob_freeze : std_logic := '0';
 
   ---------------------------------------------------------------------------
   -- simulation signals generation
@@ -136,6 +137,7 @@ begin
     clk                     => clk,
     rst                     => rst,
     glob_en                 => glob_en,
+    glob_freeze => glob_freeze,
     ttc_commands            => ttc_commands, 
     -- configuration, control & Monitoring
     ctrl_v                    => ctrl_v,

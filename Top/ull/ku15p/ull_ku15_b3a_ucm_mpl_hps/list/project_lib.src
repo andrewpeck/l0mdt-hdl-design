@@ -5,7 +5,7 @@
 #### default config parameters ####
 shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 #### shared ####
-shared/shared_lib.src lib=shared_lib
+shared/shared_lib_010.src lib=shared_lib
 #### project local configuration files ####
 Top/ull/ku15p/ull_ku15_b3a_ucm_mpl_hps/prj_cfg.vhd
 #### top  ####

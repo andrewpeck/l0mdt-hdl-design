@@ -50,7 +50,7 @@ package body prj_cfg is
     proj_cfg.ENABLE_PT                := '0';
     proj_cfg.ENABLE_DAQ               := '0';
     proj_cfg.ENABLE_MTC               := '0';
-
+    proj_cfg.ENABLE_FM                := '0';
  
     return proj_cfg;
   end function set_project_cfg;

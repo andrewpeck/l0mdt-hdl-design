@@ -179,7 +179,7 @@ begin
 
   ctrl_r <= convert(ctrl_v, ctrl_r);
   mon_v <= convert( mon_r,  mon_v);
-  fm_daq_mon_v <= convert(fm_daq_mon_r, fm_daq_mon_v);
+  -- fm_daq_mon_v <= convert(fm_daq_mon_r, fm_daq_mon_v);
 
   -- daq_stream_v <= convert(daq_stream_ar, daq_stream_v);
   -- o_daq_stream <= convert(daq_stream_v, o_daq_stream);
@@ -457,32 +457,39 @@ begin
 
   end generate DAQ_GEN;
 
-  FM_DAQ: for k in 0 to daq_sb_n - 1  generate
-      constant MID_MAX : natural := c_DAQ_INN_LINKS+c_DAQ_MID_LINKS;
-      constant MID_MIN : natural := c_DAQ_INN_LINKS;
-      constant OUT_MAX : natural := c_DAQ_INN_LINKS+c_DAQ_MID_LINKS+c_DAQ_OUT_LINKS;
-      constant OUT_MIN : natural := c_DAQ_INN_LINKS+c_DAQ_MID_LINKS;
-      begin
-  
-      FM_DAQ_INN: if k < c_DAQ_INN_LINKS generate
+    FM_CTRL_GEN : if c_FM_ENABLED generate
+      fm_daq_mon_v <= convert(fm_daq_mon_r, fm_daq_mon_v);
+      FM_DAQ: for k in 0 to daq_sb_n - 1  generate
+        constant MID_MAX : natural := c_DAQ_INN_LINKS+c_DAQ_MID_LINKS;
+        constant MID_MIN : natural := c_DAQ_INN_LINKS;
+        constant OUT_MAX : natural := c_DAQ_INN_LINKS+c_DAQ_MID_LINKS+c_DAQ_OUT_LINKS;
+        constant OUT_MIN : natural := c_DAQ_INN_LINKS+c_DAQ_MID_LINKS;
         begin
-          fm_daq_mon_r(k).fm_data <= (mon_dw_max-1 downto  35 => '0') & o_daq_stream_wren_v(k) & o_daq_stream_ctrl_v(k) & o_daq_stream_data_v(k) ;
-          fm_daq_mon_r(k).fm_vld   <= o_daq_stream_data_v(k)(31) or o_daq_stream_wren_v(k);
-        end generate;
-
-      FM_DAQ_MID: if k < c_DAQ_MID_LINKS generate
-           begin
-             fm_daq_mon_r(daq_sb_n + k).fm_data <= (mon_dw_max-1 downto  35 => '0') & o_daq_stream_wren_v(MID_MIN + k) & o_daq_stream_ctrl_v(MID_MIN + k) & o_daq_stream_data_v(MID_MIN + k) ;
-             fm_daq_mon_r(daq_sb_n + k).fm_vld   <= o_daq_stream_data_v(MID_MIN + k)(31) or o_daq_stream_wren_v(MID_MIN + k);
-           end generate;
-             
-      FM_DAQ_OUT: if k < c_DAQ_OUT_LINKS generate
-        begin
-          fm_daq_mon_r(2*daq_sb_n + k).fm_data <= (mon_dw_max-1 downto  35 => '0') & o_daq_stream_wren_v(OUT_MIN + k) & o_daq_stream_ctrl_v(OUT_MIN + k) & o_daq_stream_data_v(OUT_MIN + k) ;
-          fm_daq_mon_r(2*daq_sb_n + k).fm_vld   <= o_daq_stream_data_v(OUT_MIN + k)(31) or o_daq_stream_wren_v(OUT_MIN + k);
+    
+        FM_DAQ_INN: if k < c_DAQ_INN_LINKS generate
+          begin
+            fm_daq_mon_r(k).fm_data <= (mon_dw_max-1 downto  35 => '0') & o_daq_stream_wren_v(k) & o_daq_stream_ctrl_v(k) & o_daq_stream_data_v(k) ;
+            fm_daq_mon_r(k).fm_vld   <= o_daq_stream_data_v(k)(31) or o_daq_stream_wren_v(k);
           end generate;
+  
+        FM_DAQ_MID: if k < c_DAQ_MID_LINKS generate
+             begin
+               fm_daq_mon_r(daq_sb_n + k).fm_data <= (mon_dw_max-1 downto  35 => '0') & o_daq_stream_wren_v(MID_MIN + k) & o_daq_stream_ctrl_v(MID_MIN + k) & o_daq_stream_data_v(MID_MIN + k) ;
+               fm_daq_mon_r(daq_sb_n + k).fm_vld   <= o_daq_stream_data_v(MID_MIN + k)(31) or o_daq_stream_wren_v(MID_MIN + k);
+             end generate;
+               
+        FM_DAQ_OUT: if k < c_DAQ_OUT_LINKS generate
+          begin
+            fm_daq_mon_r(2*daq_sb_n + k).fm_data <= (mon_dw_max-1 downto  35 => '0') & o_daq_stream_wren_v(OUT_MIN + k) & o_daq_stream_ctrl_v(OUT_MIN + k) & o_daq_stream_data_v(OUT_MIN + k) ;
+            fm_daq_mon_r(2*daq_sb_n + k).fm_vld   <= o_daq_stream_data_v(OUT_MIN + k)(31) or o_daq_stream_wren_v(OUT_MIN + k);
+            end generate;
+  
+      end generate;
+    -- else generate
+      
+    end generate;
 
-  end generate;
+  
   
 
   -- -- DAQ_EMU : if not c_DAQ_ENABLED generate

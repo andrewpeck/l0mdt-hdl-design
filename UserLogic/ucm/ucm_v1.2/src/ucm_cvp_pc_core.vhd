@@ -70,7 +70,7 @@ entity ucm_cvp_pc_core is
     o_slope         : out signed(31 downto 0);--signed((sig_SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
     o_slope_dv      : out std_logic;
 
-    o_vec_z_pos     : out vec_pos_array_ut(g_NUM_MDT_LAYERS-1 downto 0);
+    o_vec_z_pos     : out vec_pos_array_aut(g_NUM_MDT_LAYERS-1 downto 0);
     o_vec_z_pos_dv  : out std_logic
     
   );

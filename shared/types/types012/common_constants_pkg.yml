@@ -1,0 +1,52 @@
+# yml2hdl v0.3
+config:
+   basic_functions: False
+   packages:
+      - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg]
+types:
+   - MDT_GLOBAL_AXI_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 19}
+   - MDT_GLOBAL_AXI_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 32.0}
+   - MDT_LOCAL_X_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'HEG2SFHIT_LOCALX_LEN'}
+   - MDT_LOCAL_X_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 'HEG2SFHIT_LOCALX_MULT'}
+   - MDT_LOCAL_Y_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'HEG2SFHIT_LOCALY_LEN'}
+   - MDT_LOCAL_Y_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 'HEG2SFHIT_LOCALY_MULT'}
+   - MDT_RADIUS_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'HEG2SFHIT_RADIUS_LEN'}
+   - MDT_RADIUS_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 32.0}
+   - BCID_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'SL_HEADER_BCID_LEN'}
+   - SLC_CHAMBER_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 4}
+   - SLC_Z_RPC_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'SLC_BARREL_RPC0_POSZ_LEN'}
+   - SLC_Z_RPC_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 'SLC_BARREL_RPC0_POSZ_MULT'}
+   - MDT_FIBER_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 5}
+   - MDT_MUXCH_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 4}
+   - MDT_TUBE_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'TAR2HPS_TUBE_LEN'}
+   - MDT_LAYER_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'TAR2HPS_LAYER_LEN'}
+   - MDT_TIME_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'TDC_COARSETIME_LEN + TDC_FINETIME_LEN'}
+   - UCM_VEC_ANG_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'UCM2HPS_VEC_ANG_LEN'}
+   - UCM_MBAR_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'UCM_VEC_ANG_LEN'}
+   - UCM_Z_ROI_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'UCM2HPS_VEC_POS_LEN'}
+   - UCM_Z_ROI_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 'UCM2HPS_VEC_POS_MULT'}
+   - MDT_LOCAL_AXI_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 14}
+   - MDT_LOCAL_AXI_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 16.0}
+   - CSF_X_OFFSET: {'qualifier': 'constant', 'type': 'integer', 'value': 0}
+   - CSF_Y_OFFSET: {'qualifier': 'constant', 'type': 'integer', 'value': -640}
+   - SF_SEG_POS_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'SF2PTCALC_SEGPOS_LEN'}
+   - SF_SEG_POS_MULTI: {'qualifier': 'constant', 'type': 'real', 'value': 16.0}
+   - SF_SEG_ANG_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'SF2PTCALC_SEGANGLE_LEN'}
+   - SF_SEG_ANG_MULTI: {'qualifier': 'constant', 'type': 'real', 'value': 4096.0}
+   - SF_SEG_ANG_MULTI_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 12}
+   - UCM_PT_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'UCM2PL_PHIMOD_LEN'}
+   - MTC_ETA_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'PTCALC2MTC_MDT_ETA_LEN'}
+   - MTC_PT_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'PTCALC2MTC_MDT_PT_LEN'}
+   - MTC_PT_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 'PTCALC2MTC_MDT_PT_MULT'}
+   - MTC_PTTHR_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'PTCALC2MTC_MDT_PTTHRESH_LEN'}
+   - MTC_NSEG_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'PTCALC2MTC_MDT_NSEGMENTS_LEN'}
+   - MTC_QUALITY_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 'PTCALC2MTC_MDT_QUALITY_LEN'}
+   - BIL_SEC3_RHO_CORNER: {'qualifier': 'constant', 'type': 'real', 'value': 4755.91}
+   - BML_SEC3_RHO_CORNER: {'qualifier': 'constant', 'type': 'real', 'value': 6898.44}
+   - BOL_SEC3_RHO_CORNER: {'qualifier': 'constant', 'type': 'real', 'value': 9259.44}
+   - BIL_SEC3_RHO: {'qualifier': 'constant', 'type': 'real', 'value': 4948.979}
+   - BML_SEC3_RHO: {'qualifier': 'constant', 'type': 'real', 'value': 7138.999}
+   - BOL_SEC3_RHO: {'qualifier': 'constant', 'type': 'real', 'value': 9499.998}
+   - c_CLK_AXI_MULT: {'qualifier': 'constant', 'type': 'integer', 'value': 8}
+   - UCM_R_MDT_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 15}
+

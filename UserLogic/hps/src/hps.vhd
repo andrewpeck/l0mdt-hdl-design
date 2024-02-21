@@ -51,6 +51,8 @@ entity hps is
     clk     : in std_logic;
     rst     : in std_logic;
     glob_en : in std_logic;
+    glob_freeze            : in std_logic;
+
 
     -- control
     ctrl_v            : in std_logic_vector;-- HPS_CTRL_t;

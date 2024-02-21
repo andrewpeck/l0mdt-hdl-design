@@ -105,7 +105,7 @@ begin
         rst                 => rst,
         glob_en             => glob_en,
         --
-        i_ang               => uCM_data_r.vec_ang,
+        i_ang               => std_logic_vector(uCM_data_r.vec_ang),
         i_dv                => uCM_data_r.data_valid,
         --
         o_roi_edges         => roi_edges,
@@ -126,7 +126,7 @@ begin
         rst                 => rst,
         glob_en             => glob_en,
         --
-        i_ang               => uCM_data_r.vec_ang,
+        i_ang               => std_logic_vector(uCM_data_r.vec_ang),
         i_dv                => uCM_data_r.data_valid,
         --
         o_roi_edges         => roi_edges,

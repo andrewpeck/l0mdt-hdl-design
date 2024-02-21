@@ -1,16 +1,20 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: sumps
+-- File: h2s_sump.vhd
+-- Module: <<moduleName>>
+-- File PATH: /h2s_sump.vhd
+-- -----
+-- File Created: Thursday, 16th March 2023 3:06:53 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Monday, 19th February 2024 11:20:08 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: Hit 2 segment
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
+
 library ieee;
 use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
@@ -30,41 +34,39 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
--- library hegtypes_lib;
--- use hegtypes_lib.hp_pkg.all;
--- use hegtypes_lib.heg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
 
-entity h2s_sump is
-  port (
-    -- clock and control
-    -- clock_and_control : in  l0mdt_control_rt;
-    -- ttc_commands      : in  l0mdt_ttc_rt;
-    -- ctrl              : in  H2S_CTRL_t;
-    -- mon               : out H2S_MON_t;
+library fm_lib;
+use fm_lib.fm_types.all;
 
-    -- TDC Hits from Polmux
-    i_inn_tar_hits_av  : in tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_mid_tar_hits_av  : in tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_out_tar_hits_av  : in tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_ext_tar_hits_av  : in tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
-    -- Sector Logic Candidates from uCM
-    i_inn_slc_av       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-    i_mid_slc_av       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-    i_out_slc_av       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-    i_ext_slc_av       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-    -- Segments Out
-    o_inn_segments_av  : out sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
-    o_mid_segments_av  : out sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
-    o_out_segments_av  : out sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
-    o_ext_segments_av  : out sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
-    -- Segments Out to Neighbor
-    o_plus_neighbor_segments_av  : out sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    o_minus_neighbor_segments_av : out sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+library ult_lib;
+  use ult_lib.ult_pkg.all;
+
+entity h2s_sump is
+  generic(
+    g_STATION_RADIUS : integer := 0;    --station
+    g_HPS_NUM_MDT_CH : integer := 6
+    );
+  port (
+    clk     : in std_logic;
+    rst     : in std_logic;
+    glob_en : in std_logic;
+    glob_freeze            : in std_logic;
+
+    -- control
+    ctrl_v            : in std_logic_vector;-- HPS_CTRL_t;
+    mon_v             : out std_logic_vector;--HPS_MON_t;
+    fm_hps_mon_v       : out std_logic_vector; -- fm_hps_sf_mon ; --fm_rt_array(0 to h2s_sb_single_station_n - 1);
+    -- SLc
+    i_uCM2hps_av      : in  ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    -- MDT hit
+    i_mdt_tar_av      : in  tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+    -- to pt calc
+    o_sf2pt_av        : out sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
     
-    o_sump : out std_logic
+    o_sump_b : out std_logic
   );
   
 
@@ -73,51 +75,48 @@ end entity h2s_sump;
 
 architecture beh of h2s_sump is
 
-  signal inn_tar_hits_sump            : std_logic_vector (c_HPS_NUM_MDT_CH_INN-1 downto 0);
-  signal mid_tar_hits_sump            : std_logic_vector (c_HPS_NUM_MDT_CH_MID-1 downto 0);
-  signal out_tar_hits_sump            : std_logic_vector (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
-  signal ext_tar_hits_sump            : std_logic_vector (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
-  signal inn_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
-  signal mid_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
-  signal out_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
-  signal ext_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
+  signal tar_hits_sump            : std_logic_vector (c_HPS_NUM_MDT_CH_INN-1 downto 0);
+  signal slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
+  signal sump                   : std_logic_vector(31 downto 0);
 begin
 
-    o_inn_segments_av <= (others => (others => '0'));
-    o_mid_segments_av <= (others => (others => '0'));
-    o_out_segments_av <= (others => (others => '0'));
-    o_ext_segments_av <= (others => (others => '0'));
-    o_plus_neighbor_segments_av <= (others => (others => '0'));
-    o_minus_neighbor_segments_av <= (others => (others => '0'));
+  MDT_INN_SUMP: for I in 0 to c_NUM_THREADS-1 generate
+    slc_sump(I) <= xor_reduce(i_uCM2hps_av(I));
+  end generate;
+  MDT_MID_SUMP: for I in 0 to c_HPS_NUM_MDT_CH_MID-1 generate
+    tar_hits_sump(I) <= xor_reduce(i_mdt_tar_av(I));
+  end generate;
+    
+  o_sump_b <= sump(0);
+      
+  process (clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        -- o_uCM2hps_inn_av <= (others => (others => '0'));
+        -- o_uCM2hps_mid_av <= (others => (others => '0'));
+        -- o_uCM2hps_out_av <= (others => (others => '0'));
+        -- o_uCM2hps_ext_av <= (others => (others => '0'));
+        -- o_uCM2pl_av <= (others => (others => '0'));
+      else
+        if glob_en then
+          sump(30 downto 0) <= sump(31 downto 1);
+          sump(31) <= glob_freeze xor xor_reduce(ctrl_v) 
+                  xor xor_reduce(tar_hits_sump)
+                  xor xor_reduce(slc_sump);
+        end if;
+      end if;
+    end if;
+  end process;
 
-    MDT_INN_SUMP: for I in 0 to c_HPS_NUM_MDT_CH_INN-1 generate
-      inn_tar_hits_sump(I) <= xor_reduce(i_inn_tar_hits_av(I));
-    end generate;
-    MDT_MID_SUMP: for I in 0 to c_HPS_NUM_MDT_CH_MID-1 generate
-      mid_tar_hits_sump(I) <= xor_reduce(i_mid_tar_hits_av(I));
-    end generate;
-    MDT_OUT_SUMP: for I in 0 to c_HPS_NUM_MDT_CH_OUT-1 generate
-      out_tar_hits_sump(I) <= xor_reduce(i_out_tar_hits_av(I));
-    end generate;
-    MDT_EXT_SUMP: for I in 0 to c_HPS_NUM_MDT_CH_EXT-1 generate
-      ext_tar_hits_sump(I) <= xor_reduce(i_ext_tar_hits_av(I));
-    end generate;
-
-    SLC_SUMP: for I in 0 to c_NUM_THREADS-1 generate
-      inn_slc_sump(I) <= xor_reduce(i_inn_slc_av(I));
-      mid_slc_sump(I) <= xor_reduce(i_mid_slc_av(I));
-      out_slc_sump(I) <= xor_reduce(i_out_slc_av(I));
-      ext_slc_sump(I) <= xor_reduce(i_ext_slc_av(I));
-    end generate;
-   
-    o_sump <=   xor_reduce(inn_tar_hits_sump)
-              xor xor_reduce(mid_tar_hits_sump)
-              xor xor_reduce(out_tar_hits_sump)
-              xor xor_reduce(ext_tar_hits_sump)
-              xor xor_reduce(inn_slc_sump     )
-              xor xor_reduce(mid_slc_sump     )
-              xor xor_reduce(out_slc_sump     )
-              xor xor_reduce(ext_slc_sump     );
+  hps2pt: for i_th in c_NUM_THREADS -1 downto 0 generate
+    DES_OUT : entity shared_lib.vhdl_utils_deserializer 
+      generic map (g_DATA_WIDTH => o_sf2pt_av(i_th)'length)
+      port map(clk => clk,rst  => rst,i_data => sump(i_th),o_data => o_sf2pt_av(i_th));
+  end generate;
+  mon_out : entity shared_lib.vhdl_utils_deserializer 
+    generic map (g_DATA_WIDTH => mon_v'length)
+    port map(clk => clk,rst  => rst,i_data => sump(0),o_data => mon_v);
   
 end architecture beh;
 

@@ -70,6 +70,7 @@ entity top_hps is
     clk                 : in std_logic;
     rst                 : in std_logic;
     ena             : in std_logic := '1';
+    glob_freeze            : in std_logic;
     -- control
     i_ctrl_ab        : in  std_logic_vector(3 downto 0);
     o_mon_ab         : out std_logic_vector(3 downto 0);
@@ -135,6 +136,7 @@ begin
           clk                 => clk,
           rst                 => rst,
           glob_en             => ena,
+          glob_freeze => glob_freeze,
           -- configuration & control
           ctrl_v              => ctrl_v,
           mon_v               => mon_v,

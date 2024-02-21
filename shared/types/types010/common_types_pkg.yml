@@ -46,10 +46,6 @@ types:
    - tar2hps_art: {'array': 'open', 'type': 'tar2hps_rt'}
    - tar2hps_avt: {'array': 'open', 'type': 'tar2hps_vt'}
 
-   - ucm2tar_vt: {'type': 'logic', 'range': ['ucm2tar_rt-1', 0]}
-   - ucm2tar_art: {'array': 'open', 'type': 'ucm2tar_rt'}
-   - ucm2tar_avt: {'array': 'open', 'type': 'ucm2tar_vt'}
-
    - ucm2hps_vt: {'type': 'logic', 'range': ['ucm2hps_rt-1', 0]}
    - ucm2hps_art: {'array': 'open', 'type': 'ucm2hps_rt'}
    - ucm2hps_avt: {'array': 'open', 'type': 'ucm2hps_vt'}
