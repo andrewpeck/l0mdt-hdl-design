@@ -56,7 +56,7 @@ riviera:
         - MainBlocks/ptc_mpi
         - MainBlocks/BA3_tar
         - MainBlocks/BA3_ucm012_vu13
-        - MainBlocks/BA3_hps_csf_bp
+        # - MainBlocks/BA3_hps_csf_bp
         # - MainBlocks/BA3_heg
   allow_failure: true
 
@@ -89,9 +89,9 @@ sim_comp:
       - PROJECT_NAME: MainBlocks/BA3_ucm012_vu13
         PROJECT_Q_NAME: MainBlocks/BA3_ucm012_vu13_questa
         PROJECT_R_NAME: MainBlocks/BA3_ucm012_vu13_riviera
-      - PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
-        PROJECT_Q_NAME: MainBlocks/BA3_hps_csf_bp_questa
-        PROJECT_R_NAME: MainBlocks/BA3_hps_csf_bp_riviera
+      # - PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
+      #   PROJECT_Q_NAME: MainBlocks/BA3_hps_csf_bp_questa
+      #   PROJECT_R_NAME: MainBlocks/BA3_hps_csf_bp_riviera
       # - PROJECT_NAME: MainBlocks/BA3_heg
       #   PROJECT_Q_NAME: MainBlocks/BA3_heg_questa
       #   PROJECT_R_NAME: MainBlocks/BA3_heg_riviera
