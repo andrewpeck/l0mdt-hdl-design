@@ -343,7 +343,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../ult/src/ult_fm.vhd">
+      <File Path="$PPRDIR/../../../ult/ult_v1.0/src/ult_fm.vhd">
         <FileInfo SFType="VHDL2008">
           <Attr Name="Library" Val="ult_lib"/>
           <Attr Name="UsedIn" Val="synthesis"/>

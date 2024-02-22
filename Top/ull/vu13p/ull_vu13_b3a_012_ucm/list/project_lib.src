@@ -9,7 +9,7 @@ shared/shared_lib_012.src lib=shared_lib
 #### project local configuration files ####
 Top/ull/vu13p/ull_vu13_b3a_012_ucm/prj_cfg.vhd
 #### top  ####
-UserLogic/ult/top_ult_imp.vhd top=top_ult
+UserLogic/ult/ult_v1.0/top_ult_imp.vhd top=top_ult
 #### AXI SC ####
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 

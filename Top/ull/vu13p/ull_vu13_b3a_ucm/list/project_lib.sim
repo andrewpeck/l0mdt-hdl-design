@@ -1,7 +1,7 @@
 #Simulator questa
 shared/shared_lib.sim lib=shared_lib
 # UserLogic/ult/ult_lib.sim
-UserLogic/ult/top_ult_sim.vhd 
+UserLogic/ult/ult_v1.0/top_ult_sim.vhd 
 # topsim=ult_tb runtime=150us
 shared/sim/waves/ull_vu13_b3a_ucm_ta.do 
 

@@ -4,7 +4,7 @@
 
 shared/shared_lib.sim lib=shared_lib
 
-UserLogic/ult/top_ult_sim.vhd topsim=ult_tb runtime=150us
+UserLogic/ult/ult_v1.0/top_ult_sim.vhd topsim=ult_tb runtime=150us
 
 # Waveform 
 UserLogic/ult/sim/ult_tp_sim1.wcfg

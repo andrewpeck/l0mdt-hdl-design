@@ -11,7 +11,7 @@ shared/shared_lib_010.src lib=shared_lib
 Top/ull/vu13p/ull_vu13_ba3_ucm_mpl_hps_csf_bp/prj_cfg.vhd
 
 #### top  ####
-UserLogic/ult/top_ult_imp.vhd top=top_ult
+UserLogic/ult/ult_v1.0/top_ult_imp.vhd top=top_ult
 
 #### hal ####
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
@@ -19,7 +19,7 @@ HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 # modules included
 #UserLogic/heg/hegtypes_lib.src lib=hegtypes_lib
 UserLogic/mpl/mpl_lib.src lib=mpl_lib
-UserLogic/ult/ult_lib.src lib=ult_lib
+UserLogic/ult/ult_v1.0_lib.src lib=ult_lib
 UserLogic/ucm/ucm_v1.0_vu13_lib.src lib=ucm_lib
 UserLogic/hp/hp_lib.src lib=hp_lib
 UserLogic/heg/heg_lib.src lib=heg_lib

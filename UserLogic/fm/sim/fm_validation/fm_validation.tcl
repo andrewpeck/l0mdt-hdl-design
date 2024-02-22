@@ -90,7 +90,7 @@
 #    "$origin_dir/../../../../Top/l0mdt/ku15p/l0mdt_ku15p_ull_fm/prj_cfg.vhd"
 #    "$origin_dir/../../../../shared/config/config_pkg.vhd"
 #    "$origin_dir/../../../../UserLogic/fm/src/fm_ult_pkg.vhd"
-#    "$origin_dir/../../../../UserLogic/ult/src/ult_fm.vhd"
+#    "$origin_dir/../../../../UserLogic/ult/ult_v1.0/ult_v1.0/src/ult_fm.vhd"
 #    "$origin_dir/../../../../UserLogic/fm/sim/fm_map_vhdl_wrapper.vhd"
 #    "$origin_dir/../../../../UserLogic/fm/sim/fm_map_wrapper.v"
 #    "$origin_dir/../../../../UserLogic/fm/sim/axiRegPkg_sv.sv"
@@ -201,7 +201,7 @@ proc checkRequiredFiles { origin_dir xilinx_tools_dir} {
  "[file normalize "$origin_dir/../../../../Top/l0mdt/ku15p/l0mdt_ku15p_ull_fm/prj_cfg.vhd"]"\
  "[file normalize "$origin_dir/../../../../shared/config/config_pkg.vhd"]"\
  "[file normalize "$origin_dir/../../src/fm_ult_pkg.vhd"]"\
- "[file normalize "$origin_dir/../../../ult/src/ult_fm.vhd"]"\
+ "[file normalize "$origin_dir/../../../ult/ult_v1.0/src/ult_fm.vhd"]"\
  "[file normalize "$origin_dir/../fm_map_vhdl_wrapper.vhd"]"\
  "[file normalize "$origin_dir/../fm_map_wrapper.v"]"\
  "[file normalize "$origin_dir/../axiRegPkg_sv.sv"]"\
@@ -414,7 +414,7 @@ set files [list \
  [file normalize "${origin_dir}/../../../../Top/l0mdt/ku15p/l0mdt_ku15p_ull_fm/prj_cfg.vhd"] \
  [file normalize "${origin_dir}/../../../../shared/config/config_pkg.vhd"] \
  [file normalize "${origin_dir}/../../src/fm_ult_pkg.vhd"] \
- [file normalize "${origin_dir}/../../../ult/src/ult_fm.vhd"] \
+ [file normalize "${origin_dir}/../../../ult/ult_v1.0/src/ult_fm.vhd"] \
  [file normalize "${origin_dir}/../fm_map_vhdl_wrapper.vhd"] \
  [file normalize "${origin_dir}/../fm_map_wrapper.v"] \
  [file normalize "${origin_dir}/../axiRegPkg_sv.sv"] \
@@ -666,7 +666,7 @@ set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
 set_property -name "library" -value "fm_lib" -objects $file_obj
 
-set file "$origin_dir/../../../ult/src/ult_fm.vhd"
+set file "$origin_dir/../../../ult/ult_v1.0/src/ult_fm.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
@@ -1427,7 +1427,7 @@ if { [get_files fm_ult_pkg.vhd] == "" } {
   import_files -quiet -fileset sources_1 $origin_dir/../../../../UserLogic/fm/src/fm_ult_pkg.vhd
 }
 if { [get_files ult_fm.vhd] == "" } {
-  import_files -quiet -fileset sources_1 $origin_dir/../../../../UserLogic/ult/src/ult_fm.vhd
+  import_files -quiet -fileset sources_1 $origin_dir/../../../../UserLogic/ult/ult_v1.0/src/ult_fm.vhd
 }
 if { [get_files fm_map_vhdl_wrapper.vhd] == "" } {
   import_files -quiet -fileset sources_1 $origin_dir/../../../../UserLogic/fm/sim/fm_map_vhdl_wrapper.vhd

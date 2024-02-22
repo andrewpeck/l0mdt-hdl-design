@@ -10,7 +10,7 @@ HAL/hal/list/hal.src lib=hal
 HAL/hal/list/hal_ku.src lib=hal
 
 Top/MainBlocks/fm/prj_cfg.vhd lib=project_lib
-UserLogic/ult/ult_lib.src lib=ult_lib
+UserLogic/ult/ult_v1.0_lib.src lib=ult_lib
 UserLogic/hp/hp_lib.src lib=hp_lib
 UserLogic/heg/heg_lib.src lib=heg_lib
 UserLogic/hps/hps_lib.src lib=hps_lib

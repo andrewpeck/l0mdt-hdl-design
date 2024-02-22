@@ -12,7 +12,7 @@ HAL/hal/list/hal_ku.src lib=hal
 # User Logic Libraries
 UserLogic/hp/hp_lib.src   lib=hp_lib
 UserLogic/mpl/mpl_lib.src lib=mpl_lib
-UserLogic/ult/ult_lib.src lib=ult_lib
+UserLogic/ult/ult_v1.0_lib.src lib=ult_lib
 UserLogic/ucm/ucm_v1.0_ku15_lib.src lib=ucm_lib
 #UserLogic/ucm/ucm_v1.0_vu13_lib.src lib=ucm_lib
 UserLogic/heg/heg_lib.src lib=heg_lib
