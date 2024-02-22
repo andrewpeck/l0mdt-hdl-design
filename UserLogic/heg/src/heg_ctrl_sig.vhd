@@ -208,7 +208,7 @@ begin
               o_uCM2sf_data_r.muid        <= i_uCM_data_r.muid;
               o_uCM2sf_data_r.mdtseg_dest <= i_uCM_data_r.mdtseg_dest;
               o_uCM2sf_data_r.mdtid       <= i_uCM_data_r.mdtid;
-              o_uCM2sf_data_r.vec_pos     <= i_uCM_data_r.vec_pos;
+              o_uCM2sf_data_r.vec_pos     <= unsigned(i_uCM_data_r.vec_pos);
               if c_SF_TYPE = '1' then
                 o_uCM2sf_data_r.vec_ang     <= unsigned(i_uCM_data_r.vec_ang);
               end if;
