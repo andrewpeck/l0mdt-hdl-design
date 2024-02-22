@@ -189,17 +189,17 @@ architecture behavioral of ult is
   constant slr_pipeline_depth : integer := 12;
 
   -- outputs from candidate manager
-  signal inn_slc_to_h2s_plin_av  : ucm2hps_avt(c_NUM_THREADS - 1 downto 0);
-  signal mid_slc_to_h2s_plin_av  : ucm2hps_avt(c_NUM_THREADS - 1 downto 0);
-  signal out_slc_to_h2s_plin_av  : ucm2hps_avt(c_NUM_THREADS - 1 downto 0);
-  signal ext_slc_to_h2s_plin_av  : ucm2hps_avt(c_NUM_THREADS - 1 downto 0);
-  signal inn_slc_to_h2s_plout_av : ucm2hps_avt(c_NUM_THREADS - 1 downto 0);
-  signal mid_slc_to_h2s_plout_av : ucm2hps_avt(c_NUM_THREADS - 1 downto 0);
-  signal out_slc_to_h2s_plout_av : ucm2hps_avt(c_NUM_THREADS - 1 downto 0);
-  signal ext_slc_to_h2s_plout_av : ucm2hps_avt(c_NUM_THREADS - 1 downto 0);
+  signal inn_slc_to_h2s_plin_av  : ucm2hps_avt(c_NUM_ACCEPTS - 1 downto 0);
+  signal mid_slc_to_h2s_plin_av  : ucm2hps_avt(c_NUM_ACCEPTS - 1 downto 0);
+  signal out_slc_to_h2s_plin_av  : ucm2hps_avt(c_NUM_ACCEPTS - 1 downto 0);
+  signal ext_slc_to_h2s_plin_av  : ucm2hps_avt(c_NUM_ACCEPTS - 1 downto 0);
+  signal inn_slc_to_h2s_plout_av : ucm2hps_avt(c_NUM_ACCEPTS - 1 downto 0);
+  signal mid_slc_to_h2s_plout_av : ucm2hps_avt(c_NUM_ACCEPTS - 1 downto 0);
+  signal out_slc_to_h2s_plout_av : ucm2hps_avt(c_NUM_ACCEPTS - 1 downto 0);
+  signal ext_slc_to_h2s_plout_av : ucm2hps_avt(c_NUM_ACCEPTS - 1 downto 0);
 
   -- type ucm2hps_bus_array_t is array (integer range 0 to SLR_PIPELINE_DEPTH)
-  --   of ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+  --   of ucm2hps_avt(c_NUM_ACCEPTS-1 downto 0);
   -- signal inn_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
   -- signal mid_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
   -- signal out_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
@@ -233,17 +233,17 @@ architecture behavioral of ult is
   signal ult_ext_tdc_hits_in_av  : tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_EXT - 1 downto 0);
 
   -- outputs from hits to segments
-  signal inn_segments_to_pt_plin_av  : sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
-  signal mid_segments_to_pt_plin_av  : sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
-  signal out_segments_to_pt_plin_av  : sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
-  signal ext_segments_to_pt_plin_av  : sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
-  signal inn_segments_to_pt_plout_av : sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
-  signal mid_segments_to_pt_plout_av : sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
-  signal out_segments_to_pt_plout_av : sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
-  signal ext_segments_to_pt_plout_av : sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
+  signal inn_segments_to_pt_plin_av  : sf2ptcalc_avt(c_NUM_ACCEPTS - 1 downto 0);
+  signal mid_segments_to_pt_plin_av  : sf2ptcalc_avt(c_NUM_ACCEPTS - 1 downto 0);
+  signal out_segments_to_pt_plin_av  : sf2ptcalc_avt(c_NUM_ACCEPTS - 1 downto 0);
+  signal ext_segments_to_pt_plin_av  : sf2ptcalc_avt(c_NUM_ACCEPTS - 1 downto 0);
+  signal inn_segments_to_pt_plout_av : sf2ptcalc_avt(c_NUM_ACCEPTS - 1 downto 0);
+  signal mid_segments_to_pt_plout_av : sf2ptcalc_avt(c_NUM_ACCEPTS - 1 downto 0);
+  signal out_segments_to_pt_plout_av : sf2ptcalc_avt(c_NUM_ACCEPTS - 1 downto 0);
+  signal ext_segments_to_pt_plout_av : sf2ptcalc_avt(c_NUM_ACCEPTS - 1 downto 0);
 
   -- type sf2pt_bus_array_t is array (integer range 0 to SLR_PIPELINE_DEPTH)
-  --   of sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+  --   of sf2ptcalc_avt(c_NUM_ACCEPTS-1 downto 0);
   -- signal inn_segments_to_pt_pipeline : sf2pt_bus_array_t;
   -- signal mid_segments_to_pt_pipeline : sf2pt_bus_array_t;
   -- signal out_segments_to_pt_pipeline : sf2pt_bus_array_t;
@@ -255,18 +255,18 @@ architecture behavioral of ult is
   -- attribute shreg_extract of ext_segments_to_pt_pipeline : signal is "no";
 
   -- slc to pt (from pipeline)
-  -- signal inner_slc_to_pt  : sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
-  -- signal middle_slc_to_pt : sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
-  -- signal outer_slc_to_pt  : sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
-  -- signal extra_slc_to_pt  : sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
+  -- signal inner_slc_to_pt  : sf2ptcalc_avt (c_NUM_ACCEPTS-1 downto 0);
+  -- signal middle_slc_to_pt : sf2ptcalc_avt (c_NUM_ACCEPTS-1 downto 0);
+  -- signal outer_slc_to_pt  : sf2ptcalc_avt (c_NUM_ACCEPTS-1 downto 0);
+  -- signal extra_slc_to_pt  : sf2ptcalc_avt (c_NUM_ACCEPTS-1 downto 0);
 
   -- slc to mtc (from pipeline)
-  signal pl2pt_av  : pl2ptcalc_avt (c_NUM_THREADS - 1 downto 0);
+  signal pl2pt_av  : pl2ptcalc_avt (c_NUM_ACCEPTS - 1 downto 0);
   signal pl2mtc_av : pl2mtc_avt (c_MAX_NUM_SL - 1 downto 0);
 
   -- pt calc 2 mtc
-  signal pt2mtc_av : ptcalc2mtc_avt(c_NUM_THREADS - 1 downto 0);
-  -- signal pt2mtc : pt2mtc_avt (c_NUM_THREADS-1 downto 0);
+  signal pt2mtc_av : ptcalc2mtc_avt(c_NUM_ACCEPTS - 1 downto 0);
+  -- signal pt2mtc : pt2mtc_avt (c_NUM_ACCEPTS-1 downto 0);
 
   signal ucm_sump : std_logic := '1';
   signal pt_sump  : std_logic := '1';
@@ -419,7 +419,7 @@ begin
       
     -------------------------------------
 
-    slc2hps_loop : for th_i in c_NUM_THREADS - 1 downto 0 generate
+    slc2hps_loop : for th_i in c_NUM_ACCEPTS - 1 downto 0 generate
       hps_inn : if c_HPS_ENABLE_ST_INN = '1' generate
 
         slc2hps_inn_pl : entity vamc_lib.vamc_spl
@@ -634,7 +634,7 @@ begin
 
     -------------------------------------
 
-    hps2pt_loop : for th_i in c_NUM_THREADS - 1 downto 0 generate
+    hps2pt_loop : for th_i in c_NUM_ACCEPTS - 1 downto 0 generate
 
       hps_inn : if c_HPS_ENABLE_ST_INN = '1' generate
 

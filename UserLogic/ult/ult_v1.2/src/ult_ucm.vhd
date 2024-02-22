@@ -53,10 +53,10 @@ entity ult_ucm is
     i_slc_data_neighborA_v : in slc_rx_vt;
     i_slc_data_neighborB_v : in slc_rx_vt;
     -- Sector Logic Candidates Out of X-point Switch
-    o_uCM2hps_inn_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_mid_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_out_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_ext_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_inn_av        : out ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2hps_mid_av        : out ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2hps_out_av        : out ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2hps_ext_av        : out ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
     -- pipeline
     o_uCM2pl_av             : out ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
@@ -126,17 +126,17 @@ begin
         ucm_fm_mon_r.fm_ucm_slc_rx_mon(I).fm_vld   <=  i_slc_data_mainA_av(I)( slc_rx_rt'w-1);
       end generate;
       --UCM2HPS
-      FM_UCM2HPS_INN: for I in 0 to c_NUM_THREADS - 1 generate
+      FM_UCM2HPS_INN: for I in 0 to c_NUM_ACCEPTS - 1 generate
         ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_inn(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_inn_av(I);
         ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_inn(I).fm_vld   <= o_uCM2hps_inn_av(I)( ucm2hps_rt'w -1) ;
       end generate;
 
-      FM_UCM2HPS_MID: for I in 0 to c_NUM_THREADS - 1 generate
+      FM_UCM2HPS_MID: for I in 0 to c_NUM_ACCEPTS - 1 generate
         ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_mid(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_mid_av(I);
         ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_mid(I).fm_vld   <= o_uCM2hps_mid_av(I)( ucm2hps_rt'w -1) ;
       end generate;
 
-      FM_UCM2HPS_OUT: for I in 0 to c_NUM_THREADS - 1 generate
+      FM_UCM2HPS_OUT: for I in 0 to c_NUM_ACCEPTS - 1 generate
         ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_out(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_out_av(I);
         ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_out(I).fm_vld   <= o_uCM2hps_out_av(I)( ucm2hps_rt'w -1) ;
       end generate;
