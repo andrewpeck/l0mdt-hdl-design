@@ -1,0 +1,107 @@
+# yml2hdl v0.3
+config:
+   basic_functions: False
+   packages:
+      - ieee: [std_logic_1164, numeric_std, math_real]
+      - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg]
+types:
+  - bcid: {'type': 'unsigned', 'range': ['12-1', 0]}
+  - evid: {'type': 'unsigned', 'range': ['32-1', 0]}
+  - orid: {'type': 'unsigned', 'range': ['32-1', 0]}
+  - integer_bus: {'array': 'open', 'type': 'integer'}
+  - l0mdt_control_rt:
+    - clk: {'type': 'logic'}
+    - rst: {'type': 'logic'}
+    - bx: {'type': 'logic'}
+  - l0mdt_control_vt: {'type': 'logic', 'range': ['l0mdt_control_rt-1', 0]}
+
+  - l0mdt_ttc_rt:
+    - bcr: {'type': 'logic'}
+    - ocr: {'type': 'logic'}
+    - ecr: {'type': 'logic'}
+    - l0a: {'type': 'logic'}
+    - l1a: {'type': 'logic'}
+    - bcid: {'type': 'bcid'}
+    - evid: {'type': 'evid'}
+    - orid: {'type': 'orid'}
+  - l0mdt_ttc_vt: {'type': 'logic', 'range': ['l0mdt_ttc_rt-1', 0]}
+
+  - ucm2tar_rt:
+    - data_valid : {'type' : logic}
+    - action : {'type' : logic, 'range' : [3,0]}
+    - chambers : {'type' : logic, 'range' : [5,0]}
+    - process_ch:  {'type' : 'logic' , 'range' : [3, 0]}
+
+  - slc_rx_vt: {'type': 'logic', 'range': ['slc_rx_rt-1', 0]}
+  - slc_rx_art: {'array': 'open', 'type': 'slc_rx_rt'}
+  - slc_rx_avt: {'array': 'open', 'type': 'slc_rx_vt'}
+
+  - slc_endcap_vt: {'type': 'logic', 'range': ['slc_endcap_rt-1', 0]}
+  - slc_endcap_art: {'array': 'open', 'type': 'slc_endcap_rt'}
+  - slc_endcap_avt: {'array': 'open', 'type': 'slc_endcap_vt'}
+
+  - slc_barrel_vt: {'type': 'logic', 'range': ['slc_barrel_rt-1', 0]}
+  - slc_barrel_art: {'array': 'open', 'type': 'slc_barrel_rt'}
+  - slc_barrel_avt: {'array': 'open', 'type': 'slc_barrel_vt'}
+
+  - tdcpolmux2tar_vt: {'type': 'logic', 'range': ['tdcpolmux2tar_rt-1', 0]}
+  - tdcpolmux2tar_art: {'array': 'open', 'type': 'tdcpolmux2tar_rt'}
+  - tdcpolmux2tar_avt: {'array': 'open', 'type': 'tdcpolmux2tar_vt'}
+
+  - tar2hps_vt: {'type': 'logic', 'range': ['tar2hps_rt-1', 0]}
+  - tar2hps_art: {'array': 'open', 'type': 'tar2hps_rt'}
+  - tar2hps_avt: {'array': 'open', 'type': 'tar2hps_vt'}
+
+  - ucm2tar_vt: {'type': 'logic', 'range': ['ucm2tar_rt-1', 0]}
+  - ucm2tar_art: {'array': 'open', 'type': 'ucm2tar_rt'}
+  - ucm2tar_avt: {'array': 'open', 'type': 'ucm2tar_vt'}
+
+  - ucm2hps_vt: {'type': 'logic', 'range': ['ucm2hps_rt-1', 0]}
+  - ucm2hps_art: {'array': 'open', 'type': 'ucm2hps_rt'}
+  - ucm2hps_avt: {'array': 'open', 'type': 'ucm2hps_vt'}
+
+  - heg2sfslc_vt: {'type': 'logic', 'range': ['heg2sfslc_rt-1', 0]}
+  - heg2sfslc_art: {'array': 'open', 'type': 'heg2sfslc_rt'}
+  - heg2sfslc_avt: {'array': 'open', 'type': 'heg2sfslc_vt'}
+
+  - heg2sfhit_vt: {'type': 'logic', 'range': ['heg2sfhit_rt-1', 0]}
+  - heg2sfhit_art: {'array': 'open', 'type': 'heg2sfhit_rt'}
+  - heg2sfhit_avt: {'array': 'open', 'type': 'heg2sfhit_vt'}
+
+  - sf2ptcalc_vt: {'type': 'logic', 'range': ['sf2ptcalc_rt-1', 0]}
+  - sf2ptcalc_art: {'array': 'open', 'type': 'sf2ptcalc_rt'}
+  - sf2ptcalc_avt: {'array': 'open', 'type': 'sf2ptcalc_vt'}
+
+  - ucm2pl_vt: {'type': 'logic', 'range': ['ucm2pl_rt-1', 0]}
+  - ucm2pl_art: {'array': 'open', 'type': 'ucm2pl_rt'}
+  - ucm2pl_avt: {'array': 'open', 'type': 'ucm2pl_vt'}
+
+  - pl2ptcalc_vt: {'type': 'logic', 'range': ['pl2ptcalc_rt-1', 0]}
+  - pl2ptcalc_art: {'array': 'open', 'type': 'pl2ptcalc_rt'}
+  - pl2ptcalc_avt: {'array': 'open', 'type': 'pl2ptcalc_vt'}
+
+  - pl2mtc_vt: {'type': 'logic', 'range': ['pl2mtc_rt-1', 0]}
+  - pl2mtc_art: {'array': 'open', 'type': 'pl2mtc_rt'}
+  - pl2mtc_avt: {'array': 'open', 'type': 'pl2mtc_vt'}
+
+  - ptcalc2mtc_vt: {'type': 'logic', 'range': ['ptcalc2mtc_rt-1', 0]}
+  - ptcalc2mtc_art: {'array': 'open', 'type': 'ptcalc2mtc_rt'}
+  - ptcalc2mtc_avt: {'array': 'open', 'type': 'ptcalc2mtc_vt'}
+
+  - mtc2sl_vt: {'type': 'logic', 'range': ['mtc2sl_rt-1', 0]}
+
+  - mtc_out_art: {'array': 'open', 'type': 'mtc2sl_rt'}
+  - mtc_out_avt: {'array': 'open', 'type': 'mtc2sl_vt'}
+
+  - mtc2nsp_art: {'array': 'open', 'type': 'mtc2sl_rt'}
+  - mtc2nsp_avt: {'array': 'open', 'type': 'mtc2sl_vt'}
+
+  - felix_data: {'type': 'logic', 'range': ['34-1', 0]}
+  - felix_data_avt: {'array': 'open', 'type': felix_data}
+    
+  - felix_stream_rt:
+    - valid: {'type': 'logic'}
+    - data: {'type': 'felix_data'}
+  - felix_stream_vt: {'type': 'logic', 'range': ['felix_stream_rt-1', 0]}
+  - felix_stream_art: {'array': 'open', 'type': 'felix_stream_rt'}
+  - felix_stream_avt: {'array': 'open', 'type': 'felix_stream_vt'}

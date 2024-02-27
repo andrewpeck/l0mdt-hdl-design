@@ -57,6 +57,7 @@ architecture beh of tar_tb is
   constant ST_ENABLE : std_logic_vector(3 downto 0) := g_ST_ENABLE;
 
   signal enable_mdt : std_logic := '1';
+  signal glob_freeze : std_logic := '0';
   
   ---------------------------------------------------------------------------
   -- simulation signals
@@ -172,13 +173,14 @@ begin
       clk             => clk,
       rst             => rst,
       glob_en         => glob_en,
+      glob_freeze => glob_freeze,
       --
       ctrl_v            => tar_inn_ctrl_v,
       mon_v             => tar_inn_mon_v,
       -- TDC Hits from Polmux
       i_tdc_hits_av  => i_mdt_tdc_inn_av,
       -- to daq
-      o_tdc_hits_av  => o_tdc_hits_inn_av,
+      -- o_tdc_hits_av  => o_tdc_hits_inn_av,
       -- outputs to h2s
       o_tar_hits_av  => o_tar_hits_inn_av
   
@@ -195,13 +197,14 @@ begin
       clk             => clk,
       rst             => rst,
       glob_en         => glob_en,
+      glob_freeze => glob_freeze,
       --
       ctrl_v            => tar_mid_ctrl_v,
       mon_v             => tar_mid_mon_v,
       -- TDC Hits from Polmux
       i_tdc_hits_av  => i_mdt_tdc_mid_av,
       -- to daq
-      o_tdc_hits_av  => o_tdc_hits_mid_av,
+      -- o_tdc_hits_av  => o_tdc_hits_mid_av,
       -- outputs to h2s
       o_tar_hits_av  => o_tar_hits_mid_av
 
@@ -218,13 +221,14 @@ begin
       clk             => clk,
       rst             => rst,
       glob_en         => glob_en,
+      glob_freeze => glob_freeze,
       --
       ctrl_v            => tar_out_ctrl_v,
       mon_v             => tar_out_mon_v,
       -- TDC Hits from Polmux
       i_tdc_hits_av  => i_mdt_tdc_out_av,
       -- to daq
-      o_tdc_hits_av  => o_tdc_hits_out_av,
+      -- o_tdc_hits_av  => o_tdc_hits_out_av,
       -- outputs to h2s
       o_tar_hits_av  => o_tar_hits_out_av
   
@@ -241,13 +245,14 @@ begin
       clk             => clk,
       rst             => rst,
       glob_en         => glob_en,
+      glob_freeze => glob_freeze,
       --
       ctrl_v            => tar_ext_ctrl_v,
       mon_v             => tar_ext_mon_v,
       -- TDC Hits from Polmux
       i_tdc_hits_av  => i_mdt_tdc_ext_av,
       -- to daq
-      o_tdc_hits_av  => o_tdc_hits_ext_av,
+      -- o_tdc_hits_av  => o_tdc_hits_ext_av,
       -- outputs to h2s
       o_tar_hits_av  => o_tar_hits_ext_av
   
@@ -266,6 +271,7 @@ begin
     clk               => clk,
     rst               => rst,
     enable            => glob_en,
+      -- glob_freeze => glob_freeze,
     --
     tb_curr_sim_time  => tb_curr_sim_time,
     tb_curr_tdc_time  => tb_curr_tdc_time,

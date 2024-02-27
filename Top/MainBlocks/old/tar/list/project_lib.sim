@@ -1,9 +1,0 @@
-#Simulator questa
-shared/shared_lib.sim lib=shared_lib
-# UserLogic/ult/ult_lib.sim
-UserLogic/tar/top_tar_sim.vhd 
-shared/sim/waves/tar_ta.do 
-#topsim=tar_tb runtime=150us
-
-# Waveform 
-# UserLogic/ult/sim/ult_tp_sim1.wcfg

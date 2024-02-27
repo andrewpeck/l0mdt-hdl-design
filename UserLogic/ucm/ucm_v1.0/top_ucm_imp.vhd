@@ -43,6 +43,7 @@ entity top_ucm is
     clk                     : in std_logic;
     rst                     : in std_logic;
     glob_en                 : in std_logic;
+    glob_freeze            : in std_logic;
     ttc_commands            : in l0mdt_ttc_rt;
     -- i_debug                 : in std_logic;
     -- -- configuration, control & Monitoring
@@ -142,6 +143,7 @@ begin
     clk                     => clk,
     rst                     => rst,
     glob_en                 => glob_en,
+    glob_freeze => glob_freeze,
     ttc_commands            => ttc_commands, 
     -- configuration, control & Monitoring
     ctrl_v                    => ctrl_v,

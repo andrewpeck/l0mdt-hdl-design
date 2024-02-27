@@ -1,0 +1,6 @@
+config:
+   version: 0.3
+   basic_functions: True
+   packages:
+      - ieee: [std_logic_1164, numeric_std, math_real]
+types:

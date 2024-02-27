@@ -5,11 +5,11 @@
 #### default config parameters ####
 shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 #### shared ####
-shared/shared_lib.src lib=shared_lib
+shared/shared_lib_010.src lib=shared_lib
 #### project local configuration files ####
 Top/ull/vu13p/ull_vu13_b3a_tp_csf_mptc/prj_cfg.vhd
 #### top  ####
-UserLogic/ult/top_ult_imp.vhd top=top_ult
+UserLogic/ult/ult_v1.0/top_ult_imp.vhd top=top_ult
 #### AXI SC ####
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 
@@ -33,4 +33,4 @@ UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib
 UserLogic/upt/upt_lib_empty.src lib=upt_lib
 # UserLogic/upt/upt_lib_vu13p.src lib=upt_lib
 
-UserLogic/ult/ult_lib.src lib=ult_lib
+UserLogic/ult/ult_v1.0_lib.src lib=ult_lib

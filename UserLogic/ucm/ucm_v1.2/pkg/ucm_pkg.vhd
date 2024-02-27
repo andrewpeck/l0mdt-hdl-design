@@ -12,7 +12,6 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
-use shared_lib.sl2mdt_constants_pkg.all;
 
 package ucm_pkg is
 
@@ -57,7 +56,7 @@ package ucm_pkg is
 
    type ucm_data2pamctrl_rt is record
       data_valid : std_logic;
-      poseta : signed(SL2MDT_SLC_COMMON_POSETA_LEN-1 downto 0);
+      poseta : signed(SLC_COMMON_POSETA_LEN-1 downto 0);
    end record ucm_data2pamctrl_rt;
    attribute w of ucm_data2pamctrl_rt : type is 15;
    function width(x: ucm_data2pamctrl_rt) return natural;
@@ -121,7 +120,7 @@ package ucm_pkg is
    type ucm_cde_rt is record
       muid : slc_muid_rt;
       cointype : std_logic_vector(SLC_COMMON_COINTYPE_LEN - 1 downto 0);
-      poseta : signed(SL2MDT_SLC_COMMON_POSETA_LEN-1 downto 0);
+      poseta : signed(SLC_COMMON_POSETA_LEN-1 downto 0);
       phimod : std_logic_vector(UCM_CDE2CVP_PHIMOD_LEN -1 downto 0);
       specific : std_logic_vector(SLC_SPECIFIC_LEN -1 downto 0);
       data_valid : std_logic;
@@ -336,7 +335,6 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
-use shared_lib.sl2mdt_constants_pkg.all;
 
 package body ucm_pkg is
 

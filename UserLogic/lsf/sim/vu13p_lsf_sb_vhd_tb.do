@@ -128,9 +128,9 @@ vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/asym_ram_tdp_read_fi
 vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/SpyBuffer.v"
 vlog -sv -work work +incdir+$CWD/../../dataformats/ "$SRC/lsf_spybuffer_wrapper.sv"
 vlib shared_lib
-vcom -work shared_lib $CWD/../../shared/types/common_ieee_pkg.vhd
-vcom -work shared_lib $CWD/../../shared/types/l0mdt_constants_pkg.vhd
-vcom -work shared_lib $CWD/../../shared/types/l0mdt_dataformats_pkg.vhd
+vcom -work shared_lib $CWD/../../shared/types/types010/common_ieee_pkg.vhd
+vcom -work shared_lib $CWD/../../shared/types/types010/l0mdt_constants_pkg.vhd
+vcom -work shared_lib $CWD/../../shared/types/types010/l0mdt_dataformats_pkg.vhd
 vcom -work lsf_lib "$SRC/lsf_wrapper.vhd"
 vlog -sv -work lsf_lib +incdir+$SRC +incdir+$CWD/../../dataformats "$SRC/compute_r_bins.sv"
 vlog -sv -work lsf_lib +incdir+$SRC +incdir+$CWD/../../dataformats "$SRC/get_rom_addr.sv"

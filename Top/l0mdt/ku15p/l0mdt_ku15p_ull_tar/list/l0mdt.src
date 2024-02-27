@@ -10,14 +10,19 @@ HAL/hal/list/hal_ku.src lib=hal
 #HAL/hal/list/ila_ku.src 
 
 # User Logic Libraries
-UserLogic/hp/hp_lib.src   lib=hp_lib
-UserLogic/mpl/mpl_v1.0_lib.src lib=mpl_lib
-UserLogic/ult/ult_lib.src lib=ult_lib
+UserLogic/ult/ult_v1.0_lib.src lib=ult_lib
+
 UserLogic/ucm/ucm_v1.0_ku15_lib.src lib=ucm_lib
-#UserLogic/ucm/ucm_v1.0_vu13_lib.src lib=ucm_lib
+# UserLogic/ucm/ucm_v1.0_vu13_lib.src lib=ucm_lib
+
+UserLogic/mpl/mpl_v1.0_lib.src lib=mpl_lib
+
+UserLogic/tar/tar_lib.src lib=tar_lib
+
+UserLogic/hp/hp_lib.src   lib=hp_lib
 UserLogic/heg/heg_lib.src lib=heg_lib
 UserLogic/hps/hps_lib.src lib=hps_lib
-UserLogic/tar/tar_lib.src lib=tar_lib
+
 UserLogic/mtc/mtc_lib.src lib=mtc_lib
 UserLogic/fm/fm_lib.src   lib=fm_lib
 UserLogic/daq/daq.src     lib=daq_lib

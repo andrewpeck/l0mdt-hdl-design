@@ -21,6 +21,6 @@ gui:
 all: create synth impl
 
 types:
-	make -C "$(base)/shared/types" all2
+	make -C "$(base)/shared/types/types010" all2
 	make -C "$(base)/HAL/ttc" types
 	make -C "$(base)/UserLogic/daq/" types

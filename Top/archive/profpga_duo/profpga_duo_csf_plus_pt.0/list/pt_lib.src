@@ -1,6 +1,0 @@
-boards/profpga_duo/Top/top_profpga_duo_csf_plus_pt.v
-pt/src/pt_pkg.vhd
-pt/src/sagitta_calculator.vhd
-pt/src/seg_coord_transform.vhd
-pt/src/pt.vhd
-pt/src/pt_top.vhd

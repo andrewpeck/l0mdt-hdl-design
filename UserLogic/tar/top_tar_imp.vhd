@@ -43,6 +43,7 @@ entity top_tar is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
+    glob_freeze            : in std_logic;
     --
     ctrl_inn_b            : in  std_logic; --  : in  TAR_CTRL_t;
     ctrl_mid_b            : in  std_logic; --  : in  TAR_CTRL_t;
@@ -116,7 +117,9 @@ architecture beh of top_tar is
 begin
 
   TAR_INN_GEN: if g_ST_ENABLE(0)='1' generate
-    ctrl : entity shared_lib.vhdl_utils_deserializer generic map (TAR_CTRL_t'w) port map(clk,rst,ctrl_inn_b,tar_inn_ctrl_v);
+    ctrl : entity shared_lib.vhdl_utils_deserializer 
+      generic map (g_DATA_WIDTH => TAR_CTRL_t'w) 
+      port map(clk => clk,rst  => rst,i_data =>  ctrl_inn_b,o_data => tar_inn_ctrl_v);
     mon_inn_b <= xor_reduce(tar_inn_mon_v);
     --------------------------------------------------------------
     tdc_inn: for i_h in c_HP_NUM_SECTOR_STATION(0) - 1 downto 0 generate
@@ -144,20 +147,23 @@ begin
       clk             => clk,
       rst             => rst,
       glob_en         => glob_en,
+      glob_freeze => glob_freeze,
       --
       ctrl_v            => tar_inn_ctrl_v,
       mon_v             => tar_inn_mon_v,
       -- TDC Hits from Polmux
       i_tdc_hits_av  => i_tdc_hits_inn_av,
       -- to daq
-      o_tdc_hits_av  => o_tdc_hits_inn_av,
+      -- o_tdc_hits_av  => o_tdc_hits_inn_av,
       -- outputs to h2s
       o_tar_hits_av  => o_tar_hits_inn_av
   
     );
   end generate;
   TAR_MID_GEN: if g_ST_ENABLE(1)='1' generate
-    ctrl : entity shared_lib.vhdl_utils_deserializer generic map (TAR_CTRL_t'w) port map(clk,rst,ctrl_mid_b,tar_mid_ctrl_v);
+    ctrl : entity shared_lib.vhdl_utils_deserializer 
+      generic map (g_DATA_WIDTH => TAR_CTRL_t'w) 
+      port map(clk => clk,rst  => rst,i_data =>  ctrl_mid_b,o_data => tar_mid_ctrl_v);
     mon_mid_b <= xor_reduce(tar_mid_mon_v);
     --------------------------------------------------------------
     tdc_mid: for i_h in c_HP_NUM_SECTOR_STATION(1) - 1 downto 0 generate
@@ -185,20 +191,23 @@ begin
       clk             => clk,
       rst             => rst,
       glob_en         => glob_en,
+      glob_freeze => glob_freeze,
       --
       ctrl_v            => tar_mid_ctrl_v,
       mon_v             => tar_mid_mon_v,
       -- TDC Hits from Polmux
       i_tdc_hits_av  => i_tdc_hits_mid_av,
       -- to daq
-      o_tdc_hits_av  => o_tdc_hits_mid_av,
+      -- o_tdc_hits_av  => o_tdc_hits_mid_av,
       -- outputs to h2s
       o_tar_hits_av  => o_tar_hits_mid_av
 
     );
   end generate;
   TAR_OUT_GEN: if g_ST_ENABLE(2)='1' generate
-    ctrl : entity shared_lib.vhdl_utils_deserializer generic map (TAR_CTRL_t'w) port map(clk,rst,ctrl_out_b,tar_out_ctrl_v);
+    ctrl : entity shared_lib.vhdl_utils_deserializer
+      generic map (g_DATA_WIDTH => TAR_CTRL_t'w) 
+      port map(clk => clk,rst  => rst,i_data =>  ctrl_out_b,o_data => tar_out_ctrl_v);
     mon_out_b <= xor_reduce(tar_out_mon_v);
     --------------------------------------------------------------
     tdc_out: for i_h in c_HP_NUM_SECTOR_STATION(2) - 1 downto 0 generate
@@ -226,20 +235,23 @@ begin
       clk             => clk,
       rst             => rst,
       glob_en         => glob_en,
+      glob_freeze => glob_freeze,
       --
       ctrl_v            => tar_out_ctrl_v,
       mon_v             => tar_out_mon_v,
       -- TDC Hits from Polmux
       i_tdc_hits_av  => i_tdc_hits_out_av,
       -- to daq
-      o_tdc_hits_av  => o_tdc_hits_out_av,
+      -- o_tdc_hits_av  => o_tdc_hits_out_av,
       -- outputs to h2s
       o_tar_hits_av  => o_tar_hits_out_av
   
     );
   end generate;
   TAR_EXT_GEN: if g_ST_ENABLE(3)='1' generate
-    ctrl : entity shared_lib.vhdl_utils_deserializer generic map (TAR_CTRL_t'w) port map(clk,rst,ctrl_ext_b,tar_ext_ctrl_v);
+    ctrl : entity shared_lib.vhdl_utils_deserializer 
+      generic map (g_DATA_WIDTH => TAR_CTRL_t'w) 
+      port map(clk => clk,rst  => rst,i_data =>  ctrl_ext_b,o_data => tar_ext_ctrl_v);
     mon_ext_b <= xor_reduce(tar_ext_mon_v);
     --------------------------------------------------------------
     tdc_ext: for i_h in c_HP_NUM_SECTOR_STATION(3) - 1 downto 0 generate
@@ -267,13 +279,14 @@ begin
       clk             => clk,
       rst             => rst,
       glob_en         => glob_en,
+      glob_freeze => glob_freeze,
       --
       ctrl_v            => tar_ext_ctrl_v,
       mon_v             => tar_ext_mon_v,
       -- TDC Hits from Polmux
       i_tdc_hits_av  => i_tdc_hits_ext_av,
       -- to daq
-      o_tdc_hits_av  => o_tdc_hits_ext_av,
+      -- o_tdc_hits_av  => o_tdc_hits_ext_av,
       -- outputs to h2s
       o_tar_hits_av  => o_tar_hits_ext_av
   

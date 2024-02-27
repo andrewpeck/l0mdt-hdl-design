@@ -1,0 +1,85 @@
+# yml2hdl v0.3
+config:
+   basic_functions: False
+   packages:
+      - ieee: [std_logic_1164, numeric_std, math_real]
+      - shared_lib: [common_ieee_pkg]
+types:
+   - SL2MDT_HEADER_H_RESERVED_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 10}
+   - SL2MDT_HEADER_H_RESERVED_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_HEADER_TCOVERFLOW_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 1}
+   - SL2MDT_HEADER_TCOVERFLOW_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_HEADER_NMTC_SL_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 3}
+   - SL2MDT_HEADER_NMTC_SL_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_HEADER_NMTC_MDT_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 3}
+   - SL2MDT_HEADER_NMTC_MDT_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_HEADER_NSLC_SLC_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 3}
+   - SL2MDT_HEADER_NSLC_SLC_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_HEADER_BCID_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 12}
+   - SL2MDT_HEADER_BCID_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_TRAILER_T_RESERVED_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 6}
+   - SL2MDT_TRAILER_T_RESERVED_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_TRAILER_CRC_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 8}
+   - SL2MDT_TRAILER_CRC_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_TRAILER_FIBERID_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 4}
+   - SL2MDT_TRAILER_FIBERID_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_TRAILER_SLID_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 6}
+   - SL2MDT_TRAILER_SLID_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_TRAILER_COMMA_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 8}
+   - SL2MDT_TRAILER_COMMA_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_SLC_COMMON_SLCID_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 3}
+   - SL2MDT_SLC_COMMON_SLCID_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_SLC_COMMON_TCSENT_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 1}
+   - SL2MDT_SLC_COMMON_TCSENT_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_SLC_COMMON_POSETA_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 14}
+   - SL2MDT_SLC_COMMON_POSETA_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 4096.0}
+   - SL2MDT_SLC_COMMON_POSETA_RES: {'qualifier': 'constant', 'type': 'real', 'value': 0.00033}
+   - SL2MDT_SLC_COMMON_POSPHI_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 9}
+   - SL2MDT_SLC_COMMON_POSPHI_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 81.48733086}
+  #  - SL2MDT_SLC_COMMON_POSPHI_RES: {'qualifier': 'constant', 'type': 'real', 'value': 0.012}
+   - SL2MDT_SLC_COMMON_SL_PT_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 8}
+   - SL2MDT_SLC_COMMON_SL_PT_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 2.0}
+   - SL2MDT_SLC_COMMON_SL_PTTHRESH_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 4}
+   - SL2MDT_SLC_COMMON_SL_PTTHRESH_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 0.25}
+   - SL2MDT_SLC_COMMON_SL_CHARGE_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 1}
+   - SL2MDT_SLC_COMMON_SL_CHARGE_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_SLC_COMMON_COINTYPE_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 3}
+   - SL2MDT_SLC_COMMON_COINTYPE_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_SLC_ENDCAP_E_RESERVED_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 46}
+   - SL2MDT_SLC_ENDCAP_E_RESERVED_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_SLC_ENDCAP_NSWSEG_MON_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 1}
+   - SL2MDT_SLC_ENDCAP_NSWSEG_MON_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 5}
+   - SL2MDT_SLC_ENDCAP_NSWSEG_ANGDTHETA_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_SLC_ENDCAP_NSWSEG_POSPHI_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 8}
+   - SL2MDT_SLC_ENDCAP_NSWSEG_POSPHI_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 0.03125}
+   - SL2MDT_SLC_ENDCAP_NSWSEG_POSETA_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 14}
+   - SL2MDT_SLC_ENDCAP_NSWSEG_POSETA_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 4096.0}
+   - SL2MDT_SLC_ENDCAP_SEG_ANGDPHI_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 4}
+   - SL2MDT_SLC_ENDCAP_SEG_ANGDPHI_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 0.25}
+   - SL2MDT_SLC_ENDCAP_SEG_ANGDTHETA_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 7}
+   - SL2MDT_SLC_ENDCAP_SEG_ANGDTHETA_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 0.25}
+   - SL2MDT_SLC_BARREL_B_RESERVED_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 37}
+   - SL2MDT_SLC_BARREL_B_RESERVED_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_SLC_BARREL_RPC3_POSZ_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 12}
+   - SL2MDT_SLC_BARREL_RPC3_POSZ_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 0.125}
+   - SL2MDT_SLC_BARREL_RPC2_POSZ_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 12}
+   - SL2MDT_SLC_BARREL_RPC2_POSZ_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 0.125}
+   - SL2MDT_SLC_BARREL_RPC1_POSZ_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 12}
+   - SL2MDT_SLC_BARREL_RPC1_POSZ_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 0.125}
+   - SL2MDT_SLC_BARREL_RPC0_POSZ_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 12}
+   - SL2MDT_SLC_BARREL_RPC0_POSZ_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 0.125}
+   - SL2MDT_SLC_RX_DATA_VALID_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 1}
+   - SL2MDT_SLC_RX_DATA_VALID_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_SLC_RX_SPECIFIC_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 85}
+   - SL2MDT_SLC_RX_SPECIFIC_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_VEC_MDTID_CHAMBER_ID_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 5}
+   - SL2MDT_VEC_MDTID_CHAMBER_ID_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_VEC_MDTID_CHAMBER_IETA_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 4}
+   - SL2MDT_VEC_MDTID_CHAMBER_IETA_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_MTC2SL_DATA_VALID_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 1}
+   - SL2MDT_MTC2SL_DATA_VALID_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_MTC2SL_MDT_PROCFLAGS_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 4}
+   - SL2MDT_MTC2SL_MDT_PROCFLAGS_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
+   - SL2MDT_MTC2SL_M_RESERVED_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 49}
+   - SL2MDT_MTC2SL_M_RESERVED_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}

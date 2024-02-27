@@ -47,13 +47,14 @@ entity tar is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
+    glob_freeze            : in std_logic;
     --
     ctrl_v            : in std_logic_vector; --  : in  TAR_CTRL_t;
     mon_v             : out std_logic_vector;--  : out TAR_MON_t;
     -- TDC Hits from Polmux
     i_tdc_hits_av    : in  tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0);
     -- TDC polmux from Tar
-    o_tdc_hits_av    : out tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
+    -- o_tdc_hits_av    : out tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
     -- TDC Hits from Tar
     o_tar_hits_av    : out tar2hps_avt(g_HPS_MAX_HP -1 downto 0)
 
@@ -64,6 +65,8 @@ architecture beh of tar is
   --
   signal ctrl_r            : TAR_CTRL_t;
   signal mon_r             : TAR_MON_t;
+
+  signal o_tdc_hits_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
 
   -- constant PL_ST_CTRL_LEN : integer := width(ctrl_r.PL_ST);--426;
   -- constant PL_ST_MON_LEN : integer := width(mon_r.PL_ST);--258;
@@ -98,6 +101,7 @@ begin
     i_configs           => ctrl_r.configs,
     o_status            => mon_r.status ,
     --
+    i_freeze            => glob_freeze,
     o_freeze            => int_freeze,
     -- 
     o_local_en          => local_en,

@@ -49,6 +49,7 @@ entity ucm is
     clk                     : in std_logic;
     rst                     : in std_logic;
     glob_en                 : in std_logic;
+    glob_freeze            : in std_logic;
     ttc_commands            : in l0mdt_ttc_rt;
     -- configuration, control & Monitoring
     ctrl_v              : in  std_logic_vector;--UCM_CTRL_t;

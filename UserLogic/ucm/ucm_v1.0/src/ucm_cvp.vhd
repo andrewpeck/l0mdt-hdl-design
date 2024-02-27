@@ -400,7 +400,7 @@ begin
         if atan_dv = '1' then
           for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
             if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-              ucm2hps_buff_ar(hps_i).vec_ang <= vec_ang_pl;
+              ucm2hps_buff_ar(hps_i).vec_ang <= unsigned(vec_ang_pl);
             -- else
             --   ucm2hps_ar(hps_i).vec_pos             <=(others => '0');
 

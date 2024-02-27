@@ -28,7 +28,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
-use shared_lib.sl2mdt_constants_pkg.all;
+-- use shared_lib.sl2mdt_constants_pkg.all;
 
 
 -- use shared_lib.detector_param_pkg.all;
@@ -55,7 +55,7 @@ entity ucm_ctrl_pam_subth is
     rst                 : in std_logic;
     ena                 : in std_logic;
 
-    i_poseta            : in signed(SL2MDT_SLC_COMMON_POSETA_LEN-1 downto 0); -- 14
+    i_poseta            : in signed(SLC_COMMON_POSETA_LEN-1 downto 0); -- 14
     i_dv                : in std_logic;
 
     o_num_ch            : out unsigned(3 downto 0);
