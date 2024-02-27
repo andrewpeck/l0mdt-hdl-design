@@ -1,21 +1,21 @@
-Top/l0mdt/ku15p/l0mdt_ku15p_ull_fm/top_l0mdt.vhd top=top_l0mdt
+Top/l0mdt/vu13p/l0mdt_vu13p_ba3_012_ucm_mpl_tar/top_l0mdt.vhd top=top_l0mdt
 
 # Control
-Top/l0mdt/ku15p/l0mdt_ku15p_ull_fm/top_control.vhd
+Top/l0mdt/vu13p/l0mdt_vu13p_ba3_012_ucm_mpl_tar/top_control.vhd
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 
 # HAL
 HAL/hal/list/hal.src lib=hal
-HAL/hal/list/hal_ku.src lib=hal
-#HAL/hal/list/ila_ku.src 
+HAL/hal/list/hal_vu.src lib=hal
+#HAL/hal/list/ila_vu.src 
 
 # User Logic Libraries
-UserLogic/ult/ult_v1.0_lib.src lib=ult_lib
+UserLogic/ult/ult_v1.2_lib.src lib=ult_lib
 
-UserLogic/ucm/ucm_v1.0_ku15_lib.src lib=ucm_lib
-#UserLogic/ucm/ucm_v1.0_vu13_lib.src lib=ucm_lib
+#UserLogic/ucm/ucm_v1.2_ku15_lib.src lib=ucm_lib
+UserLogic/ucm/ucm_v1.2_vu13_lib.src lib=ucm_lib
 
-UserLogic/mpl/mpl_v1.0_lib.src lib=mpl_lib
+UserLogic/mpl/mpl_v1.2_lib.src lib=mpl_lib
 
 UserLogic/tar/tar_lib.src lib=tar_lib
 
@@ -29,11 +29,11 @@ UserLogic/daq/daq.src     lib=daq_lib
 
 # segment finder
 UserLogic/csf/ncsf_lib.src lib=csf_lib
-UserLogic/lsf/lsf_lib_ku15p.src lib=lsf_lib
-#UserLogic/lsf/lsf_lib_empty.src lib=lsf_lib
+#UserLogic/lsf/lsf_lib_vu13p.src lib=lsf_lib
+UserLogic/lsf/lsf_lib_empty.src lib=lsf_lib
 
 # pt assignment
-#UserLogic/upt/upt_lib_ku15p.src lib=upt_lib
+#UserLogic/upt/upt_lib_vu13p.src lib=upt_lib
 UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib
 #UserLogic/ptc_mpi/ptc_lib_empty.src lib=ptc_lib
 UserLogic/upt/upt_lib_empty.src lib=upt_lib
