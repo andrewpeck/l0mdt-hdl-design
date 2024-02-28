@@ -7,7 +7,7 @@
 #---------------------------------
 # Simulation entities
 #---------------------------------
-shared/sim/shared_sim_v1.0_lib.sim
+shared/sim/shared_sim_v1.2_lib.sim
 
 #---------------------------------
 # Simulation functions

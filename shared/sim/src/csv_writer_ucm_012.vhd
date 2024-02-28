@@ -436,7 +436,7 @@ begin
               csv_file_1.write_integer(to_integer(ext_ucm2hps_bus_ar(th_i).mdtid.chamber_id));
               csv_file_1.write_integer(to_integer(ext_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta));
               -- vec_pos
-              csv_file_1.write_integer(to_integer(ext_ucm2hps_bus_ar(th_i).vec_pos));
+              csv_file_1.write_integer(to_integer(unsigned(ext_ucm2hps_bus_ar(th_i).vec_pos)));
               -- vec_ang
               csv_file_1.write_integer(to_integer(signed(ext_ucm2hps_bus_ar(th_i).vec_ang)));
               csv_file_1.write_integer(to_integer(signed(ext_ucm2hps_bus_ar(th_i).phimod)));
