@@ -6,4 +6,4 @@ UserLogic/csf/sim/csf_tb_reader.vhd
 UserLogic/csf/sim/csf_tb_writer.vhd
 UserLogic/csf/sim/csf_textio_pkg.vhd
 UserLogic/csf/sim/ncsf_wave.do
-shared/shared_lib.sim lib=shared_lib
+shared/shared_v1.0_lib.sim lib=shared_lib

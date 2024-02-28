@@ -1,5 +1,5 @@
 #Simulator questa
-shared/shared_lib.sim lib=shared_lib
+shared/shared_v1.0_lib.sim lib=shared_lib
 # UserLogic/ult/ult_lib.sim
 UserLogic/ult/ult_v1.0/top_ult_sim.vhd 
 # topsim=ult_tb runtime=150us

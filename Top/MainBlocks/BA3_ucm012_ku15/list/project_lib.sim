@@ -1,5 +1,5 @@
 #Simulator questa
-shared/shared_lib.sim lib=shared_lib
+shared/shared_v1.0_lib.sim lib=shared_lib
 # UserLogic/ult/ult_lib.sim
 UserLogic/ucm/ucm_v1.2/top_ucm_sim.vhd 
 shared/sim/waves/BA3_ucm012_ku15_ta.do 
