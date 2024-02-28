@@ -1,5 +1,5 @@
-UserLogictar/tar/tar_v1.1/pkg/tar_pkg.vhd
-UserLogictar/tar/tar_v1.1/src/tar.vhd
-UserLogictar/tar/tar_v1.1/src/tar_supervisor.vhd
-UserLogictar/tar/tar_v1.1/src/tar_station.vhd
-UserLogictar/tar/tar_v1.1/src/tar_remap.vhd
+UserLogictar/tar/tar_v1.0/pkg/tar_pkg.vhd
+UserLogictar/tar/tar_v1.0/src/tar.vhd
+UserLogictar/tar/tar_v1.0/src/tar_supervisor.vhd
+UserLogictar/tar/tar_v1.0/src/tar_station.vhd
+UserLogictar/tar/tar_v1.0/src/tar_remap.vhd

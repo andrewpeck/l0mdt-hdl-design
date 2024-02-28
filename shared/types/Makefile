@@ -74,7 +74,7 @@ all:
 	../../UserLogic/csf/pkg/csf.yml
 # TAR
 	python3 $(yml2hdl_v1) $(common) \
-	../../UserLogictar/tar/tar_v1.1/pkg/tar.yml
+	../../UserLogictar/tar/tar_v1.0/pkg/tar.yml
 	# ULT simulation package
 
 	python3 $(yml2hdl_v1) $(common) \
@@ -204,7 +204,7 @@ all2:
 # 	-e common_constants.yml  \
 # 	-e l0mdt_dataformats_pkg.yml \
 # 	-e common_types.yml      \
-# 	../..tar/tar/tar_v1.1/pkg/tar.yml
+# 	../..tar/tar/tar_v1.0/pkg/tar.yml
 # 		# ULT simulation package
 # 	python3 $(yml2hdl_v1)       \
 # 	-e common_ieee_pkg.yml       \

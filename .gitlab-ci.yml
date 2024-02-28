@@ -44,9 +44,9 @@ generate:
         - MainBlocks/BA3_vu13_010_ucm
         - MainBlocks/BA3_ku15_012_ucm
         - MainBlocks/BA3_vu13_012_ucm
-        - MainBlocks/BA3_ku15_010_tar
+        # - MainBlocks/BA3_ku15_010_tar
         - MainBlocks/BA3_vu13_010_tar
-        - MainBlocks/BA3_ku15_012_tar
+        # - MainBlocks/BA3_ku15_012_tar
         - MainBlocks/BA3_vu13_012_tar
         # - MainBlocks/BA3_hps_csf_bp
         # - MainBlocks/BA3_heg

@@ -3,7 +3,7 @@
 -- Project: ATLAS L0MDT Trigger
 -- File: ucm_cvp_b_slope.vhd
 -- Module: ucm_cvp_b_slope
--- File PATH: /UserLogic/ucm/ucm_v1.1/src/ucm_cvp_b_slope.vhd
+-- File PATH: /UserLogic/ucm/ucm_v1.0/src/ucm_cvp_b_slope.vhd
 -- -----
 -- File Created: Friday, 8th July 2022 9:42:07 pm
 -- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
