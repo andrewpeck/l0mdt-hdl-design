@@ -5,11 +5,7 @@
 #### default config parameters ####
 shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 #### shared ####
-<<<<<<< HEAD
-shared/shared_lib_012.src lib=shared_lib
-=======
 shared/shared_v1.2_lib.src lib=shared_lib
->>>>>>> mpl_012_2024-2-2
 #### project local configuration files ####
 Top/ull/vu13p/ull_vu13_b3a_012_ucm/prj_cfg.vhd
 #### top  ####
@@ -19,11 +15,7 @@ HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 
 #### modules included ####
 UserLogic/ucm/ucm_v1.2_vu13_lib.src lib=ucm_lib
-<<<<<<< HEAD
 UserLogic/tar/tar_v1.2_lib.src lib=tar_lib
-=======
-UserLogic/tar/tar_lib.src lib=tar_lib
->>>>>>> mpl_012_2024-2-2
 UserLogic/ult/ult_v1.2_lib.src lib=ult_lib
 
 UserLogic/mpl/mpl_lib.src lib=mpl_lib

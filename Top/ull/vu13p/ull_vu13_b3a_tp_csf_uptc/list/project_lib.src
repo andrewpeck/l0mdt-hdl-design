@@ -15,13 +15,8 @@ HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 
 #### modules included ####
 #UserLogic/heg/hegtypes_lib.src lib=hegtypes_lib
-<<<<<<< HEAD
-UserLogic/tar/tar_v1.1_lib.src lib=tar_lib
-UserLogic/mpl/mpl_lib.src lib=mpl_lib
-=======
-UserLogic/tar/tar_lib.src lib=tar_lib
+UserLogic/tar/tar_v1.0_lib.src lib=tar_lib
 UserLogic/mpl/mpl_v1.0_lib.src lib=mpl_lib
->>>>>>> mpl_012_2024-2-2
 UserLogic/ucm/ucm_v1.0_vu13_lib.src lib=ucm_lib
 UserLogic/hp/hp_lib.src lib=hp_lib
 UserLogic/heg/heg_lib.src lib=heg_lib

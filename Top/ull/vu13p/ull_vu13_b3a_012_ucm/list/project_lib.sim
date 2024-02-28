@@ -1,23 +1,10 @@
 #Simulator questa
-<<<<<<< HEAD
-shared/shared_v1.0_lib.sim lib=shared_lib
-
-# UserLogic/ult/ult_lib.sim
-UserLogic/ult/top_ult_sim.vhd 
-# topsim=ult_tb runtime=150us
-<<<<<<<< HEAD:Top/ull/vu13p/ull_vu13_b3a_012_ucm/list/project_lib.sim
-shared/sim/waves/ull_vu13_b3a_012_ucm_ta.do 
-========
-shared/sim/waves/ull_vu13_3ba_ucm012_mpl012_ta.do 
->>>>>>>> mpl_012_2024-2-2:Top/ull/vu13p/ull_vu13_3ba_ucm012_mpl012/list/project_lib.sim
-=======
 shared/shared_v1.2_lib.sim lib=shared_lib
 
 # UserLogic/ult/ult_lib.sim
 UserLogic/ult/ult_v1.2/top_ult_sim.vhd 
 # topsim=ult_tb runtime=150us
 shared/sim/waves/ull_vu13_b3a_012_ucm_ta.do 
->>>>>>> mpl_012_2024-2-2
 
 # Waveform 
 # UserLogic/ult/sim/ult_tp_sim1.wcfg

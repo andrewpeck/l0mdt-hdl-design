@@ -17,17 +17,10 @@ UserLogic/hps/top_hps_imp.vhd top=top_hps
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 
 # modules included
-<<<<<<< HEAD
-# UserLogic/mpl/mpl_lib.src lib=mpl_lib
-# UserLogic/ult/ult_lib.src lib=ult_lib
 # UserLogic/tar/tar_v1.1_lib.src lib=tar_lib
 # UserLogic/ucm/ucm_v1.0_lib_vu13.src lib=ucm_lib
-=======
 # UserLogic/ult/ult_v1.0_lib.src lib=ult_lib
 # UserLogic/mpl/mpl_v1.0_lib.src lib=mpl_lib
-# UserLogic/ucm/ucm_v1.0_vu13_lib.src lib=ucm_lib
-# UserLogic/tar/tar_lib.src lib=tar_lib
->>>>>>> mpl_012_2024-2-2
 UserLogic/hp/hp_lib.src lib=hp_lib
 UserLogic/heg/heg_lib.src lib=heg_lib
 UserLogic/hps/hps_lib.src lib=hps_lib

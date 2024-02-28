@@ -8,11 +8,7 @@ shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 shared/shared_v1.2_lib.src lib=shared_lib
 
 #_project local configuration files
-<<<<<<<< HEAD:Top/MainBlocks/BA3_012_ucm_ku15/list/project_lib.src
-Top/MainBlocks/BA3_012_ucm_ku15/prj_cfg.vhd
-========
 Top/MainBlocks/BA3_vu13_012_ucm/prj_cfg.vhd
->>>>>>>> mpl_012_2024-2-2:Top/MainBlocks/BA3_vu13_012_ucm/list/project_lib.src
 
 #### top  ####
 UserLogic/ucm/ucm_v1.2/top_ucm_imp.vhd top=top_ucm
@@ -21,24 +17,17 @@ UserLogic/ucm/ucm_v1.2/top_ucm_imp.vhd top=top_ucm
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 
 # modules included
-<<<<<<<< HEAD:Top/MainBlocks/BA3_012_ucm_ku15/list/project_lib.src
-# UserLogic/mpl/mpl_lib.src lib=mpl_lib
-# UserLogic/ult/ult_lib.src lib=ult_lib
-UserLogic/ucm/ucm_v1.2_ku15_lib.src lib=ucm_lib
-========
-# modules included
 # UserLogic/ult/ult_v1.0_lib.src lib=ult_lib
 # UserLogic/mpl/mpl_v1.0_lib.src lib=mpl_lib
 # UserLogic/ucm/ucm_v1.0_vu13_lib.src lib=ucm_lib
 UserLogic/ucm/ucm_v1.2_vu13_lib.src lib=ucm_lib
 # UserLogic/ucm/ucm_v1.0_ku15_lib.src lib=ucm_lib
 # UserLogic/ucm/ucm_v1.2_ku15_lib.src lib=ucm_lib
->>>>>>>> mpl_012_2024-2-2:Top/MainBlocks/BA3_vu13_012_ucm/list/project_lib.src
 # UserLogic/hp/hp_lib.src lib=hp_lib
 # UserLogic/heg/heg_lib.src lib=heg_lib
 # UserLogic/hps/hps_lib.src lib=hps_lib
 # UserLogic/csf/ncsf_lib.src lib=csf_lib
-# UserLogic/tar/tar_v1.1_lib.src lib=tar_lib
+# UserLogic/tar/tar_lib.src lib=tar_lib
 # UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib
 # UserLogic/upt/upt_lib_empty.src lib=upt_lib
 # UserLogic/mtc/mtc_lib.src lib=mtc_lib

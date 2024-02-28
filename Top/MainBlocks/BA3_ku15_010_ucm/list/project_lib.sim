@@ -2,11 +2,7 @@
 shared/shared_v1.0_lib.sim lib=shared_lib
 # UserLogic/ult/ult_lib.sim
 UserLogic/ucm/ucm_v1.0/top_ucm_sim.vhd 
-<<<<<<<< HEAD:Top/MainBlocks/BA3_010_ucm_ku15/list/project_lib.sim
-shared/sim/waves/BA3_010_ucm_ku15_ta.do 
-========
 shared/sim/waves/BA3_ku15_010_ucm_ta.do 
->>>>>>>> mpl_012_2024-2-2:Top/MainBlocks/BA3_ku15_010_ucm/list/project_lib.sim
 # topsim=ucm_tb runtime=150us
 
 # Waveform 

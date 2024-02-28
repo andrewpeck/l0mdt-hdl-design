@@ -3,11 +3,7 @@ shared/shared_v1.0_lib.sim lib=shared_lib
 
 # UserLogic/ult/ult_lib.sim
 UserLogic/tar/top_tar_sim.vhd 
-<<<<<<<< HEAD:Top/MainBlocks/BA3_010_tar/list/project_lib.sim
 shared/sim/waves/BA3_010_tar_ta.do 
-========
-shared/sim/waves/BA3_vu13_tar_ta.do 
->>>>>>>> mpl_012_2024-2-2:Top/MainBlocks/BA3_vu13_tar/list/project_lib.sim
 #topsim=tar_tb runtime=150us
 
 # Waveform 
