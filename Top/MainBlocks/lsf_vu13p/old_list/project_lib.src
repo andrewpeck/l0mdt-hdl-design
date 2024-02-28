@@ -1,4 +1,4 @@
-shared/shared_lib_010_basic.src lib=shared_lib
+shared/shared_v1.0_lib_basic.src lib=shared_lib
 Top/MainBlocks/lsf_vu13p/prj_cfg.vhd
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 UserLogic/lsf/lsf_lib_vu13p.src lib=lsf_lib

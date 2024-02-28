@@ -15,7 +15,7 @@ proc Sed {regex file} {
     }
 }
 
-proc update_trigger_libs {lib pt_calc segment_finder fpga_short en_ila} {
+proc update_trigger_libs {lib pt_calc segment_finder fpga_short en_ila ull_ver} {
 
     puts "INFO: UPDATING TRIGGER LIBS"
     puts "INFO: FPGA type: ${fpga_short}"
@@ -27,7 +27,6 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short en_ila} {
     if {$en_ila == 0} {
         Sed  "s/^.*ila_.*/#&/g" $lib
     }
-
 
     if {[string compare "upt" $pt_calc]==0} {
         # enable upt
@@ -68,6 +67,14 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short en_ila} {
       Sed  "s/^UserLogic.*ucm_v1.0_vu13_lib.src/#&/g" $lib
       # enable ku15
       Sed  "s/^#\\(UserLogic.*ucm_v1.0_ku15_lib.src\\)/\\1/g" $lib
+      
+    }
+
+    if {[string compare "1.2" $ull_ver]==0} {
+      # disable vu13
+      Sed "s/v1.0/v1.2/g" $lib
+      # # enable ku15
+      # Sed  "s/^#\\(UserLogic.*ucm_v1.0_ku15_lib.src\\)/\\1/g" $lib
       
     }
 
@@ -183,7 +190,7 @@ proc update_prj_config {dest_file segment_finder pt_calc props} {
     replace_prj_cfg_int SECTOR_ID ${sector_id} ${dest_file}
 }
 
-proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder constraints link_map props} {
+proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder constraints link_map props ull_ver} {
 
     # default values
     set hog_only_synth 0
@@ -260,7 +267,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # update the libraries
     update_trigger_libs "$dest_path/list/l0mdt.src" \
-        $pt_calc $segment_finder $fpga_shortname $en_ila
+        $pt_calc $segment_finder $fpga_shortname $en_ila $ull_ver
 
     # update the board package
     set board_pkg_dir {HAL/boards/}
@@ -290,53 +297,56 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
 proc clone_projects {huddle} {
 
-    foreach key [huddle keys $huddle] {
+  foreach key [huddle keys $huddle] {
 
-        set build [huddle get $huddle $key]
+    set build [huddle get $huddle $key]
 
-        set fpga        [huddle get_stripped $build fpga]
-        set board_pkg   [huddle get_stripped $build board_pkg]
-        set pt          [huddle get_stripped $build pt]
-        set sf          [huddle get_stripped $build sf]
-        set constraints [huddle get_stripped $build constraints]
+    set fpga        [huddle get_stripped $build fpga]
+    set board_pkg   [huddle get_stripped $build board_pkg]
+    set pt          [huddle get_stripped $build pt]
+    set sf          [huddle get_stripped $build sf]
+    set constraints [huddle get_stripped $build constraints]
+    set ull_ver     [huddle get_stripped $build ull_ver]
 
-        puts " Build: $key"
-        puts "  - FPGA   : $fpga"
-        puts "  - Board  : $board_pkg"
-        puts "  - Constr : $constraints"
+    puts " ========================================== "
+    puts " Build: $key"
+    puts "  - FPGA   : $fpga"
+    puts "  - Board  : $board_pkg"
+    puts "  - Constr : $constraints"
+    puts "  - ull_ver: $ull_ver"
 
-        set variants [huddle get $build variants]
-        foreach variant [huddle keys $variants] {
+    set variants [huddle get $build variants]
+    foreach variant [huddle keys $variants] {
 
-            set props [huddle get $variants $variant]
+      set props [huddle get $variants $variant]
 
-            set link_map       [huddle get_stripped $props link_map]
-            set zynq_target    [huddle get_stripped $props zynq_target]
+      set link_map       [huddle get_stripped $props link_map]
+      set zynq_target    [huddle get_stripped $props zynq_target]
 
-            puts "    - Flavor: $variant"
-            puts "        link_map       : $link_map"
-            puts "        zynq_target    : $zynq_target"
-            puts "        sf             : $sf"
-            puts "        pt             : $pt"
-            foreach prop [huddle keys $props] {
-                puts "        [format %-14s $prop] : [huddle get_stripped $props $prop]"
-            }
+      puts "    - Flavor: $variant"
+      puts "        link_map       : $link_map"
+      puts "        zynq_target    : $zynq_target"
+      puts "        sf             : $sf"
+      puts "        pt             : $pt"
+      foreach prop [huddle keys $props] {
+          puts "        [format %-16s $prop] : [huddle get_stripped $props $prop]"
+      }
 
-            global script_path
-            global repo_path
+      global script_path
+      global repo_path
 
-            # if the variant is "default" don't add a suffix,
-            # otherwise add the variant name
-            set suffix "_${variant}"
-            if { [string compare ${variant} "default"] == 0} {
-                set suffix ""
-            }
-            clone_mdt_project "$script_path" "l0mdt_${key}${suffix}" \
-                $fpga $board_pkg $pt $sf $constraints $link_map $props
-            regexp {xc([0-9A-z]*)} $fpga match fpga_shortname
-            create_top_modules "$script_path/l0mdt/$fpga_shortname/l0mdt_${key}${suffix}" "$repo_path"
-        }
+      # if the variant is "default" don't add a suffix,
+      # otherwise add the variant name
+      set suffix "_${variant}"
+      if { [string compare ${variant} "default"] == 0} {
+          set suffix ""
+      }
+      clone_mdt_project "$script_path" "l0mdt_${key}${suffix}" \
+          $fpga $board_pkg $pt $sf $constraints $link_map $props $ull_ver
+      regexp {xc([0-9A-z]*)} $fpga match fpga_shortname
+      create_top_modules "$script_path/l0mdt/$fpga_shortname/l0mdt_${key}${suffix}" "$repo_path"
     }
+  }
 }
 
 clone_projects [yaml::yaml2huddle -file ${script_path}/mdt_flavors.yml]

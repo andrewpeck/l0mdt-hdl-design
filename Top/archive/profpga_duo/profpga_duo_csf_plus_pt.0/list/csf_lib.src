@@ -1,7 +1,0 @@
-csf/src/csf.vhd
-csf/src/csf_chi2.vhd
-csf/src/csf_chi2_comparison.vhd
-csf/src/csf_fitter.vhd
-csf/src/csf_histogram.vhd
-csf/src/csf_pkg.vhd
-csf/src/csf_plus_pt_top.vhd

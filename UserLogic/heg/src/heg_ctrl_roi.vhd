@@ -87,7 +87,7 @@ begin
       rst                 => rst,
       glob_en             => glob_en,
       --
-      i_z                 => uCM_data_r.vec_pos,
+      i_z                 => unsigned(uCM_data_r.vec_pos),
       i_dv                => uCM_data_r.data_valid,
       --
       o_roi_center        => roi_center,

@@ -13,4 +13,4 @@ UserLogic/ptc_mpi/sim/pt_in2.csv
 UserLogic/ptc_mpi/sim/pt_in3.csv
 UserLogic/ptc_mpi/sim/pt_in_slc.csv
 UserLogic/ptc_mpi/sim/pt_out.csv
-shared/shared_lib.sim lib=shared_lib
+shared/shared_v1.0_lib.sim lib=shared_lib

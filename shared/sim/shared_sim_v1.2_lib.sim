@@ -1,0 +1,31 @@
+# yml generated packages
+shared/sim/pkg/l0mdt_sim_pkg.vhd
+
+shared/sim/pkg/mdt_sim_pkg.vhd
+shared/sim/pkg/tar_sim_pkg.vhd
+shared/sim/pkg/heg_sim_pkg.vhd
+shared/sim/pkg/hps_sim_pkg.vhd
+shared/sim/pkg/ucm_sim_pkg.vhd
+
+# custom packages
+shared/sim/pkg/l0mdt_sim_cstm_pkg.vhd
+shared/sim/pkg/heg_sim_cstm_pkg.vhd
+
+# csv readers
+shared/sim/src/csv_reader_mdt.vhd
+shared/sim/src/csv_reader_slc.vhd
+shared/sim/src/csv_reader_ucm2hps.vhd
+shared/sim/src/csv_reader_tar2hps.vhd
+shared/sim/src/csv_reader_hps_pc2heg.vhd
+
+# csv writers
+shared/sim/src/csv_writer_ucm_012.vhd
+shared/sim/src/csv_writer_tar.vhd
+shared/sim/src/csv_writer_hps.vhd
+shared/sim/src/csv_writer_hps_int.vhd
+shared/sim/src/csv_writer_heg.vhd
+shared/sim/src/csv_writer_heg_int.vhd
+
+# shared/sim/src/csv_writer_mpl.vhd
+# shared/sim/src/csv_writer_sf_in.vhd
+# shared/sim/src/csv_writer_sf_out.vhd
