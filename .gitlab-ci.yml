@@ -39,11 +39,11 @@ generate:
         - l0mdt/vu13p/l0mdt_vu13p_lsf_upt
         - l0mdt/ku15p/l0mdt_ku15p_ull_ucm
         - ull/vu13p/ull_vu13_b3a_ucm_mpl
-        - MainBlocks/BA3_ucm010_ku15
-        - MainBlocks/BA3_ucm010_vu13
-        - MainBlocks/BA3_ucm012_ku15
-        - MainBlocks/BA3_ucm012_vu13
-        - MainBlocks/BA3_tar
+        - MainBlocks/BA3_ku15_010_ucm
+        - MainBlocks/BA3_vu13_010_ucm
+        - MainBlocks/BA3_ku15_012_ucm
+        - MainBlocks/BA3_vu13_012_ucm
+        - MainBlocks/BA3_vu13_tar
         - MainBlocks/BA3_hps_csf_bp
         - MainBlocks/BA3_heg
         HOG_ONLY_SYNTH: 1
@@ -54,11 +54,11 @@ generate:
       #   HOG_ONLY_SYNTH: 1
       # - PROVIDER: "2022.2"
       #   PROJECT_NAME: 
-      #   - MainBlocks/BA3_ucm010_ku15
-      #   - MainBlocks/BA3_ucm010_vu13
-      #   - MainBlocks/BA3_ucm012_ku15
-      #   - MainBlocks/BA3_ucm012_vu13
-      #   - MainBlocks/BA3_tar
+      #   - MainBlocks/BA3_ku15_010_ucm
+      #   - MainBlocks/BA3_vu13_010_ucm
+      #   - MainBlocks/BA3_ku15_012_ucm
+      #   - MainBlocks/BA3_vu13_012_ucm
+      #   - MainBlocks/BA3_vu13_tar
       #   - MainBlocks/BA3_hps_csf_bp
       #   - MainBlocks/BA3_heg
       #   HOG_ONLY_SYNTH: 1
@@ -81,8 +81,8 @@ riviera:
     matrix:
       - PROJECT_NAME:
         - MainBlocks/ptc_mpi
-        - MainBlocks/BA3_tar
-        - MainBlocks/BA3_ucm012_vu13
+        - MainBlocks/BA3_vu13_tar
+        - MainBlocks/BA3_vu13_012_ucm
         # - MainBlocks/BA3_hps_csf_bp
         # - MainBlocks/BA3_heg
   allow_failure: true
@@ -94,14 +94,14 @@ questa:
   parallel:
     matrix:
       # - PROJECT_NAME: 
-      #   - MainBlocks/BA3_tar
-      #   - MainBlocks/BA3_ucm012_vu13
+      #   - MainBlocks/BA3_vu13_tar
+      #   - MainBlocks/BA3_vu13_012_ucm
       #   - MainBlocks/BA3_heg
       #   - ull/vu13p/ull_vu13_b3a_ucm_mpl
       #   - ull/vu13p/ull_vu13_3ba_ucm012_mpl012
       - PROJECT_NAME:
-        - MainBlocks/BA3_tar
-        - MainBlocks/BA3_ucm012_vu13
+        - MainBlocks/BA3_vu13_tar
+        - MainBlocks/BA3_vu13_012_ucm
         # - MainBlocks/BA3_heg
         - ull/vu13p/ull_vu13_b3a_ucm_mpl
         - ull/vu13p/ull_vu13_b3a_tar
@@ -116,12 +116,12 @@ sim_comp:
     extends: .vars
   parallel:
     matrix:
-      - PROJECT_NAME: MainBlocks/BA3_tar
-        PROJECT_Q_NAME: MainBlocks/BA3_tar_questa
-        PROJECT_R_NAME: MainBlocks/BA3_tar_riviera
-      - PROJECT_NAME: MainBlocks/BA3_ucm012_vu13
-        PROJECT_Q_NAME: MainBlocks/BA3_ucm012_vu13_questa
-        PROJECT_R_NAME: MainBlocks/BA3_ucm012_vu13_riviera
+      - PROJECT_NAME: MainBlocks/BA3_vu13_tar
+        PROJECT_Q_NAME: MainBlocks/BA3_vu13_tar_questa
+        PROJECT_R_NAME: MainBlocks/BA3_vu13_tar_riviera
+      - PROJECT_NAME: MainBlocks/BA3_vu13_012_ucm
+        PROJECT_Q_NAME: MainBlocks/BA3_vu13_012_ucm_questa
+        PROJECT_R_NAME: MainBlocks/BA3_vu13_012_ucm_riviera
       # - PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
       #   PROJECT_Q_NAME: MainBlocks/BA3_hps_csf_bp_questa
       #   PROJECT_R_NAME: MainBlocks/BA3_hps_csf_bp_riviera
@@ -142,12 +142,12 @@ sim_check:
       - PROJECT_NAME: [MainBlocks/ptc_mpi]
         SIMULATOR: riviera
         BLOCK: PTC
-      - PROJECT_NAME: [MainBlocks/BA3_tar]
+      - PROJECT_NAME: [MainBlocks/BA3_vu13_tar]
         SIMULATOR: questa
-        BLOCK: BA3_tar
-      - PROJECT_NAME: [MainBlocks/BA3_ucm012_vu13]
+        BLOCK: BA3_vu13_tar
+      - PROJECT_NAME: [MainBlocks/BA3_vu13_012_ucm]
         SIMULATOR: questa
-        BLOCK: BA3_ucm012_vu13
+        BLOCK: BA3_vu13_012_ucm
       - PROJECT_NAME: [MainBlocks/BA3_hps_csf_bp]
         SIMULATOR: questa
         BLOCK: BA3_hps_csf_bp
