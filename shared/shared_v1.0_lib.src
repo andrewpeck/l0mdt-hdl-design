@@ -1,7 +1,7 @@
 #---------------------------------
 # Basic Configuration
 #---------------------------------
-shared/shared_lib_010_basic.src
+shared/shared_v1.0_lib_basic.src
 #---------------------------------
 # Detector parameters
 #---------------------------------

@@ -9,6 +9,9 @@ HAL/hal/list/hal.src lib=hal
 HAL/hal/list/hal_ku.src lib=hal
 #HAL/hal/list/ila_ku.src 
 
+# shared
+shared/shared_v1.2_lib.src lib=shared_lib
+
 # User Logic Libraries
 UserLogic/ult/ult_v1.2_lib.src lib=ult_lib
 

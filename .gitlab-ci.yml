@@ -22,19 +22,46 @@ generate:
   parallel:
     matrix:
       - PROVIDER: argos
-        PROJECT_NAME: [ull/vu13p/ull_vu13_b3a_tar, l0mdt/vu13p/l0mdt_vu13p_ba3_ucm_mpl_tar_hps,ull/vu13p/ull_vu13_3ba_ucm012_mpl012]
-        HOG_ONLY_SYNTH: 1
-      - PROVIDER: "2022.2"
-        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_lsf_upt]
-        HOG_ONLY_SYNTH: 1
+        PROJECT_NAME: 
+        - l0mdt/vu13p/l0mdt_vu13p_csf_mpt
+        - l0mdt/vu13p/l0mdt_vu13p_ull_empty
+        - l0mdt/ku15p/l0mdt_ku15p_ull_empty
+        - l0mdt/ku15p/l0mdt_ku15p_ull_fm
+        - l0mdt/vu13p/l0mdt_vu13p_hal_all_csm
       - PROVIDER: argos
-        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_csf_mpt, l0mdt/vu13p/l0mdt_vu13p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_fm, l0mdt/vu13p/l0mdt_vu13p_hal_all_csm]
-      - PROVIDER: "2022.2"
-        PROJECT_NAME: [l0mdt/ku15p/l0mdt_ku15p_ull_ucm, ull/vu13p/ull_vu13_b3a_ucm_mpl]
+        PROJECT_NAME: 
+        - ull/vu13p/ull_vu13_b3a_tar
+        - l0mdt/vu13p/l0mdt_vu13p_ba3_ucm_mpl_tar_hps
+        - ull/vu13p/ull_vu13_3ba_ucm012_mpl012
         HOG_ONLY_SYNTH: 1
       - PROVIDER: "2022.2"
-        PROJECT_NAME: [MainBlocks/BA3_ucm010_ku15, MainBlocks/BA3_ucm010_vu13, MainBlocks/BA3_ucm012_ku15, MainBlocks/BA3_ucm012_vu13, MainBlocks/BA3_tar, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
+        PROJECT_NAME: 
+        - l0mdt/vu13p/l0mdt_vu13p_lsf_upt
+        - l0mdt/ku15p/l0mdt_ku15p_ull_ucm
+        - ull/vu13p/ull_vu13_b3a_ucm_mpl
+        - MainBlocks/BA3_ucm010_ku15
+        - MainBlocks/BA3_ucm010_vu13
+        - MainBlocks/BA3_ucm012_ku15
+        - MainBlocks/BA3_ucm012_vu13
+        - MainBlocks/BA3_tar
+        - MainBlocks/BA3_hps_csf_bp
+        - MainBlocks/BA3_heg
         HOG_ONLY_SYNTH: 1
+      # - PROVIDER: "2022.2"
+      #   PROJECT_NAME: 
+      #   - l0mdt/ku15p/l0mdt_ku15p_ull_ucm
+      #   - ull/vu13p/ull_vu13_b3a_ucm_mpl
+      #   HOG_ONLY_SYNTH: 1
+      # - PROVIDER: "2022.2"
+      #   PROJECT_NAME: 
+      #   - MainBlocks/BA3_ucm010_ku15
+      #   - MainBlocks/BA3_ucm010_vu13
+      #   - MainBlocks/BA3_ucm012_ku15
+      #   - MainBlocks/BA3_ucm012_vu13
+      #   - MainBlocks/BA3_tar
+      #   - MainBlocks/BA3_hps_csf_bp
+      #   - MainBlocks/BA3_heg
+      #   HOG_ONLY_SYNTH: 1
   tags:
     - ${PROVIDER}
 
