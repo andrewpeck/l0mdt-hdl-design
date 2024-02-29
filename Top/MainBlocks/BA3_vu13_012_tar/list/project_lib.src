@@ -5,10 +5,10 @@
 #### default config parameters ####
 shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 #### shared ####
-shared/shared_lib_012.src lib=shared_lib
+shared/shared_v1.2_lib.src lib=shared_lib
 
 #_project local configuration files
-Top/MainBlocks/BA3_012_tar/prj_cfg.vhd
+Top/MainBlocks/BA3_vu13_012_tar/prj_cfg.vhd
 
 #### top  ####
 UserLogic/tar/tar_v1.2/top_tar_imp.vhd top=top_tar
@@ -17,7 +17,7 @@ UserLogic/tar/tar_v1.2/top_tar_imp.vhd top=top_tar
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 
 # tb
-# UserLogic/tar/top_tar_sim.vhd 
+# UserLogic/tar/tar_v1.2/top_tar_sim.vhd 
 
 
 # modules included

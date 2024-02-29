@@ -160,9 +160,9 @@ sim_check:
       - PROJECT_NAME: [MainBlocks/BA3_010_tar]
         SIMULATOR: questa
         BLOCK: BA3_010_tar
-      - PROJECT_NAME: [MainBlocks/BA3_012_tar]
+      - PROJECT_NAME: [MainBlocks/BA3_vu13_012_tar]
         SIMULATOR: questa
-        BLOCK: BA3_012_tar
+        BLOCK: BA3_vu13_012_tar
       - PROJECT_NAME: [MainBlocks/BA3_vu13_010_tar]
         SIMULATOR: questa
         BLOCK: BA3_vu13_010_tar

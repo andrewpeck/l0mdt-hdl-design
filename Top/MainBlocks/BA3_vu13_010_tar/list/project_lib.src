@@ -17,7 +17,7 @@ UserLogic/tar/tar_v1.0/top_tar_imp.vhd top=top_tar
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 
 # tb
-# UserLogic/tar/top_tar_sim.vhd 
+# UserLogic/tar/tar_v1.0/top_tar_sim.vhd 
 
 
 # modules included
