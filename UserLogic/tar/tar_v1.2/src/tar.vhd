@@ -2,7 +2,7 @@
 -- UMass , Physics Department
 -- Project: ATLAS L0MDT Trigger
 -- File: tar.vhd
--- File PATH: /UserLogictar/tar/tar_v1.0/src/tar.vhd
+-- File PATH: /UserLogic/tar/tar_v1.0/src/tar.vhd
 -- -----
 -- File Created: Tuesday, 23rd November 2021 2:24:35 pm
 -- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)

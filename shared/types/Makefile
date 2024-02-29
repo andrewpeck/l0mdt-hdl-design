@@ -74,7 +74,7 @@ all:
 	../../UserLogic/csf/pkg/csf.yml
 # TAR
 	python3 $(yml2hdl_v1) $(common) \
-	../../UserLogictar/tar/tar_v1.0/pkg/tar.yml
+	../../UserLogic/tar/tar_v1.0/pkg/tar.yml
 	# ULT simulation package
 
 	python3 $(yml2hdl_v1) $(common) \
