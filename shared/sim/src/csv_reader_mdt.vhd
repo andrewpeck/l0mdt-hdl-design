@@ -117,7 +117,7 @@ begin
 
     variable aux : string(1 to LINE_LENGTH_MAX);
   begin
-    -- if first_read = '1' then
+    -- if v_first_read = '1' then
     puts("--------------------------------");
     puts("opening MDT CSV file : " & IN_HIT_FILE);
     csv_file.initialize(IN_HIT_FILE,"rd");
@@ -157,11 +157,8 @@ begin
     wait;
   end process open_csv;
   HIT_READ: process ( rst, clk)
-
     -- variable csv_file: csv_file_type;
-
-
-    variable ToA  : integer;
+    variable ToA              : integer;
     variable i_station        : integer;
     variable Chamber_id       : integer;
     variable Chamber_ieta     : integer;
@@ -173,7 +170,7 @@ begin
     variable tube_z           : integer;
     variable tube_rho         : integer;
     variable drift_time       : real;
-    variable event_id            : integer;
+    variable event_id         : integer;
     variable muonFixedId      : integer;
     variable csm              : integer;
     variable mezz             : integer;
@@ -181,21 +178,21 @@ begin
     variable t0               : real;
     variable TOF              : real;
 
-    variable dummy_text  : string(1 to 100);
-    variable ok : boolean;
+    variable v_dummy_text  : string(1 to 100);
+    variable v_ok : boolean;
 
     -- file input_mdt_tar_file       : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/csm_TB_A3_Barrel.txt";
     -- file input_mdt_tar_file       : text open read_mode is IN_HIT_FILE;
-    variable row                  : line;
-    variable row_counter          : integer := 0;
+    variable v_row                  : line;
+    variable v_row_counter          : integer := 0;
 
     -- variable tdc_time             : UNSIG_64;
     variable v_mdt_event          : input_mdt_rt;
 
-    variable next_event_time      : integer := 0;
-    variable tb_time              : integer := 0;
+    variable v_next_event_time      : integer := 0;
+    variable v_tb_time              : integer := 0;
 
-    variable first_read           : std_logic := '1';
+    variable v_first_read           : std_logic := '1';
 
     variable v_mdt_inn_counts     : infifo_hit_counts(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
     variable v_mdt_mid_counts     : infifo_hit_counts(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
@@ -204,7 +201,7 @@ begin
 
   begin
 
-    -- tb_curr_time <= tb_time;
+    
 
     if rising_edge(clk) then
       if(rst= '1') then
@@ -213,94 +210,98 @@ begin
 
         if enable = '1' then
         -- write to DUT
-
-          for wr_i in c_HPS_NUM_MDT_CH_INN -1 downto 0 loop
-            if(v_mdt_inn_counts(wr_i) > 0) then
-              o_mdt_tdc_inn_av(wr_i) <= convert(mdt_inn_fifo(wr_i)(0).tdc,o_mdt_tdc_inn_av(wr_i));
-              o_mdt_event_ai(0)(wr_i) <= mdt_inn_fifo(wr_i)(0).hit_id;
-              o_slc_event_ai(0)(wr_i) <= mdt_inn_fifo(wr_i)(0).event_id;
-              -- for test input read
-              i_mdt_tdc_inn_ar(wr_i) <= mdt_inn_fifo(wr_i)(0).tdc;
-              --
-              for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
-                mdt_inn_fifo(wr_i)(mv_i - 1) <= mdt_inn_fifo(wr_i)(mv_i);
-              end loop;
-              v_mdt_inn_counts(wr_i) := v_mdt_inn_counts(wr_i) - 1;
-            else
-              o_mdt_event_ai(0)(wr_i) <= (others => '0');
-              o_slc_event_ai(0)(wr_i) <= (others => '0');
-              o_mdt_tdc_inn_av(wr_i) <= zero(o_mdt_tdc_inn_av(wr_i));
-              i_mdt_tdc_inn_ar(wr_i) <= zero(i_mdt_tdc_inn_ar(wr_i));
-            end if;
-          end loop;
-
-          for wr_i in c_HPS_NUM_MDT_CH_MID -1 downto 0 loop
-            if(v_mdt_mid_counts(wr_i) > 0) then
-              o_mdt_tdc_mid_av(wr_i) <= convert(mdt_mid_fifo(wr_i)(0).tdc,o_mdt_tdc_mid_av(wr_i));
-              o_mdt_event_ai(1)(wr_i) <= mdt_mid_fifo(wr_i)(0).hit_id;
-              o_slc_event_ai(1)(wr_i) <= mdt_mid_fifo(wr_i)(0).event_id;
-              -- for test input read
-              i_mdt_tdc_mid_ar(wr_i) <= mdt_mid_fifo(wr_i)(0).tdc;
-              --
-              for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
-                mdt_mid_fifo(wr_i)(mv_i - 1) <= mdt_mid_fifo(wr_i)(mv_i);
-              end loop;
-              v_mdt_mid_counts(wr_i) := v_mdt_mid_counts(wr_i) - 1;
-            else
-              -- mdt_event_ai(1)(wr_i) <= (others => '0');
-              o_mdt_event_ai(1)(wr_i) <= (others => '0');
-              o_slc_event_ai(1)(wr_i) <= (others => '0');
-              o_mdt_tdc_mid_av(wr_i) <= zero(o_mdt_tdc_mid_av(wr_i));
-              i_mdt_tdc_mid_ar(wr_i) <= zero(i_mdt_tdc_mid_ar(wr_i));
-            end if;
-          end loop;
-
-          for wr_i in c_HPS_NUM_MDT_CH_OUT -1 downto 0 loop
-            if(v_mdt_out_counts(wr_i) > 0) then
-              o_mdt_tdc_out_av(wr_i) <= convert(mdt_out_fifo(wr_i)(0).tdc,o_mdt_tdc_out_av(wr_i));
-              -- mdt_event_ai(2)(wr_i) <= mdt_out_fifo(wr_i)(0).event_id;
-              o_mdt_event_ai(2)(wr_i) <= mdt_out_fifo(wr_i)(0).hit_id;
-              o_slc_event_ai(2)(wr_i) <= mdt_out_fifo(wr_i)(0).event_id;
-              -- for test input read
-              i_mdt_tdc_out_ar(wr_i) <= mdt_out_fifo(wr_i)(0).tdc;
-              --
-              for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
-                mdt_out_fifo(wr_i)(mv_i - 1) <= mdt_out_fifo(wr_i)(mv_i);
-              end loop;
-              v_mdt_out_counts(wr_i) := v_mdt_out_counts(wr_i) - 1;
-            else
-              -- mdt_event_ai(2)(wr_i) <= (others => '0');
-              o_mdt_event_ai(2)(wr_i) <= (others => '0');
-              o_slc_event_ai(2)(wr_i) <= (others => '0');
-              o_mdt_tdc_out_av(wr_i) <= zero(o_mdt_tdc_out_av(wr_i));
-              i_mdt_tdc_out_ar(wr_i) <= zero(i_mdt_tdc_out_ar(wr_i));
-            end if;
-          end loop;
-
-          for wr_i in c_HPS_NUM_MDT_CH_EXT -1 downto 0 loop
-            if(v_mdt_ext_counts(wr_i) > 0) then
-              o_mdt_tdc_ext_av(wr_i) <= convert(mdt_ext_fifo(wr_i)(0).tdc,o_mdt_tdc_ext_av(wr_i));
-              -- mdt_event_ai(3)(wr_i) <= mdt_ext_fifo(wr_i)(0).event_id;
-              o_mdt_event_ai(3)(wr_i) <= mdt_ext_fifo(wr_i)(0).hit_id;
-              o_slc_event_ai(3)(wr_i) <= mdt_ext_fifo(wr_i)(0).event_id;
-              -- for test input read
-              i_mdt_tdc_ext_ar(wr_i) <= mdt_ext_fifo(wr_i)(0).tdc;
-              --
-              for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
-                mdt_ext_fifo(wr_i)(mv_i - 1) <= mdt_ext_fifo(wr_i)(mv_i);
-              end loop;
-              v_mdt_ext_counts(wr_i) := v_mdt_ext_counts(wr_i) - 1;
-            else
-              -- mdt_event_ai(3)(wr_i) <= (others => '0');
-              o_mdt_event_ai(3)(wr_i) <= (others => '0');
-              o_slc_event_ai(3)(wr_i) <= (others => '0');
-              o_mdt_tdc_ext_av(wr_i) <= zero(o_mdt_tdc_ext_av(wr_i));
-              i_mdt_tdc_ext_ar(wr_i) <= zero(i_mdt_tdc_ext_ar(wr_i));
-            end if;
-          end loop;
+          if c_ENABLED_ST(0)='1' then
+            for wr_i in c_HPS_NUM_MDT_CH_INN -1 downto 0 loop
+              if(v_mdt_inn_counts(wr_i) > 0) then
+                o_mdt_tdc_inn_av(wr_i) <= convert(mdt_inn_fifo(wr_i)(0).tdc,o_mdt_tdc_inn_av(wr_i));
+                o_mdt_event_ai(0)(wr_i) <= mdt_inn_fifo(wr_i)(0).hit_id;
+                o_slc_event_ai(0)(wr_i) <= mdt_inn_fifo(wr_i)(0).event_id;
+                -- for test input read
+                i_mdt_tdc_inn_ar(wr_i) <= mdt_inn_fifo(wr_i)(0).tdc;
+                --
+                for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
+                  mdt_inn_fifo(wr_i)(mv_i - 1) <= mdt_inn_fifo(wr_i)(mv_i);
+                end loop;
+                v_mdt_inn_counts(wr_i) := v_mdt_inn_counts(wr_i) - 1;
+              else
+                o_mdt_event_ai(0)(wr_i) <= (others => '0');
+                o_slc_event_ai(0)(wr_i) <= (others => '0');
+                o_mdt_tdc_inn_av(wr_i) <= zero(o_mdt_tdc_inn_av(wr_i));
+                i_mdt_tdc_inn_ar(wr_i) <= zero(i_mdt_tdc_inn_ar(wr_i));
+              end if;
+            end loop;
+          end if;
+          if c_ENABLED_ST(1)='1' then
+            for wr_i in c_HPS_NUM_MDT_CH_MID -1 downto 0 loop
+              if(v_mdt_mid_counts(wr_i) > 0) then
+                o_mdt_tdc_mid_av(wr_i) <= convert(mdt_mid_fifo(wr_i)(0).tdc,o_mdt_tdc_mid_av(wr_i));
+                o_mdt_event_ai(1)(wr_i) <= mdt_mid_fifo(wr_i)(0).hit_id;
+                o_slc_event_ai(1)(wr_i) <= mdt_mid_fifo(wr_i)(0).event_id;
+                -- for test input read
+                i_mdt_tdc_mid_ar(wr_i) <= mdt_mid_fifo(wr_i)(0).tdc;
+                --
+                for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
+                  mdt_mid_fifo(wr_i)(mv_i - 1) <= mdt_mid_fifo(wr_i)(mv_i);
+                end loop;
+                v_mdt_mid_counts(wr_i) := v_mdt_mid_counts(wr_i) - 1;
+              else
+                -- mdt_event_ai(1)(wr_i) <= (others => '0');
+                o_mdt_event_ai(1)(wr_i) <= (others => '0');
+                o_slc_event_ai(1)(wr_i) <= (others => '0');
+                o_mdt_tdc_mid_av(wr_i) <= zero(o_mdt_tdc_mid_av(wr_i));
+                i_mdt_tdc_mid_ar(wr_i) <= zero(i_mdt_tdc_mid_ar(wr_i));
+              end if;
+            end loop;
+          end if;
+          if c_ENABLED_ST(2)='1' then
+            for wr_i in c_HPS_NUM_MDT_CH_OUT -1 downto 0 loop
+              if(v_mdt_out_counts(wr_i) > 0) then
+                o_mdt_tdc_out_av(wr_i) <= convert(mdt_out_fifo(wr_i)(0).tdc,o_mdt_tdc_out_av(wr_i));
+                -- mdt_event_ai(2)(wr_i) <= mdt_out_fifo(wr_i)(0).event_id;
+                o_mdt_event_ai(2)(wr_i) <= mdt_out_fifo(wr_i)(0).hit_id;
+                o_slc_event_ai(2)(wr_i) <= mdt_out_fifo(wr_i)(0).event_id;
+                -- for test input read
+                i_mdt_tdc_out_ar(wr_i) <= mdt_out_fifo(wr_i)(0).tdc;
+                --
+                for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
+                  mdt_out_fifo(wr_i)(mv_i - 1) <= mdt_out_fifo(wr_i)(mv_i);
+                end loop;
+                v_mdt_out_counts(wr_i) := v_mdt_out_counts(wr_i) - 1;
+              else
+                -- mdt_event_ai(2)(wr_i) <= (others => '0');
+                o_mdt_event_ai(2)(wr_i) <= (others => '0');
+                o_slc_event_ai(2)(wr_i) <= (others => '0');
+                o_mdt_tdc_out_av(wr_i) <= zero(o_mdt_tdc_out_av(wr_i));
+                i_mdt_tdc_out_ar(wr_i) <= zero(i_mdt_tdc_out_ar(wr_i));
+              end if;
+            end loop;
+          end if;
+          if c_ENABLED_ST(3)='1' then
+            for wr_i in c_HPS_NUM_MDT_CH_EXT -1 downto 0 loop
+              if(v_mdt_ext_counts(wr_i) > 0) then
+                o_mdt_tdc_ext_av(wr_i) <= convert(mdt_ext_fifo(wr_i)(0).tdc,o_mdt_tdc_ext_av(wr_i));
+                -- mdt_event_ai(3)(wr_i) <= mdt_ext_fifo(wr_i)(0).event_id;
+                o_mdt_event_ai(3)(wr_i) <= mdt_ext_fifo(wr_i)(0).hit_id;
+                o_slc_event_ai(3)(wr_i) <= mdt_ext_fifo(wr_i)(0).event_id;
+                -- for test input read
+                i_mdt_tdc_ext_ar(wr_i) <= mdt_ext_fifo(wr_i)(0).tdc;
+                --
+                for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
+                  mdt_ext_fifo(wr_i)(mv_i - 1) <= mdt_ext_fifo(wr_i)(mv_i);
+                end loop;
+                v_mdt_ext_counts(wr_i) := v_mdt_ext_counts(wr_i) - 1;
+              else
+                -- mdt_event_ai(3)(wr_i) <= (others => '0');
+                o_mdt_event_ai(3)(wr_i) <= (others => '0');
+                o_slc_event_ai(3)(wr_i) <= (others => '0');
+                o_mdt_tdc_ext_av(wr_i) <= zero(o_mdt_tdc_ext_av(wr_i));
+                i_mdt_tdc_ext_ar(wr_i) <= zero(i_mdt_tdc_ext_ar(wr_i));
+              end if;
+            end loop;
+          end if;
 
           -- first read from input vector file
-          if first_read = '1' then
+          if v_first_read = '1' then
             -- if g_verbose > 0 then
             --   puts("opening MDT CSV file : " & IN_HIT_FILE);
             -- end if;
@@ -333,7 +334,7 @@ begin
             TOF              := csv_file.read_real;
             
             if g_verbose > 1 then
-              puts("##### MDT( " & integer'image(row_counter) &
+              puts("##### MDT( " & integer'image(v_row_counter) &
               " ): "& integer'image(ToA             ) &
               " : " & integer'image(i_station       ) &
               " : " & integer'image(Chamber_id      ) &
@@ -375,14 +376,14 @@ begin
                 tdcid => to_unsigned( mezz, TDCPOLMUX2TAR_TDCID_LEN)
               )
             );
-            -- readline(input_mdt_tar_file,row); -- reads header and ignores
-            -- readline(input_mdt_tar_file,row);
-            -- read(row, v_mdt_event);
+            -- readline(input_mdt_tar_file,v_row); -- reads header and ignores
+            -- readline(input_mdt_tar_file,v_row);
+            -- read(v_row, v_mdt_event);
             mdt_tdc_event_r <= v_mdt_event;
-            row_counter := row_counter +1;
+            v_row_counter := v_row_counter +1;
 
-            -- report "Read line : " & integer'image(row_counter);
-            first_read := '0';
+            -- report "Read line : " & integer'image(v_row_counter);
+            v_first_read := '0';
           end if;
           -- read from input vector file
           RL : while true loop
@@ -391,26 +392,33 @@ begin
               -- puts("v_mdt_event.station - ",to_integer(v_mdt_event.station)," ::: tdc - ",to_integer(v_mdt_event.chamber));
               -- i_mdt_tar_av <= mdt_tdc_event_r.tar;
               if (csv_file.end_of_file = false) then
-
                 if to_integer(v_mdt_event.station) = 0 then
-                  if c_HPS_ENABLED_HP_INN(to_integer(v_mdt_event.chamber)) = '1' then
-                    mdt_inn_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_inn_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event;
-                    v_mdt_inn_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_inn_counts(to_integer(v_mdt_event.chamber) ) + 1;
+                  if c_ENABLED_ST(0)='1' then
+                    if c_HPS_ENABLED_HP_INN(to_integer(v_mdt_event.chamber)) = '1' then
+                      mdt_inn_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_inn_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event;
+                      v_mdt_inn_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_inn_counts(to_integer(v_mdt_event.chamber) ) + 1;
+                    end if;
                   end if;
                 elsif to_integer(v_mdt_event.station) = 1 then
-                  if c_HPS_ENABLED_HP_MID(to_integer(v_mdt_event.chamber)) = '1' then
-                    mdt_mid_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_mid_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event;
-                    v_mdt_mid_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_mid_counts(to_integer(v_mdt_event.chamber) ) + 1;
+                  if c_ENABLED_ST(0)='1' then
+                    if c_HPS_ENABLED_HP_MID(to_integer(v_mdt_event.chamber)) = '1' then
+                      mdt_mid_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_mid_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event;
+                      v_mdt_mid_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_mid_counts(to_integer(v_mdt_event.chamber) ) + 1;
+                    end if;
                   end if;
                 elsif to_integer(v_mdt_event.station) = 2 then
-                  if c_HPS_ENABLED_HP_OUT(to_integer(v_mdt_event.chamber)) = '1' then
-                    mdt_out_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_out_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event;
-                    v_mdt_out_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_out_counts(to_integer(v_mdt_event.chamber) ) + 1;
+                  if c_ENABLED_ST(0)='1' then
+                    if c_HPS_ENABLED_HP_OUT(to_integer(v_mdt_event.chamber)) = '1' then
+                      mdt_out_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_out_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event;
+                      v_mdt_out_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_out_counts(to_integer(v_mdt_event.chamber) ) + 1;
+                    end if;
                   end if;
                 elsif to_integer(v_mdt_event.station) = 3 then
-                  if c_HPS_ENABLED_HP_EXT(to_integer(v_mdt_event.chamber)) = '1' then
-                    mdt_ext_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_ext_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event;
-                    v_mdt_ext_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_ext_counts(to_integer(v_mdt_event.chamber) ) + 1;
+                  if c_ENABLED_ST(0)='1' then
+                    if c_HPS_ENABLED_HP_EXT(to_integer(v_mdt_event.chamber)) = '1' then
+                      mdt_ext_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_ext_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event;
+                      v_mdt_ext_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_ext_counts(to_integer(v_mdt_event.chamber) ) + 1;
+                    end if;
                   end if;
                 else
                   -- ERROR
@@ -439,7 +447,7 @@ begin
     
                 if g_verbose > 1 then
     
-                  puts("##### MDT( " & integer'image(row_counter) &
+                  puts("##### MDT( " & integer'image(v_row_counter) &
                   " ): "& integer'image(ToA             ) &
                   " : " & integer'image(i_station       ) &
                   " : " & integer'image(Chamber_id      ) &
@@ -482,15 +490,15 @@ begin
                     tdcid => to_unsigned( mezz, TDCPOLMUX2TAR_TDCID_LEN)
                   )
                 );
-                row_counter := row_counter +1;
-                -- readline(input_mdt_tar_file,row); -- reads header and ignores
-                -- readline(input_mdt_tar_file,row);
-                -- read(row, v_mdt_event);
+                v_row_counter := v_row_counter +1;
+                -- readline(input_mdt_tar_file,v_row); -- reads header and ignores
+                -- readline(input_mdt_tar_file,v_row);
+                -- read(v_row, v_mdt_event);
                 mdt_tdc_event_r <= v_mdt_event;
-                -- readline(input_mdt_tar_file,row);
-                -- read(row, v_mdt_event);
+                -- readline(input_mdt_tar_file,v_row);
+                -- read(v_row, v_mdt_event);
                 -- mdt_tdc_event_r <= v_mdt_event;
-                -- report "Read line : " & integer'image(row_counter);
+                -- report "Read line : " & integer'image(v_row_counter);
               else
                 exit;
               end if;
