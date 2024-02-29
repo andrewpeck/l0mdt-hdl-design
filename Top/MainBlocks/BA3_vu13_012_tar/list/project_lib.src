@@ -11,7 +11,7 @@ shared/shared_lib_012.src lib=shared_lib
 Top/MainBlocks/BA3_012_tar/prj_cfg.vhd
 
 #### top  ####
-UserLogic/tar/top_tar_imp.vhd top=top_tar
+UserLogic/tar/tar_v1.2/top_tar_imp.vhd top=top_tar
 
 #### hal ####
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
